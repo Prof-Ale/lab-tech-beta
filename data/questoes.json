@@ -5275,5 +5275,222 @@
     ],
     "passo": "Primeiro desconto (15% de 200): 200 - 30 = R$ 170. Segundo desconto (10% sobre o novo valor de 170): 170 - 17 = R$ 153,00.",
     "dica": "Não junte as porcentagens! Calcule o primeiro desconto de 15%, descubra o preço intermediário e aplique os 10% apenas em cima desse novo preço."
-  }
+  },
+    {
+    "id": "OLIMP_A7_51",
+    "aula": 7,
+    "tipo": "logica",
+    "dificuldade": 3,
+    "tipoPedagogico": "base",
+    "bncc": "EF07MA05",
+    "bncc_desc": "Relações de Igualdade e Dedução Lógica",
+    "display": "Três caixas estão identificadas como 'só fichas azuis', 'só fichas verdes' e 'fichas azuis e verdes'. Todas as etiquetas estão erradas. Ao retirar uma ficha da caixa etiquetada como 'fichas azuis e verdes', ela é azul. O que há nessa caixa?",
+    "res": "Só fichas azuis",
+    "alternativas": [
+      { "valor": "Só fichas azuis", "tipo": "acerto" },
+      { "valor": "Fichas azuis e verdes", "tipo": "erro", "categoria": "conceito", "erro": "olimp_confia_na_etiqueta_errada", "descricao": "Aceitou a etiqueta da caixa como verdadeira, apesar de o enunciado afirmar que todas estão erradas.", "peso": 3 },
+      { "valor": "Só fichas verdes", "tipo": "erro", "categoria": "atencao", "erro": "olimp_ignora_ficha_retirada", "descricao": "Desconsiderou que a ficha retirada dessa caixa era azul.", "peso": 1 },
+      { "valor": "Não é possível saber", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_nao_usa_todas_etiquetas_falsas", "descricao": "Não utilizou a informação de que a caixa etiquetada como mista também está incorreta.", "peso": 2 }
+    ],
+    "passo": "A caixa etiquetada como 'fichas azuis e verdes' não pode ser mista, pois sua etiqueta está errada. Como foi retirada uma ficha azul, ela também não pode conter só fichas verdes. Portanto, essa caixa contém só fichas azuis.",
+    "dica": "Comece pela caixa cuja etiqueta diz mistura, pois ela certamente não contém mistura."
+  },
+  {
+    "id": "OLIMP_A7_52",
+    "aula": 7,
+    "tipo": "combinatoria",
+    "dificuldade": 3,
+    "tipoPedagogico": "base",
+    "bncc": "EF06MA14",
+    "bncc_desc": "Princípio Multiplicativo e Contagem com Restrições",
+    "display": "Uma bandeira será formada por 3 faixas verticais, cada uma pintada de vermelho, branco ou preto. Faixas vizinhas não podem ter a mesma cor, e a primeira faixa deve ser vermelha. Quantas bandeiras diferentes podem ser feitas?",
+    "res": "4",
+    "alternativas": [
+      { "valor": "4", "tipo": "acerto" },
+      { "valor": "9", "tipo": "erro", "categoria": "conceito", "erro": "olimp_ignora_primeira_faixa_fixa", "descricao": "Contou escolhas para as três faixas como se a primeira não tivesse cor definida.", "peso": 3 },
+      { "valor": "6", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_permite_repeticao_vizinha", "descricao": "Fixou a primeira faixa, mas permitiu que duas faixas vizinhas tivessem a mesma cor.", "peso": 2 },
+      { "valor": "2", "tipo": "erro", "categoria": "interpretacao", "erro": "olimp_proibe_repeticao_total", "descricao": "Entendeu que nenhuma cor poderia se repetir em toda a bandeira, embora a regra proíba apenas faixas vizinhas iguais.", "peso": 2 }
+    ],
+    "passo": "A primeira faixa já é vermelha. A segunda não pode ser vermelha, então há 2 opções. A terceira não pode ser igual à segunda, então há 2 opções. Logo, 2 × 2 = 4 bandeiras.",
+    "dica": "Depois da primeira faixa, cada nova faixa só precisa ser diferente da faixa imediatamente anterior."
+  },
+  {
+    "id": "OLIMP_A7_53",
+    "aula": 7,
+    "tipo": "padroes",
+    "dificuldade": 4,
+    "tipoPedagogico": "base",
+    "bncc": "EF07MA15",
+    "bncc_desc": "Sequências Numéricas e Padrões Alternados",
+    "display": "A sequência 6, 7, 14, 17, 34, 39 segue alternadamente duas regras: soma um número ímpar crescente e depois multiplica por 2. Qual é o próximo termo?",
+    "res": "78",
+    "alternativas": [
+      { "valor": "78", "tipo": "acerto" },
+      { "valor": "45", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_aplica_soma_no_lugar_da_multiplicacao", "descricao": "Continuou somando o próximo número ímpar, mas a próxima operação deveria ser multiplicar por 2.", "peso": 2 },
+      { "valor": "73", "tipo": "erro", "categoria": "conceito", "erro": "olimp_busca_diferenca_constante", "descricao": "Tentou continuar a sequência por diferenças comuns, sem perceber a alternância de operações.", "peso": 3 },
+      { "valor": "68", "tipo": "erro", "categoria": "atencao", "erro": "olimp_dobra_termo_anterior_errado", "descricao": "Aplicou a operação correta de dobrar, mas usou 34 como termo anterior em vez de 39.", "peso": 1 }
+    ],
+    "passo": "A sequência faz: 6 + 1 = 7, 7 × 2 = 14, 14 + 3 = 17, 17 × 2 = 34, 34 + 5 = 39. A próxima operação é multiplicar por 2: 39 × 2 = 78.",
+    "dica": "Separe as operações em duas trilhas: somas ímpares e multiplicações por 2."
+  },
+  {
+    "id": "OLIMP_A7_54",
+    "aula": 7,
+    "tipo": "geometria",
+    "dificuldade": 4,
+    "tipoPedagogico": "base",
+    "bncc": "EF06MA24",
+    "bncc_desc": "Perímetro, Composição de Figuras e Raciocínio Geométrico",
+    "display": "Uma figura é formada por 4 quadradinhos de lado 1 cm: três deles estão em uma fila horizontal e o quarto está acima do quadradinho do meio. Qual é o perímetro da figura?",
+    "res": "10 cm",
+    "alternativas": [
+      { "valor": "10 cm", "tipo": "acerto" },
+      { "valor": "16 cm", "tipo": "erro", "categoria": "conceito", "erro": "olimp_soma_perimetros_sem_compartilhar", "descricao": "Somou os perímetros dos quatro quadradinhos sem retirar os lados internos compartilhados.", "peso": 3 },
+      { "valor": "12 cm", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_remove_poucos_lados_internos", "descricao": "Percebeu que havia lados compartilhados, mas retirou apenas parte deles.", "peso": 2 },
+      { "valor": "8 cm", "tipo": "erro", "categoria": "atencao", "erro": "olimp_confunde_com_retangulo", "descricao": "Tratou a figura como se formasse um retângulo completo, ignorando o formato em T.", "peso": 1 }
+    ],
+    "passo": "Os 4 quadradinhos teriam juntos 4 × 4 = 16 lados se estivessem separados. Há 3 lados compartilhados: entre os três da fila há 2 contatos, e o quadradinho de cima toca o do meio em 1 contato. Cada contato elimina 2 lados do contorno. Assim, o perímetro é 16 - 2 × 3 = 10 cm.",
+    "dica": "Conte quantos pares de quadradinhos compartilham um lado."
+  },
+  {
+    "id": "OLIMP_A7_55",
+    "aula": 7,
+    "tipo": "algebra",
+    "dificuldade": 4,
+    "tipoPedagogico": "base",
+    "bncc": "EF08MA06",
+    "bncc_desc": "Expressões Algébricas e Operadores Fictícios",
+    "display": "Para dois números a e b, defina a operação a ⊙ b = 3a - 2b. Qual é o valor de 4 ⊙ (2 ⊙ 5)?",
+    "res": "20",
+    "alternativas": [
+      { "valor": "20", "tipo": "acerto" },
+      { "valor": "-16", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_inverte_ordem_parenteses", "descricao": "Calculou a operação externa antes da operação entre parênteses.", "peso": 3 },
+      { "valor": "2", "tipo": "erro", "categoria": "conceito", "erro": "olimp_trata_operador_como_multiplicacao", "descricao": "Interpretou o símbolo como uma operação comum de produto ou misturou a regra com multiplicação.", "peso": 3 },
+      { "valor": "16", "tipo": "erro", "categoria": "calculo", "erro": "olimp_erro_sinal_negativo", "descricao": "Aplicou a regra na ordem correta, mas errou ao substituir o resultado negativo da primeira etapa.", "peso": 1 }
+    ],
+    "passo": "Primeiro, 2 ⊙ 5 = 3 × 2 - 2 × 5 = 6 - 10 = -4. Depois, 4 ⊙ (-4) = 3 × 4 - 2 × (-4) = 12 + 8 = 20.",
+    "dica": "Calcule primeiro a operação dentro dos parênteses e mantenha atenção ao sinal do resultado."
+  },
+  {
+    "id": "OLIMP_A7_56",
+    "aula": 7,
+    "tipo": "logica",
+    "dificuldade": 4,
+    "tipoPedagogico": "base",
+    "bncc": "EF08MA10",
+    "bncc_desc": "Pensamento Algorítmico e Coordenadas em Malha",
+    "display": "Um cursor começa no ponto (0,0). Ele repete o ciclo de comandos: direita, cima, direita, baixo. Cada comando move 1 unidade. Após 17 comandos, em que ponto o cursor estará?",
+    "res": "(9,0)",
+    "alternativas": [
+      { "valor": "(9,0)", "tipo": "acerto" },
+      { "valor": "(8,0)", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_conta_apenas_ciclos_completos", "descricao": "Considerou apenas os 16 primeiros comandos e esqueceu o comando restante.", "peso": 2 },
+      { "valor": "(9,1)", "tipo": "erro", "categoria": "atencao", "erro": "olimp_ignora_movimento_vertical", "descricao": "Aplicou o comando extra para a direita, mas desconsiderou a posição vertical resultante do ciclo.", "peso": 1 },
+      { "valor": "(17,0)", "tipo": "erro", "categoria": "conceito", "erro": "olimp_trata_todos_comandos_como_direita", "descricao": "Contou cada comando como se todos movessem o cursor para a direita.", "peso": 3 }
+    ],
+    "passo": "Cada ciclo de 4 comandos leva o cursor 2 unidades para a direita e 0 na vertical. Em 17 comandos, há 4 ciclos completos, pois 17 = 4 × 4 + 1. Após 16 comandos, o cursor está em (8,0). O comando restante é 'direita', levando-o a (9,0). Portanto, o ponto correto é (9,0).",
+    "dica": "Descubra primeiro o efeito de um ciclo completo de 4 comandos."
+  },
+  {
+    "id": "OLIMP_A7_57",
+    "aula": 7,
+    "tipo": "aritmetica",
+    "dificuldade": 5,
+    "tipoPedagogico": "base",
+    "bncc": "EF07MA01",
+    "bncc_desc": "Números Inteiros, Restrições e Análise de Possibilidades",
+    "display": "Um elevador inicia no 2º andar. Ele sobe 5 andares, desce 3, sobe 4 e depois desce x andares. Ao final, ele chega ao 6º andar. Qual é o valor de x?",
+    "res": "2",
+    "alternativas": [
+      { "valor": "2", "tipo": "acerto" },
+      { "valor": "4", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_ignora_andar_inicial", "descricao": "Calculou apenas o saldo dos movimentos, sem considerar que o elevador começou no 2º andar.", "peso": 2 },
+      { "valor": "8", "tipo": "erro", "categoria": "conceito", "erro": "olimp_soma_movimentos_sem_sinal", "descricao": "Somou movimentos de subida e descida como se todos aumentassem o andar.", "peso": 3 },
+      { "valor": "1", "tipo": "erro", "categoria": "calculo", "erro": "olimp_erro_subtracao_final", "descricao": "Montou a relação correta, mas errou a subtração necessária para encontrar x.", "peso": 1 }
+    ],
+    "passo": "Partindo do 2º andar: sobe 5 e vai ao 7º; desce 3 e vai ao 4º; sobe 4 e vai ao 8º. Para terminar no 6º andar, precisa descer 2 andares. Logo, x = 2.",
+    "dica": "Acompanhe o andar após cada movimento, respeitando subida como aumento e descida como diminuição."
+  },
+  {
+    "id": "OLIMP_A7_58",
+    "aula": 7,
+    "tipo": "probabilidade",
+    "dificuldade": 5,
+    "tipoPedagogico": "base",
+    "bncc": "EF08MA22",
+    "bncc_desc": "Probabilidade e Contagem de Resultados Equiprováveis",
+    "display": "Uma roleta tem 8 setores iguais numerados de 1 a 8. Ela é girada uma vez. Qual é a probabilidade de o número sorteado ser primo ou maior que 6?",
+    "res": "5/8",
+    "alternativas": [
+      { "valor": "5/8", "tipo": "acerto" },
+      { "valor": "6/8", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_conta_sete_duas_vezes", "descricao": "Somou os números primos e os maiores que 6 sem retirar o 7, que pertence aos dois grupos.", "peso": 3 },
+      { "valor": "4/8", "tipo": "erro", "categoria": "atencao", "erro": "olimp_conta_apenas_primos", "descricao": "Contou somente os números primos e esqueceu que o 8 também é maior que 6.", "peso": 1 },
+      { "valor": "2/8", "tipo": "erro", "categoria": "interpretacao", "erro": "olimp_conta_apenas_maiores_que_seis", "descricao": "Considerou apenas os números maiores que 6, ignorando os primos menores ou iguais a 6.", "peso": 2 }
+    ],
+    "passo": "Os números primos de 1 a 8 são 2, 3, 5 e 7. Os maiores que 6 são 7 e 8. Juntando sem repetir, temos 2, 3, 5, 7 e 8: 5 resultados favoráveis em 8 possíveis. A probabilidade é 5/8.",
+    "dica": "Faça uma lista única dos números que satisfazem pelo menos uma das condições."
+  },
+  {
+    "id": "OLIMP_A7_59",
+    "aula": 7,
+    "tipo": "algebra",
+    "dificuldade": 5,
+    "tipoPedagogico": "base",
+    "bncc": "EF08MA08",
+    "bncc_desc": "Sistemas de Equações e Interpretação Algébrica",
+    "display": "Em uma cantina, 1 suco e 2 sanduíches custam 18 reais. Na mesma cantina, 2 sucos e 2 sanduíches custam 24 reais. Quanto custa um sanduíche?",
+    "res": "6 reais",
+    "alternativas": [
+      { "valor": "6 reais", "tipo": "acerto" },
+      { "valor": "12 reais", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_nao_divide_valor_dos_sanduiches", "descricao": "Encontrou o custo de dois sanduíches, mas respondeu como se fosse o preço de um único sanduíche.", "peso": 2 },
+      { "valor": "8 reais", "tipo": "erro", "categoria": "calculo", "erro": "olimp_divide_total_por_tres", "descricao": "Dividiu o valor da segunda compra inteira (24) por três, ignorando a proporção real de produtos.", "peso": 1 },
+      { "valor": "18 reais", "tipo": "erro", "categoria": "conceito", "erro": "olimp_confunde_compra_com_item", "descricao": "Tomou o valor de uma compra inteira como se fosse o preço de um sanduíche.", "peso": 3 }
+    ],
+    "passo": "Comparando as duas compras, a segunda tem exatamente 1 suco a mais e custa 6 reais a mais. Então o suco custa 6 reais. Na primeira compra, 1 suco e 2 sanduíches custam 18 reais; retirando o suco, os 2 sanduíches custam 12 reais. Logo, cada sanduíche custa 6 reais.",
+    "dica": "Primeiro compare as duas compras para descobrir o preço de um suco."
+  },
+  {
+    "id": "OLIMP_A7_60",
+    "aula": 7,
+    "tipo": "estrategia",
+    "dificuldade": 5,
+    "tipoPedagogico": "base",
+    "bncc": "EF09MA04",
+    "bncc_desc": "Divisibilidade, Restos e Estratégia Matemática",
+    "display": "Um painel mostra apenas o resto da divisão de um número por 7. Começando com o número 5, uma máquina repete a operação 'multiplicar por 3' várias vezes. Qual será o resto mostrado após 6 operações?",
+    "res": "5",
+    "alternativas": [
+      { "valor": "5", "tipo": "acerto" },
+      { "valor": "1", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_para_no_ciclo_inicial", "descricao": "Calculou apenas a primeira operação (15 mod 7 = 1) e interrompeu o fluxo lógico.", "peso": 2 },
+      { "valor": "6", "tipo": "erro", "categoria": "calculo", "erro": "olimp_erro_resto_intermediario", "descricao": "Aplicou a ideia dos restos, mas errou uma das reduções módulo 7.", "peso": 1 },
+      { "valor": "3645", "tipo": "erro", "categoria": "conceito", "erro": "olimp_calcula_numero_sem_resto", "descricao": "Calculou o valor multiplicado sem usar o resto da divisão por 7 como pede o painel.", "peso": 3 }
+    ],
+    "passo": "Acompanhe apenas os restos. Começando em 5: após 1 operação, 5 × 3 = 15, resto 1. Após 2, 1 × 3 = 3. Após 3, 3 × 3 = 9, resto 2. Após 4, 2 × 3 = 6. Após 5, 6 × 3 = 18, resto 4. Após 6, 4 × 3 = 12, resto 5. Portanto, o resto após 6 operações é 5.",
+    "dica": "Depois de cada multiplicação, substitua o resultado pelo resto na divisão por 7."
+  },
+  {
+    "id": "OLIMP_A7_61",
+    "aula": 7,
+    "tipo": "logica",
+    "dificuldade": 5,
+    "tipoPedagogico": "desafio",
+    "bncc": "EF07MA05",
+    "habilidade": "EF07MA05",
+    "bncc_desc": "Múltiplos, Divisores e Regularidades Numéricas",
+    "cluster": "aritmetica",
+    "prerequisitos": ["EF06MA05"],
+    "misconception": "paridade_divisores_quadrados",
+    "tipoIntervencao": "scaffold_visual",
+    "representacao": "abstrata",
+    "cargaCognitiva": 3,
+    "objetivoDiagnostico": "validar_raciocinio_combinatorio_e_identificacao_de_propriedades_dos_divisores_inteiros",
+    "display": "No laboratório, 100 computadores alinhados estão inicialmente desligados. Em seguida, 100 estudantes passam por eles em ordem. O estudante 1 inverte o estado de todos os computadores. O estudante 2 inverte o estado apenas dos múltiplos de 2. O estudante 3 inverte o das máquinas múltiplas de 3, e assim por diante, até o estudante 100. Ao final do ciclo, quantos computadores estarão efetivamente LIGADOS?",
+    "res": "10",
+    "alternativas": [
+      { "valor": "10", "tipo": "acerto" },
+      { "valor": "50", "tipo": "erro", "categoria": "atencao", "erro": "olimp_divisao_metade", "descricao": "Dividiu o total por 2 por puro impulso intuitivo, imaginando um padrão linear de metade par e metade ímpar.", "peso": 1 },
+      { "valor": "90", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_inversao_estado_final", "descricao": "Identificou corretamente a lógica dos quadrados perfeitos, mas contou os computadores que ficaram DESLIGADOS no final do processo.", "peso": 2 },
+      { "valor": "25", "tipo": "erro", "categoria": "conceito", "erro": "olimp_confunde_quadrados_com_multiplos", "descricao": "Confundiu a propriedade dos divisores ímpares e assumiu que apenas os múltiplos de 4 (um quarto do ecossistema) seriam ativados.", "peso": 3 }
+    ],
+    "passo": "Um computador muda de estado cada vez que um estudante correspondente a um de seus divisores passa por ele. Portanto, ele terminará LIGADO se, e somente se, for acionado um número ÍMPAR de vezes. Na teoria dos números, apenas os Quadrados Perfeitos possuem uma quantidade ímpar de divisores (pois seus fatores se agrupam em pares, exceto a própria raiz). Entre 1 e 100, os quadrados perfeitos são 1, 4, 9, 16, 25, 36, 49, 64, 81 e 100, totalizando exatamente 10 computadores.",
+    "dica": "Pense no comportamento das chaves. O computador de número 12, por exemplo, muda de estado nos estudantes 1, 2, 3, 4, 6 e 12 (seus divisores), totalizando 6 trocas (volta a ficar desligado). Que tipo de número possui uma quantidade ÍMPAR de divisores para terminar ligado?"
+  },
 ]
