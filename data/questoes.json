@@ -2743,9 +2743,9 @@
     "display": "Como se lê a fração 1/2?", "res": "Um meio",
     "alternativas": [
       { "valor": "Um meio", "tipo": "acerto" },
-      { "valor": "Um dois", "tipo": "erro", "categoria": "leitura", "erro": "leitura_direta", "descricao": "Lê os números sem nomenclatura de fração.", "peso": 1 },
-      { "valor": "Um segundo", "tipo": "erro", "categoria": "leitura", "erro": "leitura_ordinal", "descricao": "Usou numeração ordinal incorreta.", "peso": 2 },
-      { "valor": "Dois por um", "tipo": "erro", "categoria": "leitura", "erro": "leitura_invertida", "descricao": "Inverteu a ordem de leitura.", "peso": 2 }
+      { "valor": "Um dois", "tipo": "erro", "categoria": "atencao", "erro": "leitura_direta", "descricao": "Lê os números sem nomenclatura de fração.", "peso": 1 },
+      { "valor": "Um segundo", "tipo": "erro", "categoria": "atencao", "erro": "leitura_ordinal", "descricao": "Usou numeração ordinal incorreta.", "peso": 2 },
+      { "valor": "Dois por um", "tipo": "erro", "categoria": "atencao", "erro": "leitura_invertida", "descricao": "Inverteu a ordem de leitura.", "peso": 2 }
     ],
     "passo": "O denominador 2 representa 'meio' ou 'metade'.", "dica": "Pense em meia maçã."
   },
