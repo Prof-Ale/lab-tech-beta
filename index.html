@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Laboratório Tech • MathLab 2026</title>
+  <link rel="icon" href="assets/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <section id="splash-screen" class="screen">
+    <div class="splash-inner">
+      <h1 class="splash-logo">LABORATÓRIO TECH</h1>
+      <p class="splash-sub">Recomposição de Aprendizagem • Módulos 1-6</p>
+      <div class="splash-av">
+        <div class="av-box">
+          <img src="assets/img/avatar_estatico.png" class="ada-avatar-asset" alt="ADA">
+        </div>
+      </div>
+      <div class="input-group">
+        <input type="text" id="nome-cientista" placeholder="Nome do Cientista">
+        <input type="text" id="turma-cientista" placeholder="Turma (ex: 7ºA)">
+      </div>
+      <button class="btn-start" id="btn-acessar">INICIALIZAR SISTEMA</button>
+    </div>
+  </section>
+
+ <section id="block-selector" class="screen hidden">
+    <div class="selector-inner">
+      <h2 class="section-title">SETOR DE DIAGNÓSTICO</h2>
+      <div class="blocks-grid">
+        <button class="block-card b1" id="btn-bloco-1"><span class="block-icon">🔢</span><span class="block-name">Base Numérica</span></button>
+        <button class="block-card b2" id="btn-bloco-2"><span class="block-icon">⚖️</span><span class="block-name">Operações</span></button>
+        <button class="block-card b3" id="btn-bloco-3"><span class="block-icon">📏</span><span class="block-name">Medidas</span></button>
+        <button class="block-card b4" id="btn-bloco-4"><span class="block-icon">🧩</span><span class="block-name">Álgebra</span></button>
+        <button class="block-card b5" id="btn-bloco-5"><span class="block-icon">📊</span><span class="block-name">Estatística</span></button>
+        <button class="block-card b6" id="btn-bloco-6"><span class="block-icon">📐</span><span class="block-name">Geometria II</span></button>
+        
+        <button class="block-card b7" id="btn-bloco-7" style="border: 2px solid var(--choco-gold);"><span class="block-icon">🏆</span><span class="block-name" style="color: var(--choco-gold);">Olimpíada</span></button>
+      </div>
+      <button class="bc2" onclick="location.reload()" style="margin-top:20px; cursor:pointer;">← Alterar Usuário</button>
+    </div>
+  </section>
+
+  <section id="game-screen" class="screen hidden">
+    <div class="gw">
+      <header class="game-header">
+        <div class="hud-item">
+          <span class="hud-label">INTEGRIDADE</span>
+          <div class="bar"><div id="fv" class="fill"></div></div>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">NÍVEL</span>
+          <span id="tnv" class="hud-value">1</span>
+        </div>
+        <div class="game-controls">
+          <button class="mini-btn" id="btn-musica">🎵 <span id="tsom">OFF</span></button>
+          <button class="mini-btn" id="btn-voz">🔊 <span id="tvoz">OFF</span></button>
+          <button class="mini-btn" data-action="seletor">⚙️ Blocos</button>
+        </div>
+      </header>
+
+      <main class="question-container">
+        <canvas id="canvas-game"></canvas>
+        
+        <div id="conta-display"></div>
+        <div id="grid-botoes" class="ag"></div>
+        
+        <div id="fb" class="fb-box"></div>
+
+        <button id="btn-prox" class="hidden btn-next">PRÓXIMO DESAFIO →</button>
+      </main>
+    </div>
+  </section>
+
+  <div id="ada-command-post">
+    <div class="ada-halo"></div>
+    <div class="ada-box">
+      <img src="assets/img/avatar_estatico.png" id="av-img" class="ada-asset">
+      <video id="vid-ok" class="ada-asset avh" playsinline muted><source src="assets/vid/ada_sucesso.mp4" type="video/mp4"></video>
+      <video id="vid-no" class="ada-asset avh" playsinline muted><source src="assets/vid/ada_alerta.mp4" type="video/mp4"></video>
+    </div>
+  </div>
+
+  <div class="side-controls">
+    <button class="btn-round" id="btn-perfil">👤</button>
+    <button class="btn-round" id="btn-dash">📊</button>
+    <button class="btn-round" id="btn-cred">i</button>
+  </div>
+
+ <div id="mperfil" class="modal">
+    <div class="mc" style="border: 2px solid var(--neon-cyan);">
+        <button class="mx">✕</button>
+        
+        <h2 id="perfil-nome-display" style="color: var(--neon-cyan);">CARREGANDO...</h2>
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin: 15px 0; text-align: left;">
+            <p style="margin-bottom: 8px;">NÍVEL DE COGNIÇÃO: <span id="perfil-nivel-txt" style="font-weight: bold; color: var(--choco-gold);">1</span></p>
+            <p>EXPERIÊNCIA TOTAL: <span id="perfil-acertos-display" style="color: var(--neon-green);">0 XP</span></p>
+        </div>
+    </div>
+  </div>
+  
+  <div id="mdash" class="modal">
+    <div class="mc">
+      <button class="mx">✕</button>
+      <h2>TELEMETRIA BNCC</h2>
+      <div id="dash-content" style="max-height: 300px; overflow-y: auto; margin: 15px 0;">
+      </div>
+    </div>
+  </div>
+
+ <div id="mcred" class="modal">
+    <div class="mc" style="border: 2px solid var(--choco-gold); max-width: 460px;">
+      <button class="mx">✕</button>
+      <h2 style="color: var(--choco-gold); font-family: var(--font-display); font-size: 18px; margin-bottom: 15px;">CRÉDITOS</h2>
+      
+      <p style="font-size: 16px; margin-bottom: 15px;">
+        <strong>MathLab 2026</strong><br>
+        <span style="opacity: 0.8; font-size: 14px;">Autor: Prof. Alê Chocolate</span>
+      </p>
+      
+      <div style="border-top: 1px solid rgba(212, 160, 23, 0.3); margin: 15px 0; padding-top: 15px; text-align: left; font-size: 13px; line-height: 1.5;">
+        <p style="margin-bottom: 12px; color: var(--choco-cream);">
+          🧠 <strong>Metodologia DUA:</strong> Este sistema foi projetado sob as diretrizes do <em>Desenho Universal para Aprendizagem</em>. A ADA calibra a experiência em tempo real, alternando entre representações visuais, suporte sonoro e desafios abstratos para garantir múltiplos meios de engajamento e expressão.
+        </p>
+        
+        <p style="color: var(--neon-cyan); font-style: italic; font-size: 12px; border-left: 2px solid var(--neon-cyan); padding-left: 10px; margin-top: 15px; line-height: 1.4;">
+          "A verdadeira educação inclusiva não força o estudante a se adaptar ao sistema; ela calibra a tecnologia para reconhecer, acolher e potencializar a singularidade de cada mente."
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="go" class="modal">
+    <div class="mc">
+      <h2 style="color: var(--neon-red);">SISTEMA REINICIADO</h2>
+      <p>A integridade da ADA chegou ao limite.</p>
+      <button class="btn-start" id="btn-reiniciar" style="margin-top: 20px;">RECONECTAR</button>
+      <button class="bc2" data-action="seletor" style="margin-top: 10px; cursor: pointer; border: none; background: none; color: white;">Voltar ao Menu</button>
+    </div>
+  </div>
+
+  <audio id="bgm" loop><source src="assets/snd/trilha.mp3" type="audio/mpeg"></audio>
+  
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
