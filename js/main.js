@@ -1,7 +1,7 @@
 /**
- * main.js — v13.2 "LabTech Sniper Pace"
- * Prioridade: Fim das Race Conditions + Ritmo Dinâmico (Overlap).
- * Fluxo: Diagnóstico -> HUD -> ADA (Background) + Canvas (Espera Pulo) -> Liberação.
+ * main.js — v14.0 "LabTech Academic Beta Engine"
+ * Prioridade: Governança Pedagógica, Mastery Learning e Inteligência Explicável (XAI).
+ * Fluxo: Validação de Banco -> Carga de Perfil Cognitivo -> Rastreamento Longitudinal de Erros -> Log de Decisão.
  */
 import { G } from './engine/gameState.js';
 import { selQ, limparHistoricoSessao, carregarBancoDeQuestoes } from './engine/selector.js';
@@ -11,6 +11,8 @@ import { AudioCtrl } from './engine/audioController.js';
 import { updHUD, narrarContexto, toggleVoz, exibirGameOver } from './ui-manager.js';
 import { initDebugMode, setDebug } from './engine/debug-mode.js';
 import { carregarPerfil, salvarPerfil, registrarEvolucaoLongitudinal, gerarMicroIntervencao, extrairRelatorioProfessor } from './engine/cognitive-profile.js';
+// 🛡️ NOVO: Importação do Guardião de Dados Pedagógicos para o ciclo Beta V11
+import { validarBancoCompleto } from './engine/question-validator.js';
 
 const $ = (id) => document.getElementById(id);
 const on = (id, fn) => { const el = $(id); if (el) el.onclick = fn; };
@@ -30,7 +32,6 @@ function atualizarDashboard() {
         return;
     }
 
-    // Cabeçalho com o botão de Exportar
     let html = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom: 1px solid var(--choco-gold); padding-bottom: 10px;">
             <h3 style="color:var(--choco-gold); margin:0; font-family: var(--font-display); font-size: 14px;">RELATÓRIO BNCC</h3>
@@ -45,7 +46,6 @@ function atualizarDashboard() {
 
         const txAcerto = Math.round(((dados.acertos || 0) / total) * 100);
 
-        // O Médico dá o diagnóstico
         let diagnostico = "";
         if (dados.erros_conceito > dados.acertos) {
             diagnostico = `<div style="color: var(--neon-red); margin-top:6px; font-size:11px; font-weight:bold;">⚠️ Bloqueio Conceitual (Exige Revisão de Base)</div>`;
@@ -73,17 +73,15 @@ function atualizarDashboard() {
             </div>`;
     });
 
-    html += `</div>`; // Fecha a div com scroll
+    html += `</div>`; 
     content.innerHTML = html;
 
-    // Conecta o clique do botão ao gerador de CSV
     const btnCsv = $('btn-export-csv');
     if (btnCsv) {
         btnCsv.onclick = exportarCSV;
     }
 }
 
-// O Gerador de CSV (Pode colar logo abaixo do atualizarDashboard)
 function exportarCSV() {
     if (!G.historico) return;
     let csv = "Habilidade BNCC;Acertos;Erros de Conceito;Erros de Calculo;Precisao (%)\n";
@@ -95,7 +93,6 @@ function exportarCSV() {
         csv += `${hab};${dados.acertos || 0};${dados.erros_conceito || 0};${dados.erros_calculo || 0};${txAcerto}%\n`;
     });
 
-    // Mágica do navegador para forçar download
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -111,8 +108,15 @@ function mostrarSeletorBlocos() {
     G.turma = $('turma-cientista')?.value.trim() || '7ºA';
     if (!G.historico) G.historico = {};
 
-    // --- MAGIA AQUI: O despertar da memória de longo prazo ---
     G.perfilCognitivo = carregarPerfil(G.nome, G.turma);
+
+    // 🧠 INICIALIZAÇÃO DO LOG DE EXPLICABILIDADE DA ADA (V11-BETA)
+    if (!G.diagnosticoADA) {
+        G.diagnosticoADA = {
+            ultimaIntervencaoMotivo: "Ignorão e calibração inicial do sistema.",
+            historicoDecisoes: []
+        };
+    }
 
     AudioCtrl.init();
     AudioCtrl.play();
@@ -121,7 +125,6 @@ function mostrarSeletorBlocos() {
     $('block-selector')?.classList.remove('hidden');
     $('ada-command-post')?.classList.remove('active'); 
 
-    // --- A ADA REAGE AO PERFIL DO ALUNO ---
     let mensagemBoasVindas = "";
     
     if (G.perfilCognitivo.novoUsuario) {
@@ -157,7 +160,6 @@ function atualizarHudVisual() {
     }
     if ($('tnv')) $('tnv').textContent = G.combo > 0 ? G.combo : "1";
     
-    // --- NOVO: Atualiza os dados do Modal de Perfil silenciosamente ---
     if (G.perfilCognitivo) {
         if ($('perfil-nome-display')) 
             $('perfil-nome-display').textContent = `Lvl ${G.perfilCognitivo.nivel || 1} | ${G.nome}`;
@@ -172,8 +174,6 @@ function atualizarHudVisual() {
     updHUD();
 }
     
-
- 
 /* ============================================================
    PIPELINE ASSÍNCRONO DE RESPOSTA (O MAESTRO)
    ============================================================ */
@@ -195,26 +195,22 @@ async function processarResposta(alt, q) {
         if (String(b.textContent) === String(alt.valor) && !analise.correto) b.classList.add('no');
     });
 
-    const hab = q.bncc || "Geral";
+    const hab = q.bncc || q.habilidade || "Geral";
     if (!G.historico[hab]) G.historico[hab] = { acertos: 0, erros_conceito: 0, erros_calculo: 0 };
 
-   if (analise.correto) {
+    if (analise.correto) {
         G.acertos++; G.combo++;
         G.historico[hab].acertos++;
         
-        // --- NOVO: SISTEMA DE RPG (GANHO DE XP E LEVEL UP) ---
         if (G.perfilCognitivo) {
-            // Se o perfil antigo não tiver XP, inicializa agora
             if (G.perfilCognitivo.xp === undefined) {
                 G.perfilCognitivo.xp = 0;
                 G.perfilCognitivo.nivel = 1;
             }
 
-            // Ganha 10 XP base + 5 XP extra por cada ponto de Combo
             const ganhoXp = 10 + (G.combo * 5); 
             G.perfilCognitivo.xp += ganhoXp;
 
-            // Curva de Nível: Precisa de 100 XP pro Lvl 2, 200 pro Lvl 3, etc.
             const nivelCalculado = Math.floor(G.perfilCognitivo.xp / 100) + 1;
             
             if (nivelCalculado > G.perfilCognitivo.nivel) {
@@ -235,12 +231,10 @@ async function processarResposta(alt, q) {
 
     narrarContexto(feedbackTexto, analise.correto);
 
-    // --- LEITURA DO ESTADO PARA A ANIMAÇÃO ---
-    let modoGrafico = 'normal';
-    if (G.perfilCognitivo && G.perfilCognitivo.errosHistoricos.conceito >= 3) modoGrafico = 'visual';
+    let modoGrafico = q.representacao || 'normal';
+    if (G.perfilCognitivo && G.perfilCognitivo.errosHistoricos?.conceito >= 3) modoGrafico = 'visual';
     if (G.combo >= 3) modoGrafico = 'abstrato';
 
-    // Dispara a animação passando o humor da tela
     await animarArcos(q, deslocamento, modoGrafico);
 
     const fbContainer = $('fb');
@@ -255,7 +249,6 @@ async function processarResposta(alt, q) {
         setTimeout(() => { exibirGameOver(); }, 800);
     }
 }
-/* ============================================================ */
 
 function proximaQ() {
     G.respondeu = false;
@@ -285,13 +278,12 @@ function renderQ(q) {
     if (grid) grid.innerHTML = '';
     $('btn-prox')?.classList.add('hidden');
     
-    // --- MÁGICA AQUI: Define como o Canvas vai nascer ---
-    let modoGrafico = 'normal';
-    if (G.perfilCognitivo && G.perfilCognitivo.errosHistoricos.conceito >= 3) {
-        modoGrafico = 'visual'; // Aluno tem bloqueio de base, liga âncora visual
+    let modoGrafico = q.representacao || 'normal';
+    if (G.perfilCognitivo && G.perfilCognitivo.errosHistoricos?.conceito >= 3) {
+        modoGrafico = 'visual'; 
     }
     if (G.combo >= 3) {
-        modoGrafico = 'abstrato'; // Aluno tá em flow, esconde a régua pra forçar cálculo
+        modoGrafico = 'abstrato'; 
     }
 
     renderCv(q, null, modoGrafico);
@@ -314,10 +306,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("🚀 [SISTEMA] Iniciando ignição do banco de dados...");
     
     try {
-        await carregarBancoDeQuestoes(); 
-        console.log("✅ [SISTEMA] Banco carregado e pronto para o combate!");
+        const banco = await carregarBancoDeQuestoes(); 
+        console.log("✅ [SISTEMA] Banco de dados carregado na memória física.");
+        
+        // 🛡️ SHIELD DE GOVERNANÇA: Auditoria compulsória e estrita de Data Quality
+        validarBancoCompleto(banco);
+        
     } catch (e) {
-        console.error("❌ [SISTEMA] Falha catastrófica ao carregar questões:", e);
+        console.error("❌ [SISTEMA] Falha catastrófica no carregamento/validação de dados:", e);
     }
 
     initDebugMode();
@@ -333,11 +329,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         if ($('tvoz')) $('tvoz').textContent = G.voz ? "ON" : "OFF";
     });
 
-    // --- ATALHO SECRETO: Painel do Professor (Alt + P) ---
+    // --- ATALHO SECRETO DOCENTE: Painel do Professor (Alt + P) ---
     document.addEventListener('keydown', (e) => {
         if (e.altKey && e.key.toLowerCase() === 'p') {
             if (!G.perfilCognitivo) {
-                alert("Identifique um aluno primeiro para carregar o mapa cognitivo.");
+                alert("Identifique um estudante na base para carregar a telemetria.");
                 return;
             }
             gerarPainelProfessor();
@@ -358,7 +354,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     on('btn-cred', () => abrirM('mcred'));
     
-    // --- NOVO: Botão de Reconectar no Game Over ---
     on('btn-reiniciar', () => {
         fecharM('go'); 
         if (G.currentBlock) {
@@ -383,7 +378,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /* ============================================================
-   PAINEL DO PROFESSOR (Alt + P)
+   PAINEL DO PROFESSOR ATUALIZADO (Alt + P — MODELO EXPLICÁVEL XAI)
    ============================================================ */
 function gerarPainelProfessor() {
     const dados = extrairRelatorioProfessor(G.perfilCognitivo);
@@ -396,40 +391,66 @@ function gerarPainelProfessor() {
         document.body.appendChild(modalProf);
     }
 
+    // 🔮 CAPTURA E FORMATAÇÃO DE HISTÓRICO DE EXPLICABILIDADE DA ADA
+    let logExplicavelHtml = "";
+    if (G.diagnosticoADA && G.diagnosticoADA.historicoDecisoes && G.diagnosticoADA.historicoDecisoes.length > 0) {
+        // Pega as últimas 3 decisões pedagógicas para não estourar o modal
+        const ultimasDecisoes = G.diagnosticoADA.historicoDecisoes.slice(-3).reverse();
+        ultimasDecisoes.forEach(log => {
+            logExplicavelHtml += `
+                <div style="background:#020208; border-left:3px solid var(--neon-cyan); padding:8px; margin-bottom:8px; border-radius:4px; font-family:monospace; font-size:10px; line-height:1.4;">
+                    <span style="color:var(--choco-gold); font-weight:bold;">[${new Date(log.timestamp).toLocaleTimeString()}] Motivo:</span> 
+                    <span style="color:#fff;">${log.motivoDecisao}</span>
+                    <div style="color:rgba(255,255,255,0.4); margin-top:4px;">↳ Perfil Inferido: <b style="color:var(--neon-cyan);">${log.perfilEstilo || 'Padrão'}</b> | Item Alocado: <b>${log.proximaQuestaoId}</b></div>
+                </div>
+            `;
+        });
+    } else {
+        logExplicavelHtml = `<p style="color:rgba(255,255,255,0.4); font-style:italic; font-size:11px;">Nenhuma manobra adaptativa registrada na sessão corrente.</p>`;
+    }
+
     modalProf.innerHTML = `
-        <div class="mc" style="max-width: 500px; border: 2px solid var(--choco-gold); background: #060610; position: relative;">
+        <div class="mc" style="max-width: 550px; border: 2px solid var(--choco-gold); background: #060610; position: relative; max-height: 90vh; overflow-y: auto;">
             
             <button class="mx" style="position: absolute; top: 15px; right: 15px; background: transparent; color: var(--choco-gold); border: 1px solid var(--choco-gold); border-radius: 50%; width: 30px; height: 30px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0;">✕</button>
 
-            <h2 style="color:var(--choco-gold); border-bottom: 1px solid; padding-bottom: 10px; margin-top: 0; padding-right: 30px;">MAPA COGNITIVO: ${dados.identificacao}</h2>
+            <h2 style="color:var(--choco-gold); border-bottom: 1px solid; padding-bottom: 10px; margin-top: 0; padding-right: 30px; font-family: var(--font-display); font-size:18px;">MAPA COGNITIVO CLINICO: ${dados.identificacao}</h2>
             
-            <div style="text-align:left; margin-top:20px; font-family: monospace; font-size:12px;">
+            <div style="text-align:left; margin-top:15px; font-family: monospace; font-size:12px;">
                 <p>📊 <strong>Histórico Longitudinal:</strong></p>
-                <ul style="list-style:none; padding:0; color: var(--neon-cyan);">
-                    <li>• Ativo há: ${dados.tempoVida} dias</li>
-                    <li>• Desafios vencidos: ${dados.totalResolvidas}</li>
+                <ul style="list-style:none; padding:0; color: var(--neon-cyan); margin: 5px 0;">
+                    <li>• Tempo de Atividade: ${dados.tempoVida} dias</li>
+                    <li>• Desafios Resolvidos: ${dados.totalResolvidas}</li>
                 </ul>
 
-                <p style="margin-top:15px;">🔍 <strong>Natureza das Falhas (Acumulado):</strong></p>
-                <div style="display:flex; gap:10px; height:20px; background:#222; border-radius:10px; overflow:hidden; margin-bottom:5px;">
+                <p style="margin-top:15px;">🔍 <strong>Distribuição Etiológica das Falhas:</strong></p>
+                <div style="display:flex; gap:2px; height:16px; background:#222; border-radius:4px; overflow:hidden; margin-bottom:5px;">
                     <div style="width:${dados.distribuicaoErros.conceito}%; background:var(--neon-red);" title="Conceito"></div>
                     <div style="width:${dados.distribuicaoErros.procedimento}%; background:#ffbb33;" title="Procedimento"></div>
                     <div style="width:${dados.distribuicaoErros.calculo}%; background:var(--neon-green);" title="Cálculo"></div>
                 </div>
-                <div style="font-size:10px; display:flex; justify-content:space-between; opacity:0.7;">
-                    <span>Conceito (${dados.distribuicaoErros.conceito}%)</span>
-                    <span>Cálculo (${dados.distribuicaoErros.calculo}%)</span>
+                <div style="font-size:10px; display:flex; justify-content:space-between; opacity:0.7; margin-bottom:15px;">
+                    <span style="color:var(--neon-red)">Conceito (${dados.distribuicaoErros.conceito}%)</span>
+                    <span style="color:#ffbb33">Procedimento (${dados.distribuicaoErros.procedimento}%)</span>
+                    <span style="color:var(--neon-green)">Cálculo (${dados.distribuicaoErros.calculo}%)</span>
                 </div>
 
-                <p style="margin-top:15px;">🚩 <strong>Alertas de Habilidade (Febre):</strong></p>
-                ${dados.pontosCriticos.length > 0 ? 
-                    dados.pontosCriticos.map(([hab, score]) => `
-                        <div style="display:flex; justify-content:space-between; margin-bottom:4px; color: ${score > 5 ? 'var(--neon-red)' : 'white'}">
-                            <span>${hab}</span>
-                            <span>Intensidade: ${score.toFixed(1)}</span>
-                        </div>
-                    `).join('') : '<p style="color:var(--neon-green)">Nenhuma defasagem crítica registrada.</p>'
-                }
+                <p style="margin-top:15px; border-top: 1px dashed rgba(212,175,55,0.3); padding-top:10px; color:var(--choco-gold);">🧠 <strong>[LOG DE EXPLICABILIDADE DA ADA — MODELO XAI]</strong></p>
+                <div style="margin-bottom:15px;">
+                    ${logExplicavelHtml}
+                </div>
+
+                <p style="margin-top:15px; border-top: 1px dashed rgba(212,175,55,0.3); padding-top:10px;">🚩 <strong>Alertas de Habilidade (Foco de Recomposição):</strong></p>
+                <div style="max-height: 150px; overflow-y: auto;">
+                    ${dados.pontosCriticos.length > 0 ? 
+                        dados.pontosCriticos.map(([hab, score]) => `
+                            <div style="display:flex; justify-content:space-between; margin-bottom:4px; color: ${score > 5 ? 'var(--neon-red)' : 'white'}">
+                                <span>• ${hab}</span>
+                                <span>Intensidade de Risco: ${score.toFixed(1)}</span>
+                            </div>
+                        `).join('') : '<p style="color:var(--neon-green)">Nenhum bloqueio crítico de aprendizagem registrado.</p>'
+                    }
+                </div>
             </div>
         </div>
     `;
