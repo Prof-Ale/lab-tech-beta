@@ -3729,17 +3729,25 @@
     "dificuldade": 4,
     "tipoPedagogico": "desafio",
     "bncc": "EF08MA06",
+    "habilidade": "EF08MA06",
     "bncc_desc": "Expressões Algébricas e Operadores Fictícios",
+    "cluster": "algebra",
+    "prerequisitos": ["EF07MA14"],
+    "misconception": "prioridade_operadores_ficticios",
+    "tipoIntervencao": "scaffold_procedural",
+    "representacao": "abstrata",
+    "cargaCognitiva": 3,
+    "objetivoDiagnostico": "validar_interpretacao_de_operadores_nao_convencionais_e_precedencia_de_parenteses",
     "display": "Defina a operação a ★ b = 2a + b - 3. Qual é o valor de 5 ★ (4 ★ 2)?",
     "res": "14",
     "alternativas": [
-      { "valor": "12", "tipo": "acerto" },
-      { "valor": "15", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_ignora_parenteses_operador", "descricao": "Calculou 5 ★ 4 primeiro, sem respeitar os parênteses indicados.", "peso": 3 },
-      { "valor": "10", "tipo": "erro", "categoria": "calculo", "erro": "olimp_erro_subtracao_final", "descricao": "Aplicou a operação na ordem correta, mas errou a subtração no cálculo final.", "peso": 1 },
-      { "valor": "17", "tipo": "erro", "categoria": "conceito", "erro": "olimp_trata_estrela_como_multiplicacao", "descricao": "Interpretou o símbolo ★ como uma multiplicação comum ou misturou a regra com produto.", "peso": 3 }
+      { "valor": "14", "tipo": "acerto" },
+      { "valor": "21", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_ignora_parenteses", "descricao": "Inverteu a ordem de precedência dos parênteses, calculando erroneamente (5 ★ 4) ★ 2.", "peso": 2 },
+      { "valor": "17", "tipo": "erro", "categoria": "conceito", "erro": "olimp_subtracao_unica", "descricao": "Esqueceu de aplicar a constante de subtração (-3) na resolução interna dos parênteses.", "peso": 3 },
+      { "valor": "12", "tipo": "erro", "categoria": "atencao", "erro": "olimp_erro_subtracao_final", "descricao": "Executou o procedimento correto, mas cometeu uma falha de cálculo simples na subtração final (17 - 3 = 12).", "peso": 1 }
     ],
-    "passo": "Primeiro calcule o que está entre parênteses: 4 ★ 2 = 2 × 4 + 2 - 3 = 7. Depois calcule 5 ★ 7 = 2 × 5 + 7 - 3 = 14.",
-    "dica": "O símbolo ★ não é multiplicação: use exatamente a regra dada."
+    "passo": "Primeiro, calcule o que está entre parênteses: 4 ★ 2 = 2 × 4 + 2 - 3 = 7. Depois, substitua o resultado e calcule o operador externo: 5 ★ 7 = 2 × 5 + 7 - 3 = 14.",
+    "dica": "O símbolo ★ possui uma regra própria estruturada. Resolva sempre de dentro para fora seguindo a prioridade dos parênteses, aplicando a fórmula dada a cada etapa."
   },
   {
     "id": "OLIMP_A7_26",
@@ -3748,17 +3756,25 @@
     "dificuldade": 5,
     "tipoPedagogico": "desafio",
     "bncc": "EF07MA21",
+    "habilidade": "EF07MA21",
     "bncc_desc": "Ângulos, Simetria e Raciocínio Geométrico",
+    "cluster": "geometria",
+    "prerequisitos": ["EF06MA25"],
+    "misconception": "direcao_rotacao_modular",
+    "tipoIntervencao": "scaffold_visual",
+    "representacao": "visual",
+    "cargaCognitiva": 3,
+    "objetivoDiagnostico": "validar_raciocinio_geometrico_angular_e_aritmetica_modular",
     "display": "Um ponteiro gira sempre 45° no sentido horário a cada comando. Ele começa apontando para o Norte. Após 11 comandos, para qual direção ele aponta?",
     "res": "Sudeste",
     "alternativas": [
-      { "valor": "Noroeste", "tipo": "acerto" },
-      { "valor": "Sudoeste", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_conta_giros_sem_resto", "descricao": "Avançou as direções na ordem correta, mas errou a redução após completar uma volta.", "peso": 2 },
-      { "valor": "Nordeste", "tipo": "erro", "categoria": "atencao", "erro": "olimp_usa_sentido_anti_horario", "descricao": "Fez os giros no sentido contrário ao indicado no enunciado.", "peso": 1 },
-      { "valor": "Oeste", "tipo": "erro", "categoria": "conceito", "erro": "olimp_confunde_45_com_90_graus", "descricao": "Tratou cada comando como giro de 90°, usando apenas direções cardeais.", "peso": 3 }
+      { "valor": "Sudeste", "tipo": "acerto" },
+      { "valor": "Sudoeste", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_usa_sentido_anti_horario", "descricao": "Fez os giros no sentido anti-horário (contrário ao enunciado), parando em Sudoeste.", "peso": 2 },
+      { "valor": "Nordeste", "tipo": "erro", "categoria": "atencao", "erro": "olimp_parou_no_primeiro_giro", "descricao": "Considerou apenas o primeiro giro de 45° a partir do Norte, ignorando o total de 11 comandos.", "peso": 1 },
+      { "valor": "Oeste", "tipo": "erro", "categoria": "conceito", "erro": "olimp_confunde_45_com_90_graus", "descricao": "Tratou cada comando como giro de 90°, calculando 11 giros apenas pelas direções cardeais principais.", "peso": 3 }
     ],
-    "passo": "Cada giro de 45° avança uma posição entre as 8 direções principais. Após 8 comandos, o ponteiro volta ao Norte. Como 11 deixa resto 3 na divisão por 8, basta avançar 3 posições no sentido horário: Nordeste, Leste, Sudeste. Portanto, ele aponta para Sudeste.",
-    "dica": "Uma volta completa tem 8 giros de 45°. Use o resto da divisão por 8."
+    "passo": "Cada giro de 45° avança uma posição entre as 8 direções principais. Após 8 comandos, o ponteiro volta ao Norte. Como 11 deixa resto 3 na divisão por 8, basta avançar 3 posições no sentido horário: Nordeste, Leste e finalmente Sudeste.",
+    "dica": "Uma volta completa na rosa dos ventos consome 8 giros de 45°. Descubra o resto da divisão de 11 por 8 e avance apenas as posições restantes a partir do Norte."
   },
   {
     "id": "OLIMP_A7_27",
