@@ -4363,8 +4363,9 @@
       { "valor": "15", "tipo": "acerto" },
       { "valor": "250", "tipo": "erro", "categoria": "atencao", "erro": "dados_copiou_enunciado", "descricao": "Apenas repetiu a taxa de transmissão por segundo como se fosse a resposta para um minuto inteiro.", "peso": 1 },
       { "tipo": "erro", "erro": "dados_esqueceu_conversao_mb", "valor": "15.000", "categoria": "procedimento", "descricao": "Calculou a transmissão total...", "peso": 2 },
-      { "valor": "4", "tipo": "erro", "categoria": "conceito", "erro": "dados_divisao_inversa", "descricao": "Dividiu 1.000 por 250 ignorando a passagem do tempo em segundos do ciclo.", "peso": 3 }
-    "passo": "1 minuto possui 60 segundos. Total transmitido em KB: 250 KB x 60 = 15.000 KB. Convertendo para MB (dividindo por 1.000): 15.000 ÷ 1.000 = 15 MB.",
+      { "valor": "4", "tipo": "erro", "categoria": "conceito", "erro": "dados_divisao_inversa", "descricao": "Dividiu 1.000 por 250 ignorando a passagem do tempo em segundos do ciclo.", "peso": 3 },
+    ]
+      "passo": "1 minuto possui 60 segundos. Total transmitido em KB: 250 KB x 60 = 15.000 KB. Convertendo para MB (dividindo por 1.000): 15.000 ÷ 1.000 = 15 MB.",
     "dica": "Lembre-se de que o dado fornecido é por segundo. Um minuto tem 60 segundos! Descubra o total em KB e depois divida por 1.000."
   },
   {
