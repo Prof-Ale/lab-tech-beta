@@ -5492,5 +5492,5 @@
     ],
     "passo": "Um computador muda de estado cada vez que um estudante correspondente a um de seus divisores passa por ele. Portanto, ele terminará LIGADO se, e somente se, for acionado um número ÍMPAR de vezes. Na teoria dos números, apenas os Quadrados Perfeitos possuem uma quantidade ímpar de divisores (pois seus fatores se agrupam em pares, exceto a própria raiz). Entre 1 e 100, os quadrados perfeitos são 1, 4, 9, 16, 25, 36, 49, 64, 81 e 100, totalizando exatamente 10 computadores.",
     "dica": "Pense no comportamento das chaves. O computador de número 12, por exemplo, muda de estado nos estudantes 1, 2, 3, 4, 6 e 12 (seus divisores), totalizando 6 trocas (volta a ficar desligado). Que tipo de número possui uma quantidade ÍMPAR de divisores para terminar ligado?"
-  },
+  }
 ]
