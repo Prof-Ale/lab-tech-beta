@@ -378,11 +378,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /* ============================================================
-   PAINEL DO PROFESSOR ATUALIZADO (Alt + P — MODELO EXPLICÁVEL XAI)
+   PAINEL DO PROFESSOR (Alt + P — GOVERNANÇA VISUAL XAI V11)
    ============================================================ */
 function gerarPainelProfessor() {
+    // Garante que os dados do perfil existem antes de abrir
+    if (!G.perfilCognitivo) {
+        alert("Identifique um estudante na base para carregar a telemetria.");
+        return;
+    }
+
     const dados = extrairRelatorioProfessor(G.perfilCognitivo);
-    
+
     let modalProf = $('m-professor');
     if (!modalProf) {
         modalProf = document.createElement('div');
@@ -391,66 +397,107 @@ function gerarPainelProfessor() {
         document.body.appendChild(modalProf);
     }
 
-    // 🔮 CAPTURA E FORMATAÇÃO DE HISTÓRICO DE EXPLICABILIDADE DA ADA
-    let logExplicavelHtml = "";
-    if (G.diagnosticoADA && G.diagnosticoADA.historicoDecisoes && G.diagnosticoADA.historicoDecisoes.length > 0) {
-        // Pega as últimas 3 decisões pedagógicas para não estourar o modal
-        const ultimasDecisoes = G.diagnosticoADA.historicoDecisoes.slice(-3).reverse();
-        ultimasDecisoes.forEach(log => {
-            logExplicavelHtml += `
-                <div style="background:#020208; border-left:3px solid var(--neon-cyan); padding:8px; margin-bottom:8px; border-radius:4px; font-family:monospace; font-size:10px; line-height:1.4;">
-                    <span style="color:var(--choco-gold); font-weight:bold;">[${new Date(log.timestamp).toLocaleTimeString()}] Motivo:</span> 
-                    <span style="color:#fff;">${log.motivoDecisao}</span>
-                    <div style="color:rgba(255,255,255,0.4); margin-top:4px;">↳ Perfil Inferido: <b style="color:var(--neon-cyan);">${log.perfilEstilo || 'Padrão'}</b> | Item Alocado: <b>${log.proximaQuestaoId}</b></div>
-                </div>
-            `;
-        });
+    // 1. Extração do último pulso de decisão da ADA
+    const historicoADA = G.diagnosticoADA?.historicoDecisoes || [];
+    const ultimaDecisao = historicoADA.length > 0 ? historicoADA[historicoADA.length - 1] : null;
+
+    // 2. Tradução Visual da Etiologia do Erro (Parser XAI)
+    let cardGatilho = "";
+    let cardDiagnostico = "";
+    let cardIntervencao = "";
+
+    if (ultimaDecisao) {
+        // Lógica de parser visual baseada no texto gerado pela ADA
+        let corAlerta = "var(--neon-cyan)";
+        let tipoErro = "Cruzeiro Linear";
+        let acaoADA = "Manutenção de Ritmo";
+
+        if (ultimaDecisao.motivoDecisao.includes("impulsiva") || ultimaDecisao.motivoDecisao.includes("Impulsivo")) {
+            corAlerta = "#ffbb33"; // Laranja/Amarelo
+            tipoErro = "Resposta Impulsiva (< 5s)";
+            acaoADA = "Trava de Tempo + Alívio de Carga";
+        } else if (ultimaDecisao.motivoDecisao.includes("barreira") || ultimaDecisao.motivoDecisao.includes("Emergência") || ultimaDecisao.motivoDecisao.includes("risco extremo")) {
+            corAlerta = "var(--neon-red)"; // Vermelho
+            tipoErro = "Bloqueio Conceitual (Risco)";
+            acaoADA = "Recuo Abstrato + Resgate Clínico";
+        } else if (ultimaDecisao.motivoDecisao.includes("Mastery") || ultimaDecisao.motivoDecisao.includes("proficiência")) {
+            corAlerta = "var(--neon-green)"; // Verde
+            tipoErro = "Consolidação de Domínio";
+            acaoADA = "Elevação de Dificuldade (Flow)";
+        }
+
+        cardGatilho = `<div style="color:${corAlerta}; font-size:14px; font-weight:bold;">⚡ GATILHO DETECTADO</div><div style="color:#fff; font-size:12px; margin-top:5px;">${tipoErro}</div>`;
+        cardDiagnostico = `<div style="color:var(--choco-gold); font-size:14px; font-weight:bold;">🧠 INFERÊNCIA ADA</div><div style="color:rgba(255,255,255,0.8); font-size:11px; margin-top:5px; line-height:1.4;">"${ultimaDecisao.motivoDecisao}"</div>`;
+        cardIntervencao = `<div style="color:var(--neon-green); font-size:14px; font-weight:bold;">🛠️ TRATAMENTO PEDAGÓGICO</div><div style="color:#fff; font-size:12px; margin-top:5px;">${acaoADA}</div><div style="color:var(--neon-cyan); font-size:10px; margin-top:8px;">↳ Próximo Item: [${ultimaDecisao.proximaQuestaoId || 'Dinâmico'}]</div>`;
     } else {
-        logExplicavelHtml = `<p style="color:rgba(255,255,255,0.4); font-style:italic; font-size:11px;">Nenhuma manobra adaptativa registrada na sessão corrente.</p>`;
+        const placeholder = `<div style="color:rgba(255,255,255,0.3); text-align:center;">Aguardando primeira interação...</div>`;
+        cardGatilho = placeholder;
+        cardDiagnostico = placeholder;
+        cardIntervencao = placeholder;
     }
 
     modalProf.innerHTML = `
-        <div class="mc" style="max-width: 550px; border: 2px solid var(--choco-gold); background: #060610; position: relative; max-height: 90vh; overflow-y: auto;">
+        <div class="mc" style="max-width: 800px; border: 2px solid var(--choco-gold); background: #04040a; position: relative; border-radius: 12px; box-shadow: 0 0 30px rgba(212,175,55,0.15); max-height: 90vh; overflow-y: auto;">
             
             <button class="mx" style="position: absolute; top: 15px; right: 15px; background: transparent; color: var(--choco-gold); border: 1px solid var(--choco-gold); border-radius: 50%; width: 30px; height: 30px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0;">✕</button>
 
-            <h2 style="color:var(--choco-gold); border-bottom: 1px solid; padding-bottom: 10px; margin-top: 0; padding-right: 30px; font-family: var(--font-display); font-size:18px;">MAPA COGNITIVO CLINICO: ${dados.identificacao}</h2>
+            <div style="border-bottom: 1px dashed rgba(212,175,55,0.4); padding-bottom: 15px; margin-bottom: 20px;">
+                <h2 style="color:var(--choco-gold); margin: 0; font-family: var(--font-display); font-size: 20px; letter-spacing: 1px;">ADA EXPLAINABLE AI (XAI)</h2>
+                <div style="color:var(--neon-cyan); font-size:11px; font-family:monospace; margin-top:5px;">TARGET: ${dados.identificacao} | ATIVIDADE: ${dados.tempoVida} dias | RESOLVIDAS: ${dados.totalResolvidas}</div>
+            </div>
             
-            <div style="text-align:left; margin-top:15px; font-family: monospace; font-size:12px;">
-                <p>📊 <strong>Histórico Longitudinal:</strong></p>
-                <ul style="list-style:none; padding:0; color: var(--neon-cyan); margin: 5px 0;">
-                    <li>• Tempo de Atividade: ${dados.tempoVida} dias</li>
-                    <li>• Desafios Resolvidos: ${dados.totalResolvidas}</li>
-                </ul>
-
-                <p style="margin-top:15px;">🔍 <strong>Distribuição Etiológica das Falhas:</strong></p>
-                <div style="display:flex; gap:2px; height:16px; background:#222; border-radius:4px; overflow:hidden; margin-bottom:5px;">
-                    <div style="width:${dados.distribuicaoErros.conceito}%; background:var(--neon-red);" title="Conceito"></div>
-                    <div style="width:${dados.distribuicaoErros.procedimento}%; background:#ffbb33;" title="Procedimento"></div>
-                    <div style="width:${dados.distribuicaoErros.calculo}%; background:var(--neon-green);" title="Cálculo"></div>
-                </div>
-                <div style="font-size:10px; display:flex; justify-content:space-between; opacity:0.7; margin-bottom:15px;">
-                    <span style="color:var(--neon-red)">Conceito (${dados.distribuicaoErros.conceito}%)</span>
-                    <span style="color:#ffbb33">Procedimento (${dados.distribuicaoErros.procedimento}%)</span>
-                    <span style="color:var(--neon-green)">Cálculo (${dados.distribuicaoErros.calculo}%)</span>
+            <div style="display: flex; justify-content: space-between; align-items: stretch; gap: 10px; font-family: monospace;">
+                
+                <div style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; text-align:center; display:flex; flex-direction:column; justify-content:center;">
+                    ${cardGatilho}
                 </div>
 
-                <p style="margin-top:15px; border-top: 1px dashed rgba(212,175,55,0.3); padding-top:10px; color:var(--choco-gold);">🧠 <strong>[LOG DE EXPLICABILIDADE DA ADA — MODELO XAI]</strong></p>
-                <div style="margin-bottom:15px;">
-                    ${logExplicavelHtml}
+                <div style="display: flex; align-items: center; color: rgba(212,175,55,0.5); font-size: 24px;">➔</div>
+
+                <div style="flex: 1.5; background: rgba(212,175,55,0.05); border: 1px solid var(--choco-gold); border-radius: 8px; padding: 15px; text-align:center; box-shadow: inset 0 0 15px rgba(212,175,55,0.1);">
+                    ${cardDiagnostico}
                 </div>
 
-                <p style="margin-top:15px; border-top: 1px dashed rgba(212,175,55,0.3); padding-top:10px;">🚩 <strong>Alertas de Habilidade (Foco de Recomposição):</strong></p>
-                <div style="max-height: 150px; overflow-y: auto;">
+                <div style="display: flex; align-items: center; color: rgba(212,175,55,0.5); font-size: 24px;">➔</div>
+
+                <div style="flex: 1; background: rgba(0,255,128,0.05); border: 1px solid var(--neon-green); border-radius: 8px; padding: 15px; text-align:center; display:flex; flex-direction:column; justify-content:center;">
+                    ${cardIntervencao}
+                </div>
+
+            </div>
+
+            <div style="margin-top: 25px; display:flex; justify-content: space-between; font-family: monospace; font-size: 11px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; gap: 20px;">
+                
+                <div style="flex: 1; background: #060610; padding: 10px; border-radius: 8px; border: 1px solid #222;">
+                    <div style="text-align:center; margin-bottom: 10px; color:var(--choco-gold); font-weight:bold;">DISTRIBUIÇÃO ETIOLÓGICA</div>
+                    <div style="display:flex; justify-content: space-around;">
+                        <div style="text-align:center;">
+                            <div style="color:rgba(255,255,255,0.5);">Atenção</div>
+                            <div style="color:#ffbb33; font-size: 16px; font-weight:bold;">${dados.distribuicaoErros?.atencao || 0}%</div>
+                        </div>
+                        <div style="text-align:center;">
+                            <div style="color:rgba(255,255,255,0.5);">Procedimento</div>
+                            <div style="color:var(--neon-cyan); font-size: 16px; font-weight:bold;">${dados.distribuicaoErros?.procedimento || 0}%</div>
+                        </div>
+                        <div style="text-align:center;">
+                            <div style="color:rgba(255,255,255,0.5);">Conceito</div>
+                            <div style="color:var(--neon-red); font-size: 16px; font-weight:bold;">${dados.distribuicaoErros?.conceito || 0}%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="flex: 1; background: #060610; padding: 10px; border-radius: 8px; border: 1px solid #222; max-height: 100px; overflow-y: auto;">
+                    <div style="text-align:center; margin-bottom: 10px; color:var(--choco-gold); font-weight:bold;">ALERTAS DE HABILIDADE (BNCC)</div>
                     ${dados.pontosCriticos.length > 0 ? 
                         dados.pontosCriticos.map(([hab, score]) => `
                             <div style="display:flex; justify-content:space-between; margin-bottom:4px; color: ${score > 5 ? 'var(--neon-red)' : 'white'}">
                                 <span>• ${hab}</span>
-                                <span>Intensidade de Risco: ${score.toFixed(1)}</span>
+                                <span>Risco: ${score.toFixed(1)}</span>
                             </div>
-                        `).join('') : '<p style="color:var(--neon-green)">Nenhum bloqueio crítico de aprendizagem registrado.</p>'
+                        `).join('') : '<div style="color:var(--neon-green); text-align:center; margin-top:10px;">Nenhuma defasagem crítica mapeada.</div>'
                     }
                 </div>
+
             </div>
         </div>
     `;
