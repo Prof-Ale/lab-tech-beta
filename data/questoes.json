@@ -4703,7 +4703,7 @@
 "res": "350",
 "alternativas": [
 { "valor": "350", "tipo": "acerto" },
-{ "valor": "300", "tipo": "erro", "categoria": "atencao", "erro": "graf_eixo_errado_android", "descricao": "Se confundiu na leitura básica do gráfico de colunas.", "peso": 1 }
+{ "valor": "300", "tipo": "erro", "categoria": "atencao", "erro": "graf_eixo_errado_android", "descricao": "Se confundiu na leitura básica do gráfico de colunas.", "peso": 1 },
 { "valor": "700", "tipo": "erro", "categoria": "procedimento", "erro": "graf_soma_sem_dividir", "descricao": "Realizou a soma total dos acessos da plataforma solicitada, mas esqueceu de dividir pela quantidade de meses.", "peso": 2 },
 { "valor": "400", "tipo": "erro", "categoria": "calculo", "erro": "graf_erro_aritmetico_media", "descricao": "Misturou os dados das duas plataformas ou errou a divisão final da soma aritmética.", "peso": 1 }
 ],
