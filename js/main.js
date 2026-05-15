@@ -378,10 +378,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /* ============================================================
-   PAINEL DO PROFESSOR (Alt + P — GOVERNANÇA VISUAL XAI V11)
+   PAINEL DO PROFESSOR (Alt + P — MODELO EXPLICÁVEL XAI EM CAMADAS)
    ============================================================ */
 function gerarPainelProfessor() {
-    // Garante que os dados do perfil existem antes de abrir
     if (!G.perfilCognitivo) {
         alert("Identifique um estudante na base para carregar a telemetria.");
         return;
@@ -397,105 +396,111 @@ function gerarPainelProfessor() {
         document.body.appendChild(modalProf);
     }
 
-    // 1. Extração do último pulso de decisão da ADA
-    const historicoADA = G.diagnosticoADA?.historicoDecisoes || [];
-    const ultimaDecisao = historicoADA.length > 0 ? historicoADA[historicoADA.length - 1] : null;
+    // 🧠 1. PARSER XAI EM CAMADAS (O Cérebro Aberto)
+    let logExplicavelHtml = "";
+    if (G.diagnosticoADA && G.diagnosticoADA.historicoDecisoes && G.diagnosticoADA.historicoDecisoes.length > 0) {
+        const ultimasDecisoes = G.diagnosticoADA.historicoDecisoes.slice(-3).reverse();
+        
+        ultimasDecisoes.forEach(log => {
+            // Analisador Léxico Simples para separar o "Por quê" e a "Ação"
+            let acaoPrincipal = "Manutenção de Ritmo Flow";
+            let camadasPorQue = [];
+            let parametrosAjustados = "";
+            let corBorda = "var(--neon-cyan)";
 
-    // 2. Tradução Visual da Etiologia do Erro (Parser XAI)
-    let cardGatilho = "";
-    let cardDiagnostico = "";
-    let cardIntervencao = "";
+            if (log.motivoDecisao.includes("impulsiva")) {
+                acaoPrincipal = "Redução Rítmica e Alívio de Carga";
+                camadasPorQue = ["Latência baixa detectada (< 5s)", "Foco residual em distrator de atenção"];
+                parametrosAjustados = "⏱️ Trava de Tempo Ativada | 🧩 Scaffold Injetado";
+                corBorda = "#ffbb33";
+            } else if (log.motivoDecisao.includes("barreira") || log.motivoDecisao.includes("Emergência")) {
+                acaoPrincipal = "Intervenção de Resgate Conceitual";
+                camadasPorQue = ["Misconception sistêmica persistente", "Estabilidade estrutural comprometida"];
+                parametrosAjustados = "🧠 Carga Cognitiva Reduzida | 📊 Representação Visual";
+                corBorda = "var(--neon-red)";
+            } else if (log.motivoDecisao.includes("Mastery")) {
+                acaoPrincipal = "Elevação de Dificuldade (Flow)";
+                camadasPorQue = ["Mastery Learning atingido", "Estabilidade conceitual alta nas últimas interações"];
+                parametrosAjustados = "🔥 Representação Abstrata | 🚀 Carga Cognitiva Maximizada";
+                corBorda = "var(--neon-green)";
+            } else {
+                camadasPorQue = ["Desempenho dentro da Zona de Desenvolvimento Proximal"];
+                parametrosAjustados = "⚙️ Parâmetros em estado de cruzeiro";
+            }
 
-    if (ultimaDecisao) {
-        // Lógica de parser visual baseada no texto gerado pela ADA
-        let corAlerta = "var(--neon-cyan)";
-        let tipoErro = "Cruzeiro Linear";
-        let acaoADA = "Manutenção de Ritmo";
+            const listaPorQues = camadasPorQue.map(motivo => `<div style="color:rgba(255,255,255,0.6); margin-left: 10px;">↳ ${motivo}</div>`).join('');
 
-        if (ultimaDecisao.motivoDecisao.includes("impulsiva") || ultimaDecisao.motivoDecisao.includes("Impulsivo")) {
-            corAlerta = "#ffbb33"; // Laranja/Amarelo
-            tipoErro = "Resposta Impulsiva (< 5s)";
-            acaoADA = "Trava de Tempo + Alívio de Carga";
-        } else if (ultimaDecisao.motivoDecisao.includes("barreira") || ultimaDecisao.motivoDecisao.includes("Emergência") || ultimaDecisao.motivoDecisao.includes("risco extremo")) {
-            corAlerta = "var(--neon-red)"; // Vermelho
-            tipoErro = "Bloqueio Conceitual (Risco)";
-            acaoADA = "Recuo Abstrato + Resgate Clínico";
-        } else if (ultimaDecisao.motivoDecisao.includes("Mastery") || ultimaDecisao.motivoDecisao.includes("proficiência")) {
-            corAlerta = "var(--neon-green)"; // Verde
-            tipoErro = "Consolidação de Domínio";
-            acaoADA = "Elevação de Dificuldade (Flow)";
-        }
-
-        cardGatilho = `<div style="color:${corAlerta}; font-size:14px; font-weight:bold;">⚡ GATILHO DETECTADO</div><div style="color:#fff; font-size:12px; margin-top:5px;">${tipoErro}</div>`;
-        cardDiagnostico = `<div style="color:var(--choco-gold); font-size:14px; font-weight:bold;">🧠 INFERÊNCIA ADA</div><div style="color:rgba(255,255,255,0.8); font-size:11px; margin-top:5px; line-height:1.4;">"${ultimaDecisao.motivoDecisao}"</div>`;
-        cardIntervencao = `<div style="color:var(--neon-green); font-size:14px; font-weight:bold;">🛠️ TRATAMENTO PEDAGÓGICO</div><div style="color:#fff; font-size:12px; margin-top:5px;">${acaoADA}</div><div style="color:var(--neon-cyan); font-size:10px; margin-top:8px;">↳ Próximo Item: [${ultimaDecisao.proximaQuestaoId || 'Dinâmico'}]</div>`;
+            logExplicavelHtml += `
+                <div style="background:#0a0a14; border-left:3px solid ${corBorda}; padding:10px; margin-bottom:10px; border-radius:4px; font-family:monospace; font-size:11px; line-height:1.5;">
+                    <div style="color:var(--choco-gold); font-weight:bold; font-size:12px; margin-bottom: 4px;">[${new Date(log.timestamp).toLocaleTimeString()}] AÇÃO: ${acaoPrincipal}</div>
+                    <div style="color:var(--neon-cyan); margin-bottom: 4px;">POR QUE:</div>
+                    ${listaPorQues}
+                    <div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.1); color:#fff; font-weight: bold;">
+                        ${parametrosAjustados} <span style="float:right; color:var(--neon-cyan); opacity: 0.7;">Item: ${log.proximaQuestaoId || 'N/A'}</span>
+                    </div>
+                </div>
+            `;
+        });
     } else {
-        const placeholder = `<div style="color:rgba(255,255,255,0.3); text-align:center;">Aguardando primeira interação...</div>`;
-        cardGatilho = placeholder;
-        cardDiagnostico = placeholder;
-        cardIntervencao = placeholder;
+        logExplicavelHtml = `<p style="color:rgba(255,255,255,0.4); font-style:italic; font-size:11px;">Nenhuma manobra adaptativa registrada na sessão corrente.</p>`;
+    }
+
+    // 🔥 2. GERADOR DO HEATMAP BNCC
+    let heatmapHtml = "";
+    if (dados.pontosCriticos.length > 0) {
+        heatmapHtml = dados.pontosCriticos.map(([hab, score]) => {
+            let status = "";
+            let corStatus = "";
+            let bgStatus = "";
+            
+            if (score > 5) {
+                status = "RISCO ALTO"; corStatus = "#000"; bgStatus = "var(--neon-red)";
+            } else if (score >= 2) {
+                status = "ESTABILIZANDO"; corStatus = "#000"; bgStatus = "#ffbb33";
+            } else {
+                status = "MASTERY"; corStatus = "#000"; bgStatus = "var(--neon-green)";
+            }
+
+            return `
+                <div style="display:flex; justify-content:space-between; align-items: center; margin-bottom:6px; background: rgba(255,255,255,0.02); padding: 4px 8px; border-radius: 4px; border-left: 2px solid ${bgStatus};">
+                    <span style="color: white; font-weight: bold; font-size: 12px;">${hab}</span>
+                    <span style="background:${bgStatus}; color:${corStatus}; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold;">${status}</span>
+                </div>
+            `;
+        }).join('');
+    } else {
+        heatmapHtml = '<div style="color:var(--neon-green); text-align:center; margin-top:10px;">Nenhuma defasagem mapeada. Mastery geral predominante.</div>';
     }
 
     modalProf.innerHTML = `
-        <div class="mc" style="max-width: 800px; border: 2px solid var(--choco-gold); background: #04040a; position: relative; border-radius: 12px; box-shadow: 0 0 30px rgba(212,175,55,0.15); max-height: 90vh; overflow-y: auto;">
+        <div class="mc" style="max-width: 600px; border: 2px solid var(--choco-gold); background: #060610; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 0 30px rgba(212,175,55,0.15);">
             
             <button class="mx" style="position: absolute; top: 15px; right: 15px; background: transparent; color: var(--choco-gold); border: 1px solid var(--choco-gold); border-radius: 50%; width: 30px; height: 30px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; padding: 0;">✕</button>
 
-            <div style="border-bottom: 1px dashed rgba(212,175,55,0.4); padding-bottom: 15px; margin-bottom: 20px;">
-                <h2 style="color:var(--choco-gold); margin: 0; font-family: var(--font-display); font-size: 20px; letter-spacing: 1px;">ADA EXPLAINABLE AI (XAI)</h2>
-                <div style="color:var(--neon-cyan); font-size:11px; font-family:monospace; margin-top:5px;">TARGET: ${dados.identificacao} | ATIVIDADE: ${dados.tempoVida} dias | RESOLVIDAS: ${dados.totalResolvidas}</div>
-            </div>
+            <h2 style="color:var(--choco-gold); border-bottom: 1px solid; padding-bottom: 10px; margin-top: 0; padding-right: 30px; font-family: var(--font-display); font-size:18px;">MAPA COGNITIVO CLINICO: ${dados.identificacao}</h2>
             
-            <div style="display: flex; justify-content: space-between; align-items: stretch; gap: 10px; font-family: monospace;">
+            <div style="text-align:left; margin-top:15px; font-family: monospace; font-size:12px;">
                 
-                <div style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 15px; text-align:center; display:flex; flex-direction:column; justify-content:center;">
-                    ${cardGatilho}
+                <p style="margin-top:5px;">🔍 <strong>Distribuição Etiológica das Falhas:</strong></p>
+                <div style="display:flex; gap:2px; height:16px; background:#222; border-radius:4px; overflow:hidden; margin-bottom:5px;">
+                    <div style="width:${dados.distribuicaoErros.conceito}%; background:var(--neon-red);" title="Conceito"></div>
+                    <div style="width:${dados.distribuicaoErros.procedimento}%; background:#ffbb33;" title="Procedimento"></div>
+                    <div style="width:${dados.distribuicaoErros.calculo}%; background:var(--neon-green);" title="Cálculo"></div>
+                </div>
+                <div style="font-size:10px; display:flex; justify-content:space-between; opacity:0.7; margin-bottom:20px;">
+                    <span style="color:var(--neon-red)">Conceito (${dados.distribuicaoErros.conceito}%)</span>
+                    <span style="color:#ffbb33">Procedimento (${dados.distribuicaoErros.procedimento}%)</span>
+                    <span style="color:var(--neon-green)">Cálculo (${dados.distribuicaoErros.calculo}%)</span>
                 </div>
 
-                <div style="display: flex; align-items: center; color: rgba(212,175,55,0.5); font-size: 24px;">➔</div>
-
-                <div style="flex: 1.5; background: rgba(212,175,55,0.05); border: 1px solid var(--choco-gold); border-radius: 8px; padding: 15px; text-align:center; box-shadow: inset 0 0 15px rgba(212,175,55,0.1);">
-                    ${cardDiagnostico}
+                <p style="margin-top:15px; border-top: 1px dashed rgba(212,175,55,0.3); padding-top:10px;">📊 <strong>Heatmap Curricular (Monitoramento BNCC):</strong></p>
+                <div style="max-height: 150px; overflow-y: auto; margin-bottom: 20px; padding-right: 5px;">
+                    ${heatmapHtml}
                 </div>
 
-                <div style="display: flex; align-items: center; color: rgba(212,175,55,0.5); font-size: 24px;">➔</div>
-
-                <div style="flex: 1; background: rgba(0,255,128,0.05); border: 1px solid var(--neon-green); border-radius: 8px; padding: 15px; text-align:center; display:flex; flex-direction:column; justify-content:center;">
-                    ${cardIntervencao}
-                </div>
-
-            </div>
-
-            <div style="margin-top: 25px; display:flex; justify-content: space-between; font-family: monospace; font-size: 11px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; gap: 20px;">
-                
-                <div style="flex: 1; background: #060610; padding: 10px; border-radius: 8px; border: 1px solid #222;">
-                    <div style="text-align:center; margin-bottom: 10px; color:var(--choco-gold); font-weight:bold;">DISTRIBUIÇÃO ETIOLÓGICA</div>
-                    <div style="display:flex; justify-content: space-around;">
-                        <div style="text-align:center;">
-                            <div style="color:rgba(255,255,255,0.5);">Atenção</div>
-                            <div style="color:#ffbb33; font-size: 16px; font-weight:bold;">${dados.distribuicaoErros?.atencao || 0}%</div>
-                        </div>
-                        <div style="text-align:center;">
-                            <div style="color:rgba(255,255,255,0.5);">Procedimento</div>
-                            <div style="color:var(--neon-cyan); font-size: 16px; font-weight:bold;">${dados.distribuicaoErros?.procedimento || 0}%</div>
-                        </div>
-                        <div style="text-align:center;">
-                            <div style="color:rgba(255,255,255,0.5);">Conceito</div>
-                            <div style="color:var(--neon-red); font-size: 16px; font-weight:bold;">${dados.distribuicaoErros?.conceito || 0}%</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="flex: 1; background: #060610; padding: 10px; border-radius: 8px; border: 1px solid #222; max-height: 100px; overflow-y: auto;">
-                    <div style="text-align:center; margin-bottom: 10px; color:var(--choco-gold); font-weight:bold;">ALERTAS DE HABILIDADE (BNCC)</div>
-                    ${dados.pontosCriticos.length > 0 ? 
-                        dados.pontosCriticos.map(([hab, score]) => `
-                            <div style="display:flex; justify-content:space-between; margin-bottom:4px; color: ${score > 5 ? 'var(--neon-red)' : 'white'}">
-                                <span>• ${hab}</span>
-                                <span>Risco: ${score.toFixed(1)}</span>
-                            </div>
-                        `).join('') : '<div style="color:var(--neon-green); text-align:center; margin-top:10px;">Nenhuma defasagem crítica mapeada.</div>'
-                    }
+                <p style="margin-top:15px; border-top: 1px dashed rgba(212,175,55,0.3); padding-top:10px; color:var(--choco-gold);">🧠 <strong>[LOG DE EXPLICABILIDADE DA ADA — EM CAMADAS]</strong></p>
+                <div style="margin-bottom:15px;">
+                    ${logExplicavelHtml}
                 </div>
 
             </div>
