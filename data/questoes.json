@@ -5466,31 +5466,77 @@
     "passo": "Acompanhe apenas os restos. Começando em 5: após 1 operação, 5 × 3 = 15, resto 1. Após 2, 1 × 3 = 3. Após 3, 3 × 3 = 9, resto 2. Após 4, 2 × 3 = 6. Após 5, 6 × 3 = 18, resto 4. Após 6, 4 × 3 = 12, resto 5. Portanto, o resto após 6 operações é 5.",
     "dica": "Depois de cada multiplicação, substitua o resultado pelo resto na divisão por 7."
   },
-  {
-    "id": "OLIMP_A7_61",
-    "aula": 7,
-    "tipo": "logica",
-    "dificuldade": 5,
-    "tipoPedagogico": "desafio",
-    "bncc": "EF07MA05",
-    "habilidade": "EF07MA05",
-    "bncc_desc": "Múltiplos, Divisores e Regularidades Numéricas",
-    "cluster": "aritmetica",
-    "prerequisitos": ["EF06MA05"],
-    "misconception": "paridade_divisores_quadrados",
-    "tipoIntervencao": "scaffold_visual",
-    "representacao": "abstrata",
-    "cargaCognitiva": 3,
-    "objetivoDiagnostico": "validar_raciocinio_combinatorio_e_identificacao_de_propriedades_dos_divisores_inteiros",
-    "display": "No laboratório, 100 computadores alinhados estão inicialmente desligados. Em seguida, 100 estudantes passam por eles em ordem. O estudante 1 inverte o estado de todos os computadores. O estudante 2 inverte o estado apenas dos múltiplos de 2. O estudante 3 inverte o das máquinas múltiplas de 3, e assim por diante, até o estudante 100. Ao final do ciclo, quantos computadores estarão efetivamente LIGADOS?",
-    "res": "10",
-    "alternativas": [
-      { "valor": "10", "tipo": "acerto" },
-      { "valor": "50", "tipo": "erro", "categoria": "atencao", "erro": "olimp_divisao_metade", "descricao": "Dividiu o total por 2 por puro impulso intuitivo, imaginando um padrão linear de metade par e metade ímpar.", "peso": 1 },
-      { "valor": "90", "tipo": "erro", "categoria": "procedimento", "erro": "olimp_inversao_estado_final", "descricao": "Identificou corretamente a lógica dos quadrados perfeitos, mas contou os computadores que ficaram DESLIGADOS no final do processo.", "peso": 2 },
-      { "valor": "25", "tipo": "erro", "categoria": "conceito", "erro": "olimp_confunde_quadrados_com_multiplos", "descricao": "Confundiu a propriedade dos divisores ímpares e assumiu que apenas os múltiplos de 4 (um quarto do ecossistema) seriam ativados.", "peso": 3 }
-    ],
-    "passo": "Um computador muda de estado cada vez que um estudante correspondente a um de seus divisores passa por ele. Portanto, ele terminará LIGADO se, e somente se, for acionado um número ÍMPAR de vezes. Na teoria dos números, apenas os Quadrados Perfeitos possuem uma quantidade ímpar de divisores (pois seus fatores se agrupam em pares, exceto a própria raiz). Entre 1 e 100, os quadrados perfeitos são 1, 4, 9, 16, 25, 36, 49, 64, 81 e 100, totalizando exatamente 10 computadores.",
-    "dica": "Pense no comportamento das chaves. O computador de número 12, por exemplo, muda de estado nos estudantes 1, 2, 3, 4, 6 e 12 (seus divisores), totalizando 6 trocas (volta a ficar desligado). Que tipo de número possui uma quantidade ÍMPAR de divisores para terminar ligado?"
+ {
+  "id": "OLIMP_A7_61",
+  "aula": 7,
+  "tipo": "logica_aritmetica",
+  "dificuldade": 5,
+  "tipoPedagogico": "sensor_cognitivo_zdp",
+  "bncc": "EF07MA05",
+  "habilidade": "EF07MA05",
+  "bncc_desc": "Múltiplos, Divisores e Regularidades Numéricas",
+  "cluster": "aritmetica_estrutural",
+  "prerequisitos": ["EF06MA05"],
+  "misconception_principal": "paridade_divisores_quadrados",
+  "state_engine_config": {
+    "initial_stage_galperin": "ABSTRACT_SYMBOLIC",
+    "fallback_stage_galperin": "VISUAL_SCHEMATIC",
+    "max_allowed_attempts": 3
+  },
+  "display": {
+    "text": "No laboratório central da ADA, 100 computadores alinhados de 1 a 100 estão inicialmente desligados. Em seguida, 100 robôs de manutenção passam por eles em ordem estrita de 1 a 100. O robô 1 inverte o estado de todos os computadores. O robô 2 inverte o estado apenas das máquinas que são múltiplas de 2. O robô 3 inverte o das máquinas múltiplas de 3, e assim sucessivamente, até o robô 100. Ao final do ciclo de marchas dos 100 robôs, quantos computadores estarão efetivamente LIGADOS?",
+    "accessibility_alt": "Matriz quadriculada de 100 posições representando chaves booleanas que invertem seu estado de acordo com o número de seus divisores aritméticos."
+  },
+  "res_correta": "10",
+  "alternativas": [
+    {
+      "valor": "10",
+      "tipo": "acerto",
+      "diagnostico_cognitivo": "Pensamento teórico estruturado estável. Domínio do conceito científico da assimetria dos divisores de quadrados perfeitos.",
+      "scaffold_proximo_passo": "PROMOVER_GENERALIZACAO_DAVYDOV"
+    },
+    {
+      "valor": "50",
+      "tipo": "erro",
+      "categoria": "impulsividade_linear",
+      "erro_id": "olimp_divisao_metade",
+      "descricao": "Dividiu o total por 2 por puro impulso intuitivo empirista, assumindo um padrão linear uniforme de distribuição par/ímpar.",
+      "peso_gravidade": 3,
+      "scaffold_proximo_passo": "FORCAR_MINI_MALHA_CONCRETA"
+    },
+    {
+      "valor": "90",
+      "tipo": "erro",
+      "categoria": "procedimental_complementar",
+      "erro_id": "olimp_inversao_estado_final",
+      "descricao": "Identificou corretamente a lógica dos quadrados perfeitos (10 unidades), mas executou a subtração do complementar (100 - 10 = 90), respondendo o número de computadores DESLIGADOS.",
+      "peso_gravidade": 1,
+      "scaffold_proximo_passo": "ALERTA_INTERPRETACAO_BOOLEANA"
+    },
+    {
+      "valor": "25",
+      "tipo": "erro",
+      "categoria": "pseudoconceito_reconhecimento",
+      "erro_id": "olimp_confunde_quadrados_com_multiplos",
+      "descricao": "Confundiu a propriedade dos divisores ímpares e assumiu que apenas os múltiplos de 4 (um quarto do ecossistema) seriam ativados por serem quadrados pares.",
+      "peso_gravidade": 2,
+      "scaffold_proximo_passo": "ATIVAR_PAREAMENTO_ESTRUTURAL"
+    }
+  ],
+  "scaffolds_adaptativos": {
+    "VISUAL_SCHEMATIC": {
+      "instrucao": "Veja o comportamento de uma malha reduzida. Vamos analisar apenas o computador número 9 e o computador número 12.",
+      "animacao_id": "anim_grade_reduc",
+      "foco_pedagogico": "Mostrar que o 12 tem os pares (1,12), (2,6), (3,4) [6 trocas = desliga]. O 9 tem os pares (1,9) e o par solitário (3,3) [3 trocas = LIGA!]."
+    },
+    "VERBALIZATION": {
+      "pergunta_gatilho": "Por que o número 3 não tem um parceiro diferente dele mesmo para multiplicar e gerar o número 9?",
+      "opcoes_argumentacao": [
+        "Porque 3 é a raiz quadrada de 9, logo ele multiplica a si mesmo.",
+        "Porque 9 é um número ímpar.",
+        "Porque todos os números primos fazem isso."
+      ]
+    }
   }
+}
 ]
