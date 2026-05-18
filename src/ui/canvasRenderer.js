@@ -271,6 +271,6 @@ export class CanvasRenderer {
             };
             requestAnimationFrame(anim);
         });
-    }
+    
     }
 }
