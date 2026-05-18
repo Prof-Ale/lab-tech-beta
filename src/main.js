@@ -307,7 +307,25 @@ Aperte [F12] para ver a matriz de erro detalhada no console!`;
         atualizarDashboard();
         abrirM('mdash');
     });
-    
+   
+    // ─── LIGAÇÃO DOS BOTÕES LATERAIS DE INTERFACE ───
+    on('btn-cred', () => {
+        abrirM('mcred');
+    });
+
+    on('btn-perfil', () => {
+        if (G.perfilCognitivo) {
+            const displayNivel = $('perfil-nivel-txt');
+            const displayXP = $('perfil-acertos-display');
+            
+            // Simulação matemática de XP baseada nos acertos do aluno
+            const xpCalculado = (G.acertos || 0) * 150; 
+            
+            if (displayNivel) displayNivel.textContent = G.perfilCognitivo.nivel || 1;
+            if (displayXP) displayXP.textContent = `${xpCalculado} XP`;
+        }
+        abrirM('mperfil');
+    });
     on('btn-reiniciar', () => {
         fecharM('go'); 
         if (G.currentBlock) iniciarBloco(G.currentBlock); 
