@@ -2,8 +2,8 @@
  * @fileoverview CanvasRenderer.js
  * @description Motor Gráfico Modular do LabTech (DUA).
  * Rastreia e renderiza Isomorfismos Matemáticos na Reta Numérica e Frações.
- * CORREÇÃO V15.3: Failsafe Sincronizado de Animação e Blindagem Matemática Total.
- * @version 3.3.0
+ * CORREÇÃO V15.4: Failsafe Sincronizado, Anti-Travamento e Blindagem Matemática (Codex Refined).
+ * @version 3.4.0
  * @package LabTech / UI
  */
 
@@ -24,20 +24,29 @@ export class CanvasRenderer {
 
     _autoresize() {
         if (!this.canvas) return;
-        const style = getComputedStyle(this.canvas);
-        this.W = parseInt(style.width);
-        this.H = parseInt(style.height);
+        const rect = this.canvas.getBoundingClientRect();
+        this.W = rect.width;
+        this.H = rect.height;
         this.dpi = window.devicePixelRatio || 1;
 
-        if (this.canvas.width !== this.W * this.dpi) {
-            this.canvas.width = this.W * this.dpi;
-            this.canvas.height = this.H * this.dpi;
-            this.ctx.scale(this.dpi, this.dpi);
+        const targetW = Math.round(this.W * this.dpi);
+        const targetH = Math.round(this.H * this.dpi);
+
+        if (this.canvas.width !== targetW || this.canvas.height !== targetH) {
+            this.canvas.width = targetW;
+            this.canvas.height = targetH;
+            this.ctx.setTransform(this.dpi, 0, 0, this.dpi, 0, 0);
         }
     }
 
     _limpar() {
-        if (this.ctx) this.ctx.clearRect(0, 0, this.W, this.H);
+        if (this.ctx) {
+            // Usa setTransform e resetTransform para limpar com segurança em displays Retina
+            this.ctx.save();
+            this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.restore();
+        }
     }
 
     /**
@@ -64,7 +73,7 @@ export class CanvasRenderer {
 
         // 🧠 Triage Inteligente: Pula reta numérica para questões literárias (Álgebra)
         let rep = representacao;
-        const strA = String(questao.a || questao.valorInicial);
+        const strA = String(questao.a ?? questao.valorInicial ?? 0);
         if (rep === 'visual' && strA.match(/[a-zA-Z]/)) rep = 'algebra';
 
         try {
@@ -82,13 +91,12 @@ export class CanvasRenderer {
     }
 
     _desenharRetaNumerica(q, modo) {
-        const ctx = this.ctx;
         const Y_RET = this.H * 0.7;
         const PADDING_W = 60;
 
         // Viewport Matemático robusto
         let valMin = 0;
-        const strA = String(q.a || q.valorInicial);
+        const strA = String(q.a ?? q.valorInicial ?? 0);
         if (String(q.display).includes('-') || strA.includes('-')) valMin = -10;
 
         const valA_Math = parseFloat(strA.replace(/[^\d.-]/g, '')) || 0;
@@ -97,14 +105,14 @@ export class CanvasRenderer {
         
         const valMax = Math.max(10, valA_Math, valRes_Math, valAlt_Math);
         
-        ctx.beginPath(); ctx.strokeStyle = '#222'; ctx.lineWidth = 4;
-        ctx.moveTo(PADDING_W, Y_RET); ctx.lineTo(this.W - PADDING_W, Y_RET); ctx.stroke();
+        this.ctx.beginPath(); this.ctx.strokeStyle = '#222'; this.ctx.lineWidth = 4;
+        this.ctx.moveTo(PADDING_W, Y_RET); this.ctx.lineTo(this.W - PADDING_W, Y_RET); this.ctx.stroke();
 
         if (valA_Math !== 0) {
-            ctx.beginPath(); ctx.strokeStyle = this.cores.gold; ctx.lineWidth = (modo === 'reta' ? 6 : 2);
+            this.ctx.beginPath(); this.ctx.strokeStyle = this.cores.gold; this.ctx.lineWidth = (modo === 'reta' ? 6 : 2);
             const x0 = this._mapX(0, valMin, valMax, PADDING_W);
             const xA = this._mapX(valA_Math, valMin, valMax, PADDING_W);
-            ctx.moveTo(x0, Y_RET); ctx.lineTo(xA, Y_RET); ctx.stroke();
+            this.ctx.moveTo(x0, Y_RET); this.ctx.lineTo(xA, Y_RET); this.ctx.stroke();
         }
 
         if (modo === 'reta') {
@@ -115,8 +123,7 @@ export class CanvasRenderer {
     }
 
     _desenharTicksReta(min, max, padding, y) {
-        const ctx = this.ctx;
-        ctx.fillStyle = '#444'; ctx.font = '12px monospace'; ctx.textAlign = 'center';
+        this.ctx.fillStyle = '#444'; this.ctx.font = '12px monospace'; this.ctx.textAlign = 'center';
         const range = max - min;
         let step = 1; if (range > 20) step = 5; if (range > 100) step = 10;
 
@@ -124,9 +131,9 @@ export class CanvasRenderer {
             const x = this._mapX(i, min, max, padding);
             if (!isFinite(x)) continue;
             
-            ctx.fillRect(x, y - 5, 1, 10);
+            this.ctx.fillRect(x, y - 5, 1, 10);
             if (i === 0 || i === min || i === max || i % step === 0) {
-                ctx.fillStyle = this.cores.subt; ctx.fillText(i, x, y + 25); ctx.fillStyle = '#444';
+                this.ctx.fillStyle = this.cores.subt; this.ctx.fillText(i, x, y + 25); this.ctx.fillStyle = '#444';
             }
         }
     }
@@ -140,19 +147,33 @@ export class CanvasRenderer {
         this.ctx.arc(x, y, 8, 0, Math.PI * 2);
         this.ctx.fill(); this.ctx.stroke();
 
-        this.ctx.font = 'bold 12px Orbitron'; this.ctx.fillStyle = cor; ctx.textAlign = 'center';
+        this.ctx.font = 'bold 12px Orbitron'; 
+        this.ctx.fillStyle = cor; 
+        this.ctx.textAlign = 'center'; // CODEX FIX: Removido o bug fatal de escopo 'ctx'
         this.ctx.fillText(label, x, y - 13);
     }
 
     _desenharFraçãoBarra(q) {
         const barW = this.W * 0.8; const barH = 50;
         const x = (this.W - barW) / 2; const y = (this.H - barH) / 2;
-        const num = parseFloat(String(q.a).replace(/[^\d.-]/g, '')) || 0;
-        const den = parseFloat(String(q.b || q.fim).replace(/[^\d.-]/g, '')) || 1;
+        const num = parseFloat(String(q.a ?? q.valorInicial ?? 0).replace(/[^\d.-]/g, '')) || 0;
+        const den = parseFloat(String(q.b ?? q.fim ?? 1).replace(/[^\d.-]/g, '')) || 1;
 
         this.ctx.fillStyle = '#111'; this.ctx.fillRect(x, y, barW, barH);
-        this.ctx.fillStyle = this.cores.gold; this.ctx.fillRect(x, y, barW * (num/Math.max(1, den)), barH);
+        
+        // CODEX FIX: Clamping de Fração Imprópria (Ratio nunca passa de 1 ou fica negativo)
+        const ratio = Math.max(0, Math.min(1, num / Math.max(1, den)));
+        
+        this.ctx.fillStyle = this.cores.gold; this.ctx.fillRect(x, y, barW * ratio, barH);
         this.ctx.strokeStyle = '#444'; this.ctx.strokeRect(x, y, barW, barH);
+
+        this.ctx.strokeStyle = '#222';
+        for (let i = 1; i < den; i++) {
+            this.ctx.beginPath(); this.ctx.moveTo(x + (i * barW/den), y); this.ctx.lineTo(x + (i * barW/den), y + barH); this.ctx.stroke();
+        }
+
+        this.ctx.font = 'bold 16px Orbitron'; this.ctx.fillStyle = this.cores.gold; this.ctx.textAlign = 'center';
+        this.ctx.fillText(`${num} / ${den}`, this.W / 2, y - 15);
     }
 
     _desenharFallback(q) {
@@ -170,14 +191,13 @@ export class CanvasRenderer {
      */
     async animarArcos(questao, deslocamento, representacao) {
         this._autoresize();
-        const ctx = this.ctx;
         
         // Proteção contra chamadas redundantes
-        if (!ctx || this.isAnimating) { return; }
+        if (!this.ctx || this.isAnimating) { return Promise.resolve(); }
 
         // Triage: Pula animação para frações ou álgebra literal
-        const strA = String(questao.a || questao.valorInicial);
-        if (representacao === 'visual' || strA.match(/[a-zA-Z]/)) { return; }
+        const strA = String(questao.a ?? questao.valorInicial ?? 0);
+        if (representacao === 'visual' || strA.match(/[a-zA-Z]/)) { return Promise.resolve(); }
 
         this.isAnimating = true; // 🔐 Tranca o estado
         const startTime = performance.now();
@@ -198,7 +218,7 @@ export class CanvasRenderer {
         const endX = this._mapX(valDest_Math, valMin, valMax, PADDING_W);
 
         // Failsafe vital se a matemática quebrar
-        if (!isFinite(startX) || !isFinite(endX)) { this.isAnimating = false; return; }
+        if (!isFinite(startX) || !isFinite(endX)) { this.isAnimating = false; return Promise.resolve(); }
 
         // Mapeamento Bézier
         const distPx = Math.abs(endX - startX);
@@ -219,14 +239,14 @@ export class CanvasRenderer {
                     this._limpar();
                     this._desenharRetaNumerica(questao, representacao);
 
-                    ctx.beginPath(); ctx.lineWidth = 3; ctx.strokeStyle = this.cores.cyan; ctx.moveTo(startX, Y_RET);
+                    this.ctx.beginPath(); this.ctx.lineWidth = 3; this.ctx.strokeStyle = this.cores.cyan; this.ctx.moveTo(startX, Y_RET);
                     for (let i = 0.01; i <= pEase; i += 0.01) {
                         const t = i;
                         const x = Math.pow(1-t, 2) * startX + 2 * (1-t) * t * cpX + Math.pow(t, 2) * endX;
                         const y = Math.pow(1-t, 2) * Y_RET + 2 * (1-t) * t * cpY + Math.pow(t, 2) * Y_RET;
-                        if(isFinite(x) && isFinite(y)) ctx.lineTo(x, y);
+                        if(isFinite(x) && isFinite(y)) this.ctx.lineTo(x, y);
                     }
-                    ctx.stroke();
+                    this.ctx.stroke();
 
                 } catch (e) {
                     console.error("[CanvasRenderer] Erro na RAF:", e);
