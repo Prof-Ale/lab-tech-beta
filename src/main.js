@@ -63,8 +63,8 @@ function mostrarSeletorBlocos() {
     G.perfilCognitivo = instProfile.inicializarEstudante(`${G.nome}_${G.turma}`);
 
     // INTERVENÇÃO CIRÚRGICA: Vinculação correta ao ID 'cv' do HTML para o motor gráfico
-    if (!renderizadorGrafico) {
-        renderizadorGrafico = new CanvasRenderer('cv'); 
+   if (!renderizadorGrafico) {
+        renderizadorGrafico = new CanvasRenderer('canvas-game'); 
     }
 
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
