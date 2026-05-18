@@ -1,353 +1,275 @@
 /**
- * @fileoverview canvasRenderer.js
- * @description Motor gráfico vetorial baseado em HTML5 Canvas para o ecossistema LabTech.
- * Renderiza de forma síncrona e isolada as diferentes representações semióticas (balanças, retas e arcos).
- * Atua estritamente como a camada de expressão visual governada pelas decisões da ADA.
- * * @version 3.0.0
- * @package LabTech / UI Architecture
+ * @fileoverview CanvasRenderer.js
+ * @description Motor Gráfico Modular do LabTech (DUA).
+ * Renderiza e anima representações visuais matemáticas (Reta Numérica, Frações).
+ * CORREÇÃO V15.1: Sistema de coordenadas robusto, Viewport centering e clamping de arcos.
+ * @version 3.1.0
+ * @package LabTech / UI
  */
 
 export class CanvasRenderer {
     /**
-     * Instancia o renderizador associando-o a um elemento Canvas específico.
-     * @param {HTMLCanvasElement|string} canvasTarget - O elemento canvas ou o ID string do DOM.
+     * @param {string} canvasId - O ID do elemento <canvas> no DOM.
      */
-    constructor(canvasTarget) {
-        this.canvas = typeof canvasTarget === 'string' ? document.getElementById(canvasTarget) : canvasTarget;
+    constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
         if (!this.canvas) {
-            console.warn("[CanvasRenderer] Elemento Canvas alvo não localizado no DOM.");
+            console.warn(`[CanvasRenderer] Elemento Canvas com ID '${canvasId}' não localizado.`);
             this.ctx = null;
             return;
         }
         this.ctx = this.canvas.getContext('2d');
-        
-        // Cores do Tema capturadas dinamicamente do style.css
-        this.styles = Object.freeze({
-            cyan: this._getCssVariable('--neon-cyan', '#00eaff'),
-            gold: this._getCssVariable('--choco-gold', '#d4af37'),
-            red: this._getCssVariable('--neon-red', '#ff3333'),
-            green: this._getCssVariable('--neon-green', '#00ff66'),
-            bg: '#060610'
-        });
+        this.id = canvasId;
+
+        // Cores base do design do LabTech
+        this.cores = {
+            gold: '#d4af37', // Choco Gold
+            cyan: '#00eaff', // Neon Cyan
+            subt: '#cccccc'
+        };
+
+        this.isAnimating = false;
     }
 
     /**
-     * Recupera variáveis de cores nativas do arquivo CSS da aplicação para o Canvas context.
+     * Ajusta a resolução lógica do canvas baseado no tamanho de exibição CSS.
      * @private
      */
-    _getCssVariable(variableName, fallback) {
-        const value = getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
-        return value || fallback;
+    _autoresize() {
+        if (!this.canvas) return;
+        const style = getComputedStyle(this.canvas);
+        this.W = parseInt(style.width);
+        this.H = parseInt(style.height);
+        this.dpi = window.devicePixelRatio || 1;
+
+        if (this.canvas.width !== this.W * this.dpi) {
+            this.canvas.width = this.W * this.dpi;
+            this.canvas.height = this.H * this.dpi;
+            this.ctx.scale(this.dpi, this.dpi);
+        }
+    }
+
+    _limpar() {
+        if (!this.ctx) return;
+        this.ctx.clearRect(0, 0, this.W, this.H);
     }
 
     /**
-     * Limpa a tela inteira do Canvas preparando o frame para nova renderização.
+     * 🧠 A CURA: Mapeia um valor matemático para uma coordenada X no canvas com Viewport Centering.
+     * @private
      */
-    clear() {
-        if (!this.ctx) return;
-        this.ctx.fillStyle = this.styles.bg;
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    _mapX(value, minVal, maxVal, widthPadding) {
+        const range = maxVal - minVal;
+        const usableWidth = this.W - (widthPadding * 2);
+        if (range === 0) return this.W / 2; // Evita divisão por zero
+        const pct = (value - minVal) / range;
+        return widthPadding + (pct * usableWidth);
     }
 
-    /**
-     * RENDERIZADOR MESTRE (Entrada unificada do pipeline visual)
-     * Decide qual metáfora visual desenhar com base na parametrização da ADA.
-     * @param {Object} questao - Metadados e dados do sensor cognitivo atual.
-     * @param {Object} state - Estado complementar (opcional).
-     * @param {string} modoRepresentacao - 'visual' (balança/blocos), 'normal' (reta) ou 'abstrato' (notação sintática pura).
-     */
-    renderCv(questao, state, modoRepresentacao) {
-        this.clear();
-        if (!this.ctx) return;
+    // =========================================================================
+    // ─── MÉTODOS DE DESENHO ESTÁTICO (renderCv) ───
+    // =========================================================================
 
-        const modo = String(modoRepresentacao).toLowerCase();
+    renderCv(questao, offset, representacao) {
+        this._autoresize();
+        if (!this.ctx || !questao) return;
+        this._limpar();
 
-        if (modo === 'visual') {
-            // Se a questão possuir dados de balança ou pratos, renderiza a Balança Hidrostática
-            if (questao.estruturaMatematica?.tipoVisual === 'BALANCA' || questao.tipoVisual === 'BALANCA' || questao.balanca) {
-                const dados = questao.balanca || { esq: 10, dir: 10, equilibrado: true };
-                this.drawBalanceScale(dados.esq, dados.dir, dados.equilibrado);
-            } else {
-                // Padrão: Se for fração ou vetores aditivos em estágio materializado
-                this.drawAreaFractionGrid(questao.particoes || 6, questao.pintados || 2);
-            }
-        } else if (modo === 'normal' || modo === 'visual_schematic') {
-            // Renderiza a reta decimal vetorial com pontos coordenados direcionados
-            const min = questao.minReta !== undefined ? questao.minReta : -10;
-            const max = questao.maxReta !== undefined ? questao.maxReta : 10;
-            const atual = questao.valorInicial !== undefined ? questao.valorInicial : 0;
-            this.drawNumberLine(min, max, atual);
+        // Seletor de modo de renderização DUA
+        if (representacao === 'reta' || representacao === 'abstrato') {
+            this._desenharRetaNumerica(questao, representacao);
+        } else if (representacao === 'visual') {
+            this._desenharFraçãoBarra(questao);
         } else {
-            // Modo Abstrato / Interno Puro: Renderiza apenas uma malha sutil ou grid matricial
-            this.drawAbstractGrid();
+            this._desenharFallback(questao);
         }
     }
 
     /**
-     * METÁFORA VISUAL A: Balança Hidrostática de Dois Pratos (Equivalência/Isomorfismo de Equações)
-     */
-    drawBalanceScale(leftWeight, rightWeight, isBalanced = true) {
-        const ctx = this.ctx;
-        const W = this.canvas.width;
-        const H = this.canvas.height;
-        const cX = W / 2;
-        const cY = H * 0.6; // Ponto de apoio central da haste
-
-        // Cálculo dinâmico da inclinação física baseada na diferença de cargas (Atuação dialética)
-        let inclinacao = 0;
-        if (!isBalanced) {
-            inclinacao = leftWeight > rightWeight ? -0.12 : 0.12; 
-        }
-
-        ctx.save();
-        
-        // 1. Desenho da Base e Coluna Central Fixa
-        ctx.strokeStyle = this.styles.gold;
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.moveTo(cX, cY);
-        ctx.lineTo(cX, H * 0.85); // Haste vertical
-        ctx.moveTo(cX - 50, H * 0.85);
-        ctx.lineTo(cX + 50, H * 0.85); // Base horizontal do chão
-        ctx.stroke();
-
-        // Pináculo central de apoio
-        ctx.fillStyle = this.styles.gold;
-        ctx.beginPath();
-        ctx.arc(cX, cY, 6, 0, Math.PI * 2);
-        ctx.fill();
-
-        // 2. Aplicação da Translação de Rotação para a Haste Móvel
-        ctx.translate(cX, cY);
-        ctx.rotate(inclinacao);
-
-        const comprimentoHaste = W * 0.3;
-
-        // Haste Balançante Principal
-        ctx.beginPath();
-        ctx.moveTo(-comprimentoHaste, 0);
-        ctx.lineTo(comprimentoHaste, 0);
-        ctx.stroke();
-
-        // Prato Esquerdo e Cabos de Suspensão
-        this._drawPlateAndWeights(-comprimentoHaste, 0, leftWeight, this.styles.cyan);
-
-        // Prato Direito e Cabos de Suspensão
-        this._drawPlateAndWeights(comprimentoHaste, 0, rightWeight, isBalanced ? this.styles.cyan : this.styles.red);
-
-        ctx.restore();
-    }
-
-    /**
-     * Desenha um prato e empilha blocos quantitativos proporcionais dentro dele.
+     * Desenha a estrutura da Reta Numérica (Linha, Isomorfismo e Ponto A).
      * @private
      */
-    _drawPlateAndWeights(x, y, weight, color) {
+    _desenharRetaNumerica(q, modo) {
         const ctx = this.ctx;
-        const raioPrato = 40;
-        const quedaPrato = 50;
+        const Y_RET = this.H * 0.7; // Altura da linha base (70% do canvas)
+        const PADDING_W = 60; // Padding lateral para labels não cortarem
 
-        // Cabos de suspensão vetoriais
-        ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x - raioPrato, y + quedaPrato);
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + raioPrato, y + quedaPrato);
-        ctx.stroke();
+        // 1. Define o Viewport Matemático de forma robusta
+        let valMin = 0;
+        // Se houver números negativos no display ou em 'a', expande para esquerda
+        if (String(q.display).includes('-') || (parseFloat(q.a) < 0)) valMin = -10;
 
-        // Base do Prato Física
-        ctx.strokeStyle = this.styles.gold;
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(x - raioPrato, y + quedaPrato);
-        ctx.lineTo(x + raioPrato, y + quedaPrato);
-        ctx.stroke();
-
-        // Renderização dos blocos de carga (Cada bloco representa 1 unidade conceptual)
-        ctx.fillStyle = color;
-        const tamanhoBloco = 12;
-        const blocosPorLinha = 3;
+        // Acha o valor máximo para definir o range direito
+        const valA_Math = parseFloat(q.a || q.valorInicial) || 0;
+        const valMax = Math.max(10, q.res, valA_Math, q.alternativas[0]?.valor || 0);
         
-        for (let i = 0; i < Math.min(weight, 9); i++) {
-            const linha = Math.floor(i / blocosPorLinha);
-            const coluna = i % blocosPorLinha;
-            const bx = x - ((blocosPorLinha * tamanhoBloco) / 2) + (coluna * tamanhoBloco) + 2;
-            const by = y + quedaPrato - (linha * tamanhoBloco) - tamanhoBloco;
-            
-            ctx.fillRect(bx, by, tamanhoBloco - 2, tamanhoBloco - 2);
+        // Desenha a linha base (Sombra/Pista)
+        ctx.beginPath();
+        ctx.strokeStyle = '#222';
+        ctx.lineWidth = 4;
+        ctx.moveTo(PADDING_W, Y_RET);
+        ctx.lineTo(this.W - PADDING_W, Y_RET);
+        ctx.stroke();
+
+        // 2. Desenha o Isomorfismo (Caminho percorrido) - De 0 até valorInicial/q.a
+        if (valA_Math !== 0) {
+            ctx.beginPath();
+            ctx.strokeStyle = this.cores.gold; // Choco Gold
+            ctx.lineWidth = modo === 'reta' ? 6 : 2; // Reta é mais grossa que abstrato
+            const x0 = this._mapX(0, valMin, valMax, PADDING_W);
+            const xA = this._mapX(valA_Math, valMin, valMax, PADDING_W);
+            ctx.moveTo(x0, Y_RET);
+            ctx.lineTo(xA, Y_RET);
+            ctx.stroke();
         }
+
+        // 3. Desenha os Ticks (marcas de subdivisão) e números se for modo 'reta'
+        if (modo === 'reta') {
+            this._desenharTicksReta(valMin, valMax, PADDING_W, Y_RET);
+        }
+
+        // 4. Desenha o ponto fixo 'A' (valorInicial)
+        this._desenharPonto(valA_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
     }
 
     /**
-     * METÁFORA VISUAL B: Reta Numérica Coordenada Unidimensional (Topologia e Deslocamentos)
+     * Desenha marcas e números na reta numérica com Viewport Centering.
+     * @private
      */
-    drawNumberLine(min, max, currentVal) {
+    _desenharTicksReta(min, max, padding, y) {
         const ctx = this.ctx;
-        const W = this.canvas.width;
-        const H = this.canvas.height;
-        const yEixo = H * 0.6;
-        const margem = 40;
+        ctx.fillStyle = '#444';
+        ctx.font = '12px monospace';
+        ctx.textAlign = 'center';
+        const tickH = 10;
+        
+        const range = max - min;
+        let step = 1;
+        // Ajusta step dinamicamente se o range for enorme
+        if (range > 20) step = 5;
+        if (range > 100) step = 10;
 
-        // Linha mestre horizontal da reta decimal
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.lineWidth = 2;
+        for (let i = min; i <= max; i += step) {
+            const x = this._mapX(i, min, max, padding);
+            ctx.fillRect(x, y - (tickH / 2), 1, tickH);
+            // Legenda de números principais (0, min, max e múltiplos de step)
+            if (i === 0 || i === min || i === max || i % step === 0) {
+                ctx.fillStyle = this.cores.subt;
+                ctx.fillText(i, x, y + 25);
+                ctx.fillStyle = '#444';
+            }
+        }
+    }
+
+    _desenharPonto(val, min, max, padding, y, cor, label) {
+        const ctx = this.ctx;
+        const x = this._mapX(val, min, max, padding);
+        const raio = 8;
+        
         ctx.beginPath();
-        ctx.moveTo(margem, yEixo);
-        ctx.lineTo(W - margem, yEixo);
+        ctx.fillStyle = '#111'; // Fundo do ponto
+        ctx.strokeStyle = cor;
+        ctx.lineWidth = 3;
+        ctx.arc(x, y, raio, 0, Math.PI * 2);
+        ctx.fill();
         ctx.stroke();
 
-        // Setas direcionais nas extremidades (Invariância espacial)
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        this._drawArrowhead(margem, yEixo, Math.PI);
-        this._drawArrowhead(W - margem, yEixo, 0);
+        ctx.font = 'bold 12px Orbitron';
+        ctx.fillStyle = cor;
+        ctx.fillText(label, x, y - raio - 5);
+    }
 
-        // Renderização das marcas de escala graduada (Ticks)
-        const totalPassos = max - min;
-        const espacamento = (W - (margem * 2)) / totalPassos;
+    _desenharFraçãoBarra(q) {
+        const ctx = this.ctx;
+        const barW = this.W * 0.8;
+        const barH = 50;
+        const x = (this.W - barW) / 2;
+        const y = (this.H - barH) / 2;
+        
+        const num = parseFloat(q.a) || 0;
+        const den = parseFloat(q.b) || q.fim || 1; // Fallback para denominador
 
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-        ctx.font = '10px monospace';
-        ctx.textAlign = 'center';
+        ctx.fillStyle = '#111'; ctx.fillRect(x, y, barW, barH); // Fundo
+        ctx.fillStyle = this.cores.gold; ctx.fillRect(x, y, barW * (num/den), barH); // Preenchimento
+        ctx.strokeStyle = '#444'; ctx.strokeRect(x, y, barW, barH); // Borda
 
-        for (let i = 0; i <= totalPassos; i++) {
-            const xTick = margem + (i * espacamento);
-            const valorCalculado = min + i;
+        // Subdivisões
+        ctx.strokeStyle = '#222';
+        for (let i = 1; i < den; i++) {
+            ctx.beginPath(); ctx.moveTo(x + (i * barW/den), y); ctx.lineTo(x + (i * barW/den), y + barH); ctx.stroke();
+        }
+        
+        ctx.font = 'bold 16px Orbitron'; ctx.fillStyle = this.cores.gold; ctx.textAlign = 'center';
+        ctx.fillText(`${num} / ${den}`, this.W / 2, y - 15);
+    }
 
-            ctx.strokeStyle = valorCalculado === 0 ? this.styles.gold : 'rgba(255,255,255,0.2)';
-            ctx.lineWidth = valorCalculado === 0 ? 3 : 1;
+    _desenharFallback(q) {
+        const ctx = this.ctx;
+        ctx.fillStyle = this.cores.subt; ctx.textAlign = 'center'; ctx.font = '14px Nunito';
+        ctx.fillText("Modo DUA não mapeado graficamente.", this.W/2, this.H/2);
+    }
 
-            ctx.beginPath();
-            ctx.moveTo(xTick, yEixo - 6);
-            ctx.lineTo(xTick, yEixo + 6);
+    // =========================================================================
+    // ─── MÉTODOS DE ANIMAÇÃO DINÂMICA (animarArcos) ───
+    // =========================================================================
+
+    async animarArcos(questao, deslocamento, representacao) {
+        this._autoresize();
+        if (!this.ctx || this.isAnimating || representacao === 'visual') return;
+        this.isAnimating = true;
+
+        const ctx = this.ctx;
+        const DURACAO_MS = 600; // Tempo total do pulo
+        const PADDING_W = 60;
+        const Y_RET = this.H * 0.7; // Base da reta numérica
+
+        // Computa o Viewport Matemático idêntico ao renderCv para consistência
+        let valMin = 0;
+        if (String(questao.display).includes('-') || (parseFloat(questao.a) < 0)) valMin = -10;
+        const valA_Math = parseFloat(questao.a || questao.valorInicial) || 0;
+        const valMax = Math.max(10, questao.res, valA_Math, questao.alternativas[0]?.valor || 0);
+        const valDestino_Math = valA_Math + deslocamento;
+        
+        // Mapeamento para pixels (🧠 CURA: Usando o mesmo _mapX centrado)
+        const startX = this._mapX(valA_Math, valMin, valMax, PADDING_W);
+        const endX = this._mapX(valDestino_Math, valMin, valMax, PADDING_W);
+        
+        // 🧠 CURA DOS ARCOS GIGANTES: Clamping robusto da altura do arco baseado na altura do canvas.
+        const distanciaPx = Math.abs(endX - startX);
+        const ALTURA_MAXIMA_ARCO = this.H * 0.6; // No máximo 60% da altura da tela
+        const arcH = Math.min(ALTURA_MAXIMA_ARCO, Math.max(30, distanciaPx * 0.8)); // Mínimo 30px, máximo H*0.6
+        
+        // Ponto de controle Bézier Quadrático
+        const cpX = (startX + endX) / 2;
+        const cpY = Y_RET - arcH;
+
+        const startTime = performance.now();
+
+        const anim = async (now) => {
+            const elapsed = now - startTime;
+            const p = Math.min(1, elapsed / DURACAO_MS); // Porcentagem (0 a 1)
+            const pEase = p * (2 - p); // Easing quadrativo (desaceleração)
+
+            this._limpar();
+            this._desenharRetaNumerica(questao, representacao); // Redesenha a base estática
+
+            // Desenha arco Bézier Parcial
+            ctx.beginPath(); ctx.lineWidth = 3; ctx.strokeStyle = this.cores.cyan; ctx.moveTo(startX, Y_RET);
+            for (let i = 0.01; i <= pEase; i += 0.01) {
+                const x = Math.pow(1-i, 2) * startX + 2 * (1-i) * i * cpX + Math.pow(i, 2) * endX;
+                const y = Math.pow(1-i, 2) * Y_RET + 2 * (1-i) * i * cpY + Math.pow(i, 2) * Y_RET;
+                ctx.lineTo(x, y);
+            }
             ctx.stroke();
 
-            // Exibe os números em intervalos ou se for o ponto central zero
-            if (valorCalculado === 0 || totalPassos <= 10 || valorCalculado % 5 === 0) {
-                ctx.fillText(String(valorCalculado), xTick, yEixo + 20);
-            }
-        }
-
-        // Desenho do nó marcador da coordenada atual do estudante
-        const xEstudante = margem + ((currentVal - min) * espacamento);
-        if (xEstudante >= margem && xEstudante <= W - margem) {
-            ctx.fillStyle = this.styles.cyan;
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = this.styles.cyan;
-            
-            ctx.beginPath();
-            ctx.arc(xEstudante, yEixo, 7, 0, Math.PI * 2);
-            ctx.fill();
-            
-            ctx.shadowBlur = 0; // Reseta efeito de Glow neon
-        }
-    }
-
-    /**
-     * Auxiliar vetorial para desenho de pontas de seta na reta.
-     * @private
-     */
-    _drawArrowhead(x, y, angle) {
-        const ctx = this.ctx;
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(angle);
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(-8, -4);
-        ctx.lineTo(-8, 4);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-    }
-
-    /**
-     * METÁFORA VISUAL C: Matriz Fracionária de Área Co-variante (Foco no 6º Ano EF06MA07)
-     */
-    drawAreaFractionGrid(totalPartitions, paintedPartitions) {
-        const ctx = this.ctx;
-        const W = this.canvas.width;
-        const H = this.canvas.height;
-        
-        const larguraGrid = W * 0.6;
-        const alturaGrid = H * 0.3;
-        const xStart = (W - larguraGrid) / 2;
-        const yStart = (H - alturaGrid) / 2;
-
-        const larguraParticao = larguraGrid / totalPartitions;
-
-        // Renderiza as partições e preenche os blocos ativos
-        for (let i = 0; i < totalPartitions; i++) {
-            const xBlock = xStart + (i * larguraParticao);
-
-            if (i < paintedPartitions) {
-                ctx.fillStyle = 'rgba(0, 234, 255, 0.25)'; // Preenchimento semiótico ativo
-                ctx.fillRect(xBlock, yStart, larguraParticao, alturaGrid);
-                ctx.strokeStyle = this.styles.cyan;
-                ctx.lineWidth = 2;
+            if (p < 1) {
+                requestAnimationFrame(anim);
             } else {
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-                ctx.lineWidth = 1;
+                // Fim da animação. Desenha o ponto B (Destino) em Neon Cyan
+                this._desenharPonto(valDestino_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.cyan, 'B');
+                this.isAnimating = false;
             }
-
-            ctx.strokeRect(xBlock, yStart, larguraParticao, alturaGrid);
-        }
-
-        // Borda mestre de contenção estrutural (Invariante do Inteiro)
-        ctx.strokeStyle = this.styles.gold;
-        ctx.lineWidth = 3;
-        ctx.strokeRect(xStart, yStart, larguraGrid, alturaGrid);
-    }
-
-    /**
-     * METÁFORA VISUAL D: Grid Abstrato Matricial (Estágio Mental Interno Puro)
-     * Renderiza apenas uma malha sutil de fundo para indicar ambiente de cálculo analítico formal.
-     */
-    drawAbstractGrid() {
-        const ctx = this.ctx;
-        const W = this.canvas.width;
-        const H = this.canvas.height;
-        const step = 30;
-
-        ctx.strokeStyle = 'rgba(0, 234, 255, 0.03)';
-        ctx.lineWidth = 1;
-
-        for (let x = 0; x < W; x += step) {
-            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-        }
-        for (let y = 0; y < H; y += step) {
-            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-        }
-    }
-
-    /**
-     * PIPELINE DE ANIMAÇÃO DE DESLOCAMENTO EM ARCO (Chama os arcos acumulativos vetoriais)
-     * Modos gráficos integrados ao pipeline assíncrono do main.js
-     */
-    async animarArcos(q, deslocamento, modoGrafico) {
-        return new Promise((resolve) => {
-            // Renderiza o estado final correspondente imediatamente
-            this.renderCv(q, null, modoGrafico);
-            
-            // Tratamento simplificado de frame-delay para simulação de fluxo assíncrono vetorial
-            if (this.ctx && modoGrafico !== 'abstrato') {
-                const ctx = this.ctx;
-                const W = this.canvas.width;
-                const H = this.canvas.height;
-                
-                // Renderização de arco indicador de salto direcional na reta
-                ctx.strokeStyle = deslocamento >= 0 ? this.styles.green : this.styles.red;
-                ctx.lineWidth = 3;
-                ctx.setLineDash([4, 4]); // Linha tracejada de movimento rítmico
-                
-                ctx.beginPath();
-                ctx.arc(W / 2, H * 0.5, Math.abs(deslocamento) * 15, Math.PI, 0, false);
-                ctx.stroke();
-                ctx.setLineDash([]); // Reseta tracejado
-            }
-            
-            setTimeout(() => { resolve(true); }, 600); // Libera o travamento do pipeline do maestro após 600ms
-        });
+        };
+        requestAnimationFrame(anim);
     }
 }
