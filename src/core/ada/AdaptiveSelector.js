@@ -2,7 +2,8 @@
  * @fileoverview AdaptiveSelector.js
  * @description Cérebro orquestrador da ADA. Seleciona a próxima tarefa, 
  * define a representação visual (DUA) e injeta scaffolds na ZDP do estudante.
- * @version 5.1.0
+ * AGORA COM: Choque Semiótico para Detecção de Pseudoconceito.
+ * @version 5.2.0
  * @package LabTech / Core ADA
  */
 
@@ -20,9 +21,19 @@ export class AdaptiveSelector {
 
     /**
      * Determina qual interface semiótica (visual, abstrata, reta) o Canvas deve renderizar.
+     * 🧠 INJEÇÃO XAI: Choque Semiótico ativo.
      */
     static determinarRepresentacaoInterface(perfilCognitivo, comboAcertos, representacaoPadrao) {
         if (!perfilCognitivo) return representacaoPadrao || 'visual';
+
+        // 🚨 SE A EMBOSCADA ESTIVER ARMADA: Força a transferência semiótica!
+        if (perfilCognitivo.estadoADA && perfilCognitivo.estadoADA.emboscadaArmada) {
+            const repBase = representacaoPadrao || 'visual';
+            // Inverte o modelo: Se era abstrato, força gráfico (reta). Se era gráfico, força abstrato.
+            const modoForcado = (repBase === 'abstrato') ? 'reta' : 'abstrato';
+            console.warn(`[ADA] 🔄 CHOQUE SEMIÓTICO APLICADO: Forçando modo '${modoForcado}' para testar transferência do aluno.`);
+            return modoForcado;
+        }
 
         const perfil = perfilCognitivo.perfilDominante || 'INDEFINIDO';
 
@@ -80,12 +91,15 @@ export class AdaptiveSelector {
      * Retorna o pacote completo da próxima tarefa.
      */
     static selecionarProximaTarefa(gameState, poolDeTarefas) {
-        const perfil = gameState?.adaState?.perfilCognitivoAtual || 'DEPENDENTE_CONCRETO';
+        // Envia o objeto de perfil inteiro para a ADA ler a flag da emboscada
+        const perfilCompleto = gameState?.perfilCognitivo || {};
+        const questao = poolDeTarefas[0] || {};
+        const repPadrao = questao.representacao || 'visual';
         
         return {
-            taskId: poolDeTarefas[0]?.id || 'default',
+            taskId: questao.id || 'default',
             interfaceModifiers: {
-                modoRepresentacao: this.determinarRepresentacaoInterface({ perfilDominante: perfil }, gameState?.combo || 0, 'visual')
+                modoRepresentacao: this.determinarRepresentacaoInterface(perfilCompleto, gameState?.combo || 0, repPadrao)
             }
         };
     }
