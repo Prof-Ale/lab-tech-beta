@@ -1,152 +1,107 @@
 /**
- * @fileoverview LearningAnalytics.js v4.2.0 — "LabTech Cognitive Sensor Processor"
- * @description Mecanismo central de telemetria, inferência cognitiva e detecção de pseudoconceitos.
- * Analisa streams imutáveis de eventos de interação para extrair perfis e misconceptions na ZDP.
- * 
- * @version 4.2.0
- * @package LabTech / ADA Intelligent Tutoring System
+ * @fileoverview LearningAnalytics.js
+ * @description Motor de Telemetria e Geração de Relatórios do LabTech.
+ * Converte dados atômicos de erro e acerto em visualizações HTML compreensíveis
+ * e exportações de dados em formato CSV para o professor.
+ * @version 2.0.0
+ * @package LabTech / Core ADA
  */
 
-// Enums Estritos de Classificação Pedagógica
-export const CONFIG_ANALYTICS = Object.freeze({
-    PERFIS: {
-        PROCEDURAL_MECANICO: 'PROCEDURAL_MECANICO',
-        DEPENDENTE_CONCRETO: 'DEPENDENTE_CONCRETO',
-        IMPULSIVO_LINEAR: 'IMPULSIVO_LINEAR',
-        CONCEITUAL_TEORICO: 'CONCEITUAL_TEORICO'
-    },
-    MISCONCEPTIONS: {
-        LINEARIZACAO_PROPORCIONAL: 'LINEARIZACAO_PROPORCIONAL',
-        QUEBRA_VERTICE_DESCONTINUO: 'QUEBRA_VERTICE_DESCONTINUO',
-        DESCONEXAO_RAMO_SIMETRICO: 'DESCONEXAO_RAMO_SIMETRICO'
-    },
-    ESTAGIOS_GALPERIN: {
-        MATERIAL_CONCRETO: 'MATERIAL_CONCRETO',
-        ICONICO_VISUAL: 'ICONICO_VISUAL',
-        VERBAL_EXTERNO: 'VERBAL_EXTERNO',
-        LINGUAGEM_INTERNA: 'LINGUAGEM_INTERNA'
-    }
-});
-
-/**
- * Processa o histórico imutável de interações do estudante e extrai uma biópsia cognitiva completa.
- * 
- * @param {Array<Object>} interactionEvents - Stream de eventos coletados pelos sensores da interface.
- * @param {Object} currentProfileState - Estado atual de classificação do perfil do estudante.
- * @returns {Object} Novo estado analítico consolidado e imutável (Explicabilidade Total).
- */
-export function analisarEventosInteracao(interactionEvents, currentProfileState) {
-    // Defesa sanitária contra estruturas ausentes ou corrompidas
-    const eventos = Array.isArray(interactionEvents) ? interactionEvents : [];
-    if (eventos.length === 0) {
-        return Object.freeze({
-            indicePseudoconceito: 0,
-            friccionCognitiva: 0,
-            viesLinear: 0,
-            perfilInferido: CONFIG_ANALYTICS.PERFIS.DEPENDENTE_CONCRETO,
-            estagioGalperinAtual: CONFIG_ANALYTICS.ESTAGIOS_GALPERIN.MATERIAL_CONCRETO,
-            misconceptionsDetectadas: [],
-            metaExplicabilidade: "Histórico vazio. Inicializando calibragem adaptativa básica."
-        });
-    }
-
-    // 1. Extração de Métricas de Latência e Padrões de Movimento
-    const totalEventos = eventos.length;
-    let somaLatencias = 0;
-    let eventosImpulsivos = 0;
-    let correcoesLinearesAditivas = 0;
-    let alteracoesDirecaoSeletor = 0;
-    let ultimoValorSeletor = null;
-    let ultimaDirecao = null;
-
-    let acertosProcedurais = 0;
-    let falhasConceituaisGraficas = 0;
-
-    for (let i = 0; i < totalEventos; i++) {
-        const e = eventos[i];
-        somaLatencias += e.latencyMs || 0;
-
-        // Rastreamento de Impulsividade (Latência crítica de reação abaixo de 2500ms)
-        if (e.latencyMs && e.latencyMs < 2500) {
-            eventosImpulsivos++;
+export class LearningAnalytics {
+    
+    /**
+     * Varre o objeto de histórico do estudante e gera os cards HTML de progresso
+     * para serem injetados no painel de Dashboard (Interface).
+     * @param {Object} historico - Objeto G.historico contendo as métricas por código BNCC.
+     * @returns {string} Código HTML formatado pronto para injeção no DOM.
+     */
+    static gerarHtmlDashboardBNCC(historico) {
+        if (!historico || Object.keys(historico).length === 0) {
+            return "<p style='text-align:center; opacity:0.5; padding:20px; font-family:monospace;'>Sem dados suficientes para análise.</p>";
         }
 
-        // Rastreamento de Viés Linear (Ajustes repetitivos de incremento fixo ex: +1, +1, +1)
-        if (e.tipoAcao === 'AJUSTE_PARAMETRICO') {
-            if (ultimoValorSeletor !== null) {
-                const delta = e.valor - ultimoValorSeletor;
-                const direcaoAtual = Math.sign(delta);
-                
-                if (direcaoAtual !== ultimaDirecao && ultimaDirecao !== null) {
-                    alteracoesDirecaoSeletor++; // Fricção cinética detectada
-                }
-                if (Math.abs(delta) === 1 || Math.abs(delta) === 10) {
-                    correcoesLinearesAditivas++; // Indicativo de raciocínio aditivo simples
-                }
-                ultimaDirecao = direcaoAtual;
+        let htmlFinal = '';
+
+        for (let hab in historico) {
+            const hist = historico[hab];
+            const acertos = hist.acertos || 0;
+            const errosConceito = hist.erros_conceito || 0;
+            const errosCalculo = hist.erros_calculo || 0;
+            const total = acertos + errosConceito + errosCalculo;
+            
+            if (total === 0) continue;
+
+            const txAcerto = Math.round((acertos / total) * 100);
+            let diagnostico = "";
+
+            // Avaliação Clínica Baseada em Evidências
+            if (errosConceito > acertos) {
+                diagnostico = `<div class="alerta-sinal" style="color: var(--neon-red, #ff3333); margin-top:5px; font-size:11px; font-weight:bold;">⚠️ Bloqueio Conceitual: O aluno não domina a regra base desta habilidade.</div>`;
+            } else if (errosCalculo > 0) {
+                diagnostico = `<div class="alerta-calc" style="color: #ffbb33; margin-top:5px; font-size:11px; font-weight:bold;">📐 Falha Operacional: Erros de atenção ou procedimento algorítmico.</div>`;
+            } else {
+                diagnostico = `<div class="alerta-ok" style="color: var(--neon-green, #00ff66); margin-top:5px; font-size:11px; font-weight:bold;">✅ Domínio Estabilizado.</div>`;
             }
-            ultimoValorSeletor = e.valor;
+
+            htmlFinal += `
+                <div class="dash-card" style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--choco-gold, #d4af37); padding: 12px; margin-bottom: 12px; border-radius: 4px;">
+                    <div class="dash-card-header" style="display:flex; justify-content:space-between;">
+                        <span class="hab-code" style="color:var(--choco-gold, #d4af37); font-weight:bold; font-family: monospace;">${hab}</span>
+                        <span class="hab-pct" style="color:var(--neon-cyan, #00eaff); font-weight:bold;">${txAcerto}%</span>
+                    </div>
+                    <p class="hab-desc" style="font-size:11px; opacity:0.8; margin:5px 0;">${hist.desc || "Habilidade monitorada em tempo real."}</p>
+                    <div class="dash-bar" style="width:100%; height:8px; background:#111; border-radius:4px; overflow:hidden; margin: 6px 0;">
+                        <div class="dash-fill-ok" style="width:${txAcerto}%; height:100%; background:var(--neon-green, #00ff66);"></div>
+                    </div>
+                    ${diagnostico}
+                </div>`;
         }
 
-        // Mapeamento de Pseudoconceito (Sucesso em equações formais vs Erro em gráficos dinâmicos)
-        if (e.contextoAvaliacao === 'ALGEBRICO_FORMAL' && e.sucesso === true) acertosProcedurais++;
-        if (e.contextoAvaliacao === 'GRAFICO_DINAMICO' && e.sucesso === false) falhasConceituaisGraficas++;
+        return htmlFinal;
     }
 
-    // 2. Cálculos Matemáticos dos Índices Proprietários da ADA
-    const mediaLatencia = somaLatencias / totalEventos;
-    const taxaImpulsividade = eventosImpulsivos / totalEventos;
-    
-    // Cálculo do Índice de Pseudoconceito (Discrepância procedural vs conceitual)
-    const totalTestesCruzados = acertosProcedurais + falhasConceituaisGraficas;
-    const indicePseudoconceito = totalTestesCruzados > 0 
-        ? (acertosProcedurais * falhasConceituaisGraficas) / Math.pow(totalTestesCruzados, 2) * 4 // Normalizado entre 0 e 1
-        : 0.5;
+    /**
+     * Compila o histórico longitudinal do aluno em um arquivo CSV 
+     * e força o download automático no navegador para uso do professor.
+     * @param {string} nomeAluno - O nome do estudante na sessão atual.
+     * @param {Object} historico - O objeto G.historico com as métricas computadas.
+     */
+    static exportarCSV(nomeAluno, historico) {
+        if (!historico || Object.keys(historico).length === 0) {
+            alert("Não há dados consolidados para exportar.");
+            return;
+        }
 
-    // Cálculo da Fricção Cognitiva baseada na volatilidade das tentativas do usuário
-    const friccionCognitiva = Math.min(alteracoesDirecaoSeletor / totalEventos, 1);
-    
-    // Cálculo do Viés Linear
-    const viesLinear = correcoesLinearesAditivas / totalEventos;
+        // Cabeçalho Padrão do CSV
+        let csvContent = "ESTUDANTE,HABILIDADE_BNCC,ACERTOS,ERROS_CONCEITO,ERROS_CALCULO,TAXA_ACERTO_%\n";
 
-    // 3. Mecanismo de Inferência de Misconceptions Estruturais
-    const misconceptionsDetectadas = [];
-    if (viesLinear > 0.6 && indicePseudoconceito > 0.4) {
-        misconceptionsDetectadas.push(CONFIG_ANALYTICS.MISCONCEPTIONS.LINEARIZACAO_PROPORCIONAL);
+        for (let hab in historico) {
+            const hist = historico[hab];
+            const acertos = hist.acertos || 0;
+            const errosConceito = hist.erros_conceito || 0;
+            const errosCalculo = hist.erros_calculo || 0;
+            const total = acertos + errosConceito + errosCalculo;
+            
+            const txAcerto = total > 0 ? Math.round((acertos / total) * 100) : 0;
+
+            // Formatação de linha segura para Excel/Sheets
+            csvContent += `"${nomeAluno || 'Anônimo'}","${hab}",${acertos},${errosConceito},${errosCalculo},${txAcerto}\n`;
+        }
+
+        // Transformação em Blob UTF-8 para garantir leitura correta de acentos
+        const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
+        // Simulação de clique imperativo para forçar o download
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `Relatorio_LabTech_${nomeAluno.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.csv`);
+        
+        document.body.appendChild(link);
+        link.click();
+        
+        // Limpeza de memória
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     }
-    if (friccionCognitiva > 0.7 && mediaLatencia < 3000) {
-        misconceptionsDetectadas.push(CONFIG_ANALYTICS.MISCONCEPTIONS.DESCONEXAO_RAMO_SIMETRICO);
-    }
-
-    // 4. Classificação Conclusiva do Perfil Cognitivo Atual (Engine de Decisão da ADA)
-    let perfilInferido = CONFIG_ANALYTICS.PERFIS.DEPENDENTE_CONCRETO;
-    let estagioGalperinAtual = CONFIG_ANALYTICS.ESTAGIOS_GALPERIN.MATERIAL_CONCRETO;
-
-    if (indicePseudoconceito > 0.65 && taxaImpulsividade < 0.3) {
-        perfilInferido = CONFIG_ANALYTICS.PERFIS.PROCEDURAL_MECANICO;
-        estagioGalperinAtual = CONFIG_ANALYTICS.ESTAGIOS_GALPERIN.ICONICO_VISUAL;
-    } else if (taxaImpulsividade > 0.60 && viesLinear > 0.5) {
-        perfilInferido = CONFIG_ANALYTICS.PERFIS.IMPULSIVO_LINEAR;
-        estagioGalperinAtual = CONFIG_ANALYTICS.ESTAGIOS_GALPERIN.MATERIAL_CONCRETO;
-    } else if (indicePseudoconceito < 0.25 && friccionCognitiva < 0.3 && mediaLatencia > 4000) {
-        perfilInferido = CONFIG_ANALYTICS.PERFIS.CONCEITUAL_TEORICO;
-        estagioGalperinAtual = CONFIG_ANALYTICS.ESTAGIOS_GALPERIN.LINGUAGEM_INTERNA;
-    } else if (mediaLatencia > 5000 && friccionCognitiva > 0.4) {
-        perfilInferido = CONFIG_ANALYTICS.PERFIS.DEPENDENTE_CONCRETO;
-        estagioGalperinAtual = CONFIG_ANALYTICS.ESTAGIOS_GALPERIN.VERBAL_EXTERNO;
-    }
-
-    // 5. Geração da Camada de Explicabilidade Detalhada para Auditoria do Professor
-    const metaExplicabilidade = `Estudante classificado como ${perfilInferido} com base em um índice de pseudoconceito de ${(indicePseudoconceito * 100).toFixed(1)}% e viés linear de ${(viesLinear * 100).toFixed(1)}%. Latência média observada: ${(mediaLatencia / 1000).toFixed(2)}s.`;
-
-    // Retorno do objeto de biópsia cognitiva blindado contra mutações externas
-    return Object.freeze({
-        indicePseudoconceito: Number(indicePseudoconceito.toFixed(4)),
-        friccionCognitiva: Number(friccionCognitiva.toFixed(4)),
-        viesLinear: Number(viesLinear.toFixed(4)),
-        perfilInferido,
-        estagioGalperinAtual,
-        misconceptionsDetectadas: Object.freeze(misconceptionsDetectadas),
-        metaExplicabilidade
-    });
 }
