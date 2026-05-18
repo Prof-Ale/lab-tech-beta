@@ -279,25 +279,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     on('btn-musica', toggleMusica);
     on('btn-voz', toggleVoz);
 
-   // ─── ATALHO INTEGRADO DOCENTE: MAPA CLÍNICO COGNITIVO (Alt + P) ───
+  // ─── ATALHO INTEGRADO DOCENTE: MAPA CLÍNICO SIMPLIFICADO (Alt + P) ───
     document.addEventListener('keydown', (e) => {
         if (e.altKey && e.key.toLowerCase() === 'p') {
             if (!G.perfilCognitivo) {
-                alert("⚠️ Acesso Negado: Nenhum estudante iniciou calibração na sessão atual.");
+                alert("⚠️ Acesso Negado: Nenhum estudante iniciou calibração.");
                 return;
             }
 
-            const relatorio = `🎓 PAINEL CLÍNICO DOCENTE (LabTech XAI)
---------------------------------------------------
-Estudante: ${G.nome} | Turma: ${G.turma}
-🧠 Perfil Diagnóstico: ${G.perfilCognitivo.perfilDominante}
-⚠️ Deriva Pedagógica (0-1): ${G.perfilCognitivo.derivaPedagogicaGeral}
-⏱️ Itens Processados: ${G.perfilCognitivo.itensRespondidos}
---------------------------------------------------
-Aperte [F12] para ver a matriz de erro detalhada no console!`;
-            
-            console.log("%c🔍 RADIOGRAFIA COGNITIVA COMPLETA DA ADA", "color: #00eaff; font-size: 14px; font-weight: bold;");
-            console.dir(G.perfilCognitivo);
+            const relatorio = `🎓 PAINEL DOCENTE
+----------------------------------------
+Estudante: ${G.nome}
+🧠 Perfil Atual: ${G.perfilCognitivo.perfilDominante}
+⏱️ Questões: ${G.perfilCognitivo.itensRespondidos}`;
             
             alert(relatorio);
         }
