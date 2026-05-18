@@ -1,6 +1,7 @@
 /**
  * src/main.js — CONFIGURAÇÃO DE ROTAS DE IMPORTAÇÃO E MAESTRO (v15.0)
  * Orquestrador do fluxo cognitivo, telemetria e renderização do LabTech.
+ * CORREÇÃO: Métodos estáticos do AdaptiveSelector e mapeamento de ID do Canvas.
  */
 
 // ⚙️ 1. ESTADO GLOBAL E MOTORES DE JOGO
@@ -8,7 +9,6 @@ import { G } from './engine/gameState.js';
 import { initDebugMode } from './engine/debugMode.js';
 
 // 🧠 2. O CÉREBRO DA ADA (Camada Core Pedagógica)
-// Usando chaves e verifique se as classes estão exportadas no arquivo de origem
 import { QuestionNormalizer } from './core/ada/QuestionNormalizer.js';
 import { DiagnosticEngine } from './core/ada/DiagnosticEngine.js';
 import { ProfileEngine } from './core/ada/ProfileEngine.js';
@@ -26,7 +26,6 @@ const abrirM = (id) => $(id)?.classList.add('active');
 const fecharM = (id) => $(id)?.classList.remove('active');
 
 // Instanciação Única do Motor Gráfico 
-// O parâmetro 'canvas' é o ID do elemento no seu index.html onde os gráficos serão desenhados
 let renderizadorGrafico = null;
 
 /**
@@ -41,7 +40,6 @@ function atualizarDashboard() {
         return;
     }
 
-    // A classe LearningAnalytics agora possui o método exposto para gerar o HTML
     let html = LearningAnalytics.gerarHtmlDashboardBNCC(G.historico);
     content.innerHTML = html;
 
@@ -64,9 +62,9 @@ function mostrarSeletorBlocos() {
     const instProfile = new ProfileEngine();
     G.perfilCognitivo = instProfile.inicializarEstudante(`${G.nome}_${G.turma}`);
 
-    // Inicialização do motor gráfico no DOM ativo
+    // INTERVENÇÃO CIRÚRGICA: Vinculação correta ao ID 'cv' do HTML para o motor gráfico
     if (!renderizadorGrafico) {
-        renderizadorGrafico = new CanvasRenderer('meuCanvasGrafico'); // ALERTA: Troque pelo ID real do seu canvas
+        renderizadorGrafico = new CanvasRenderer('cv'); 
     }
 
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
@@ -95,7 +93,7 @@ function iniciarBloco(id) {
 }
 
 /**
- * Sincroniza os dados internos do motor de jogo com os elementos de UI/UX
+ * Sincroniza os dados internos do motor de jogo com os elements de UI/UX
  */
 function atualizarHudVisual() {
     updHUD(); // Delegação limpa para o uiManager.js
@@ -169,8 +167,8 @@ async function processarResposta(alt, q) {
     narrarContexto(feedbackTexto, analise.correto);
 
     // 3. Renderização Dinâmica do Isomorfismo
-    const adpSelector = new AdaptiveSelector();
-    const payloadAdaptive = adpSelector.selecionarProximaTarefa(G, [q]);
+    // INTERVENÇÃO CIRÚRGICA: Correção de chamada instanciada para chamada de classe estática
+    const payloadAdaptive = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
     
     if (renderizadorGrafico) {
         await renderizadorGrafico.animarArcos(q, deslocamento, payloadAdaptive.interfaceModifiers.modoRepresentacao || 'visual');
@@ -201,16 +199,21 @@ function proximaQ() {
         fbContainer.style.display = 'none';
     }
 
-    // ADA calcula o próximo item ótimo baseada no erro anterior
-    const adpSelector = new AdaptiveSelector();
-    // Exemplo: fetch global ou catálogo injetado
-    // const q = adpSelector.selecionarProximaTarefa(G, window.catalogoGlobalDeQuestoes);
+    // INTERVENÇÃO CIRÚRGICA: Chamada estática substituindo instanciação redundante
+    const q = AdaptiveSelector.selecionarProximaQuestao(G.currentBlock, G.perfilCognitivo);
     
-    // [SIMULAÇÃO PARA PREVENIR ERRO] Para não quebrar por falta de banco:
-    const qFicticia = { id: 'sim_1', bncc: 'simulada', representacao: 'visual', alternativas: [{valor: 'A'}, {valor: 'B'}], res: 'A' };
+    // Removido mock de contingência para restaurar processamento do banco real de questões
+    if (!q) return;
+
+    // Dispara gatilho preditivo de microintervenção se risco for computado pela ADA
+    const alertaPrevio = AdaptiveSelector.gerarMicroIntervencao(q, G.perfilCognitivo);
+    if (alertaPrevio) {
+        console.log("🔮 [XAI PREDITIVA] ADA detectou barreira epistemológica iminente. Injetando Scaffold preventivo.");
+        narrarContexto(alertaPrevio, false); 
+    }
     
     G.tempoInicialQuestao = Date.now();
-    renderQ(qFicticia);
+    renderQ(q);
 }
 
 /**
@@ -223,8 +226,8 @@ function renderQ(q) {
     if (grid) grid.innerHTML = '';
     $('btn-prox')?.classList.add('hidden');
     
-    const adpSelector = new AdaptiveSelector();
-    const pAdaptivo = adpSelector.selecionarProximaTarefa(G, [q]);
+    // INTERVENÇÃO CIRÚRGICA: Chamada estática substituindo instanciação desnecessária
+    const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
 
     if (renderizadorGrafico) {
         renderizadorGrafico.renderCv(q, null, pAdaptivo.interfaceModifiers.modoRepresentacao || 'visual');
@@ -249,6 +252,14 @@ function renderQ(q) {
  */
 document.addEventListener('DOMContentLoaded', async () => { 
     console.log("🚀 [SISTEMA] Iniciando ignição e setup do motor LabTech (Arquitetura Modular)...");
+    
+    try {
+        // Inicialização compulsória da carga assíncrona do cofre de questões
+        const banco = await AdaptiveSelector.carregarBancoDeQuestoes(); 
+        console.log(`✅ [SISTEMA] Base de dados instanciada com sucesso. Itens carregados: ${banco.length}`);
+    } catch (e) {
+        console.error("❌ [SISTEMA CRÍTICO] Falha na ingestão primária do cofre de questões:", e);
+    }
     
     initDebugMode();
   
