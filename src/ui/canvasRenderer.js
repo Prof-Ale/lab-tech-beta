@@ -71,16 +71,31 @@ export class CanvasRenderer {
         if (!this.ctx || !questao) return;
         this._limpar();
 
-        // 🧠 Triage Inteligente: Pula reta numérica para questões literárias (Álgebra)
+        // 🧠 TRIAGE INTELIGENTE CORRIGIDA
         let rep = representacao;
         const strA = String(questao.a ?? questao.valorInicial ?? 0);
-        if (rep === 'visual' && strA.match(/[a-zA-Z]/)) rep = 'algebra';
+        
+        // 1. Álgebra Literal
+        if (String(questao.bloco) === '4' || strA.match(/[a-zA-Z]/)) {
+            rep = 'algebra';
+        } 
+        // 2. A Correção Crítica: O que significa 'visual'?
+        else if (rep === 'visual' || rep === undefined) {
+            // Se a questão tem denominador (b) ou divisor no texto, é fração (Barra).
+            // Caso contrário, a interface visual básica É A RETA NUMÉRICA!
+            const isFracao = questao.b !== undefined || String(questao.display).includes('/');
+            if (!isFracao) {
+                rep = 'reta';
+            }
+        }
 
         try {
             if (rep === 'reta' || rep === 'abstrato') {
                 this._desenharRetaNumerica(questao, rep);
             } else if (rep === 'visual') {
                 this._desenharFraçãoBarra(questao);
+            } else if (rep === 'algebra') {
+                this._desenharFallback(questao); // Álgebra não usa reta nem fração
             } else {
                 this._desenharFallback(questao);
             }
@@ -94,7 +109,6 @@ export class CanvasRenderer {
         const Y_RET = this.H * 0.7;
         const PADDING_W = 60;
 
-        // Viewport Matemático robusto
         let valMin = 0;
         const strA = String(q.a ?? q.valorInicial ?? 0);
         if (String(q.display).includes('-') || strA.includes('-')) valMin = -10;
@@ -140,7 +154,7 @@ export class CanvasRenderer {
 
     _desenharPonto(val, min, max, padding, y, cor, label) {
         const x = this._mapX(val, min, max, padding);
-        if (!isFinite(x) || isNaN(x)) return; // Failsafe Vital
+        if (!isFinite(x) || isNaN(x)) return;
 
         this.ctx.beginPath();
         this.ctx.fillStyle = '#111'; this.ctx.strokeStyle = cor; this.ctx.lineWidth = 3;
@@ -149,7 +163,7 @@ export class CanvasRenderer {
 
         this.ctx.font = 'bold 12px Orbitron'; 
         this.ctx.fillStyle = cor; 
-        this.ctx.textAlign = 'center'; // CODEX FIX: Removido o bug fatal de escopo 'ctx'
+        this.ctx.textAlign = 'center';
         this.ctx.fillText(label, x, y - 13);
     }
 
@@ -161,7 +175,6 @@ export class CanvasRenderer {
 
         this.ctx.fillStyle = '#111'; this.ctx.fillRect(x, y, barW, barH);
         
-        // CODEX FIX: Clamping de Fração Imprópria (Ratio nunca passa de 1 ou fica negativo)
         const ratio = Math.max(0, Math.min(1, num / Math.max(1, den)));
         
         this.ctx.fillStyle = this.cores.gold; this.ctx.fillRect(x, y, barW * ratio, barH);
@@ -178,31 +191,32 @@ export class CanvasRenderer {
 
     _desenharFallback(q) {
         this.ctx.fillStyle = this.cores.subt; this.ctx.textAlign = 'center'; this.ctx.font = '14px Nunito';
-        this.ctx.fillText("Análise Semiótica em Processamento...", this.W/2, this.H/2);
+        this.ctx.fillText("Análise Visual Não Requerida.", this.W/2, this.H/2);
     }
 
     // =========================================================================
     // ─── MÉTODOS DE ANIMAÇÃO DINÂMICA (animarArcos) ───
     // =========================================================================
 
-    /**
-     * 🧠 A NOVA CURA: Sincronismo total e failsafe anti-travamento.
-     * @returns {Promise<void>} Resolvida SEMPRE que a animação acaba ou falha.
-     */
     async animarArcos(questao, deslocamento, representacao) {
         this._autoresize();
-        
-        // Proteção contra chamadas redundantes
-        if (!this.ctx || this.isAnimating) { return Promise.resolve(); }
+        if (!this.ctx || this.isAnimating) return Promise.resolve();
 
-        // Triage: Pula animação para frações ou álgebra literal
+        // 🧠 TRIAGE INTELIGENTE CORRIGIDA (Replicação do renderCv)
+        let rep = representacao;
         const strA = String(questao.a ?? questao.valorInicial ?? 0);
-        if (representacao === 'visual' || strA.match(/[a-zA-Z]/)) { return Promise.resolve(); }
+        if (String(questao.bloco) === '4' || strA.match(/[a-zA-Z]/)) rep = 'algebra';
+        else if (rep === 'visual' || rep === undefined) {
+            const isFracao = questao.b !== undefined || String(questao.display).includes('/');
+            if (!isFracao) rep = 'reta';
+        }
 
-        this.isAnimating = true; // 🔐 Tranca o estado
+        // Pula animação geométrica para Álgebra e Frações
+        if (rep === 'visual' || rep === 'algebra') return Promise.resolve();
+
+        this.isAnimating = true;
         const startTime = performance.now();
 
-        // Viewport Matemático idêntico ao renderCv
         let valMin = 0; if (String(questao.display).includes('-') || strA.includes('-')) valMin = -10;
         const valA_Math = parseFloat(strA.replace(/[^\d.-]/g, '')) || 0;
         const valRes_Math = parseFloat(String(questao.res).replace(/[^\d.-]/g, '')) || 0;
@@ -213,20 +227,16 @@ export class CanvasRenderer {
         const PADDING_W = 60;
         const Y_RET = this.H * 0.7;
 
-        // Pontos em pixel centrados
         const startX = this._mapX(valA_Math, valMin, valMax, PADDING_W);
         const endX = this._mapX(valDest_Math, valMin, valMax, PADDING_W);
 
-        // Failsafe vital se a matemática quebrar
         if (!isFinite(startX) || !isFinite(endX)) { this.isAnimating = false; return Promise.resolve(); }
 
-        // Mapeamento Bézier
         const distPx = Math.abs(endX - startX);
         const arcH = Math.min(this.H * 0.6, Math.max(30, distPx * 0.8));
         const cpX = (startX + endX) / 2;
         const cpY = Y_RET - arcH;
 
-        // Retorna a Promise que o maestro (main.js) está esperando
         return new Promise((resolve) => {
             const DURACAO = 600;
 
@@ -237,7 +247,7 @@ export class CanvasRenderer {
 
                 try {
                     this._limpar();
-                    this._desenharRetaNumerica(questao, representacao);
+                    this._desenharRetaNumerica(questao, rep);
 
                     this.ctx.beginPath(); this.ctx.lineWidth = 3; this.ctx.strokeStyle = this.cores.cyan; this.ctx.moveTo(startX, Y_RET);
                     for (let i = 0.01; i <= pEase; i += 0.01) {
@@ -247,24 +257,20 @@ export class CanvasRenderer {
                         if(isFinite(x) && isFinite(y)) this.ctx.lineTo(x, y);
                     }
                     this.ctx.stroke();
-
                 } catch (e) {
-                    console.error("[CanvasRenderer] Erro na RAF:", e);
-                    // Não para o sistema, continua a animação ou quebra para o resolve()
+                    console.error(e);
                 }
 
                 if (p < 1) {
                     requestAnimationFrame(anim);
                 } else {
-                    // 🎉 FIM DA ANIMAÇÃO. Sincroniza estado e resolve a Promise.
                     this._desenharPonto(valDest_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.cyan, 'B');
-                    this.isAnimating = false; // 🔓 Destranca estado
-                    resolve(); // ✅ Libera o Maestro (main.js)
+                    this.isAnimating = false; 
+                    resolve(); 
                 }
             };
-
-            // Inicia o pipeline de renderização
             requestAnimationFrame(anim);
         });
+    }
     }
 }
