@@ -135,8 +135,6 @@ async function processarResposta(alt, q) {
 
     if (!G.historico[hab]) {
         G.historico[hab] = { acertos: 0, erros_conceito: 0, erros_calculo: 0, desc: "Habilidade Monitorada" };
-       // 💾 Grava a telemetria BNCC ofuscada no HD do navegador
-    localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico)))); 
     }
 
     // Travamento visual de UX
@@ -162,6 +160,9 @@ async function processarResposta(alt, q) {
         const penalidadeDano = 10 + (analise.peso || 1) * 5;
         G.vida = Math.max(0, G.vida - penalidadeDano);
     }
+
+    // 💾 AGORA SIM: Grava a telemetria BNCC no HD do navegador APÓS a pontuação ser atualizada
+    localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
 
     // 1. Processa a telemetria e altera o estado do Estudante e da ADA
     const payloadTelemetria = { latenciaMs: latenciaSessaoMs, totalAjustesPreConfirmacao: 1, alternativaSelecionadaId: alt.id };
