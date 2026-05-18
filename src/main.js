@@ -279,20 +279,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     on('btn-musica', toggleMusica);
     on('btn-voz', toggleVoz);
 
-  // ─── ATALHO INTEGRADO DOCENTE: MAPA CLÍNICO VISUAL (Alt + P) ───
+  // ─── ATALHOS INTEGRADOS DO DOCENTE (Alt+P e Alt+J) ───
     document.addEventListener('keydown', (e) => {
+        // 📊 ALT + P: PAINEL CLÍNICO VISUAL (MAPA DO ALUNO)
         if (e.altKey && e.key.toLowerCase() === 'p') {
             if (!G.perfilCognitivo) {
                 alert("⚠️ Acesso Negado: Nenhum estudante calibrou o sistema.");
                 return;
             }
 
-            // 1. Procura se a janela do professor já existe. Se não, cria e injeta no HTML na hora!
             let modalDocente = $('modal-docente-xai');
             if (!modalDocente) {
                 modalDocente = document.createElement('div');
                 modalDocente.id = 'modal-docente-xai';
-                modalDocente.className = 'modal'; // Usa a mesma classe das outras janelas
+                modalDocente.className = 'modal'; 
                 modalDocente.innerHTML = `
                     <div class="mc" style="max-width: 600px; border: 2px solid var(--choco-gold, #d4af37); background: #0a0a0a;">
                         <button class="mx" onclick="document.getElementById('modal-docente-xai').classList.remove('active')">✕</button>
@@ -302,12 +302,48 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.body.appendChild(modalDocente);
             }
 
-            // 2. Pede para a IA gerar o relatório visual atualizado
             const relatorioHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
-            
-            // 3. Preenche a janela e exibe na tela
             $('content-docente-xai').innerHTML = relatorioHTML;
             modalDocente.classList.add('active');
+        }
+
+        // 📖 ALT + J: GLOSSÁRIO DE EXPLICABILIDADE DA IA (BULA)
+        if (e.altKey && e.key.toLowerCase() === 'j') {
+            let modalGlossario = $('modal-glossario-xai');
+            if (!modalGlossario) {
+                modalGlossario = document.createElement('div');
+                modalGlossario.id = 'modal-glossario-xai';
+                modalGlossario.className = 'modal';
+                modalGlossario.innerHTML = `
+                    <div class="mc" style="max-width: 650px; border: 2px solid var(--neon-cyan, #00eaff); background: #0a0a0a; text-align: left; padding: 25px;">
+                        <button class="mx" onclick="document.getElementById('modal-glossario-xai').classList.remove('active')" style="top: 10px; right: 10px;">✕</button>
+                        
+                        <h2 style="color: var(--neon-cyan, #00eaff); text-align: center; font-family: 'Orbitron', sans-serif; margin-top: 0;">📖 GLOSSÁRIO DA I.A. (XAI)</h2>
+                        <hr style="border: 1px solid #333; margin: 15px 0;">
+                        
+                        <div style="max-height: 60vh; overflow-y: auto; padding-right: 15px; font-family: 'Nunito', sans-serif; color: #ddd; font-size: 13px; line-height: 1.6;">
+                            
+                            <h3 style="color: var(--choco-gold, #d4af37); font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">1. OS QUATRO PERFIS COGNITIVOS</h3>
+                            <ul style="padding-left: 15px; margin-bottom: 20px;">
+                                <li style="margin-bottom: 10px;"><b style="color:white;">CONCEITUAL TEÓRICO:</b> O aluno ideal. Compreende a regra matemática profunda e aplica com segurança. A ADA não interfere.</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">PROCEDURAL MECÂNICO:</b> O aluno "papagaio". Acerta a conta porque decorou o algoritmo (a regra prática), mas não entende o porquê da operação. A ADA força modelos visuais para ele entender a lógica.</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">DEPENDENTE CONCRETO:</b> O aluno que precisa "contar nos dedos". Não consegue abstrair. A ADA fornece materialização gráfica constante (frações em barra, retas).</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">IMPULSIVO ARITMÉTICO:</b> Responde rápido demais (latência baixa) e erra por pressa, não por falta de conhecimento. A ADA aplica "Travamento Rítmico" (microintervenções e respiração).</li>
+                            </ul>
+
+                            <h3 style="color: var(--neon-red, #ff3333); font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">2. ETIOLOGIA DO ERRO (A Raiz)</h3>
+                            <p style="margin-bottom: 20px;">Em vez de dizer "errou", a ADA audita o "porquê". Exemplos: <b>Viés Aritmético</b> (somou denominadores de fração na pressa), <b>Inversão Topológica</b> (confundiu área com perímetro), ou <b>Etiqueta Estática</b> (ignorou o sinal de menos). A intervenção muda para cada raiz.</p>
+
+                            <h3 style="color: #00ff66; font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">3. DERIVA PEDAGÓGICA (Risco)</h3>
+                            <p>É um radar matemático de <b>0.0 a 1.0</b> (Distância Euclidiana). Se passar de <b>0.5</b> (em vermelho), significa que o aluno está se desviando muito da rota de aprendizagem e está frustrado. A ADA retrocederá a dificuldade automaticamente (scaffolding regressivo).</p>
+
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modalGlossario);
+            }
+
+            modalGlossario.classList.add('active');
         }
     });
    
