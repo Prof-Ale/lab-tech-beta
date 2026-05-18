@@ -76,7 +76,10 @@ export function narrarContexto(texto, isCorrect = true) {
             };
             
             utterance.onerror = (err) => { 
-                console.warn("[uiManager] Falha ou interrupção na síntese de voz:", err.error); 
+                // Só avisa no console se for um erro real, ignora interrupções intencionais de Overlap
+                if (err.error !== 'interrupted' && err.error !== 'canceled') {
+                    console.warn("[uiManager] Falha no motor de voz:", err.error); 
+                }
                 resolve(); 
             };
 
