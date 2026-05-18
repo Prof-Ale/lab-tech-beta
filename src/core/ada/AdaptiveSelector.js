@@ -7,7 +7,6 @@
  */
 
 // CORREÇÃO APLICADA: Importando o arquivo correto em CamelCase (DiagnosticEngine.js)
-import { CONFIG_ANALYTICS } from './LearningAnalytics.js'; // Caso precise de constantes globais
 
 export class AdaptiveSelector {
     
