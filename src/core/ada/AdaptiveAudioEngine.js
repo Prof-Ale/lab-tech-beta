@@ -1,169 +1,160 @@
 /**
  * @fileoverview AdaptiveAudioEngine.js
- * @description Gerenciador Adaptativo de Áudio e Sonificação Paramétrica para o LabTech.
- * Substitui o controlador de áudio acoplado tradicional por uma engine baseada na Web Audio API.
- * Fornece mediação acústica inclusiva e controle de carga cognitiva sem distorção de pitch.
- * 
- * @version 2.0.0
- * @package LabTech Core Environment
+ * @description Motor de Sonificação Adaptativa e Acessibilidade Neuro-Auditiva (DUA).
+ * Utiliza a Web Audio API pura para sintetizar frequências matemáticas em tempo real,
+ * fornecendo feedback sonoro posicional e cinestésico dependendo da resposta.
+ * @version 1.0.0
+ * @package LabTech / Core ADA
  */
 
+import { G } from '../../engine/gameState.js';
+
 export class AdaptiveAudioEngine {
-    /**
-     * Instancia o motor adaptativo de áudio desacoplado do DOM.
-     */
     constructor() {
         /**
-         * Contexto de Áudio Web Nativo
          * @private
          * @type {AudioContext|null}
          */
-        this._audioContext = null;
-
-        /**
-         * Nó gerenciador de ganho master (volume)
-         * @private
-         * @type {GainNode|null}
-         */
-        this._masterGainNode = null;
-
-        /**
-         * Filtro de frequência para controle de ansiedade e foco
-         * @private
-         * @type {BiquadFilterNode|null}
-         */
-        this._cognitiveFilterNode = null;
-
-        /**
-         * Estado interno de inicialização segura
-         * @private
-         * @type {boolean}
-         */
-        this._isInitialized = false;
-
-        /**
-         * Estado de mudo controlado por acessibilidade
-         * @private
-         * @type {boolean}
-         */
-        this._isMuted = false;
+        this._audioCtx = null;
     }
 
     /**
-     * Inicializa de forma assíncrona o pipeline de áudio sob demanda.
-     * Mitiga a barreira de segurança de interação prévia obrigatória dos navegadores.
-     * @returns {Promise<boolean>} Confirmação de ativação do hardware de áudio
+     * Garante a inicialização preguiçosa do Contexto de Áudio (Lazy Initialization).
+     * Previne o bloqueio nativo de segurança de reprodução automática dos navegadores (Autoplay Policy).
+     * @private
+     * @returns {AudioContext}
      */
-    async initialize() {
-        if (this._isInitialized) return true;
+    _initContext() {
+        if (!this._audioCtx) {
+            // Suporte cross-browser para o inicializador Web Audio
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            this._audioCtx = new AudioContextClass();
+        }
+        
+        // Se o contexto foi suspenso por falta de interação, força o resume
+        if (this._audioCtx.state === 'suspended') {
+            this._audioCtx.resume();
+        }
+        
+        return this._audioCtx;
+    }
+
+    /**
+     * Dispara um feedback harmônico consonante (Sucesso/Avanço Cognitivo).
+     * Gera um arpejo ascendente senoidal perfeito.
+     */
+    static sonarSucesso() {
+        if (G.musica === false) return; // Respeita a diretriz de silêncio do HUD
+        
+        try {
+            const engine = new AdaptiveAudioEngine();
+            const ctx = engine._initContext();
+            const agora = ctx.currentTime;
+
+            // Frequências da tríade maior de Dó (Do4, Mi4, Sol4, Do5) -> Ascensão semiótica
+            const notas = [261.63, 329.63, 392.00, 523.25];
+            const duracaoNota = 0.12;
+
+            notas.forEach((freq, index) => {
+                const osc = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+
+                osc.type = 'sine'; // Onda pura para sensação clínica e limpa
+                osc.frequency.setValueAtTime(freq, agora + (index * duracaoNota));
+
+                // Envelope de Ganho (Fade-out para evitar estalos harmônicos)
+                gainNode.gain.setValueAtTime(0.15, agora + (index * duracaoNota));
+                gainNode.gain.exponentialRampToValueAtTime(0.0001, agora + (index * duracaoNota) + duracaoNota);
+
+                osc.connect(gainNode);
+                gainNode.connect(ctx.destination);
+
+                osc.start(agora + (index * duracaoNota));
+                osc.stop(agora + (index * duracaoNota) + duracaoNota);
+            });
+        } catch (e) {
+            console.warn("[AdaptiveAudioEngine] Subsistema de som ocupado ou bloqueado:", e);
+        }
+    }
+
+    /**
+     * Dispara um feedback de desvio/anomalia (Erro de Percurso).
+     * Sonifica um intervalo dissonante de segunda menor descendente com onda dente-de-serra (Aviso técnico).
+     */
+    static sonarAnomalia() {
+        if (G.musica === false) return;
 
         try {
-            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContextClass) {
-                console.warn("[AUDIO ENGINE] Web Audio API não suportada neste dispositivo.");
-                return false;
-            }
+            const engine = new AdaptiveAudioEngine();
+            const ctx = engine._initContext();
+            const agora = ctx.currentTime;
 
-            this._audioContext = new AudioContextClass();
+            // Frequências dissonantes (Trítono / Segunda Menor instável de aviso)
+            const freqInicial = 150.00; // Frequência grave de alerta
+            const freqFinal = 141.42;   // Queda descendente de tensão
+
+            const osc = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+
+            osc.type = 'sawtooth'; // Onda dente-de-serra sutil para textura de aviso
+            osc.frequency.setValueAtTime(freqInicial, agora);
+            // Efeito de rampa contínua (Glissando descendente)
+            osc.frequency.linearRampToValueAtTime(freqFinal, agora + 0.35);
+
+            // Filtro passa-baixas para deixar o som de erro cibernético sutil e não agressivo
+            const filtro = ctx.createBiquadFilter();
+            filtro.type = 'lowpass';
+            filtro.frequency.setValueAtTime(400, agora);
+
+            gainNode.gain.setValueAtTime(0.12, agora);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, agora + 0.4);
+
+            osc.connect(filtro);
+            filtro.connect(gainNode);
+            gainNode.connect(ctx.destination);
+
+            osc.start(agora);
+            osc.stop(agora + 0.4);
+        } catch (e) {
+            console.warn("[AdaptiveAudioEngine] Abortada a síntese de áudio de desvio:", e);
+        }
+    }
+
+    /**
+     * Sonifica o deslocamento vetorial cinestésico do Canvas (Deslocamento na Reta ou Arcos).
+     * @param {number} delta - Valor do deslocamento (pontoB - pontoA).
+     */
+    static sonarDeslocamento(delta) {
+        if (G.musica === false || delta === 0) return;
+
+        try {
+            const engine = new AdaptiveAudioEngine();
+            const ctx = engine._initContext();
+            const agora = ctx.currentTime;
+
+            const osc = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+
+            osc.type = 'triangle'; // Onda triangular (Suave e encorpada)
             
-            // Construção do Grafo de Áudio Puro
-            this._masterGainNode = this._audioContext.createGain();
-            this._cognitiveFilterNode = this._audioContext.createBiquadFilter();
+            // Frequência base balanceada (Lá 220Hz)
+            const freqBase = 220;
+            // O som sobe se o deslocamento for positivo, e desce se for negativo
+            const freqDestino = freqBase + (delta * 15);
 
-            // Configuração Padrão do Filtro Cognitivo (Passa-Baixas para amortecer agudos estressores)
-            this._cognitiveFilterNode.type = 'lowpass';
-            this._cognitiveFilterNode.frequency.setValueAtTime(22000, this._audioContext.currentTime);
+            osc.frequency.setValueAtTime(freqBase, agora);
+            osc.frequency.exponentialRampToValueAtTime(Math.max(60, Math.min(freqDestino, 1200)), agora + 0.5);
 
-            // Conexões do Grafo: Fonte -> Filtro -> Ganho Master -> Saída Física
-            this._cognitiveFilterNode.connect(this._masterGainNode);
-            this._masterGainNode.connect(this._audioContext.destination);
+            gainNode.gain.setValueAtTime(0.1, agora);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, agora + 0.5);
 
-            this._masterGainNode.gain.setValueAtTime(0.4, this._audioContext.currentTime);
-            this._isInitialized = true;
-            return true;
-        } catch (error) {
-            console.error("[AUDIO ENGINE INITIALIZATION CRITICAL] Falha ao instanciar Grafo de Áudio:", error);
-            return false;
+            osc.connect(gainNode);
+            gainNode.connect(ctx.destination);
+
+            osc.start(agora);
+            osc.stop(agora + 0.5);
+        } catch (e) {
+            // Silêncio defensivo se o hardware de som falhar
         }
-    }
-
-    /**
-     * Modifica dinamicamente as propriedades acústicas baseando-se no nível de tensão da tarefa.
-     * Controla a carga cognitiva sem alterar a taxa de amostragem ou distorcer a afinação (pitch).
-     * @param {boolean} isHighIntensity - Sinalizador de alta demanda cognitiva disparado pela ADA
-     */
-    setIntensity(isHighIntensity) {
-        if (!this._isInitialized || this._isMuted) return;
-
-        const targetVolume = isHighIntensity ? 0.55 : 0.35;
-        const targetCutoffFrequency = isHighIntensity ? 1200 : 20000; // Corta agudos em momentos de estresse alto
-
-        const now = this._audioContext.currentTime;
-
-        // Rampa linear suave de volume em 400ms para evitar estalos de áudio (Clipping)
-        this._masterGainNode.gain.linearRampToValueAtTime(targetVolume, now + 0.4);
-        
-        // Altera o filtro acústico para suavizar o estresse do estudante impulsivo
-        this._cognitiveFilterNode.frequency.exponentialRampToValueAtTime(targetCutoffFrequency, now + 0.6);
-    }
-
-    /**
-     * Sonifica dados numéricos variantes em tempo real.
-     * Transforma parâmetros de funções matemáticas diretamente em frequências sonoras puras.
-     * Mapeia de forma isomórfica o coeficiente de inclinação em altura tonal para alunos com deficiência visual.
-     * @param {number} slopeValue - Valor puro do coeficiente angular 'a' da função afim
-     */
-    sonifyMathematicalSlope(slopeValue) {
-        if (!this._isInitialized || this._isMuted) return;
-
-        const now = this._audioContext.currentTime;
-        
-        // Criação de um oscilador sintetizador atômico para feedback imediato
-        const oscillator = this._audioContext.createOscillator();
-        const toneGain = this._audioContext.createGain();
-
-        oscillator.type = 'sine';
-        
-        // Mapeamento matemático: Coeficiente Angular [-5..5] mapeado linearmente para frequências [220Hz..880Hz]
-        const targetFrequency = ((slopeValue + 5) / 10) * (880 - 220) + 220;
-        oscillator.frequency.setValueAtTime(targetFrequency, now);
-
-        toneGain.gain.setValueAtTime(0.15, now);
-        toneGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5); // Envelope de decaimento natural de 500ms
-
-        oscillator.connect(toneGain);
-        toneGain.connect(this._cognitiveFilterNode);
-
-        oscillator.start(now);
-        oscillator.stop(now + 0.5);
-    }
-
-    /**
-     * Alterna o estado de mutação do sistema de som respeitando as preferências do DUA.
-     * @returns {boolean} Estado final do mudo (true = silenciado, false = ativo)
-     */
-    toggleMute() {
-        if (!this._isInitialized) return true;
-
-        const now = this._audioContext.currentTime;
-        if (this._isMuted) {
-            this._masterGainNode.gain.linearRampToValueAtTime(0.35, now + 0.2);
-            this._isMuted = false;
-        } else {
-            this._masterGainNode.gain.linearRampToValueAtTime(0.0, now + 0.1);
-            this._isMuted = true;
-        }
-
-        return this._isMuted;
-    }
-
-    /**
-     * Interrompe com segurança todos os processos e libera memória física do hardware
-     */
-    async terminate() {
-        if (!this._audioContext) return;
-        await this._audioContext.close();
-        this._isInitialized = false;
-        this._audioContext = null;
     }
 }
