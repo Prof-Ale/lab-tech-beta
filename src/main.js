@@ -279,27 +279,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     on('btn-musica', toggleMusica);
     on('btn-voz', toggleVoz);
 
-  // ─── ATALHO INTEGRADO DOCENTE: MAPA CLÍNICO SIMPLIFICADO (Alt + P) ───
+  // ─── ATALHO INTEGRADO DOCENTE: MAPA CLÍNICO VISUAL (Alt + P) ───
     document.addEventListener('keydown', (e) => {
         if (e.altKey && e.key.toLowerCase() === 'p') {
             if (!G.perfilCognitivo) {
-                alert("⚠️ Acesso Negado: Nenhum estudante iniciou calibração.");
+                alert("⚠️ Acesso Negado: Nenhum estudante calibrou o sistema.");
                 return;
             }
 
-            const relatorio = `🎓 PAINEL DOCENTE
-----------------------------------------
-Estudante: ${G.nome}
-🧠 Perfil Atual: ${G.perfilCognitivo.perfilDominante}
-⏱️ Questões: ${G.perfilCognitivo.itensRespondidos}`;
+            // 1. Procura se a janela do professor já existe. Se não, cria e injeta no HTML na hora!
+            let modalDocente = $('modal-docente-xai');
+            if (!modalDocente) {
+                modalDocente = document.createElement('div');
+                modalDocente.id = 'modal-docente-xai';
+                modalDocente.className = 'modal'; // Usa a mesma classe das outras janelas
+                modalDocente.innerHTML = `
+                    <div class="mc" style="max-width: 600px; border: 2px solid var(--choco-gold, #d4af37); background: #0a0a0a;">
+                        <button class="mx" onclick="document.getElementById('modal-docente-xai').classList.remove('active')">✕</button>
+                        <div id="content-docente-xai" style="max-height: 70vh; overflow-y: auto;"></div>
+                    </div>
+                `;
+                document.body.appendChild(modalDocente);
+            }
+
+            // 2. Pede para a IA gerar o relatório visual atualizado
+            const relatorioHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
             
-            alert(relatorio);
+            // 3. Preenche a janela e exibe na tela
+            $('content-docente-xai').innerHTML = relatorioHTML;
+            modalDocente.classList.add('active');
         }
-    });
-  
-    on('btn-dash', () => {
-        atualizarDashboard();
-        abrirM('mdash');
     });
    
     // ─── LIGAÇÃO DOS BOTÕES LATERAIS DE INTERFACE ───
@@ -307,6 +316,8 @@ Estudante: ${G.nome}
         abrirM('mcred');
     });
 
+   
+    
     on('btn-perfil', () => {
         if (G.perfilCognitivo) {
             const displayNivel = $('perfil-nivel-txt');
