@@ -326,6 +326,23 @@ Aperte [F12] para ver a matriz de erro detalhada no console!`;
         }
         abrirM('mperfil');
     });
+
+    // ─── BOTÕES DE RETORNO AO MENU PRINCIPAL (SELETOR DE BLOCOS) ───
+    document.querySelectorAll('[data-action="seletor"]').forEach(btn => {
+        btn.onclick = () => {
+            // Se o modal de Game Over estiver aberto, ele fecha
+            fecharM('go'); 
+            
+            // Pausa qualquer som de erro/acerto que estiver tocando
+            if (G.musica) {
+                // Opcional: Você pode colocar uma lógica de transição de som aqui se quiser
+            }
+
+            // Volta para a tela de seleção
+            mostrarSeletorBlocos();
+        };
+    });
+    
     on('btn-reiniciar', () => {
         fecharM('go'); 
         if (G.currentBlock) iniciarBloco(G.currentBlock); 
