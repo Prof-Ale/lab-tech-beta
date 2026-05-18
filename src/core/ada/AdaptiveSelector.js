@@ -46,15 +46,8 @@ export class AdaptiveSelector {
         return representacaoPadrao || 'visual';
     }
 
-    /**
+  /**
      * Busca a próxima questão ideal no banco baseada na ZDP do aluno.
-     * @param {number|string} blockId - O módulo atual.
-     * @param {Object} perfilCognitivo - Prontuário do aluno.
-     * @returns {Object} A questão normalizada selecionada.
-     */
-   /**
-     * Busca a próxima questão ideal no banco baseada na ZDP do aluno.
-     * CORREÇÃO: Comparação segura de blocos e trava anti-repetição.
      */
     static selecionarProximaQuestao(blockId, perfilCognitivo) {
         const bancoGlobal = window.catalogoGlobalDeQuestoes || [];
@@ -63,6 +56,34 @@ export class AdaptiveSelector {
             console.warn("[ADA] Banco de questões vazio. Retornando mock.");
             return { id: 'MOCK', display: 'Banco não carregado.', alternativas: [{valor: 'A'}], res: 'A' };
         }
+
+        // 1. Filtra as questões do bloco atual convertendo para String com segurança
+        let questoesValidas = bancoGlobal.filter(q => String(q.bloco) === String(blockId));
+        
+        // Se o bloco estiver vazio, usa o banco inteiro para não travar o jogo
+        if (questoesValidas.length === 0) {
+            questoesValidas = bancoGlobal;
+        }
+
+        // 2. Trava anti-repetição: Filtra a questão que o aluno acabou de responder
+        const idUltimaQuestao = window.__LABTECH_DEBUG__?.qId;
+        let poolSorteio = questoesValidas.filter(q => String(q.id) !== String(idUltimaQuestao));
+
+        // Se esgotaram as questões exclusivas, reseta o pool para evitar crash
+        if (poolSorteio.length === 0) {
+            poolSorteio = questoesValidas;
+        }
+
+        // Sorteia a próxima questão
+        const proxima = poolSorteio[Math.floor(Math.random() * poolSorteio.length)];
+        
+        // Atualiza o painel X-Ray
+        if (window.__LABTECH_DEBUG__) {
+            window.__LABTECH_DEBUG__.qId = proxima.id;
+        }
+
+        return proxima;
+    } 
 
         // 1. Compara transformando ambos em String (Resolve o erro do "1" === 1)
         let questoesValidas = bancoGlobal.filter(q => String(q.bloco) === String(blockId));
