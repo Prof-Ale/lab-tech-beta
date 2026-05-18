@@ -1,61 +1,47 @@
-# 🧪 LABORATÓRIO TECH v11.0 — Módulo Beta "The Pedagogy Alchemist"
+🧪 LABORATÓRIO TECH v15.0 — Módulo de Produção "The Universal Architecture"
+O LabTech evoluiu. De um protótipo de pesquisa para uma plataforma de inteligência artificial educacional robusta e escalável. O código foi totalmente refatorado sob o paradigma de Arquitetura Limpa (Clean Architecture), separando o cérebro cognitivo da renderização visual. O resultado é um ecossistema à prova de falhas, projetado para a sala de aula real.
 
-![Versão](https://img.shields.io/badge/Vers%C3%A3o-11.0--beta-purple)
-![Governança](https://img.shields.io/badge/Governan%C3%A7a-Data%20Quality-cyan)
-![Motor](https://img.shields.io/badge/Motor-Mastery%20Learning-magenta)
-![Ambiente](https://img.shields.io/badge/Ambiente-Homologa%C3%A7%C3%A3o-orange)
+🧭 O Salto Evolutivo: Desenho Universal e Explicabilidade (XAI)
+Se as versões anteriores focavam em coletar dados de qualidade, a v15.0 foca em como o aluno e o professor interagem com esses dados. A plataforma agora é regida pelas diretrizes do DUA (Desenho Universal para Aprendizagem), oferecendo múltiplos meios de engajamento, representação visual e expressão sensorial para abraçar a neurodiversidade.
 
-> **Ambiente de Homologação e Pesquisa Avançada (Sandbox)** do LabTech. Este repositório é o parquinho de diversões científico para testes de arquitetura adaptativa profunda, modelagem de perfis cognitivos e validação de dados antes do deploy na versão de produção.
+🧠 Arquitetura Científica e Novos Motores (Core ADA)
+1. Memória Longitudinal Criptografada (ProfileEngine.js)
+A ADA não sofre mais de amnésia. O sistema agora possui persistência de longo prazo no HD do navegador (Local Storage).
 
----
+Anti-Cheating: Os perfis cognitivos, nível, XP e histórico BNCC são ofuscados e codificados em Base64 para evitar adulteração.
 
-## 🧭 O Próximo Salto: Governança Pedagógica
+Continuidade: O aluno pode fechar o navegador e voltar na semana seguinte; a ADA lembrará exatamente onde estão suas lacunas e seus bloqueios estruturais.
 
-Com o banco de dados escalando para as **300+ questões**, o desafio do LabTech deixou de ser puramente técnico e passou a focar na **Qualidade e Rastreabilidade do Dado**. No ecossistema Beta, a questão deixa de ser apenas um elemento estático e passa a ser tratada como um **Sensor Cognitivo Dinâmico**.
+2. Motor de Sonificação Inclusiva (AdaptiveAudioEngine.js)
+O sistema agora atende alunos com baixa visão ou perfis impulsivos através de Feedback Neuro-Auditivo gerado em tempo real pela Web Audio API.
 
-O objetivo desta versão é implementar o modelo de **Mastery Learning (Aprendizagem de Domínio)** e o mapeamento implícito de **Perfis Mentais**.
+Sem arquivos MP3 pesados: Os sons são sintetizadores de frequência matemática puros.
 
----
+Cinestesia Harmônica: Movimentos vetoriais no canvas geram frequências que sobem ou descem de tom; acertos geram tríades maiores; erros geram dissonâncias sutis de alerta.
 
-## 🧠 Arquitetura Científica do Módulo Beta
+3. Motor Gráfico Dinâmico e Blindado (CanvasRenderer.js)
+O palco visual do aluno atingiu maturidade técnica extrema. O canvas agora possui um Viewport Matemático que autoajusta a escala da tela.
 
-### 1. A Questão como Entidade Pedagógica
-O novo motor de dados isola o texto do fluxo lógico e passa a ler uma matriz complexa de metadados científicos no JSON. Cada elemento agora carrega as seguintes propriedades na camada do `question-normalizer.js`:
-* **`habilidade`:** Vinculação estrita à taxonomia curricular.
-* **`prerequisitos`:** Mapeamento de dependências de base (âncoras de anos anteriores).
-* **`misconception`:** A causa raiz por trás do distrator (o modelo mental errado do aluno).
-* **`tipoIntervencao`:** O tipo de remédio pedagógico que a ADA deve aplicar.
-* **`representacao`:** Classificação entre estímulo *concreto/visual* ou *abstrato*.
-* **`cargaCognitiva`:** O peso intrínseco do esforço de processamento mental exigido.
-* **`objetivoDiagnostico`:** O alvo que a telemetria do professor irá monitorar no mapa de calor.
+Triage Semiótica Automática: O sistema decide sozinho se a questão exige uma Reta Numérica (isomorfismo de deslocamento), uma Barra de Frações, ou se é uma equação de Álgebra Literal (desativando desenhos irrelevantes).
 
-### 2. Motor Adaptativo Baseado em Perfil (A Evolução da ADA)
-A ADA agora analisa a latência do clique (`timestamp`), a natureza do erro e a frequência de recorrência para traçar, sem formulários intrusivos, os seguintes **Perfis Cognitivos**:
-* 🏃‍♂️ **Perfil Impulsivo:** Respostas rápidas (< 8s) com alta incidência de erros de atenção. *Ação da ADA: Aplica Scaffold de ritmo e trava alternativas temporariamente.*
-* 🧱 **Perfil Concreto/Visual:** Alta precisão em itens geométricos, mas bloqueio em abstrações. *Ação da ADA: Filtra o banco priorizando representações visuais no canvas.*
-* ⚙️ **Perfil Procedural:** Domina o algoritmo da conta, mas falha no conceito da habilidade principal.
+Failsafe Anti-Travamento: Blindagem matemática contra erros de NaN e um sistema estrito de Promises assíncronas que garante que o jogo nunca trave, mesmo que a renderização falhe.
 
-### 3. Sistema de Domínio (Mastery Learning)
-O aluno não avança de bloco simplesmente por "limpar o banco". A ADA rastreia uma janela móvel de estabilização conceitual. Se o aluno demonstrar uma *misconception* recorrente, o sistema reduz a carga cognitiva da próxima questão e injeta um suporte contextualizado antes de penalizar o progresso.
+👨‍🏫 A Caixa Preta Aberta: Painel Docente XAI (Explainable AI)
+A tecnologia não pode ser uma caixa preta para o professor. A v15 introduz ferramentas ocultas de auditoria clínica acionadas por atalhos de teclado:
 
----
+📊 Alt + P (Radiografia Cognitiva): Abre um HUD cibernético que revela o perfil dominante do estudante na sessão (ex: Procedural Mecânico ou Dependente Concreto), calculando a Deriva Pedagógica e exibindo o mapa exato da etiologia dos erros (A raiz do problema).
 
-## 🛠️ Blindagem e Ferramentas de Engenharia (Injetadas)
+📖 Alt + J (Bula / Glossário da ADA): Um painel de consulta rápida explicando os conceitos de Vigotski e Galperin que a Inteligência Artificial usa para tomar decisões de intervenção (Scaffolding).
 
-### 🛡️ `question-validator.js`
-Script utilitário autônomo desenvolvido para higienização e controle de qualidade do banco de dados (Data Quality). Executado antes de qualquer atualização, ele varre os registros buscando:
-- IDs e alternativas duplicadas.
-- Incompatibilidade entre o gabarito (`res`) e a alternativa de acerto.
-- Inconsistência na distribuição de pesos (1 a 3) dos distratores.
-- Ausência de metadados obrigatórios de governança.
+🛠️ Estrutura Modular (Módulos Injetados)
+O ecossistema agora é dividido em pastas lógicas e escaláveis:
 
-### 🧪 `question-normalizer.js v2.0`
-O "Alquimista de Dados" da plataforma. Ele garante **retrocompatibilidade total**. Caso uma questão antiga do banco de dados estável (v10.1) entre no fluxo, o normalizador injeta os metadados avançados dinamicamente em tempo de execução através de inferência lógica, impedindo falhas catastróficas (*Race Conditions*) no console.
+📁 /core/ada: Motores de Inferência, Telemetria, Seleção Adaptativa e Áudio.
 
----
+📁 /engine: Controle de Estado de Jogo (GameState) e Debug.
 
-## 🏆 Centro de Treinamento Olímpico (Bloco 7)
-Esta versão consolida o isolamento do **Módulo 7**, alimentado com 50 desafios de lógica extrema e criptoaritmética estilo OBMEP/OMASP. Ele atua como o ambiente de teste de estresse perfeito para os estudantes com Altas Habilidades ou Superdotação (AHSD).
+📁 /ui: Renderizadores Gráficos e Gerenciadores de Interface (DOM).
 
----
-*"A tecnologia remove as barreiras físicas da sala de aula; a engenharia de dados pedagógicos decodifica o mapa da mente humana."* — **LabTech v11.0-beta • Desenvolvido por Prof. Alê Chocolate**
+📄 main.js: O Maestro que orquestra o pipeline assíncrono e une a UI ao Cérebro.
+
+"A verdadeira educação inclusiva não força o estudante a se adaptar ao sistema; ela calibra a tecnologia para reconhecer, acolher e potencializar a singularidade de cada mente." — LabTech v15.0 • Desenvolvido por Prof. Alê Chocolate
