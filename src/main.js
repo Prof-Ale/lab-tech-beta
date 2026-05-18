@@ -1,23 +1,23 @@
 /**
- * main.js — v15.0 "LabTech Academic Master Engine"
- * Paradigma: Arquitetura Desacoplada, Governança Histórico-Cultural e Explicabilidade Pedagógica (XAI).
- * Core Responsibility: Orquestração do ciclo de vida da aplicação e bindings de UI/UX.
+ * src/main.js — CONFIGURAÇÃO DE ROTAS DE IMPORTAÇÃO (v15.0 MASTER)
+ * Correção estrita de caminhos para resolução dos erros 404 do ecossistema.
  */
 
+// ⚙️ 1. ESTADO GLOBAL E MOTORES DE JOGO
 import { G } from './engine/gameState.js';
-import { AudioCtrl } from './engine/audioController.js'; 
-import { initDebugMode } from './engine/debug-mode.js';
+import { initDebugMode } from './engine/debugMode.js';
 
-// 🛡️ SUBMÓDULOS DO ECOSSISTEMA ADAPTATIVO LABTECH
-import { GovernanceLayer } from './engine/GovernanceLayer.js';
-import { ProfileEngine } from './engine/ProfileEngine.js';
-import { DiagnosticEngine } from './engine/DiagnosticEngine.js';
-import { AdaptiveSelector } from './engine/AdaptiveSelector.js';
-import { LearningAnalytics } from './engine/LearningAnalytics.js';
+// 🧠 2. O CÉREBRO DA ADA (Camada Core Pedagógica)
+import { QuestionNormalizer } from './core/ada/QuestionNormalizer.js';
+import { DiagnosticEngine } from './core/ada/DiagnosticEngine.js';
+import { ProfileEngine } from './core/ada/ProfileEngine.js';
+import { AdaptiveSelector } from './core/ada/AdaptiveSelector.js';
+import { LearningAnalytics } from './core/ada/LearningAnalytics.js';
+import { AdaptiveAudioEngine } from './core/ada/AdaptiveAudioEngine.js';
 
-// Interfaces de Renderização Externa
-import { renderCv, setAnimando, animarArcos } from './game-engine.js';
-import { updHUD, narrarContexto, toggleVoz, exibirGameOver } from './ui-manager.js';
+// 📺 3. CAMADA DE INTERFACE E RENDERIZAÇÃO GRÁFICA (Substitui o antigo game-engine.js)
+import { CanvasRenderer } from './ui/canvasRenderer.js';
+import { updHUD, narrarContexto, toggleVoz, exibirGameOver } from './ui/uiManager.js';
 
 // Auxiliares de manipulação de DOM de escopo local
 const $ = (id) => document.getElementById(id);
