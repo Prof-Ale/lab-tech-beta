@@ -149,6 +149,12 @@ async function processarResposta(alt, q) {
         G.combo++;
         G.historico[hab].acertos++;
     } else {
+        if (analise.correto) {
+        G.acertos++; 
+        G.combo++;
+        G.historico[hab].acertos++;
+        AdaptiveAudioEngine.sonarSucesso(); // 🎵 Som de Acerto!
+    } else {
         G.combo = 0;
         G.erros++;
         if (analise.categoria === 'conceito') {
@@ -159,6 +165,7 @@ async function processarResposta(alt, q) {
         
         const penalidadeDano = 10 + (analise.peso || 1) * 5;
         G.vida = Math.max(0, G.vida - penalidadeDano);
+        AdaptiveAudioEngine.sonarAnomalia(); // 🎵 Som de Erro!
     }
 
     // 💾 AGORA SIM: Grava a telemetria BNCC no HD do navegador APÓS a pontuação ser atualizada
