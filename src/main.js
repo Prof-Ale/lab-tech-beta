@@ -135,6 +135,8 @@ async function processarResposta(alt, q) {
 
     if (!G.historico[hab]) {
         G.historico[hab] = { acertos: 0, erros_conceito: 0, erros_calculo: 0, desc: "Habilidade Monitorada" };
+       // 💾 Grava a telemetria BNCC ofuscada no HD do navegador
+    localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico)))); 
     }
 
     // Travamento visual de UX
