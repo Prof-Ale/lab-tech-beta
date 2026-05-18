@@ -56,7 +56,14 @@ function mostrarSeletorBlocos() {
     G.nome = $('nome-cientista')?.value.trim() || 'Cientista Anonymous';
     G.turma = $('turma-cientista')?.value.trim() || '7ºA';
     
-    if (!G.historico) G.historico = {};
+   // Tenta puxar o histórico BNCC do HD do navegador
+    const cacheBNCC = localStorage.getItem(`labtech_h_${G.nome}_${G.turma}`);
+    if (cacheBNCC) {
+        try { G.historico = JSON.parse(decodeURIComponent(atob(cacheBNCC))); } 
+        catch (e) { G.historico = {}; }
+    } else {
+        G.historico = {};
+    }
 
     // Carga via Engine de Perfil Cognitivo
     const instProfile = new ProfileEngine();
