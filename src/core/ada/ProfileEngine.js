@@ -1,8 +1,8 @@
 /**
  * @fileoverview ProfileEngine.js
  * @description Motor de Inferência Cognitiva e Rastreamento de Deriva Semiótica.
- * AGORA COM MEMÓRIA DE LONGO PRAZO: Persistência ofuscada no Local Storage.
- * @version 6.0.0
+ * AGORA COM RADAR DE PSEUDOCONCEITO: Emboscada semiótica para testar transferência.
+ * @version 6.1.0
  * @package LabTech Core Environment
  */
 
@@ -59,10 +59,15 @@ export class ProfileEngine {
             itensRespondidos: 0,
             perfilDominante: 'INDEFINIDO',
             derivaPedagogicaGeral: 0.0,
+            
+            // 🚨 NOVO: O Radar de Falsos Positivos e Emboscadas
+            indicePseudoconceito: 0.0, 
+            estadoADA: { acertosRapidosCombo: 0, emboscadaArmada: false },
+
             metricasAcumuladas: { totalLatenciaConceptual: 0, totalFriccaoAjustes: 0, errosSequenciais: 0, taxaAcertoGeral: 0.0 },
             scoreMatrizesPerfeitas: { PROCEDURAL_MECANICO: 0.0, DEPENDENTE_CONCRETO: 0.0, IMPULSIVO_ARITMETICO: 0.0, CONCEITUAL_TEORICO: 0.0 },
             historicoEstagiosGalperin: { MATERIALIZADA: { acertos: 0, total: 0 }, ICONICA: { acertos: 0, total: 0 }, VERBAL_EXTERNA: { acertos: 0, total: 0 }, INTERNA_PURA: { acertos: 0, total: 0 } },
-            mapaEtiologiaErros: { VIES_ARITMETICO: 0, ETIQUETA_ESTATICA: 0, INVERSAO_TOPOLOGICA: 0, DOMINIO_PROCEDURAL: 0, AUSENCIA_GENERALIZACAO: 0, IMPULSIVIDADE_CONCRETE: 0, ERRO_GENERICO: 0 }
+            mapaEtiologiaErros: { VIES_ARITMETICO: 0, ETIQUETA_ESTATICA: 0, INVERSAO_TOPOLOGICA: 0, DOMINIO_PROCEDURAL: 0, AUSENCIA_GENERALIZACAO: 0, IMPULSIVIDADE_CONCRETE: 0, ERRO_GENERICO: 0, PSEUDOCONCEITO_EXPOSTO: 0 }
         };
 
         this._estadosEstudantes.set(estudanteId, novoPerfil);
@@ -85,8 +90,36 @@ export class ProfileEngine {
         const { latenciaMs, totalAjustesPreConfirmacao, alternativaSelecionadaId } = dadosTelemetria;
         const alternativaAlvo = metadadosSensor.alternativas.find(alt => alt.id_alternativa === alternativaSelecionadaId || alt.id === alternativaSelecionadaId);
         const ehCorreto = alternativaAlvo ? (alternativaAlvo.tipo === 'acerto') : false;
-        const etiologiaErro = alternativaAlvo ? (alternativaAlvo.categoria || 'ERRO_GENERICO').toUpperCase() : 'ERRO_GENERICO';
+        
+        // Transformado em 'let' para permitir reescrita em caso de pseudoconceito
+        let etiologiaErro = alternativaAlvo ? (alternativaAlvo.categoria || 'ERRO_GENERICO').toUpperCase() : 'ERRO_GENERICO';
         const estagioAtual = (metadadosSensor.estagioGalperin || 'INTERNA_PURA').toUpperCase();
+
+        // 🧠 A LÓGICA DA EMBOSCADA PEDAGÓGICA (PSEUDOCONCEITO)
+        if (perfil.estadoADA.emboscadaArmada) {
+            // Se estava na emboscada e errou, ou se demorou MUITO mais que o normal (fricção cognitiva alta)
+            if (!ehCorreto || latenciaMs > 12000) {
+                console.warn(`🚨 [XAI] Pseudoconceito Detectado em ${perfil.id}! O aluno faliu no teste de transferência semiótica.`);
+                perfil.indicePseudoconceito = Math.min(1.0, perfil.indicePseudoconceito + 0.3); // Aumenta o risco
+                etiologiaErro = 'PSEUDOCONCEITO_EXPOSTO'; // Altera a raiz do erro!
+            } else {
+                console.log(`✅ [XAI] Conceito Sólido Confirmado. Aluno resistiu à emboscada.`);
+                perfil.indicePseudoconceito = Math.max(0.0, perfil.indicePseudoconceito - 0.2); // Reduz o risco
+            }
+            perfil.estadoADA.emboscadaArmada = false; // Desarma a arapuca
+            perfil.estadoADA.acertosRapidosCombo = 0; // Reseta o combo
+        } else {
+            // Analisa se deve ARMAR a emboscada para a PRÓXIMA rodada
+            if (ehCorreto && latenciaMs < 7000) {
+                perfil.estadoADA.acertosRapidosCombo++;
+                if (perfil.estadoADA.acertosRapidosCombo >= 3) {
+                    perfil.estadoADA.emboscadaArmada = true;
+                    console.log(`🎯 [XAI] Aluno em velocidade cruzeiro. Emboscada armada para a próxima questão!`);
+                }
+            } else if (!ehCorreto) {
+                perfil.estadoADA.acertosRapidosCombo = 0; // Perdeu o combo, reseta
+            }
+        }
 
         if (perfil.historicoEstagiosGalperin[estagioAtual]) {
             perfil.historicoEstagiosGalperin[estagioAtual].total++;
@@ -151,6 +184,13 @@ export class ProfileEngine {
         if (perfil.perfilDominante === 'IMPULSIVO_ARITMETICO') { d.comandoMacro = 'INJECT_RHYTHMIC_LOCK'; d.scaffoldAlvo = 'VERBALIZATION_PROMPT'; }
         else if (perfil.perfilDominante === 'PROCEDURAL_MECANICO') { d.comandoMacro = 'FORCE_SEMIOTIC_TRANSITION'; d.scaffoldAlvo = 'CONCRETE_SCHEMATIZATION'; }
         else if (perfil.perfilDominante === 'DEPENDENTE_CONCRETO') { d.comandoMacro = 'TRIGGER_CONTROLLED_FADING'; d.scaffoldAlvo = 'ORIENTATION_CARD'; }
+        
+        // 🚨 Intervenção forte caso o pseudoconceito seja muito alto
+        if (perfil.indicePseudoconceito >= 0.6) {
+            d.comandoMacro = 'FORCE_SEMIOTIC_TRANSITION';
+            d.scaffoldAlvo = 'CONCEPTUAL_RESET';
+        }
+        
         if (perfil.metricasAcumuladas.errosSequenciais >= 2) d.comandoMacro = 'RETROCEDER_ESTAGIO';
         return d;
     }
