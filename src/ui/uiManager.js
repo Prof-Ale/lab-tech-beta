@@ -1,26 +1,35 @@
 /**
- * ui-manager.js - Versão 5.1 (ADA Overlap & Visual Stabilized)
- * Núcleo de Interface, Acessibilidade (DUA) e Telemetria Visual.
- * INTERVENÇÃO: Compatibilidade com o ritmo acelerado (Overlap) do main.js.
+ * @fileoverview uiManager.js
+ * @description Controlador central de interface, manipulação de DOM, acessibilidade (DUA) e sincronia de avatares.
+ * Adaptado para o pipeline assíncrono e imutável do ecossistema LabTech.
+ * * @version 6.0.0
+ * @package LabTech / UI Architecture
  */
 
-import { G } from './engine/gameState.js';
+import { G } from '../engine/gameState.js';
 
-const bgm = document.getElementById("bgm");
+/**
+ * Recupera com segurança o elemento de áudio de fundo de forma preguiçosa (Lazy Loading).
+ * Evita falhas de inicialização caso o script carregue antes do DOM estar pronto.
+ * @private
+ * @returns {HTMLAudioElement|null}
+ */
+const _getBgmElement = () => document.getElementById("bgm");
 
+// Inicialização segura de vozes para o motor de acessibilidade/TTS
 if (typeof window !== 'undefined' && window.speechSynthesis) {
     const carregarVozes = () => { window.speechSynthesis.getVoices(); };
     window.speechSynthesis.onvoiceschanged = carregarVozes;
     carregarVozes();
 }
 
-// === SISTEMA DE NARRAÇÃO ASSÍNCRONO (OVERLAP) ===
-
 /**
- * ADA narra o texto para o estudante.
- * Retorna uma Promise, mas agora recebe 'isCorrect' para cravar o vídeo.
+ * Executa a síntese de voz (TTS) da ADA de forma assíncrona com cancelamento de sobreposição.
+ * @param {string} texto - Mensagem instrucional ou feedback semiótico.
+ * @param {boolean} isCorrect - Determina o comportamento expressivo do avatar associado.
+ * @returns {Promise<void>}
  */
-export function narrarContexto(t, isCorrect = true) {
+export function narrarContexto(texto, isCorrect = true) {
     return new Promise((resolve) => {
         try {
             if (!window.speechSynthesis || G.voz === false) {
@@ -28,215 +37,237 @@ export function narrarContexto(t, isCorrect = true) {
                 return;
             }
 
-            // Cancela qualquer fala pendente para o jogo ficar rápido
+            // Cancela qualquer fala residual imediatamente para manter o fluxo rítmico veloz
             window.speechSynthesis.cancel();
 
-            const textoLimpo = t.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ');
-            const u = new SpeechSynthesisUtterance(textoLimpo);
+            const textoLimpo = texto.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ');
+            const utterance = new SpeechSynthesisUtterance(textoLimpo);
             
-            window.adaUtterance = u; 
+            window.adaUtterance = utterance; // Previne coleta de lixo (Garbage Collection) do engine
 
-            u.lang = "pt-BR";
-            u.volume = 1;
-            u.rate = 1.15; // 5% mais rápida para dinâmica de jogo
+            utterance.lang = "pt-BR";
+            utterance.volume = 1;
+            utterance.rate = 1.15; // Velocidade otimizada para engajamento dinâmico
 
             const vozes = window.speechSynthesis.getVoices();
-            let vozBR = vozes.find(x => x.lang.includes('pt') && (
-                x.name.includes('Maria') || 
-                x.name.includes('Luciana') || 
-                x.name.includes('Francisca') || 
-                x.name.includes('Vitória') ||
-                x.name.includes('Google') ||
-                x.name.includes('Female') ||
-                x.name.includes('Feminino')
+            let vozBR = vozes.find(v => v.lang.includes('pt') && (
+                v.name.includes('Maria') || 
+                v.name.includes('Luciana') || 
+                v.name.includes('Francisca') || 
+                v.name.includes('Vitória') ||
+                v.name.includes('Google') ||
+                v.name.includes('Female') ||
+                v.name.includes('Feminino')
             ));
 
-            if (!vozBR) vozBR = vozes.find(x => x.lang.includes('pt'));
-            if (vozBR) u.voice = vozBR;
+            if (!vozBR) vozBR = vozes.find(v => v.lang.includes('pt'));
+            if (vozBR) utterance.voice = vozBR;
 
-            u.onstart = () => { 
-                if (bgm && G.musica) bgm.volume = 0.02; 
-                // Toca o vídeo correspondente ao resultado real (passado pelo main.js)
+            utterance.onstart = () => { 
+                const bgm = _getBgmElement();
+                if (bgm && G.musica) bgm.volume = 0.01; // Ducking automático de áudio
                 tocarAv(isCorrect ? "ok" : "no");
             };
             
-            u.onend = () => { 
+            utterance.onend = () => { 
+                const bgm = _getBgmElement();
                 if (bgm && G.musica) bgm.volume = 0.07; 
                 resolve(); 
             };
             
-            u.onerror = (e) => { 
-                console.warn("[ADA-Voz] SpeechSynthesis pulou ou falhou:", e.error); 
+            utterance.onerror = (err) => { 
+                console.warn("[uiManager] Falha ou interrupção na síntese de voz:", err.error); 
                 resolve(); 
             };
 
-            window.speechSynthesis.speak(u);
+            window.speechSynthesis.speak(utterance);
 
         } catch (e) {
-            console.error("[MathLab] Falha na síntese de voz:", e);
+            console.error("[uiManager] Falha catastrófica no subsistema de voz:", e);
             resolve();
         }
     });
 }
 
-// === CONTROLES DE MÍDIA ===
-
+/**
+ * Alterna o estado da trilha sonora de fundo e atualiza os indicadores visuais.
+ */
 export function toggleMusica() {
     G.musica = !G.musica;
-    const el = document.getElementById("tsom");
-    if (el) el.textContent = G.musica ? "ON" : "OFF";
+    const btnTexto = document.getElementById("tsom");
+    if (btnTexto) btnTexto.textContent = G.musica ? "ON" : "OFF";
 
+    const bgm = _getBgmElement();
     if (!bgm) return;
+
     if (G.musica) {
         bgm.volume = 0.07;
-        bgm.play().catch(() => console.log("Aguardando interação para áudio."));
+        bgm.play().catch(() => console.log("[uiManager] Áudio retido aguardando gatilho de clique inicial."));
     } else {
         bgm.pause();
     }
 }
 
+/**
+ * Alterna as permissões de narração ativa respeitando as diretrizes DUA.
+ */
 export function toggleVoz() {
     G.voz = !G.voz;
-    const el = document.getElementById("tvoz");
-    if (el) el.textContent = G.voz ? "ON" : "OFF";
+    const btnTexto = document.getElementById("tvoz");
+    if (btnTexto) btnTexto.textContent = G.voz ? "ON" : "OFF";
 
     if (!G.voz && window.speechSynthesis) {
         window.speechSynthesis.cancel();
     }
 }
 
-// === AVATAR DE VÍDEO (REFINADO PARA TRABALHAR COM O ÁUDIO) ===
-
+/**
+ * Sincroniza e alterna a exibição de quadros de vídeo ou estáticos do avatar da ADA.
+ * @param {string} tipo - 'ok' (Sucesso) ou 'no' (Desvio/Intervenção).
+ */
 export function tocarAv(tipo) {
-    const img = document.getElementById("av-img");
-    const vid = document.getElementById(tipo === "ok" ? "vid-ok" : "vid-no");
+    const imgAvatar = document.getElementById("av-img");
+    const videoAlvo = document.getElementById(tipo === "ok" ? "vid-ok" : "vid-no");
+    const videoOposto = document.getElementById(tipo === "ok" ? "vid-no" : "vid-ok");
 
-    if (!img) return;
-    if (!vid) return;
+    if (!imgAvatar || !videoAlvo) return;
 
-    const resetAv = () => {
-        vid.classList.add("avh");
-        img.classList.remove("avh");
+    const reestabelecerAvatarEstatico = () => {
+        videoAlvo.classList.add("avh");
+        imgAvatar.classList.remove("avh");
     };
 
-    // Esconde os outros
-    document.getElementById("vid-ok")?.classList.add("avh");
-    document.getElementById("vid-no")?.classList.add("avh");
-    img.classList.add("avh");
+    // Ocultação estrita de camadas concorrentes para evitar Overlap fantasma
+    if (videoOposto) videoOposto.classList.add("avh");
+    imgAvatar.classList.add("avh");
     
-    // Mostra o vídeo atual
-    vid.classList.remove("avh");
-    vid.currentTime = 0;
+    videoAlvo.classList.remove("avh");
+    videoAlvo.currentTime = 0;
 
-    vid.play()
-        .then(() => { vid.onended = resetAv; })
+    videoAlvo.play()
+        .then(() => { videoAlvo.onended = reestabelecerAvatarEstatico; })
         .catch(err => {
-            console.warn("[MathLab] Play de vídeo bloqueado:", err);
-            resetAv();
+            console.warn("[uiManager] Play de vídeo restrito pelo navegador:", err);
+            reestabelecerAvatarEstatico();
         });
 }
 
-// === INTERFACE HUD E MODAIS ===
-
+/**
+ * Sincroniza e atualiza os elementos do HUD superior e barras de integridade do reator.
+ */
 export function updHUD() {
-    const fv = document.getElementById("fv");
-    const fen = document.getElementById("fen");
+    const barVida = document.getElementById("fv");
+    const barEnergia = document.getElementById("fen");
 
-    if (fv) fv.style.width = G.vida + "%";
-    if (fen) fen.style.width = G.energia + "%";
-
-    if (fv) {
-        if (G.vida < 30) fv.style.backgroundColor = "#ff4444";
-        else if (G.vida < 60) fv.style.backgroundColor = "#ffbb33";
-        else fv.style.backgroundColor = "#00e5ff";
+    if (barVida) {
+        barVida.style.width = `${G.vida}%`;
+        if (G.vida < 30) barVida.style.backgroundColor = "var(--neon-red, #ff3333)";
+        else if (G.vida < 60) barVida.style.backgroundColor = "#ffbb33";
+        else barVida.style.backgroundColor = "var(--neon-cyan, #00eaff)";
     }
 
-    const tcb = document.getElementById("tcb");
-    const tnv = document.getElementById("tnv");
-    if (tcb) tcb.textContent = G.combo;
-    if (tnv) tnv.textContent = G.nivel;
+    if (barEnergia) barEnergia.style.width = `${G.energia || 100}%`;
+
+    const txtCombo = document.getElementById("tcb");
+    const txtNivel = document.getElementById("tnv");
+    
+    if (txtCombo) txtCombo.textContent = G.combo || 0;
+    if (txtNivel) txtNivel.textContent = G.nivel || 1;
 }
 
+/**
+ * Abre janelas modais injetando classes de animação CSS e aciona builders dependentes.
+ * @param {string} id - ID do container modal no DOM.
+ */
 export function abrirM(id) {
     const modal = document.getElementById(id);
     if (!modal) return;
     modal.classList.add("show", "active");
+    
+    // Delegação: se abrir o painel de telemetria, renderiza o dashboard estatístico
     if (id === 'mdash') gerarDashboard();
 }
 
+/**
+ * Fecha a janela modal especificada.
+ * @param {string} id - ID do container modal no DOM.
+ */
 export function fecharM(id) {
     const modal = document.getElementById(id);
     if (modal) modal.classList.remove("show", "active");
 }
 
-// === GAME OVER ===
-
+/**
+ * Dispara a tela de encerramento da sessão por colapso do reator cognitivo.
+ */
 export function exibirGameOver() {
-    const total = G.acertos + G.erros;
-    const tx = total > 0 ? Math.round((G.acertos / total) * 100) : 0;
+    const totalQuestoes = (G.acertos || 0) + (G.erros || 0);
+    const taxaSincronia = totalQuestoes > 0 ? Math.round((G.acertos / totalQuestoes) * 100) : 0;
 
-    const goModal = document.getElementById("go");
-    const goSt = document.getElementById("go-st");
+    const modalGameOver = document.getElementById("go");
+    const containerStatus = document.getElementById("go-st");
 
-    if (goSt) {
-        goSt.innerHTML = `
-            <strong>Acertos:</strong> ${G.acertos} | 
-            <strong>Anomalias:</strong> ${G.erros} <br>
-            <strong>Taxa de Sincronia Lógica:</strong> ${tx}%
+    if (containerStatus) {
+        containerStatus.innerHTML = `
+            <strong>Acertos Consolidados:</strong> ${G.acertos || 0} <br>
+            <strong>Anomalias de Percurso:</strong> ${G.erros || 0} <br>
+            <strong>Taxa de Sincronia Lógica:</strong> ${taxaSincronia}%
         `;
     }
 
-    if (goModal) {
-        goModal.classList.add("show", "active");
-        goModal.style.zIndex = "10000";
+    if (modalGameOver) {
+        modalGameOver.classList.add("show", "active");
+        modalGameOver.style.zIndex = "10000";
     }
 
-    narrarContexto(`Integridade do sistema comprometida. Taxa de sincronia final: ${tx} por cento. Reinicie para nova análise.`, false);
+    narrarContexto(`Alerta: Estabilidade do núcleo perdida. Taxa de sincronia calculada em ${taxaSincronia} por cento. Reinicie o terminal para calibração.`, false);
 }
 
-// === DASHBOARD PEDAGÓGICO ===
+/**
+ * Alimenta e constrói o painel de telemetria curricular da BNCC para o painel do estudante.
+ * Nota: Painel docente especializado (Alt+P) é gerido isoladamente via DiagnosticEngine/LearningAnalytics.
+ */
+export function gerarDashboard() {
+    const containerDash = document.getElementById("dash-content");
+    if (!containerDash) return;
 
-function gerarDashboard() {
-    const c = document.getElementById("dash-content");
-    if (!c) return;
-
-    c.innerHTML = "";
-    let temDados = false;
+    containerDash.innerHTML = "";
+    let possuiRegistros = false;
     const historico = G.historico || {};
 
-    for (let hab in historico) {
-        const hist = historico[hab];
-        const total = (hist.acertos || 0) + (hist.erros_conceito || 0) + (hist.erros_calculo || 0);
+    for (let habilidadeKey in historico) {
+        const metricaHab = historico[habilidadeKey];
+        const totalItens = (metricaHab.acertos || 0) + (metricaHab.erros_conceito || 0) + (metricaHab.erros_calculo || 0);
         
-        if (total === 0) continue;
-        temDados = true;
+        if (totalItens === 0) continue;
+        possuiRegistros = true;
 
-        const txAcerto = Math.round((hist.acertos / total) * 100);
-        let diagnostico = "";
+        const precisaoPercentual = Math.round((metricaHab.acertos / totalItens) * 100);
+        let feedbackLayout = "";
 
-        if (hist.erros_conceito > hist.acertos) {
-            diagnostico = `<div class="alerta-sinal" style="color: var(--neon-red); margin-top:5px;">⚠️ Bloqueio Conceitual: O aluno não domina a regra base desta habilidade.</div>`;
-        } else if (hist.erros_calculo > 0) {
-            diagnostico = `<div class="alerta-calc" style="color: #ffbb33; margin-top:5px;">📐 Falha Operacional: Erros de atenção ou processo aritmético.</div>`;
+        if (metricaHab.erros_conceito > metricaHab.acertos) {
+            feedbackLayout = `<div class="alerta-sinal" style="color: var(--neon-red, #ff3333); margin-top:5px; font-weight:bold; font-size:11px;">⚠️ Bloqueio Conceitual: Demanda intervenção estrutural de base na ZDP.</div>`;
+        } else if (metricaHab.erros_calculo > 0) {
+            feedbackLayout = `<div class="alerta-calc" style="color: #ffbb33; margin-top:5px; font-weight:bold; font-size:11px;">📐 Desvio Operacional: Inconsistência de atenção aritmética/sintaxe.</div>`;
         } else {
-            diagnostico = `<div class="alerta-ok" style="color: var(--neon-green); margin-top:5px;">✅ Domínio Estabilizado.</div>`;
+            feedbackLayout = `<div class="alerta-ok" style="color: var(--neon-green, #00ff66); margin-top:5px; font-weight:bold; font-size:11px;">✅ Estrutura Cognitiva Estabilizada.</div>`;
         }
 
-        c.innerHTML += `
-            <div class="dash-card">
-                <div class="dash-card-header" style="display:flex; justify-content:space-between;">
-                    <span class="hab-code" style="color:var(--choco-gold); font-weight:bold;">${hab}</span>
-                    <span class="hab-pct" style="color:var(--neon-cyan);">${txAcerto}%</span>
+        containerDash.innerHTML += `
+            <div class="dash-card" style="background: rgba(255,255,255,0.02); border-left: 3px solid var(--choco-gold); padding: 10px; margin-bottom: 10px; border-radius: 4px;">
+                <div class="dash-card-header" style="display:flex; justify-content:space-between; margin-bottom: 4px;">
+                    <span class="hab-code" style="color:var(--choco-gold); font-weight:bold; font-family: monospace;">${habilidadeKey}</span>
+                    <span class="hab-pct" style="color:var(--neon-cyan); font-weight:bold;">${precisaoPercentual}%</span>
                 </div>
-                <p class="hab-desc" style="font-size:11px; opacity:0.8; margin:5px 0;">${hist.desc || "Habilidade em análise"}</p>
-                <div class="dash-bar" style="width:100%; height:8px; background:#222; border-radius:4px; overflow:hidden;">
-                    <div class="dash-fill-ok" style="width:${txAcerto}%; height:100%; background:var(--neon-green);"></div>
+                <p class="hab-desc" style="font-size:11px; opacity:0.7; margin:4px 0;">${metricaHab.desc || "Mapeamento Curricular Ativo"}</p>
+                <div class="dash-bar" style="width:100%; height:6px; background:#111; border-radius:3px; overflow:hidden; margin-top: 6px;">
+                    <div class="dash-fill-ok" style="width:${precisaoPercentual}%; height:100%; background:var(--neon-green, #00ff66); transition: width 0.4s ease;"></div>
                 </div>
-                ${diagnostico}
+                ${feedbackLayout}
             </div>`;
     }
 
-    if (!temDados) {
-        c.innerHTML = "<p class='text-center' style='color:var(--text-muted); padding:20px;'>Aguardando telemetria de campo para gerar relatório...</p>";
+    if (!possuiRegistros) {
+        containerDash.innerHTML = "<p style='text-align:center; opacity:0.4; padding:30px; font-size:12px; font-family:monospace;'>Aguardando telemetria estável de campo para consolidação de relatórios...</p>";
     }
 }
