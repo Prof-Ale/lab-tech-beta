@@ -84,6 +84,10 @@ function mostrarSeletorBlocos() {
     
     narrarContexto(msgBoasVindas, true);
 }
+if (renderizadorGrafico) {
+        AdaptiveAudioEngine.sonarDeslocamento(deslocamento); // 🎵 Som do movimento vetorial!
+        await renderizadorGrafico.animarArcos(q, deslocamento, payloadAdaptive.interfaceModifiers.modoRepresentacao || 'visual');
+    }
 
 /**
  * Configura as variáveis de controle e inicia um módulo específico de aprendizagem
