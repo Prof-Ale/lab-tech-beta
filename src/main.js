@@ -1,7 +1,6 @@
 /**
  * src/main.js — CONFIGURAÇÃO DE ROTAS DE IMPORTAÇÃO E MAESTRO (v15.0)
  * Orquestrador do fluxo cognitivo, telemetria e renderização do LabTech.
- * CORREÇÃO: Métodos estáticos do AdaptiveSelector e mapeamento de ID do Canvas.
  */
 
 // ⚙️ 1. ESTADO GLOBAL E MOTORES DE JOGO
@@ -14,6 +13,7 @@ import { DiagnosticEngine } from './core/ada/DiagnosticEngine.js';
 import { ProfileEngine } from './core/ada/ProfileEngine.js';
 import { AdaptiveSelector } from './core/ada/AdaptiveSelector.js';
 import { LearningAnalytics } from './core/ada/LearningAnalytics.js';
+import { AdaptiveAudioEngine } from './core/ada/AdaptiveAudioEngine.js'; // 🎵 INJEÇÃO DO MOTOR DE ÁUDIO
 
 // 📺 3. CAMADA DE INTERFACE E RENDERIZAÇÃO GRÁFICA
 import { CanvasRenderer } from './ui/canvasRenderer.js';
@@ -69,7 +69,7 @@ function mostrarSeletorBlocos() {
     const instProfile = new ProfileEngine();
     G.perfilCognitivo = instProfile.inicializarEstudante(`${G.nome}_${G.turma}`);
 
-    // INTERVENÇÃO CIRÚRGICA: Vinculação correta ao ID 'cv' do HTML para o motor gráfico
+    // Vinculação correta ao ID do HTML para o motor gráfico
    if (!renderizadorGrafico) {
         renderizadorGrafico = new CanvasRenderer('canvas-game'); 
     }
@@ -84,10 +84,6 @@ function mostrarSeletorBlocos() {
     
     narrarContexto(msgBoasVindas, true);
 }
-if (renderizadorGrafico) {
-        AdaptiveAudioEngine.sonarDeslocamento(deslocamento); // 🎵 Som do movimento vetorial!
-        await renderizadorGrafico.animarArcos(q, deslocamento, payloadAdaptive.interfaceModifiers.modoRepresentacao || 'visual');
-    }
 
 /**
  * Configura as variáveis de controle e inicia um módulo específico de aprendizagem
@@ -148,12 +144,8 @@ async function processarResposta(alt, q) {
         if (String(b.textContent) === String(alt.valor) && !analise.correto) b.classList.add('no');
     });
 
+    // ─── LÓGICA DE PONTUAÇÃO E SOM (LIMPA E CORRIGIDA) ───
     if (analise.correto) {
-        G.acertos++; 
-        G.combo++;
-        G.historico[hab].acertos++;
-    } else {
-        if (analise.correto) {
         G.acertos++; 
         G.combo++;
         G.historico[hab].acertos++;
@@ -172,7 +164,7 @@ async function processarResposta(alt, q) {
         AdaptiveAudioEngine.sonarAnomalia(); // 🎵 Som de Erro!
     }
 
-    // 💾 AGORA SIM: Grava a telemetria BNCC no HD do navegador APÓS a pontuação ser atualizada
+    // 💾 Grava a telemetria BNCC no HD do navegador APÓS a pontuação ser atualizada
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
 
     // 1. Processa a telemetria e altera o estado do Estudante e da ADA
@@ -188,10 +180,10 @@ async function processarResposta(alt, q) {
     narrarContexto(feedbackTexto, analise.correto);
 
     // 3. Renderização Dinâmica do Isomorfismo
-    // INTERVENÇÃO CIRÚRGICA: Correção de chamada instanciada para chamada de classe estática
     const payloadAdaptive = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
     
     if (renderizadorGrafico) {
+        AdaptiveAudioEngine.sonarDeslocamento(deslocamento); // 🎵 Som vetorial posicionado CORRETAMENTE aqui!
         await renderizadorGrafico.animarArcos(q, deslocamento, payloadAdaptive.interfaceModifiers.modoRepresentacao || 'visual');
     }
 
@@ -220,10 +212,8 @@ function proximaQ() {
         fbContainer.style.display = 'none';
     }
 
-    // INTERVENÇÃO CIRÚRGICA: Chamada estática substituindo instanciação redundante
     const q = AdaptiveSelector.selecionarProximaQuestao(G.currentBlock, G.perfilCognitivo);
     
-    // Removido mock de contingência para restaurar processamento do banco real de questões
     if (!q) return;
 
     // Dispara gatilho preditivo de microintervenção se risco for computado pela ADA
@@ -247,7 +237,6 @@ function renderQ(q) {
     if (grid) grid.innerHTML = '';
     $('btn-prox')?.classList.add('hidden');
     
-    // INTERVENÇÃO CIRÚRGICA: Chamada estática substituindo instanciação desnecessária
     const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
 
     if (renderizadorGrafico) {
@@ -275,7 +264,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("🚀 [SISTEMA] Iniciando ignição e setup do motor LabTech (Arquitetura Modular)...");
     
     try {
-        // Inicialização compulsória da carga assíncrona do cofre de questões
         const banco = await AdaptiveSelector.carregarBancoDeQuestoes(); 
         console.log(`✅ [SISTEMA] Base de dados instanciada com sucesso. Itens carregados: ${banco.length}`);
     } catch (e) {
@@ -299,7 +287,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            // Exibe um resumo rápido na tela para o professor
             const relatorio = `🎓 PAINEL CLÍNICO DOCENTE (LabTech XAI)
 --------------------------------------------------
 Estudante: ${G.nome} | Turma: ${G.turma}
@@ -309,7 +296,6 @@ Estudante: ${G.nome} | Turma: ${G.turma}
 --------------------------------------------------
 Aperte [F12] para ver a matriz de erro detalhada no console!`;
             
-            // Joga o objeto completo (Biópsia Cognitiva) direto no console do navegador
             console.log("%c🔍 RADIOGRAFIA COGNITIVA COMPLETA DA ADA", "color: #00eaff; font-size: 14px; font-weight: bold;");
             console.dir(G.perfilCognitivo);
             
