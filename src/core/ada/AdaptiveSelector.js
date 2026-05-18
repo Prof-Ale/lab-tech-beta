@@ -52,23 +52,39 @@ export class AdaptiveSelector {
      * @param {Object} perfilCognitivo - Prontuário do aluno.
      * @returns {Object} A questão normalizada selecionada.
      */
+   /**
+     * Busca a próxima questão ideal no banco baseada na ZDP do aluno.
+     * CORREÇÃO: Comparação segura de blocos e trava anti-repetição.
+     */
     static selecionarProximaQuestao(blockId, perfilCognitivo) {
-        // Fallback de segurança temporário caso o banco global não esteja injetado ainda
         const bancoGlobal = window.catalogoGlobalDeQuestoes || [];
         
         if (bancoGlobal.length === 0) {
-            console.warn("[ADA] Banco de questões vazio ou não carregado. Retornando mock de segurança.");
-            return {
-                id: 'MOCK_01',
-                bncc: 'GERAL',
-                display: 'Sistema operando em modo de contingência. Banco não localizado.',
-                representacao: 'visual',
-                alternativas: [
-                    { id_alternativa: 'A', valor: 'Continuar', tipo: 'acerto', categoria: 'sucesso' }
-                ],
-                res: 'Continuar'
-            };
+            console.warn("[ADA] Banco de questões vazio. Retornando mock.");
+            return { id: 'MOCK', display: 'Banco não carregado.', alternativas: [{valor: 'A'}], res: 'A' };
         }
+
+        // 1. Compara transformando ambos em String (Resolve o erro do "1" === 1)
+        let questoesValidas = bancoGlobal.filter(q => String(q.bloco) === String(blockId));
+        
+        // Se o bloco estiver vazio, usa o banco inteiro para não travar o jogo
+        if (questoesValidas.length === 0) questoesValidas = bancoGlobal;
+
+        // 2. Trava anti-repetição: Filtra a questão que o aluno acabou de responder
+        const idUltimaQuestao = window.__LABTECH_DEBUG__?.qId;
+        let poolSorteio = questoesValidas.filter(q => String(q.id) !== String(idUltimaQuestao));
+
+        // Se esgotaram as questões, reseta o pool
+        if (poolSorteio.length === 0) poolSorteio = questoesValidas;
+
+        // Sorteia a próxima
+        const proxima = poolSorteio[Math.floor(Math.random() * poolSorteio.length)];
+        
+        // Atualiza o painel X-Ray com o novo ID para a próxima trava funcionar
+        if (window.__LABTECH_DEBUG__) window.__LABTECH_DEBUG__.qId = proxima.id;
+
+        return proxima;
+    }
 
         // Lógica simples de filtro (pode ser expandida com algoritmos de TRI no futuro)
         const questoesValidas = bancoGlobal.filter(q => q.bloco === blockId);
