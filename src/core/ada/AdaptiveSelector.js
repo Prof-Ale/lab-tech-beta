@@ -8,7 +8,8 @@
  * @package LabTech / ADA Intelligent Tutoring System
  */
 
-import { CLUSTERS, ESTAGIOS_GALPERIN, PERFIS_COGNITIVOS } from './diagnostic-engine.js';
+// Substitua o import antigo por este:
+import { CLUSTERS, ESTAGIOS_GALPERIN, PERFIS_COGNITIVOS } from './DiagnosticEngine.js';
 
 /**
  * Interface de Configuração de Saída do Seletor Adaptativo (Contrato de Design)
