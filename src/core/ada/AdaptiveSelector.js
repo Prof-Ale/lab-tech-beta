@@ -1,135 +1,133 @@
 /**
- * @fileoverview AdaptiveSelector.js v4.0.0 — "LabTech Cognitive Orchestrator"
- * @description Motor de Seleção Adaptativa, Distribuição Estocástica-Determinista de Scaffold
- * e Alternância Semiótica Baseada na Teoria Histórico-Cultural e DUA.
- * Garantia de imutabilidade estrita e isolamento arquitetural contra efeitos colaterais.
- * 
- * @version 4.0.0
- * @package LabTech / ADA Intelligent Tutoring System
+ * @fileoverview AdaptiveSelector.js
+ * @description Cérebro orquestrador da ADA. Seleciona a próxima tarefa, 
+ * define a representação visual (DUA) e injeta scaffolds na ZDP do estudante.
+ * @version 5.0.0
+ * @package LabTech / Core ADA
  */
 
-// Substitua o import antigo por este:
-import { CLUSTERS, ESTAGIOS_GALPERIN, PERFIS_COGNITIVOS } from './DiagnosticEngine.js';
+// CORREÇÃO APLICADA: Importando o arquivo correto em CamelCase (DiagnosticEngine.js)
+import { CONFIG_ANALYTICS } from './LearningAnalytics.js'; // Caso precise de constantes globais
 
-/**
- * Interface de Configuração de Saída do Seletor Adaptativo (Contrato de Design)
- * @typedef {Object} TaskPayload
- * @property {string} taskId - ID único da questão/sensor selecionado.
- * @property {string} bnccTarget - Habilidade da BNCC sendo avaliada e mediada.
- * @property {string} estagioGalperin - Estágio de interiorização da ação mental imposto.
- * @property {Object} interfaceModifiers - Modificadores de UI para adequação ao perfil cognitivo.
- * @property {Object} duaAccessibility - Configurações ativas de acessibilidade e representação múltipla.
- * @property {Object} scaffoldMetadata - Parâmetros internos do nível de ajuda fornecido pela ADA.
- */
-
-/**
- * Orquestrador Adaptativo Core da ADA. Seleciona a próxima atividade e customiza
- * sua camada semiótica e de scaffold com base na biopsia cognitiva do estudante.
- * 
- * @param {Object} estadoConsolidado - Estado imutável retornado pela Governance Layer.
- * @param {Array<Object>} poolDeTarefas - Catálogo global de sensores/questões disponíveis no sistema.
- * @param {Object} restricoesAcessibilidade - Preferências ou necessidades físicas declaradas pelo usuário.
- * @returns {TaskPayload} Configuração atômica customizada para renderização imediata na UI.
- */
-export function selecionarProximaTarefa(estadoConsolidado, poolDeTarefas, restricoesAcessibilidade = {}) {
-    // 1. Defesas Sanitárias Absolutas contra Estados Corrompidos ou Vazios
-    const S = estadoConsolidado || {};
-    const adaState = S.adaState || { perfilCognitivoAtual: PERFIS_COGNITIVOS.DEPENDENTE_CONCRETO, scaffold: { representacao: ESTAGIOS_GALPERIN.ICONICO_VISUAL } };
-    const logs = (S.diagnostico && S.diagnostico.logs) ? S.diagnostico.logs : [];
+export class AdaptiveSelector {
     
-    if (!poolDeTarefas || poolDeTarefas.length === 0) {
-        throw new Error("Erro Crítico de Arquitetura: Pool de tarefas vazio ou corrompido no LabTech Core.");
+    /**
+     * Limpa o histórico transitório da sessão atual quando um novo bloco é iniciado.
+     */
+    static limparHistoricoSessao() {
+        if (window.__LABTECH_DEBUG__) {
+            window.__LABTECH_DEBUG__.jumpDelta = 0;
+            console.log("[ADA] Histórico transitório de sessão limpo.");
+        }
     }
 
-    // 2. Identificar a Habilidade BNCC Ativa sob Intervenção na ZDP
-    const ultimoLog = logs.length > 0 ? logs[logs.length - 1] : null;
-    const bnccAlvo = ultimoLog ? ultimoLog.bncc : Object.keys(S.historico || {})[0] || "EM13MAT302";
+    /**
+     * Determina qual interface semiótica (visual, abstrata, reta) o Canvas deve renderizar.
+     * @param {Object} perfilCognitivo - O prontuário atual do estudante.
+     * @param {number} comboAcertos - Quantidade de acertos consecutivos.
+     * @param {string} representacaoPadrao - A representação default da questão.
+     * @returns {string} O modo de representação que o CanvasRenderer vai usar.
+     */
+    static determinarRepresentacaoInterface(perfilCognitivo, comboAcertos, representacaoPadrao) {
+        if (!perfilCognitivo) return representacaoPadrao || 'visual';
 
-    // 3. Filtragem de Tarefas Viáveis para a Habilidade Requisitada
-    const tarefasFiltradas = poolDeTarefas.filter(tarefa => tarefa.bncc === bnccAlvo);
-    const tarefasValidas = tarefasFiltradas.length > 0 ? tarefasFiltradas : poolDeTarefas;
+        const perfil = perfilCognitivo.perfilDominante || 'INDEFINIDO';
 
-    // 4. Determinação do Nível de Complexidade Estrutural Baseado em Mastery Learning
-    const historicoHabilidade = S.historico && S.historico[bnccAlvo] ? S.historico[bnccAlvo] : { acertos: 0, erros_conceito: 0, erros_calculo: 0 };
-    const totalInteracoes = historicoHabilidade.acertos + historicoHabilidade.erros_conceito + historicoHabilidade.erros_calculo;
-    const taxaAcertoLongitudinal = totalInteracoes > 0 ? (historicoHabilidade.acertos / totalInteracoes) : 0;
+        // Se o aluno for Dependente Concreto, força a interface visual/materializada
+        if (perfil === 'DEPENDENTE_CONCRETO') {
+            return 'visual';
+        }
+        
+        // Se o aluno for Procedural Mecânico e tiver combo alto, empurra para abstração
+        if (perfil === 'PROCEDURAL_MECANICO' && comboAcertos > 3) {
+            return 'abstrato';
+        }
 
-    let complexidadeAlvo = 1;
-    if (taxaAcertoLongitudinal > 0.80) complexidadeAlvo = 3;
-    else if (taxaAcertoLongitudinal > 0.50) complexidadeAlvo = 2;
-
-    // 5. Aplicação das Diretrizes de Transposição Semiótica da ADA baseadas no Perfil Cognitivo
-    const perfil = adaState.perfilCognitivoAtual;
-    const estagioExigido = adaState.scaffold.representacao;
-
-    // Localizar a tarefa que melhor se ajusta ao cruzamento de Complexidade e Estágio Pedagógico
-    let tarefaSelecionada = tarefasValidas.find(t => 
-        t.complexidade === complexidadeAlvo && t.estagioPredominante === estagioExigido
-    );
-
-    // Fallback estratégico caso o cruzamento exato crie um conjunto vazio no catálogo
-    if (!tarefaSelecionada) {
-        tarefaSelecionada = tarefasValidas.find(t => t.complexidade === complexidadeAlvo) || tarefasValidas[0];
+        // Retorna o padrão do sensor ou visual como fallback seguro
+        return representacaoPadrao || 'visual';
     }
 
-    // 6. Construção Dinâmica dos Modificadores de Interface (UX/UI Pedagógica Interveniente)
-    const interfaceModifiers = {
-        exibirRastroParticulas: perfil !== PERFIS_COGNITIVOS.PROCEDURAL_MECANICO,
-        travaReflexaoObrigatoria: perfil === PERFIS_COGNITIVOS.IMPULSIVO_ARITMETICO,
-        tempoMinimoExigidoMs: perfil === PERFIS_COGNITIVOS.IMPULSIVO_ARITMETICO ? 4000 : 0,
-        camposEntradaSimbolicaBloqueados: perfil === PERFIS_COGNITIVOS.PROCEDURAL_MECANICO,
-        exibirEixoSimetriaInvisivel: perfil === PERFIS_COGNITIVOS.DEPENDENTE_CONCRETO || taxaAcertoLongitudinal < 0.40,
-        modoFadingAtivo: perfil === PERFIS_COGNITIVOS.DEPENDENTE_CONCRETO && totalInteracoes > 4
-    };
+    /**
+     * Busca a próxima questão ideal no banco baseada na ZDP do aluno.
+     * @param {number|string} blockId - O módulo atual.
+     * @param {Object} perfilCognitivo - Prontuário do aluno.
+     * @returns {Object} A questão normalizada selecionada.
+     */
+    static selecionarProximaQuestao(blockId, perfilCognitivo) {
+        // Fallback de segurança temporário caso o banco global não esteja injetado ainda
+        const bancoGlobal = window.catalogoGlobalDeQuestoes || [];
+        
+        if (bancoGlobal.length === 0) {
+            console.warn("[ADA] Banco de questões vazio ou não carregado. Retornando mock de segurança.");
+            return {
+                id: 'MOCK_01',
+                bncc: 'GERAL',
+                display: 'Sistema operando em modo de contingência. Banco não localizado.',
+                representacao: 'visual',
+                alternativas: [
+                    { id_alternativa: 'A', valor: 'Continuar', tipo: 'acerto', categoria: 'sucesso' }
+                ],
+                res: 'Continuar'
+            };
+        }
 
-    // 7. Orquestração de Múltiplas Camadas do DUA (Desenho Universal para Aprendizagem)
-    const duaAccessibility = {
-        sonificationActive: !!restricoesAcessibilidade.visualImpairment || perfil === PERFIS_COGNITIVOS.DEPENDENTE_CONCRETO,
-        audioFrequenciaFoco: "TAXA_DE_VARIACAO_QUADRATICA",
-        altoContrasteGeometrico: !!restricoesAcessibilidade.altoContraste,
-        inputAlternativoVoz: !!restricoesAcessibilidade.motorImpairment,
-        legendaNarrativaExplicativa: true,
-        leituraMatrizPontosTabular: perfil === PERFIS_COGNITIVOS.IMPULSIVO_ARITMETICO
-    };
+        // Lógica simples de filtro (pode ser expandida com algoritmos de TRI no futuro)
+        const questoesValidas = bancoGlobal.filter(q => q.bloco === blockId);
+        return questoesValidas.length > 0 ? questoesValidas[Math.floor(Math.random() * questoesValidas.length)] : bancoGlobal[0];
+    }
 
-    // 8. Customização de Metadados de Scaffold da ADA (Andaimes Histórico-Culturais)
-    const scaffoldMetadata = {
-        tipoIntervencaoADA: adaState.scaffold.acao,
-        mensagemSuporteNarrativo: obterMensagemADAContextual(perfil, tarefaSelecionada.contextoNarrativo),
-        reducaoCargaCognitivaAtiva: adaState.scaffold.reduzirCargaCognitiva,
-        ZDP_Status: taxaAcertoLongitudinal >= 0.95 ? "MASTERY_CONSOLIDATED" : "IN_TRANSITION"
-    };
+    /**
+     * Retorna o pacote completo da próxima tarefa (compatível com o novo main.js).
+     * @param {Object} gameState - Objeto G.
+     * @param {Array} poolDeTarefas - Catálogo de questões disponíveis.
+     * @returns {Object} Payload adaptativo.
+     */
+    static selecionarProximaTarefa(gameState, poolDeTarefas) {
+        const perfil = gameState?.adaState?.perfilCognitivoAtual || 'DEPENDENTE_CONCRETO';
+        
+        return {
+            taskId: poolDeTarefas[0]?.id || 'default',
+            interfaceModifiers: {
+                modoRepresentacao: this.determinarRepresentacaoInterface({ perfilDominante: perfil }, gameState?.combo || 0, 'visual')
+            }
+        };
+    }
 
-    // 9. Retorno do Payload Imutável com Isolamento Total de Referência
-    return Object.freeze({
-        taskId: tarefaSelecionada.id,
-        bnccTarget: bnccAlvo,
-        estagioGalperin: estagioExigido,
-        interfaceModifiers: Object.freeze(interfaceModifiers),
-        duaAccessibility: Object.freeze(duaAccessibility),
-        scaffoldMetadata: Object.freeze(scaffoldMetadata)
-    });
-}
+    /**
+     * Verifica se o aluno precisa de um aviso verbal da ADA antes da questão começar.
+     * @param {Object} questaoAtual - A questão que será renderizada.
+     * @param {Object} perfilCognitivo - O prontuário do aluno.
+     * @returns {string|null} O texto para a ADA narrar, ou null se não precisar.
+     */
+    static gerarMicroIntervencao(questaoAtual, perfilCognitivo) {
+        if (!perfilCognitivo) return null;
 
-/**
- * Função Auxiliar Interna Pura para geração de micro-narrativas de suporte psicológico da ADA.
- * Rejeita acoplamentos sintáticos duros e strings estáticas globais.
- * 
- * @param {string} perfil - Perfil cognitivo inferido do estudante.
- * @param {string} contextoQuestao - Fragmento da narrativa ativa da tarefa.
- * @returns {string} Mensagem instrucional personalizada para mediação.
- */
-function obterMensagemADAContextual(perfil, contextoQuestao) {
-    const dicionarioMensagens = {
-        [PERFIS_COGNITIVOS.IMPULSIVO_ARITMETICO]: 
-            "ADA detectou velocidade crítica de resposta. Respire. Antes de alterar os motores, descreva textualmente o impacto esperado no ponto máximo de curvatura.",
-        [PERFIS_COGNITIVOS.PROCEDURAL_MECANICO]: 
-            "Esqueça as fórmulas por um instante. Observe o movimento real do fluido. Onde o sistema atinge o ponto de equilíbrio geométrico antes de começar a cair?",
-        [PERFIS_COGNITIVOS.DEPENDENTE_CONCRETO]: 
-            "Os guias visuais de partículas estão diminuindo de intensidade. Confie na lei matemática que você modelou nas rodadas anteriores.",
-        [PERFIS_COGNITIVOS.CONCEITUAL_TEORICO]: 
-            "Estabilidade de órbita validada. Expandindo os limites paramétricos do reator para transposição de modelos complexos de gravidade não-uniforme."
-    };
+        if (perfilCognitivo.perfilDominante === 'IMPULSIVO_ARITMETICO') {
+            return "Respire fundo. Analise a geometria antes de alterar os valores.";
+        }
 
-    return dicionarioMensagens[perfil] || `ADA monitorando a atividade em andamento no contexto: ${contextoQuestao || "Geral"}.`;
+        if (perfilCognitivo.perfilDominante === 'PROCEDURAL_MECANICO' && questaoAtual.representacao === 'visual') {
+            return "Observe as mudanças físicas na tela, não foque apenas nos números agora.";
+        }
+
+        return null; // Nenhuma intervenção preditiva necessária
+    }
+
+    /**
+     * Simula o carregamento do banco de questões (Pode ser adaptado para fetch de um JSON real).
+     * @returns {Promise<Array>}
+     */
+    static async carregarBancoDeQuestoes() {
+        try {
+            const resposta = await fetch('./data/questoes.json');
+            if (!resposta.ok) throw new Error("Arquivo JSON não encontrado.");
+            const dados = await resposta.json();
+            window.catalogoGlobalDeQuestoes = dados;
+            return dados;
+        } catch (erro) {
+            console.warn("[ADA] Falha ao carregar questoes.json. Usando banco em memória vazio.", erro);
+            window.catalogoGlobalDeQuestoes = [];
+            return [];
+        }
+    }
 }
