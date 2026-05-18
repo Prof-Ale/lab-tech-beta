@@ -270,9 +270,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     on('btn-musica', toggleMusica);
     on('btn-voz', toggleVoz);
 
+   // ─── ATALHO INTEGRADO DOCENTE: MAPA CLÍNICO COGNITIVO (Alt + P) ───
     document.addEventListener('keydown', (e) => {
         if (e.altKey && e.key.toLowerCase() === 'p') {
-            alert("Painel Docente de Explicabilidade em Construção. (Modulo Alt+P)");
+            if (!G.perfilCognitivo) {
+                alert("⚠️ Acesso Negado: Nenhum estudante iniciou calibração na sessão atual.");
+                return;
+            }
+
+            // Exibe um resumo rápido na tela para o professor
+            const relatorio = `🎓 PAINEL CLÍNICO DOCENTE (LabTech XAI)
+--------------------------------------------------
+Estudante: ${G.nome} | Turma: ${G.turma}
+🧠 Perfil Diagnóstico: ${G.perfilCognitivo.perfilDominante}
+⚠️ Deriva Pedagógica (0-1): ${G.perfilCognitivo.derivaPedagogicaGeral}
+⏱️ Itens Processados: ${G.perfilCognitivo.itensRespondidos}
+--------------------------------------------------
+Aperte [F12] para ver a matriz de erro detalhada no console!`;
+            
+            // Joga o objeto completo (Biópsia Cognitiva) direto no console do navegador
+            console.log("%c🔍 RADIOGRAFIA COGNITIVA COMPLETA DA ADA", "color: #00eaff; font-size: 14px; font-weight: bold;");
+            console.dir(G.perfilCognitivo);
+            
+            alert(relatorio);
         }
     });
   
