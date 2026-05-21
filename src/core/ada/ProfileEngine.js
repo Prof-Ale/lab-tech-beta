@@ -156,12 +156,13 @@ export class ProfileEngine {
         // 💾 SALVA A FOTOGRAFIA DA MENTE DO ALUNO A CADA CLIQUE
         this._salvarLocal(estudanteId, perfil);
 
-        return {
+       return {
             estudanteId: perfil.id,
             perfilDominante: perfil.perfilDominante,
             derivaPedagogicaGeral: perfil.derivaPedagogicaGeral,
             sugestaoAcaoADA: this._gerarDiretrizIntervencaoADA(perfil, metadadosSensor),
-            timestampProcessamento: new Date().toISOString()
+            timestampProcessamento: new Date().toISOString(),
+            perfilCompleto: perfil // 🚨 A CURA: O Cérebro devolve a foto inteira para o main.js!
         };
     }
 
