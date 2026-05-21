@@ -171,6 +171,9 @@ async function processarResposta(alt, q) {
     const payloadTelemetria = { latenciaMs: latenciaSessaoMs, totalAjustesPreConfirmacao: 1, alternativaSelecionadaId: alt.id };
     const updateResultado = profEngine.processarEventoTelemetria(`${G.nome}_${G.turma}`, payloadTelemetria, q);
     
+    // 🚨 A CURA DO ALT+P: Sincroniza a memória global do jogo com a memória atualizada da ADA!
+    G.perfilCognitivo = updateResultado.perfilCompleto; 
+    
     // Atualiza globalmente as diretrizes da ADA baseadas no erro recém cometido
     G.adaState.comandoInterface = updateResultado.sugestaoAcaoADA.comandoMacro;
 
