@@ -351,8 +351,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
    
     // ─── LIGAÇÃO DOS BOTÕES LATERAIS DE INTERFACE ───
-    on('btn-cred', () => {
-        abrirM('mcred');
+    on('btn-cred', () => { abrirM('mcred'); });
+    
+    // 🚨 BOTAO DO DASHBOARD REATIVADO
+    on('btn-dash', () => { 
+        atualizarDashboard(); 
+        abrirM('mdash'); // Se o ID da sua janela modal for diferente, me avise! Geralmente é 'mdash'
     });
 
    
