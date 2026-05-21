@@ -103,7 +103,8 @@ export class ProfileEngine {
         const ehCorreto = alternativaAlvo ? (alternativaAlvo.tipo === 'acerto') : false;
         
         // Transformado em 'let' para permitir reescrita em caso de pseudoconceito
-        let etiologiaErro = alternativaAlvo ? (alternativaAlvo.categoria || 'ERRO_GENERICO').toUpperCase() : 'ERRO_GENERICO';
+        // Estava 'categoria', nós mudamos para ler a sua taxonomia fantástica 'misconception'
+        let etiologiaErro = alternativaAlvo ? (alternativaAlvo.misconception || 'ERRO_GENERICO').toUpperCase() : 'ERRO_GENERICO';
         const estagioAtual = (metadadosSensor.estagioGalperin || 'INTERNA_PURA').toUpperCase();
 
         // 🧠 A LÓGICA DA EMBOSCADA PEDAGÓGICA (PSEUDOCONCEITO)
