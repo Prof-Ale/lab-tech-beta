@@ -5538,5 +5538,1565 @@
       ]
     }
   }
-}
+},
+  {
+    "id": "BN_06_001",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Uma pizza foi dividida em 4 partes iguais. Ana comeu 1 parte. Que fração da pizza ela comeu?",
+    "a": 1,
+    "b": 4,
+    "res": "1/4",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "1/4",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou uma parte escolhida em um todo dividido em quatro partes iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "3/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou as partes que sobraram.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "4/1",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu numerador e denominador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "4/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno marcou o todo como resposta.",
+        "misconception": "TODO_COMO_PARTE"
+      }
+    ],
+    "passo": "Muito bem! A fração mostra 1 parte escolhida de 4 partes iguais.",
+    "dica": "Conte primeiro as partes usadas e depois o total de partes."
+  },
+  {
+    "id": "BN_06_002",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Uma barra de chocolate foi dividida em 6 pedaços iguais. Pedro comeu 2 pedaços. Que fração da barra ele comeu?",
+    "a": 2,
+    "b": 6,
+    "res": "2/6",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "2/6",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno reconheceu que o numerador indica os pedaços comidos e o denominador indica o total.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "4/6",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou os pedaços restantes.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "6/2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno trocou a posição do numerador e do denominador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "8/6",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou os pedaços comidos ao total.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! Foram comidos 2 dos 6 pedaços iguais.",
+    "dica": "Observe quantos pedaços foram comidos."
+  },
+  {
+    "id": "BN_06_003",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Em uma cesta há 8 frutas iguais. Maria pegou 3 frutas. Que fração da cesta Maria pegou?",
+    "a": 3,
+    "b": 8,
+    "res": "3/8",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "3/8",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno relacionou as frutas escolhidas com o total de frutas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "5/8",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou as frutas que ficaram na cesta.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "8/3",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu o total com as partes escolhidas.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "11/8",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou as frutas escolhidas ao total.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! Maria pegou 3 de 8 frutas.",
+    "dica": "O número de frutas pegadas fica em cima da fração."
+  },
+  {
+    "id": "BN_06_004",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Um retângulo foi dividido em 5 partes iguais. Duas partes foram pintadas. Qual fração do retângulo está pintada?",
+    "a": 2,
+    "b": 5,
+    "res": "2/5",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "2/5",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou as partes pintadas em relação ao total de partes iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "3/5",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou as partes não pintadas.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "5/2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno colocou o total no numerador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "7/5",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou as partes pintadas ao total.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! A parte pintada é 2 de 5 partes iguais.",
+    "dica": "Conte somente as partes pintadas para achar o numerador."
+  },
+  {
+    "id": "BN_06_005",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Um bolo foi cortado em 8 fatias iguais. João comeu 1 fatia. Que fração do bolo João comeu?",
+    "a": 1,
+    "b": 8,
+    "res": "1/8",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "1/8",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno compreendeu que uma fatia comida em oito fatias representa um oitavo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "7/8",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou as fatias que sobraram.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "8/1",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu a ordem dos termos da fração.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "8/8",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno indicou o bolo inteiro, não a parte comida.",
+        "misconception": "TODO_COMO_PARTE"
+      }
+    ],
+    "passo": "Muito bem! Uma fatia de oito é 1/8.",
+    "dica": "Veja quantas fatias foram comidas."
+  },
+  {
+    "id": "BN_06_006",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Lucas tem 10 moedas iguais. Ele guardou 4 moedas no cofrinho. Que fração das moedas foi guardada?",
+    "a": 4,
+    "b": 10,
+    "res": "4/10",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "4/10",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno relacionou as moedas guardadas ao total de moedas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "6/10",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou as moedas que não foram guardadas.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "10/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno colocou o total no numerador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "14/10",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou as moedas guardadas ao total.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! Foram guardadas 4 de 10 moedas.",
+    "dica": "O total de moedas fica no denominador."
+  },
+  {
+    "id": "BN_06_007",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Uma fileira tem 6 blocos iguais. 3 blocos estão coloridos. Qual fração dos blocos está colorida?",
+    "a": 3,
+    "b": 6,
+    "res": "3/6",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "3/6",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou os blocos coloridos em relação ao total.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "3/3",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno comparou apenas blocos coloridos com blocos sem cor.",
+        "misconception": "REFERENCIAL_ERRADO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "6/3",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu numerador e denominador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "6/6",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno marcou todos os blocos como coloridos.",
+        "misconception": "TODO_COMO_PARTE"
+      }
+    ],
+    "passo": "Muito bem! São 3 blocos coloridos em um total de 6.",
+    "dica": "Use o total de blocos como denominador."
+  },
+  {
+    "id": "BN_06_008",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Uma régua de 10 centímetros foi marcada até o centímetro 5. Que fração da régua foi marcada?",
+    "a": 5,
+    "b": 10,
+    "res": "5/10",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "5/10",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno relacionou o trecho marcado ao comprimento total da régua.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "10/5",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno colocou o comprimento total no numerador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_3",
+        "valor": "15/10",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou o trecho marcado ao total.",
+        "misconception": "VIES_ARITMETICO"
+      },
+      {
+        "id": "alt_4",
+        "valor": "5/5",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno usou o trecho marcado como todo.",
+        "misconception": "REFERENCIAL_ERRADO"
+      }
+    ],
+    "passo": "Muito bem! O trecho marcado é 5 de 10 centímetros.",
+    "dica": "Compare a parte marcada com a régua inteira."
+  },
+  {
+    "id": "BN_06_009",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA08",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Qual fração representa metade de uma figura dividida em 2 partes iguais?",
+    "a": 1,
+    "b": 2,
+    "res": "1/2",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "1/2",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno reconheceu que metade é uma de duas partes iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "2/1",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu a fração.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_3",
+        "valor": "2/2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno indicou o todo inteiro.",
+        "misconception": "TODO_COMO_PARTE"
+      },
+      {
+        "id": "alt_4",
+        "valor": "1/1",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu metade com uma unidade inteira.",
+        "misconception": "UNIDADE_INTEIRA"
+      }
+    ],
+    "passo": "Muito bem! Metade é 1 parte de 2 partes iguais.",
+    "dica": "A palavra metade lembra dividir em 2 partes iguais."
+  },
+  {
+    "id": "BN_06_010",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA08",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Duas figuras iguais foram divididas em partes iguais. Uma mostra 1/2 pintado e outra mostra 2/4 pintados. Essas frações representam a mesma parte?",
+    "a": 1,
+    "b": 2,
+    "res": "Sim, representam a mesma parte",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "Sim, representam a mesma parte",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno reconheceu que 1/2 e 2/4 representam a mesma metade.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "Não, 2/4 é maior",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno comparou apenas os numeradores.",
+        "misconception": "COMPARACAO_APENAS_NUMERADOR"
+      },
+      {
+        "id": "alt_3",
+        "valor": "Não, 1/2 é maior",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno não reconheceu a equivalência visual entre as frações.",
+        "misconception": "NAO_RECONHECE_EQUIVALENCIA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "Não, porque os denominadores são diferentes",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concluiu que denominadores diferentes sempre indicam partes diferentes.",
+        "misconception": "COMPARACAO_APENAS_DENOMINADOR"
+      }
+    ],
+    "passo": "Muito bem! 1/2 e 2/4 mostram metade do mesmo todo.",
+    "dica": "Imagine as duas figuras pintadas: as partes cobrem o mesmo tamanho."
+  },
+  {
+    "id": "BN_06_011",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Uma pizza foi dividida em 8 fatias iguais. Carla comeu 4 fatias. Que fração da pizza ela comeu?",
+    "a": 4,
+    "b": 8,
+    "res": "4/8",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "4/8",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou quatro fatias comidas em um total de oito fatias.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "8/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu numerador e denominador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_3",
+        "valor": "4/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno comparou as fatias comidas com as fatias restantes.",
+        "misconception": "REFERENCIAL_ERRADO"
+      },
+      {
+        "id": "alt_4",
+        "valor": "12/8",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou as fatias comidas ao total.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! Carla comeu 4 de 8 fatias.",
+    "dica": "A fração deve usar o total de fatias como denominador."
+  },
+  {
+    "id": "BN_06_012",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Uma caixa tem 12 lápis. 6 lápis são azuis. Que fração dos lápis é azul?",
+    "a": 6,
+    "b": 12,
+    "res": "6/12",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "6/12",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno relacionou os lápis azuis ao total de lápis.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "12/6",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno colocou o total no numerador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_3",
+        "valor": "6/6",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno comparou lápis azuis com lápis não azuis.",
+        "misconception": "REFERENCIAL_ERRADO"
+      },
+      {
+        "id": "alt_4",
+        "valor": "18/12",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou os lápis azuis ao total de lápis.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! São 6 lápis azuis de 12 lápis.",
+    "dica": "Conte quantos lápis são azuis e compare com o total."
+  },
+  {
+    "id": "BN_06_013",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Em uma cartela há 9 adesivos iguais. Sofia usou 2 adesivos. Que fração da cartela foi usada?",
+    "a": 2,
+    "b": 9,
+    "res": "2/9",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "2/9",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou os adesivos usados em relação ao total.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "7/9",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou os adesivos que sobraram.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "9/2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno trocou numerador e denominador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "11/9",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou os adesivos usados ao total.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! Sofia usou 2 dos 9 adesivos.",
+    "dica": "O numerador mostra os adesivos usados."
+  },
+  {
+    "id": "BN_06_014",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA08",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Em duas barras iguais, uma tem 1/3 pintado e outra tem 2/3 pintados. Qual fração representa a maior parte pintada?",
+    "a": 2,
+    "b": 3,
+    "res": "2/3",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "2/3",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno comparou frações com o mesmo denominador e escolheu a de maior numerador.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "1/3",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno escolheu a fração com menor parte pintada.",
+        "misconception": "ORDEM_INVERTIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "3/2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu a fração correta.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "3/3",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu a maior parte com o todo inteiro.",
+        "misconception": "TODO_COMO_PARTE"
+      }
+    ],
+    "passo": "Muito bem! Com o mesmo denominador, 2 partes pintadas é mais que 1 parte pintada.",
+    "dica": "Compare os numeradores quando os denominadores são iguais."
+  },
+  {
+    "id": "BN_06_015",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Um círculo foi dividido em 3 partes iguais. Uma parte foi pintada. Como se lê a fração 1/3?",
+    "a": 1,
+    "b": 3,
+    "res": "um terço",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "um terço",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno leu corretamente a fração 1/3.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "um meio",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu terço com meio.",
+        "misconception": "LEITURA_DENOMINADOR"
+      },
+      {
+        "id": "alt_3",
+        "valor": "três uns",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno leu os números separadamente, sem linguagem fracionária.",
+        "misconception": "LEITURA_LITERAL"
+      },
+      {
+        "id": "alt_4",
+        "valor": "três terços",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu uma parte com o todo.",
+        "misconception": "TODO_COMO_PARTE"
+      }
+    ],
+    "passo": "Muito bem! A fração 1/3 é lida como um terço.",
+    "dica": "Quando o denominador é 3, usamos a palavra terço."
+  },
+  {
+    "id": "BN_06_016",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Uma bandeja tem 5 brigadeiros iguais. Tiago comeu 2 brigadeiros. Que fração da bandeja ele comeu?",
+    "a": 2,
+    "b": 5,
+    "res": "2/5",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "2/5",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno indicou os brigadeiros comidos em relação ao total da bandeja.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "3/5",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou os brigadeiros restantes.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "5/2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu parte e total.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "7/5",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou os brigadeiros comidos ao total.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! Tiago comeu 2 de 5 brigadeiros.",
+    "dica": "A parte comida aparece no numerador."
+  },
+  {
+    "id": "BN_06_017",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA08",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Duas tiras iguais foram divididas em 4 partes. Uma tem 1/4 pintado e outra tem 3/4 pintados. Qual fração é menor?",
+    "a": 1,
+    "b": 4,
+    "res": "1/4",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "1/4",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno comparou frações de mesmo denominador e identificou a menor.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "3/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno escolheu a fração maior.",
+        "misconception": "ORDEM_INVERTIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "4/1",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu a fração menor.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "4/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno indicou o inteiro em vez da menor parte.",
+        "misconception": "TODO_COMO_PARTE"
+      }
+    ],
+    "passo": "Muito bem! 1/4 é menor que 3/4.",
+    "dica": "Com partes do mesmo tamanho, menos partes pintadas formam a menor fração."
+  },
+  {
+    "id": "BN_06_018",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Uma caixa tem 10 cubinhos. Uma dezena corresponde a quantos cubinhos?",
+    "a": 10,
+    "b": 1,
+    "res": "10",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "10",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno reconheceu que uma dezena é formada por 10 unidades.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "1",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu uma dezena com uma unidade.",
+        "misconception": "UNIDADE_DEZENA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno associou dezena à metade de 10.",
+        "misconception": "METADE_INDEVIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "11",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou 1 dezena com 1 unidade sem necessidade.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! Uma dezena tem 10 unidades.",
+    "dica": "Pense no material dourado: uma barra de dezena tem 10 cubinhos."
+  },
+  {
+    "id": "BN_06_019",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "No material dourado, há 1 barra de dezena e 4 cubinhos de unidade. Que número está representado?",
+    "a": 14,
+    "b": 1,
+    "res": "14",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "14",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno compreendeu que 1 dezena e 4 unidades formam 14.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "41",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu a ordem da dezena e da unidade.",
+        "misconception": "INVERSAO_VALOR_POSICIONAL"
+      },
+      {
+        "id": "alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou a quantidade de peças, sem considerar o valor da dezena.",
+        "misconception": "CONTAGEM_DE_PECAS"
+      },
+      {
+        "id": "alt_4",
+        "valor": "10",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas a barra de dezena.",
+        "misconception": "ETIQUETA_ESTATICA"
+      }
+    ],
+    "passo": "Muito bem! 1 dezena vale 10, e 10 mais 4 é 14.",
+    "dica": "Troque a barra de dezena por 10 unidades."
+  },
+  {
+    "id": "BN_06_020",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Um quadrado foi dividido em 4 partes iguais. 2 partes foram pintadas. Essa parte pintada representa qual fração?",
+    "a": 2,
+    "b": 4,
+    "res": "2/4",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "2/4",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou duas partes pintadas de quatro partes iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "4/2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu numerador e denominador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_3",
+        "valor": "2/2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno comparou partes pintadas com partes não pintadas.",
+        "misconception": "REFERENCIAL_ERRADO"
+      },
+      {
+        "id": "alt_4",
+        "valor": "4/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno marcou a figura inteira como pintada.",
+        "misconception": "TODO_COMO_PARTE"
+      }
+    ],
+    "passo": "Muito bem! Foram pintadas 2 de 4 partes.",
+    "dica": "Conte as partes pintadas e o total de partes iguais."
+  },
+  {
+    "id": "BN_06_021",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Uma salada tem 6 pedaços de fruta. 1 pedaço é de maçã. Que fração da salada é de maçã?",
+    "a": 1,
+    "b": 6,
+    "res": "1/6",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "1/6",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno relacionou o pedaço de maçã ao total de pedaços de fruta.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "5/6",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou os pedaços que não são de maçã.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "6/1",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno colocou o total no numerador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "6/6",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno considerou todos os pedaços como maçã.",
+        "misconception": "GENERALIZACAO_DO_TODO"
+      }
+    ],
+    "passo": "Muito bem! Há 1 pedaço de maçã em 6 pedaços de fruta.",
+    "dica": "Procure a parte que é de maçã."
+  },
+  {
+    "id": "BN_06_022",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA08",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Qual fração é equivalente a 1/2 em uma figura dividida em 6 partes iguais?",
+    "a": 3,
+    "b": 6,
+    "res": "3/6",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "3/6",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno reconheceu que 3 de 6 partes representam metade.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "1/6",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno manteve o numerador 1 e mudou apenas o denominador.",
+        "misconception": "ETIQUETA_ESTATICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "6/3",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu a fração equivalente.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "2/6",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno usou o denominador de 1/2 como numerador.",
+        "misconception": "TRANSFERENCIA_INDEVIDA"
+      }
+    ],
+    "passo": "Muito bem! Metade de 6 partes é 3 partes, então 3/6 equivale a 1/2.",
+    "dica": "Pense em pintar metade de 6 partes iguais."
+  },
+  {
+    "id": "BN_06_023",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Em uma coleção há 7 carrinhos. 2 carrinhos são vermelhos. Que fração da coleção é vermelha?",
+    "a": 2,
+    "b": 7,
+    "res": "2/7",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "2/7",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno relacionou os carrinhos vermelhos ao total da coleção.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "5/7",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou os carrinhos que não são vermelhos.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "7/2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu parte e total.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "9/7",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou os carrinhos vermelhos ao total.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! São 2 carrinhos vermelhos de 7 carrinhos.",
+    "dica": "A coleção inteira é o denominador."
+  },
+  {
+    "id": "BN_06_024",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Um triângulo foi dividido em 3 partes iguais. 2 partes foram pintadas. Qual fração do triângulo está pintada?",
+    "a": 2,
+    "b": 3,
+    "res": "2/3",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "2/3",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou duas partes pintadas de três partes iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "1/3",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou a parte que não foi pintada.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "3/2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu a fração.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "5/3",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou partes pintadas ao total.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! O triângulo tem 2 de 3 partes pintadas.",
+    "dica": "O total de partes iguais fica embaixo da fração."
+  },
+  {
+    "id": "BN_06_025",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Uma barra foi dividida em 5 partes iguais. A fração 3/5 indica quantas partes escolhidas?",
+    "a": 3,
+    "b": 5,
+    "res": "3",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "3",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno reconheceu o numerador como a quantidade de partes escolhidas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno respondeu o denominador.",
+        "misconception": "DENOMINADOR_COMO_RESPOSTA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "2",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno calculou as partes que faltam para completar o todo.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou numerador e denominador.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! Em 3/5, o número 3 mostra as partes escolhidas.",
+    "dica": "Olhe para o número que está em cima na fração."
+  },
+  {
+    "id": "BN_06_026",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "A fração 2/9 aparece em um desenho com partes iguais. O número 9 indica o quê?",
+    "a": 2,
+    "b": 9,
+    "res": "total de partes iguais",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "total de partes iguais",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno reconheceu que o denominador indica o total de partes iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "partes pintadas",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu denominador com numerador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_3",
+        "valor": "partes que sobraram",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno associou o denominador às partes não escolhidas.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "soma das partes",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno interpretou a fração como uma soma.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! O denominador 9 mostra o total de partes iguais.",
+    "dica": "Observe o número de baixo da fração."
+  },
+  {
+    "id": "BN_06_027",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA08",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Em duas figuras iguais, qual fração mostra uma parte maior: 1/2 ou 1/4?",
+    "a": 1,
+    "b": 2,
+    "res": "1/2",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "1/2",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno percebeu que uma metade é maior que um quarto do mesmo todo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "1/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno pensou que denominador maior significa parte maior.",
+        "misconception": "COMPARACAO_APENAS_DENOMINADOR"
+      },
+      {
+        "id": "alt_3",
+        "valor": "2/1",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno inverteu a fração correta.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "4/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno escolheu o inteiro em vez de comparar as frações dadas.",
+        "misconception": "TODO_COMO_PARTE"
+      }
+    ],
+    "passo": "Muito bem! Quando o todo é o mesmo, 1/2 é maior que 1/4.",
+    "dica": "Dividir em 2 partes faz pedaços maiores do que dividir em 4 partes."
+  },
+  {
+    "id": "BN_06_028",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Em uma caixa há 20 bolinhas. 10 bolinhas são verdes. Que fração das bolinhas é verde?",
+    "a": 10,
+    "b": 20,
+    "res": "10/20",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "10/20",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno relacionou as bolinhas verdes ao total de bolinhas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "20/10",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno colocou o total no numerador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_3",
+        "valor": "10/10",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno comparou bolinhas verdes com bolinhas de outras cores.",
+        "misconception": "REFERENCIAL_ERRADO"
+      },
+      {
+        "id": "alt_4",
+        "valor": "30/20",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou bolinhas verdes ao total.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! São 10 bolinhas verdes de 20 bolinhas.",
+    "dica": "O total da caixa fica no denominador."
+  },
+  {
+    "id": "BN_06_029",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Uma reta de 0 a 1 foi dividida em 4 partes iguais. O ponto marcado está na primeira parte depois do 0. Qual fração representa esse ponto?",
+    "a": 1,
+    "b": 4,
+    "res": "1/4",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "1/4",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno reconheceu a primeira de quatro partes iguais na reta.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "3/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno contou as partes restantes até o 1.",
+        "misconception": "INVERSAO_TOPOLOGICA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "4/1",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno inverteu numerador e denominador.",
+        "misconception": "INVERSAO_NUMERADOR_DENOMINADOR"
+      },
+      {
+        "id": "alt_4",
+        "valor": "4/4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno marcou o ponto final 1 em vez do primeiro ponto.",
+        "misconception": "TODO_COMO_PARTE"
+      }
+    ],
+    "passo": "Muito bem! A primeira marca de quatro partes representa 1/4.",
+    "dica": "Conte quantos passos iguais há do 0 até o ponto marcado."
+  },
+  {
+    "id": "BN_06_030",
+    "bloco": "1",
+    "habilidade": "Base Numérica e Frações",
+    "bncc": "EF06MA08",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Um bolo foi dividido em 6 fatias iguais. Foram comidas 2 fatias e depois mais 1 fatia. Ao todo, que fração do bolo foi comida?",
+    "a": 3,
+    "b": 6,
+    "res": "3/6",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "3/6",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou as fatias comidas e manteve o total de fatias do bolo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "2/6",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas a primeira quantidade comida.",
+        "misconception": "OMISSAO_DE_ETAPA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "1/6",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas a segunda quantidade comida.",
+        "misconception": "OMISSAO_DE_ETAPA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "9/6",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou as fatias comidas ao total de fatias.",
+        "misconception": "VIES_ARITMETICO"
+      }
+    ],
+    "passo": "Muito bem! 2 fatias mais 1 fatia são 3 fatias de 6.",
+    "dica": "Some apenas as fatias comidas e mantenha o total de fatias do bolo."
+  } 
 ]
