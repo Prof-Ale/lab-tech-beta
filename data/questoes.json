@@ -8658,5 +8658,1565 @@
     ],
     "passo": "Muito bem! Repartir 24 pontos entre 6 jogadores é fazer 24 dividido por 6.",
     "dica": "Procure quantos pontos cada jogador recebe."
+  },
+    {
+    "id": "BN_08_001",
+    "bloco": "3",
+    "habilidade": "Grandezas e Medidas",
+    "bncc": "EF06MA24",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Um quadrado possui lados de 4 cm. Qual é o perímetro dessa figura?",
+    "a": 4,
+    "b": 4,
+    "res": "16 cm",
+    "alternativas": [
+      {
+        "id": "BN_08_001_alt_1",
+        "valor": "16 cm",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente os quatro lados do quadrado.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_001_alt_2",
+        "valor": "8 cm",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno somou apenas dois lados do quadrado.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_001_alt_3",
+        "valor": "12 cm",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno esqueceu um dos lados ao somar.",
+        "misconception": "OMISSAO_PARCIAL"
+      },
+      {
+        "id": "BN_08_001_alt_4",
+        "valor": "4 cm",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu a medida do lado com o perímetro.",
+        "misconception": "CONFUSAO_CONCEITUAL"
+      }
+    ],
+    "passo": "Muito bem! O perímetro é a soma de todos os lados da figura.",
+    "dica": "Some os quatro lados do quadrado."
+  },
+  {
+    "id": "BN_08_002",
+    "bloco": "3",
+    "habilidade": "Perímetro de retângulos",
+    "bncc": "EF06MA24",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Uma horta retangular mede 6 m de comprimento e 3 m de largura. Qual é o perímetro da horta?",
+    "a": 6,
+    "b": 3,
+    "res": "18 m",
+    "alternativas": [
+      {
+        "id": "BN_08_002_alt_1",
+        "valor": "18 m",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente os quatro lados do retângulo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_002_alt_2",
+        "valor": "9 m",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno somou apenas comprimento e largura uma vez.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_002_alt_3",
+        "valor": "12 m",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno dobrou apenas o comprimento.",
+        "misconception": "MULTIPLICACAO_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_002_alt_4",
+        "valor": "18 m²",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno usou unidade de área em uma resposta de perímetro.",
+        "misconception": "ERRO_DE_UNIDADE"
+      }
+    ],
+    "passo": "Isso! No retângulo, somamos comprimento, largura, comprimento e largura.",
+    "dica": "Lembre que o retângulo tem dois lados de 6 m e dois lados de 3 m."
+  },
+  {
+    "id": "BN_08_003",
+    "bloco": "3",
+    "habilidade": "Área de quadrados",
+    "bncc": "EF06MA24",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Um piso quadrado tem 5 m de lado. Qual é a área desse piso?",
+    "a": 5,
+    "b": 5,
+    "res": "25 m²",
+    "alternativas": [
+      {
+        "id": "BN_08_003_alt_1",
+        "valor": "25 m²",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente lado por lado.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_003_alt_2",
+        "valor": "20 m",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno calculou o perímetro em vez da área.",
+        "misconception": "CONFUSAO_AREA_PERIMETRO"
+      },
+      {
+        "id": "BN_08_003_alt_3",
+        "valor": "10 m²",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou dois lados em vez de multiplicar.",
+        "misconception": "SOMA_EM_VEZ_DE_MULTIPLICAR"
+      },
+      {
+        "id": "BN_08_003_alt_4",
+        "valor": "5 m²",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu a medida do lado com a área.",
+        "misconception": "CONFUSAO_CONCEITUAL"
+      }
+    ],
+    "passo": "Correto! A área do quadrado é encontrada multiplicando lado por lado.",
+    "dica": "Multiplique 5 por 5."
+  },
+  {
+    "id": "BN_08_004",
+    "bloco": "3",
+    "habilidade": "Área de retângulos",
+    "bncc": "EF06MA24",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Uma folha retangular mede 8 cm de comprimento e 4 cm de largura. Qual é a área da folha?",
+    "a": 8,
+    "b": 4,
+    "res": "32 cm²",
+    "alternativas": [
+      {
+        "id": "BN_08_004_alt_1",
+        "valor": "32 cm²",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente comprimento por largura.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_004_alt_2",
+        "valor": "24 cm",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno calculou o perímetro em vez da área.",
+        "misconception": "CONFUSAO_AREA_PERIMETRO"
+      },
+      {
+        "id": "BN_08_004_alt_3",
+        "valor": "12 cm²",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou as medidas em vez de multiplicar.",
+        "misconception": "SOMA_EM_VEZ_DE_MULTIPLICAR"
+      },
+      {
+        "id": "BN_08_004_alt_4",
+        "valor": "32 cm",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno calculou a área, mas usou unidade de comprimento.",
+        "misconception": "ERRO_DE_UNIDADE"
+      }
+    ],
+    "passo": "Muito bem! Para achar a área do retângulo, multiplicamos comprimento por largura.",
+    "dica": "Calcule 8 vezes 4."
+  },
+  {
+    "id": "BN_08_005",
+    "bloco": "3",
+    "habilidade": "Conversão de comprimento",
+    "bncc": "EF06MA24",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Uma fita tem 2 m de comprimento. Quantos centímetros essa fita tem?",
+    "a": 2,
+    "b": 100,
+    "res": "200 cm",
+    "alternativas": [
+      {
+        "id": "BN_08_005_alt_1",
+        "valor": "200 cm",
+        "tipo": "acerto",
+        "categoria": "conversao",
+        "descricao": "O aluno converteu corretamente metros em centímetros.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_005_alt_2",
+        "valor": "20 cm",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 2,
+        "descricao": "O aluno multiplicou por 10 em vez de 100.",
+        "misconception": "ERRO_DE_CONVERSAO"
+      },
+      {
+        "id": "BN_08_005_alt_3",
+        "valor": "102 cm",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou 100 e 2 em vez de multiplicar.",
+        "misconception": "SOMA_EM_VEZ_DE_MULTIPLICAR"
+      },
+      {
+        "id": "BN_08_005_alt_4",
+        "valor": "2 cm",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno trocou a unidade sem fazer a conversão.",
+        "misconception": "ESQUECIMENTO_DE_CONVERSAO"
+      }
+    ],
+    "passo": "Isso! Cada metro tem 100 centímetros, então 2 m são 200 cm.",
+    "dica": "Multiplique a quantidade de metros por 100."
+  },
+  {
+    "id": "BN_08_006",
+    "bloco": "3",
+    "habilidade": "Conversão de comprimento",
+    "bncc": "EF06MA24",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Uma régua marca 300 cm. Quantos metros são 300 cm?",
+    "a": 300,
+    "b": 100,
+    "res": "3 m",
+    "alternativas": [
+      {
+        "id": "BN_08_006_alt_1",
+        "valor": "3 m",
+        "tipo": "acerto",
+        "categoria": "conversao",
+        "descricao": "O aluno dividiu corretamente os centímetros por 100.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_006_alt_2",
+        "valor": "30 m",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 2,
+        "descricao": "O aluno dividiu por 10 em vez de 100.",
+        "misconception": "ERRO_DE_CONVERSAO"
+      },
+      {
+        "id": "BN_08_006_alt_3",
+        "valor": "300 m",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno trocou a unidade sem converter.",
+        "misconception": "ESQUECIMENTO_DE_CONVERSAO"
+      },
+      {
+        "id": "BN_08_006_alt_4",
+        "valor": "400 m",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou 100 ao valor inicial.",
+        "misconception": "OPERACAO_INADEQUADA"
+      }
+    ],
+    "passo": "Correto! Para transformar centímetros em metros, dividimos por 100.",
+    "dica": "Pense em quantos grupos de 100 cm cabem em 300 cm."
+  },
+  {
+    "id": "BN_08_007",
+    "bloco": "3",
+    "habilidade": "Conversão de massa",
+    "bncc": "EF06MA25",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Um pacote de arroz pesa 1 kg. Quantos gramas há nesse pacote?",
+    "a": 1,
+    "b": 1000,
+    "res": "1000 g",
+    "alternativas": [
+      {
+        "id": "BN_08_007_alt_1",
+        "valor": "1000 g",
+        "tipo": "acerto",
+        "categoria": "conversao",
+        "descricao": "O aluno reconheceu que 1 kg corresponde a 1000 g.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_007_alt_2",
+        "valor": "100 g",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 2,
+        "descricao": "O aluno confundiu quilograma com uma conversão por 100.",
+        "misconception": "ERRO_DE_CONVERSAO"
+      },
+      {
+        "id": "BN_08_007_alt_3",
+        "valor": "10 g",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 1,
+        "descricao": "O aluno usou uma relação incorreta entre kg e g.",
+        "misconception": "ERRO_DE_ESCALA"
+      },
+      {
+        "id": "BN_08_007_alt_4",
+        "valor": "1 g",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno mudou a unidade sem converter o valor.",
+        "misconception": "ESQUECIMENTO_DE_CONVERSAO"
+      }
+    ],
+    "passo": "Muito bem! Um quilograma tem 1000 gramas.",
+    "dica": "Lembre que kg é uma unidade maior que grama."
+  },
+  {
+    "id": "BN_08_008",
+    "bloco": "3",
+    "habilidade": "Conversão de massa",
+    "bncc": "EF06MA25",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Uma caixa pesa 2000 g. Quantos quilogramas ela pesa?",
+    "a": 2000,
+    "b": 1000,
+    "res": "2 kg",
+    "alternativas": [
+      {
+        "id": "BN_08_008_alt_1",
+        "valor": "2 kg",
+        "tipo": "acerto",
+        "categoria": "conversao",
+        "descricao": "O aluno dividiu corretamente os gramas por 1000.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_008_alt_2",
+        "valor": "20 kg",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 2,
+        "descricao": "O aluno dividiu por 100 em vez de 1000.",
+        "misconception": "ERRO_DE_CONVERSAO"
+      },
+      {
+        "id": "BN_08_008_alt_3",
+        "valor": "200 kg",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 1,
+        "descricao": "O aluno dividiu por 10 em vez de 1000.",
+        "misconception": "ERRO_DE_ESCALA"
+      },
+      {
+        "id": "BN_08_008_alt_4",
+        "valor": "2000 kg",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno trocou a unidade sem fazer a conversão.",
+        "misconception": "ESQUECIMENTO_DE_CONVERSAO"
+      }
+    ],
+    "passo": "Correto! Como 1000 g formam 1 kg, 2000 g formam 2 kg.",
+    "dica": "Divida 2000 por 1000."
+  },
+  {
+    "id": "BN_08_009",
+    "bloco": "3",
+    "habilidade": "Conversão de capacidade",
+    "bncc": "EF06MA25",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Uma garrafa tem 3 litros de suco. Quantos mililitros de suco há na garrafa?",
+    "a": 3,
+    "b": 1000,
+    "res": "3000 mL",
+    "alternativas": [
+      {
+        "id": "BN_08_009_alt_1",
+        "valor": "3000 mL",
+        "tipo": "acerto",
+        "categoria": "conversao",
+        "descricao": "O aluno converteu corretamente litros em mililitros.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_009_alt_2",
+        "valor": "300 mL",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 2,
+        "descricao": "O aluno multiplicou por 100 em vez de 1000.",
+        "misconception": "ERRO_DE_CONVERSAO"
+      },
+      {
+        "id": "BN_08_009_alt_3",
+        "valor": "30 mL",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 1,
+        "descricao": "O aluno multiplicou por 10 em vez de 1000.",
+        "misconception": "ERRO_DE_ESCALA"
+      },
+      {
+        "id": "BN_08_009_alt_4",
+        "valor": "3 mL",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno mudou a unidade sem converter.",
+        "misconception": "ESQUECIMENTO_DE_CONVERSAO"
+      }
+    ],
+    "passo": "Isso! Cada litro tem 1000 mililitros.",
+    "dica": "Multiplique 3 por 1000."
+  },
+  {
+    "id": "BN_08_010",
+    "bloco": "3",
+    "habilidade": "Conversão de capacidade",
+    "bncc": "EF06MA25",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Um recipiente contém 5000 mL de água. Quantos litros de água há nesse recipiente?",
+    "a": 5000,
+    "b": 1000,
+    "res": "5 L",
+    "alternativas": [
+      {
+        "id": "BN_08_010_alt_1",
+        "valor": "5 L",
+        "tipo": "acerto",
+        "categoria": "conversao",
+        "descricao": "O aluno dividiu corretamente os mililitros por 1000.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_010_alt_2",
+        "valor": "50 L",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 2,
+        "descricao": "O aluno dividiu por 100 em vez de 1000.",
+        "misconception": "ERRO_DE_CONVERSAO"
+      },
+      {
+        "id": "BN_08_010_alt_3",
+        "valor": "500 L",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 1,
+        "descricao": "O aluno dividiu por 10 em vez de 1000.",
+        "misconception": "ERRO_DE_ESCALA"
+      },
+      {
+        "id": "BN_08_010_alt_4",
+        "valor": "5000 L",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno trocou a unidade sem converter o valor.",
+        "misconception": "ESQUECIMENTO_DE_CONVERSAO"
+      }
+    ],
+    "passo": "Muito bem! Para passar de mililitros para litros, dividimos por 1000.",
+    "dica": "Veja quantos grupos de 1000 mL cabem em 5000 mL."
+  },
+  {
+    "id": "BN_08_011",
+    "bloco": "3",
+    "habilidade": "Medidas de tempo",
+    "bncc": "EF06MA25",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Uma aula começa às 8h e termina às 10h. Quanto tempo dura essa aula?",
+    "a": 8,
+    "b": 10,
+    "res": "2 horas",
+    "alternativas": [
+      {
+        "id": "BN_08_011_alt_1",
+        "valor": "2 horas",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno calculou corretamente a diferença entre os horários.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_011_alt_2",
+        "valor": "18 horas",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou os horários em vez de encontrar a duração.",
+        "misconception": "SOMA_EM_VEZ_DE_SUBTRAIR"
+      },
+      {
+        "id": "BN_08_011_alt_3",
+        "valor": "1 hora",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno contou apenas uma passagem de hora.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_011_alt_4",
+        "valor": "10 horas",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o horário final como se fosse a duração.",
+        "misconception": "LEITURA_INCORRETA"
+      }
+    ],
+    "passo": "Correto! Das 8h às 10h passam 2 horas.",
+    "dica": "Conte as horas que passam de 8 até 10."
+  },
+  {
+    "id": "BN_08_012",
+    "bloco": "3",
+    "habilidade": "Conversão de tempo",
+    "bncc": "EF06MA25",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Meia hora corresponde a quantos minutos?",
+    "a": 1,
+    "b": 2,
+    "res": "30 minutos",
+    "alternativas": [
+      {
+        "id": "BN_08_012_alt_1",
+        "valor": "30 minutos",
+        "tipo": "acerto",
+        "categoria": "conversao",
+        "descricao": "O aluno reconheceu que meia hora é metade de 60 minutos.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_012_alt_2",
+        "valor": "60 minutos",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu meia hora com uma hora inteira.",
+        "misconception": "CONFUSAO_CONCEITUAL"
+      },
+      {
+        "id": "BN_08_012_alt_3",
+        "valor": "15 minutos",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno calculou metade de 30 em vez de metade de 60.",
+        "misconception": "REFERENCIA_INCORRETA"
+      },
+      {
+        "id": "BN_08_012_alt_4",
+        "valor": "20 minutos",
+        "tipo": "distrator",
+        "categoria": "estimativa",
+        "peso": 1,
+        "descricao": "O aluno fez uma estimativa incorreta para meia hora.",
+        "misconception": "ESTIMATIVA_INCORRETA"
+      }
+    ],
+    "passo": "Isso! Uma hora tem 60 minutos, e metade de 60 é 30.",
+    "dica": "Pense na metade de 60 minutos."
+  },
+  {
+    "id": "BN_08_013",
+    "bloco": "3",
+    "habilidade": "Temperatura",
+    "bncc": "EF07MA29",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "De manhã, a temperatura era de 12 °C. À tarde, subiu 5 °C. Qual foi a temperatura à tarde?",
+    "a": 12,
+    "b": 5,
+    "res": "17 °C",
+    "alternativas": [
+      {
+        "id": "BN_08_013_alt_1",
+        "valor": "17 °C",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente o aumento de temperatura.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_013_alt_2",
+        "valor": "7 °C",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno subtraiu em vez de somar o aumento.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "BN_08_013_alt_3",
+        "valor": "12 °C",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno manteve a temperatura inicial.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_013_alt_4",
+        "valor": "5 °C",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu apenas a variação de temperatura.",
+        "misconception": "CONFUSAO_ENTRE_VARIACAO_E_TOTAL"
+      }
+    ],
+    "passo": "Muito bem! Se a temperatura subiu, somamos 5 a 12.",
+    "dica": "Quando a temperatura sobe, use adição."
+  },
+  {
+    "id": "BN_08_014",
+    "bloco": "3",
+    "habilidade": "Temperatura negativa",
+    "bncc": "EF07MA29",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Em uma cidade fria, a temperatura era de -2 °C. Depois aumentou 4 °C. Qual passou a ser a temperatura?",
+    "a": -2,
+    "b": 4,
+    "res": "2 °C",
+    "alternativas": [
+      {
+        "id": "BN_08_014_alt_1",
+        "valor": "2 °C",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno avançou corretamente 4 graus a partir de -2 °C.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_014_alt_2",
+        "valor": "-6 °C",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno diminuiu a temperatura em vez de aumentar.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "BN_08_014_alt_3",
+        "valor": "-2 °C",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno manteve a temperatura inicial.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_014_alt_4",
+        "valor": "4 °C",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno escolheu apenas o aumento informado.",
+        "misconception": "CONFUSAO_ENTRE_VARIACAO_E_TOTAL"
+      }
+    ],
+    "passo": "Correto! Saindo de -2 °C e subindo 4 graus, chegamos a 2 °C.",
+    "dica": "Conte quatro passos para cima a partir de -2."
+  },
+  {
+    "id": "BN_08_015",
+    "bloco": "3",
+    "habilidade": "Comparação de medidas",
+    "bncc": "EF07MA30",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Ana caminhou 800 m e Pedro caminhou 1 km. Quem caminhou mais?",
+    "a": 800,
+    "b": 1,
+    "res": "Pedro",
+    "alternativas": [
+      {
+        "id": "BN_08_015_alt_1",
+        "valor": "Pedro",
+        "tipo": "acerto",
+        "categoria": "comparacao",
+        "descricao": "O aluno comparou corretamente 1 km com 800 m.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_015_alt_2",
+        "valor": "Ana",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 2,
+        "descricao": "O aluno comparou apenas os números 800 e 1 sem converter unidades.",
+        "misconception": "ERRO_DE_UNIDADE"
+      },
+      {
+        "id": "BN_08_015_alt_3",
+        "valor": "Os dois caminharam a mesma distância",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 1,
+        "descricao": "O aluno supôs igualdade sem verificar as unidades.",
+        "misconception": "COMPARACAO_INCORRETA"
+      },
+      {
+        "id": "BN_08_015_alt_4",
+        "valor": "Não é possível comparar",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno não reconheceu que km e m podem ser convertidos.",
+        "misconception": "DIFICULDADE_DE_CONVERSAO"
+      }
+    ],
+    "passo": "Isso! 1 km equivale a 1000 m, então Pedro caminhou mais que Ana.",
+    "dica": "Converta 1 km para metros antes de comparar."
+  },
+  {
+    "id": "BN_08_016",
+    "bloco": "3",
+    "habilidade": "Comparação de massa",
+    "bncc": "EF07MA30",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Um pacote pesa 750 g e outro pesa 1 kg. Qual pacote é mais pesado?",
+    "a": 750,
+    "b": 1,
+    "res": "O pacote de 1 kg",
+    "alternativas": [
+      {
+        "id": "BN_08_016_alt_1",
+        "valor": "O pacote de 1 kg",
+        "tipo": "acerto",
+        "categoria": "comparacao",
+        "descricao": "O aluno comparou corretamente 1 kg com 750 g.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_016_alt_2",
+        "valor": "O pacote de 750 g",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 2,
+        "descricao": "O aluno comparou apenas 750 com 1 sem converter unidades.",
+        "misconception": "ERRO_DE_UNIDADE"
+      },
+      {
+        "id": "BN_08_016_alt_3",
+        "valor": "Os dois têm o mesmo peso",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 1,
+        "descricao": "O aluno confundiu 1 kg com 750 g.",
+        "misconception": "COMPARACAO_INCORRETA"
+      },
+      {
+        "id": "BN_08_016_alt_4",
+        "valor": "O pacote de 750 kg",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno leu incorretamente a unidade apresentada.",
+        "misconception": "LEITURA_INCORRETA_DA_MEDIDA"
+      }
+    ],
+    "passo": "Muito bem! 1 kg é igual a 1000 g, que é maior que 750 g.",
+    "dica": "Transforme 1 kg em gramas para comparar."
+  },
+  {
+    "id": "BN_08_017",
+    "bloco": "3",
+    "habilidade": "Leitura de medidas",
+    "bncc": "EF07MA30",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Em uma tabela, a altura de João aparece como 140 cm e a de Lia como 135 cm. Quem é mais alto?",
+    "a": 140,
+    "b": 135,
+    "res": "João",
+    "alternativas": [
+      {
+        "id": "BN_08_017_alt_1",
+        "valor": "João",
+        "tipo": "acerto",
+        "categoria": "comparacao",
+        "descricao": "O aluno identificou corretamente a maior medida de altura.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_017_alt_2",
+        "valor": "Lia",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 2,
+        "descricao": "O aluno leu a tabela ou comparou os valores incorretamente.",
+        "misconception": "LEITURA_INCORRETA_DA_MEDIDA"
+      },
+      {
+        "id": "BN_08_017_alt_3",
+        "valor": "Os dois têm a mesma altura",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 1,
+        "descricao": "O aluno não percebeu a diferença entre 140 cm e 135 cm.",
+        "misconception": "COMPARACAO_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_017_alt_4",
+        "valor": "Não é possível saber",
+        "tipo": "distrator",
+        "categoria": "interpretacao",
+        "peso": 1,
+        "descricao": "O aluno não interpretou os dados simples da tabela.",
+        "misconception": "DIFICULDADE_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Correto! João mede 140 cm, que é mais que 135 cm.",
+    "dica": "Compare os dois números da tabela."
+  },
+  {
+    "id": "BN_08_018",
+    "bloco": "3",
+    "habilidade": "Perímetro de quadrados",
+    "bncc": "EF08MA19",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Uma praça quadrada tem lados de 7 m. Qual é o perímetro da praça?",
+    "a": 7,
+    "b": 4,
+    "res": "28 m",
+    "alternativas": [
+      {
+        "id": "BN_08_018_alt_1",
+        "valor": "28 m",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente os quatro lados do quadrado.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_018_alt_2",
+        "valor": "14 m",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno somou apenas dois lados.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_018_alt_3",
+        "valor": "21 m",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno contou apenas três lados.",
+        "misconception": "OMISSAO_PARCIAL"
+      },
+      {
+        "id": "BN_08_018_alt_4",
+        "valor": "49 m²",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno calculou a área em vez do perímetro.",
+        "misconception": "CONFUSAO_AREA_PERIMETRO"
+      }
+    ],
+    "passo": "Isso! O perímetro é a soma dos quatro lados: 7 + 7 + 7 + 7.",
+    "dica": "Some quatro vezes a medida do lado."
+  },
+  {
+    "id": "BN_08_019",
+    "bloco": "3",
+    "habilidade": "Área de retângulos",
+    "bncc": "EF08MA19",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Um tapete retangular mede 3 m de largura e 6 m de comprimento. Qual é a área do tapete?",
+    "a": 3,
+    "b": 6,
+    "res": "18 m²",
+    "alternativas": [
+      {
+        "id": "BN_08_019_alt_1",
+        "valor": "18 m²",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente largura por comprimento.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_019_alt_2",
+        "valor": "9 m²",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou as duas medidas em vez de multiplicar.",
+        "misconception": "SOMA_EM_VEZ_DE_MULTIPLICAR"
+      },
+      {
+        "id": "BN_08_019_alt_3",
+        "valor": "18 m",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno acertou o número, mas usou unidade de comprimento.",
+        "misconception": "ERRO_DE_UNIDADE"
+      },
+      {
+        "id": "BN_08_019_alt_4",
+        "valor": "12 m",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno dobrou apenas uma das medidas, confundindo com perímetro parcial.",
+        "misconception": "CONFUSAO_AREA_PERIMETRO"
+      }
+    ],
+    "passo": "Muito bem! A área é obtida multiplicando 3 por 6.",
+    "dica": "Para área de retângulo, multiplique as duas medidas."
+  },
+  {
+    "id": "BN_08_020",
+    "bloco": "3",
+    "habilidade": "Perímetro de retângulos",
+    "bncc": "EF08MA19",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Um quadro retangular mede 9 cm de comprimento e 5 cm de largura. Qual é o perímetro do quadro?",
+    "a": 9,
+    "b": 5,
+    "res": "28 cm",
+    "alternativas": [
+      {
+        "id": "BN_08_020_alt_1",
+        "valor": "28 cm",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente os quatro lados do retângulo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_020_alt_2",
+        "valor": "14 cm",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno somou apenas comprimento e largura uma vez.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_020_alt_3",
+        "valor": "45 cm²",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno calculou a área em vez do perímetro.",
+        "misconception": "CONFUSAO_AREA_PERIMETRO"
+      },
+      {
+        "id": "BN_08_020_alt_4",
+        "valor": "23 cm",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno esqueceu um dos lados de 5 cm.",
+        "misconception": "OMISSAO_PARCIAL"
+      }
+    ],
+    "passo": "Correto! O perímetro é 9 + 5 + 9 + 5.",
+    "dica": "Inclua os dois comprimentos e as duas larguras."
+  },
+  {
+    "id": "BN_08_021",
+    "bloco": "3",
+    "habilidade": "Volume de cubos",
+    "bncc": "EF08MA20",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Um cubo é formado por 2 cubinhos em cada direção: comprimento, largura e altura. Quantos cubinhos há ao todo?",
+    "a": 2,
+    "b": 2,
+    "res": "8 cubinhos",
+    "alternativas": [
+      {
+        "id": "BN_08_021_alt_1",
+        "valor": "8 cubinhos",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente 2 por 2 por 2.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_021_alt_2",
+        "valor": "6 cubinhos",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou as três dimensões em vez de multiplicar.",
+        "misconception": "SOMA_EM_VEZ_DE_MULTIPLICAR"
+      },
+      {
+        "id": "BN_08_021_alt_3",
+        "valor": "4 cubinhos",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno multiplicou apenas comprimento e largura.",
+        "misconception": "MULTIPLICACAO_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_021_alt_4",
+        "valor": "2 cubinhos",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas uma dimensão do cubo.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      }
+    ],
+    "passo": "Muito bem! O total é 2 x 2 x 2, que resulta em 8 cubinhos.",
+    "dica": "Multiplique as três direções do cubo."
+  },
+  {
+    "id": "BN_08_022",
+    "bloco": "3",
+    "habilidade": "Volume de caixas",
+    "bncc": "EF08MA20",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Uma caixa tem 3 cubinhos de comprimento, 2 de largura e 1 de altura. Quantos cubinhos cabem nela?",
+    "a": 3,
+    "b": 2,
+    "res": "6 cubinhos",
+    "alternativas": [
+      {
+        "id": "BN_08_022_alt_1",
+        "valor": "6 cubinhos",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente as três dimensões da caixa.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_022_alt_2",
+        "valor": "5 cubinhos",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou as dimensões em vez de multiplicar.",
+        "misconception": "SOMA_EM_VEZ_DE_MULTIPLICAR"
+      },
+      {
+        "id": "BN_08_022_alt_3",
+        "valor": "3 cubinhos",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas o comprimento.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_022_alt_4",
+        "valor": "2 cubinhos",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas a largura.",
+        "misconception": "LEITURA_INCOMPLETA"
+      }
+    ],
+    "passo": "Isso! Multiplicando 3 por 2 por 1, encontramos 6 cubinhos.",
+    "dica": "Use comprimento, largura e altura no cálculo."
+  },
+  {
+    "id": "BN_08_023",
+    "bloco": "3",
+    "habilidade": "Volume de blocos retangulares",
+    "bncc": "EF08MA20",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Um bloco tem 4 cm de comprimento, 2 cm de largura e 1 cm de altura. Qual é o volume do bloco?",
+    "a": 4,
+    "b": 2,
+    "res": "8 cm³",
+    "alternativas": [
+      {
+        "id": "BN_08_023_alt_1",
+        "valor": "8 cm³",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente comprimento, largura e altura.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_023_alt_2",
+        "valor": "7 cm³",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou as três medidas em vez de multiplicar.",
+        "misconception": "SOMA_EM_VEZ_DE_MULTIPLICAR"
+      },
+      {
+        "id": "BN_08_023_alt_3",
+        "valor": "8 cm²",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno acertou o número, mas usou unidade de área.",
+        "misconception": "ERRO_DE_UNIDADE"
+      },
+      {
+        "id": "BN_08_023_alt_4",
+        "valor": "6 cm",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu volume com soma de medidas de comprimento e largura.",
+        "misconception": "CONFUSAO_CONCEITUAL"
+      }
+    ],
+    "passo": "Correto! O volume é 4 x 2 x 1, ou seja, 8 cm³.",
+    "dica": "Para volume, use as três medidas."
+  },
+  {
+    "id": "BN_08_024",
+    "bloco": "3",
+    "habilidade": "Área de quadrados",
+    "bncc": "EF09MA15",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Um azulejo quadrado tem lado de 6 cm. Qual é a área desse azulejo?",
+    "a": 6,
+    "b": 6,
+    "res": "36 cm²",
+    "alternativas": [
+      {
+        "id": "BN_08_024_alt_1",
+        "valor": "36 cm²",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente lado por lado.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_024_alt_2",
+        "valor": "24 cm",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno calculou o perímetro em vez da área.",
+        "misconception": "CONFUSAO_AREA_PERIMETRO"
+      },
+      {
+        "id": "BN_08_024_alt_3",
+        "valor": "12 cm²",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou dois lados em vez de multiplicar.",
+        "misconception": "SOMA_EM_VEZ_DE_MULTIPLICAR"
+      },
+      {
+        "id": "BN_08_024_alt_4",
+        "valor": "6 cm²",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu lado com área.",
+        "misconception": "CONFUSAO_CONCEITUAL"
+      }
+    ],
+    "passo": "Muito bem! A área do quadrado é 6 x 6.",
+    "dica": "Multiplique a medida do lado por ela mesma."
+  },
+  {
+    "id": "BN_08_025",
+    "bloco": "3",
+    "habilidade": "Conversão de tempo",
+    "bncc": "EF06MA25",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Um filme dura 2 horas. Quantos minutos dura esse filme?",
+    "a": 2,
+    "b": 60,
+    "res": "120 minutos",
+    "alternativas": [
+      {
+        "id": "BN_08_025_alt_1",
+        "valor": "120 minutos",
+        "tipo": "acerto",
+        "categoria": "conversao",
+        "descricao": "O aluno converteu corretamente horas em minutos.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_025_alt_2",
+        "valor": "60 minutos",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 2,
+        "descricao": "O aluno considerou apenas uma hora.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_025_alt_3",
+        "valor": "62 minutos",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou 60 e 2 em vez de multiplicar.",
+        "misconception": "SOMA_EM_VEZ_DE_MULTIPLICAR"
+      },
+      {
+        "id": "BN_08_025_alt_4",
+        "valor": "20 minutos",
+        "tipo": "distrator",
+        "categoria": "conversao",
+        "peso": 1,
+        "descricao": "O aluno usou uma relação incorreta entre horas e minutos.",
+        "misconception": "ERRO_DE_CONVERSAO"
+      }
+    ],
+    "passo": "Isso! Cada hora tem 60 minutos, então 2 horas têm 120 minutos.",
+    "dica": "Multiplique 2 por 60."
+  },
+  {
+    "id": "BN_08_026",
+    "bloco": "3",
+    "habilidade": "Leitura de tabela de medidas",
+    "bncc": "EF07MA30",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Em uma tabela de compras, há 2 kg de arroz e 3 kg de feijão. Qual é a massa total dos dois alimentos?",
+    "a": 2,
+    "b": 3,
+    "res": "5 kg",
+    "alternativas": [
+      {
+        "id": "BN_08_026_alt_1",
+        "valor": "5 kg",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente as duas massas com a mesma unidade.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_026_alt_2",
+        "valor": "6 kg",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno multiplicou as massas em vez de somar.",
+        "misconception": "MULTIPLICAR_EM_VEZ_DE_SOMAR"
+      },
+      {
+        "id": "BN_08_026_alt_3",
+        "valor": "1 kg",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno subtraiu as massas em vez de somar.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "BN_08_026_alt_4",
+        "valor": "5 g",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno acertou o número, mas errou a unidade.",
+        "misconception": "ERRO_DE_UNIDADE"
+      }
+    ],
+    "passo": "Correto! Como as duas medidas estão em kg, basta somar 2 + 3.",
+    "dica": "Some as massas dos dois alimentos."
+  },
+  {
+    "id": "BN_08_027",
+    "bloco": "3",
+    "habilidade": "Medidas de capacidade",
+    "bncc": "EF06MA25",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Uma jarra tem 1 L de água. Foram colocados mais 500 mL. Quantos mililitros há na jarra agora?",
+    "a": 1,
+    "b": 500,
+    "res": "1500 mL",
+    "alternativas": [
+      {
+        "id": "BN_08_027_alt_1",
+        "valor": "1500 mL",
+        "tipo": "acerto",
+        "categoria": "conversao",
+        "descricao": "O aluno converteu 1 L em 1000 mL e somou 500 mL.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_027_alt_2",
+        "valor": "501 mL",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 2,
+        "descricao": "O aluno somou 1 e 500 sem converter litros para mililitros.",
+        "misconception": "ERRO_DE_UNIDADE"
+      },
+      {
+        "id": "BN_08_027_alt_3",
+        "valor": "1000 mL",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas o litro inicial.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_027_alt_4",
+        "valor": "500 mL",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas a quantidade acrescentada.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      }
+    ],
+    "passo": "Muito bem! 1 L é 1000 mL; 1000 mL mais 500 mL são 1500 mL.",
+    "dica": "Primeiro transforme 1 L em mililitros."
+  },
+  {
+    "id": "BN_08_028",
+    "bloco": "3",
+    "habilidade": "Área em malha quadriculada",
+    "bncc": "EF09MA15",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Uma figura ocupa 12 quadradinhos iguais em uma malha. Qual é a área dessa figura em quadradinhos?",
+    "a": 12,
+    "b": 1,
+    "res": "12 quadradinhos",
+    "alternativas": [
+      {
+        "id": "BN_08_028_alt_1",
+        "valor": "12 quadradinhos",
+        "tipo": "acerto",
+        "categoria": "contagem",
+        "descricao": "O aluno contou corretamente todos os quadradinhos ocupados.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_028_alt_2",
+        "valor": "10 quadradinhos",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno deixou de contar dois quadradinhos da figura.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_028_alt_3",
+        "valor": "24 quadradinhos",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno dobrou a quantidade indicada sem necessidade.",
+        "misconception": "OPERACAO_INADEQUADA"
+      },
+      {
+        "id": "BN_08_028_alt_4",
+        "valor": "12 cm",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno usou unidade de comprimento em uma medida de área por contagem.",
+        "misconception": "ERRO_DE_UNIDADE"
+      }
+    ],
+    "passo": "Isso! A área corresponde à quantidade de quadradinhos ocupados.",
+    "dica": "Conte todos os quadradinhos preenchidos pela figura."
+  },
+  {
+    "id": "BN_08_029",
+    "bloco": "3",
+    "habilidade": "Perímetro em malha",
+    "bncc": "EF09MA15",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Um retângulo em uma malha tem lados de 4 unidades e 2 unidades. Qual é o perímetro desse retângulo?",
+    "a": 4,
+    "b": 2,
+    "res": "12 unidades",
+    "alternativas": [
+      {
+        "id": "BN_08_029_alt_1",
+        "valor": "12 unidades",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente os quatro lados do retângulo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_029_alt_2",
+        "valor": "8 unidades²",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno calculou a área em vez do perímetro.",
+        "misconception": "CONFUSAO_AREA_PERIMETRO"
+      },
+      {
+        "id": "BN_08_029_alt_3",
+        "valor": "6 unidades",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno somou apenas dois lados do retângulo.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_029_alt_4",
+        "valor": "10 unidades",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno esqueceu um dos lados de 2 unidades.",
+        "misconception": "OMISSAO_PARCIAL"
+      }
+    ],
+    "passo": "Correto! O perímetro é 4 + 2 + 4 + 2.",
+    "dica": "Some todos os lados do retângulo."
+  },
+  {
+    "id": "BN_08_030",
+    "bloco": "3",
+    "habilidade": "Interpretação de medidas",
+    "bncc": "EF07MA30",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Um copo tem capacidade de 250 mL. Quantos mililitros cabem em 4 copos iguais?",
+    "a": 250,
+    "b": 4,
+    "res": "1000 mL",
+    "alternativas": [
+      {
+        "id": "BN_08_030_alt_1",
+        "valor": "1000 mL",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente a capacidade de um copo por 4.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_08_030_alt_2",
+        "valor": "254 mL",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou 250 e 4 em vez de multiplicar.",
+        "misconception": "SOMA_EM_VEZ_DE_MULTIPLICAR"
+      },
+      {
+        "id": "BN_08_030_alt_3",
+        "valor": "500 mL",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas dois copos.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_08_030_alt_4",
+        "valor": "1000 L",
+        "tipo": "distrator",
+        "categoria": "unidade",
+        "peso": 1,
+        "descricao": "O aluno acertou o número, mas errou a unidade de capacidade.",
+        "misconception": "ERRO_DE_UNIDADE"
+      }
+    ],
+    "passo": "Muito bem! Quatro copos de 250 mL totalizam 1000 mL.",
+    "dica": "Multiplique 250 por 4."
   }
 ]
