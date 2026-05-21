@@ -7098,5 +7098,1565 @@
     ],
     "passo": "Muito bem! 2 fatias mais 1 fatia são 3 fatias de 6.",
     "dica": "Some apenas as fatias comidas e mantenha o total de fatias do bolo."
-  } 
+  },
+  {
+    "id": "BN_07_001",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "João tinha 8 figurinhas e ganhou mais 5. Quantas figurinhas ele tem agora?",
+    "a": 8,
+    "b": 5,
+    "res": "13",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "13",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno realizou corretamente a adição.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno subtraiu em vez de somar.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "40",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 3,
+        "descricao": "O aluno multiplicou os números.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_4",
+        "valor": "85",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno juntou os algarismos sem calcular.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Somar significa juntar quantidades.",
+    "dica": "Observe a palavra ganhou, pois ela indica aumento."
+  },
+  {
+    "id": "BN_07_002",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Lia tinha 15 reais e gastou 6 reais. Com quantos reais ela ficou?",
+    "a": 15,
+    "b": 6,
+    "res": "9",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "9",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno realizou corretamente a subtração.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "21",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de subtrair.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno repetiu o valor gasto como resposta.",
+        "misconception": "ERRO_DE_CONTAGEM"
+      },
+      {
+        "id": "alt_4",
+        "valor": "156",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou os números do enunciado.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Gastar dinheiro diminui a quantidade inicial.",
+    "dica": "Quando alguém gasta, use subtração."
+  },
+  {
+    "id": "BN_07_003",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Há 4 caixas com 3 lápis em cada uma. Quantos lápis há ao todo?",
+    "a": 4,
+    "b": 3,
+    "res": "12",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "12",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno realizou corretamente a multiplicação.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de multiplicar.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "1",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno subtraiu os números.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "43",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno colocou os números lado a lado.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Multiplicar ajuda a contar grupos iguais.",
+    "dica": "Veja que cada caixa tem a mesma quantidade de lápis."
+  },
+  {
+    "id": "BN_07_004",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "18 maçãs serão divididas igualmente em 3 cestas. Quantas maçãs ficarão em cada cesta?",
+    "a": 18,
+    "b": 3,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno realizou corretamente a divisão.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "21",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de dividir.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "15",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno subtraiu os números.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "183",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou os números.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Dividir igualmente é repartir em partes com a mesma quantidade.",
+    "dica": "Pense em distribuir as maçãs uma a uma nas 3 cestas."
+  },
+  {
+    "id": "BN_07_005",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA04",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Em um jogo, uma carta vale 2² pontos. Quanto é 2²?",
+    "a": 2,
+    "b": 2,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno calculou corretamente 2 vezes 2.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno repetiu a base como resposta.",
+        "misconception": "BASE_REPETIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "22",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno juntou base e expoente como algarismos.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno confundiu 2² com 2³.",
+        "misconception": "CONFUSAO_POTENCIACAO"
+      }
+    ],
+    "passo": "Muito bem! 2² significa 2 vezes 2.",
+    "dica": "Leia o expoente 2 como repetir o fator duas vezes."
+  },
+  {
+    "id": "BN_07_006",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF07MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "A temperatura era -2 graus e subiu 5 graus. Qual é a nova temperatura?",
+    "a": -2,
+    "b": 5,
+    "res": "3",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "3",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente um número positivo a um número negativo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "-7",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 2,
+        "descricao": "O aluno somou os valores e manteve sinal negativo.",
+        "misconception": "ERRO_DE_SINAL"
+      },
+      {
+        "id": "alt_3",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 2,
+        "descricao": "O aluno ignorou o sinal negativo da temperatura inicial.",
+        "misconception": "IGNORA_SINAL"
+      },
+      {
+        "id": "alt_4",
+        "valor": "-3",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu em vez de avançar na reta numérica.",
+        "misconception": "OPERACAO_INVERTIDA"
+      }
+    ],
+    "passo": "Muito bem! Sair de -2 e subir 5 unidades chega a 3.",
+    "dica": "Na reta numérica, subir temperatura é andar para a direita."
+  },
+  {
+    "id": "BN_07_007",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF07MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Um elevador estava no 6º andar e desceu 4 andares. Em qual andar ele parou?",
+    "a": 6,
+    "b": 4,
+    "res": "2",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "2",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno realizou corretamente a subtração.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "10",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de subtrair.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno repetiu a quantidade de andares descidos.",
+        "misconception": "ERRO_DE_CONTAGEM"
+      },
+      {
+        "id": "alt_4",
+        "valor": "64",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou os números.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Descer andares indica diminuir.",
+    "dica": "Comece no 6 e conte 4 andares para baixo."
+  },
+  {
+    "id": "BN_07_008",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Bia fez 12 pontos na primeira rodada e 7 pontos na segunda. Quantos pontos ela fez ao todo?",
+    "a": 12,
+    "b": 7,
+    "res": "19",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "19",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno realizou corretamente a adição dos pontos.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno subtraiu os pontos.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "84",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 3,
+        "descricao": "O aluno multiplicou os números.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_4",
+        "valor": "127",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno juntou os algarismos do enunciado.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Para saber o total de pontos, somamos as rodadas.",
+    "dica": "A expressão ao todo costuma indicar adição."
+  },
+  {
+    "id": "BN_07_009",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Na sala há 5 mesas com 2 alunos em cada mesa. Quantos alunos estão sentados?",
+    "a": 5,
+    "b": 2,
+    "res": "10",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "10",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente a quantidade de mesas pela quantidade de alunos.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de multiplicar.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu os números.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "52",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou os números.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Grupos iguais podem ser contados por multiplicação.",
+    "dica": "São 5 grupos com 2 alunos em cada grupo."
+  },
+  {
+    "id": "BN_07_010",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "20 cartas serão repartidas igualmente entre 4 jogadores. Quantas cartas cada jogador receberá?",
+    "a": 20,
+    "b": 4,
+    "res": "5",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "5",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno realizou corretamente a divisão.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "24",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de dividir.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "16",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno subtraiu em vez de repartir.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "204",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno juntou os números sem calcular.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Repartir igualmente entre 4 jogadores é dividir por 4.",
+    "dica": "Procure quantas cartas cabem para cada jogador."
+  },
+  {
+    "id": "BN_07_011",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA04",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Um tabuleiro mostra 3² casas marcadas. Quanto é 3²?",
+    "a": 3,
+    "b": 2,
+    "res": "9",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "9",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno calculou corretamente 3 vezes 3.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno multiplicou a base pelo expoente.",
+        "misconception": "CONFUSAO_POTENCIACAO_MULTIPLICACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno somou base e expoente.",
+        "misconception": "EXPOENTE_COMO_SOMA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "32",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou base e expoente.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! 3² significa 3 vezes 3, que é 9.",
+    "dica": "Na potenciação, o expoente mostra quantas vezes a base se repete como fator."
+  },
+  {
+    "id": "BN_07_012",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF07MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Em um jogo, Pedro estava com -3 pontos e ganhou 6 pontos. Com quantos pontos ele ficou?",
+    "a": -3,
+    "b": 6,
+    "res": "3",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "3",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno calculou corretamente a soma com número inteiro negativo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "-9",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 2,
+        "descricao": "O aluno somou os valores e manteve o sinal negativo.",
+        "misconception": "ERRO_DE_SINAL"
+      },
+      {
+        "id": "alt_3",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 2,
+        "descricao": "O aluno ignorou o sinal negativo do valor inicial.",
+        "misconception": "IGNORA_SINAL"
+      },
+      {
+        "id": "alt_4",
+        "valor": "-3",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno repetiu a pontuação inicial.",
+        "misconception": "ERRO_DE_CONTAGEM"
+      }
+    ],
+    "passo": "Muito bem! Ganhar 6 pontos faz avançar de -3 até 3.",
+    "dica": "Na reta numérica, ganhar pontos significa andar para a direita."
+  },
+  {
+    "id": "BN_07_013",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Rafa tinha 14 adesivos e deu 5 para um amigo. Quantos adesivos restaram?",
+    "a": 14,
+    "b": 5,
+    "res": "9",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "9",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno realizou corretamente a subtração.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "19",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de subtrair.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno respondeu a quantidade entregue.",
+        "misconception": "ERRO_DE_CONTAGEM"
+      },
+      {
+        "id": "alt_4",
+        "valor": "145",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou os números.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Dar adesivos faz a quantidade diminuir.",
+    "dica": "A palavra restaram indica que é preciso subtrair."
+  },
+  {
+    "id": "BN_07_014",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Caio tem 3 moedas de 2 reais. Quantos reais ele tem ao todo?",
+    "a": 3,
+    "b": 2,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente a quantidade de moedas pelo valor de cada moeda.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou os números em vez de multiplicar.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "1",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu os valores.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "32",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno colocou os números lado a lado.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Três moedas de 2 reais formam 3 vezes 2 reais.",
+    "dica": "Quando há valores iguais repetidos, a multiplicação ajuda."
+  },
+  {
+    "id": "BN_07_015",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Uma fita de 12 centímetros foi cortada em 3 partes iguais. Quantos centímetros tem cada parte?",
+    "a": 12,
+    "b": 3,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno dividiu corretamente a medida em partes iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "15",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou os números.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno subtraiu em vez de dividir.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "123",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou a medida e a quantidade de partes.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Cortar em partes iguais pede uma divisão.",
+    "dica": "Divida 12 centímetros igualmente entre 3 partes."
+  },
+  {
+    "id": "BN_07_016",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA04",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Em uma fase do jogo, o valor de uma estrela é 2³. Quanto é 2³?",
+    "a": 2,
+    "b": 3,
+    "res": "8",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "8",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno calculou corretamente 2 vezes 2 vezes 2.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno multiplicou a base pelo expoente.",
+        "misconception": "CONFUSAO_POTENCIACAO_MULTIPLICACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno somou base e expoente.",
+        "misconception": "EXPOENTE_COMO_SOMA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "23",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou base e expoente.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! 2³ significa 2 vezes 2 vezes 2.",
+    "dica": "Repita o número 2 como fator três vezes."
+  },
+  {
+    "id": "BN_07_017",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF07MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "A temperatura era 4 graus e caiu 7 graus. Qual é a nova temperatura?",
+    "a": 4,
+    "b": 7,
+    "res": "-3",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "-3",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno calculou corretamente a queda de temperatura passando por zero.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 2,
+        "descricao": "O aluno encontrou a diferença, mas errou o sinal.",
+        "misconception": "ERRO_DE_SINAL"
+      },
+      {
+        "id": "alt_3",
+        "valor": "11",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de considerar a queda.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "-11",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 1,
+        "descricao": "O aluno somou os valores e colocou sinal negativo.",
+        "misconception": "ERRO_DE_SINAL"
+      }
+    ],
+    "passo": "Muito bem! Ao cair 7 a partir de 4, a temperatura chega a -3.",
+    "dica": "Na reta numérica, cair temperatura é andar para a esquerda."
+  },
+  {
+    "id": "BN_07_018",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Na biblioteca da escola havia 9 livros na mesa. A professora colocou mais 4. Quantos livros ficaram na mesa?",
+    "a": 9,
+    "b": 4,
+    "res": "13",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "13",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno realizou corretamente a adição.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno subtraiu em vez de somar.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "36",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 3,
+        "descricao": "O aluno multiplicou os números.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_4",
+        "valor": "94",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou os números do enunciado.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Colocar mais livros aumenta a quantidade.",
+    "dica": "A expressão mais 4 indica adição."
+  },
+  {
+    "id": "BN_07_019",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Em um jogo, cada rodada vale 2 pontos. Ana venceu 6 rodadas. Quantos pontos ela fez?",
+    "a": 6,
+    "b": 2,
+    "res": "12",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "12",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente rodadas por pontos.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de multiplicar.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu os números.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "62",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno colocou os números lado a lado.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! São 6 rodadas com 2 pontos em cada uma.",
+    "dica": "Use multiplicação para contar pontos repetidos."
+  },
+  {
+    "id": "BN_07_020",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "16 giz de cera foram colocados igualmente em 2 caixas. Quantos giz ficaram em cada caixa?",
+    "a": 16,
+    "b": 2,
+    "res": "8",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "8",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno dividiu corretamente a quantidade em duas caixas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "18",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de dividir.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "14",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno subtraiu os números.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "162",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou os números.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Dividir em 2 caixas é encontrar metade da quantidade.",
+    "dica": "Metade de 16 é 8."
+  },
+  {
+    "id": "BN_07_021",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF07MA04",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Na reta numérica, aparece a potência (-2)². Qual é o resultado?",
+    "a": -2,
+    "b": 2,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno calculou corretamente o produto de dois fatores negativos iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "-4",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 2,
+        "descricao": "O aluno manteve sinal negativo indevidamente.",
+        "misconception": "ERRO_DE_SINAL"
+      },
+      {
+        "id": "alt_3",
+        "valor": "-2",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno repetiu a base como resposta.",
+        "misconception": "BASE_REPETIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "0",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno somou -2 com 2 em vez de calcular a potência.",
+        "misconception": "EXPOENTE_COMO_SOMA"
+      }
+    ],
+    "passo": "Muito bem! (-2)² significa (-2) vezes (-2), que resulta em 4.",
+    "dica": "O produto de dois números negativos é positivo."
+  },
+  {
+    "id": "BN_07_022",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Marina tinha 20 reais e comprou um lanche de 8 reais. Quanto dinheiro sobrou?",
+    "a": 20,
+    "b": 8,
+    "res": "12",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "12",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno subtraiu corretamente o valor gasto.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "28",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de subtrair.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno respondeu o valor do lanche.",
+        "misconception": "ERRO_DE_CONTAGEM"
+      },
+      {
+        "id": "alt_4",
+        "valor": "208",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno juntou os números sem operar.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Para saber o que sobrou, subtraímos o gasto do total.",
+    "dica": "Sobrou indica que a quantidade diminuiu."
+  },
+  {
+    "id": "BN_07_023",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF07MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Um elevador estava no andar -1 e subiu 3 andares. Em qual andar ele chegou?",
+    "a": -1,
+    "b": 3,
+    "res": "2",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "2",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente um deslocamento positivo a um número negativo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "-4",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 2,
+        "descricao": "O aluno andou no sentido errado na reta numérica.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 2,
+        "descricao": "O aluno ignorou o sinal negativo do andar inicial.",
+        "misconception": "IGNORA_SINAL"
+      },
+      {
+        "id": "alt_4",
+        "valor": "-2",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 1,
+        "descricao": "O aluno errou o sentido do deslocamento.",
+        "misconception": "ERRO_DE_SINAL"
+      }
+    ],
+    "passo": "Muito bem! Subir 3 andares a partir de -1 leva ao andar 2.",
+    "dica": "Subir no elevador é andar para números maiores."
+  },
+  {
+    "id": "BN_07_024",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Há 4 sacolas com 5 laranjas em cada uma. Quantas laranjas há ao todo?",
+    "a": 4,
+    "b": 5,
+    "res": "20",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "20",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente os grupos iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de multiplicar.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "1",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu os números.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "45",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou as quantidades.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Quatro sacolas com cinco laranjas formam 4 vezes 5.",
+    "dica": "Conte como grupos iguais."
+  },
+  {
+    "id": "BN_07_025",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "15 cartões foram separados igualmente em 5 pilhas. Quantos cartões há em cada pilha?",
+    "a": 15,
+    "b": 5,
+    "res": "3",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "3",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno dividiu corretamente os cartões em partes iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "20",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de dividir.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "10",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno subtraiu os números.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "155",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou as quantidades.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Separar igualmente em 5 pilhas é dividir por 5.",
+    "dica": "Pergunte quantos cartões cabem em cada pilha."
+  },
+  {
+    "id": "BN_07_026",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF07MA04",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Em uma atividade, aparece a potência 4². Qual é o resultado de 4²?",
+    "a": 4,
+    "b": 2,
+    "res": "16",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "16",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno calculou corretamente 4 vezes 4.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno multiplicou a base pelo expoente.",
+        "misconception": "CONFUSAO_POTENCIACAO_MULTIPLICACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno somou base e expoente.",
+        "misconception": "EXPOENTE_COMO_SOMA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "42",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou base e expoente.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! 4² significa 4 vezes 4.",
+    "dica": "O expoente 2 indica dois fatores iguais."
+  },
+  {
+    "id": "BN_07_027",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF07MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Em um jogo, Clara estava com -5 pontos e ganhou 2 pontos. Com quantos pontos ela ficou?",
+    "a": -5,
+    "b": 2,
+    "res": "-3",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "-3",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente um número positivo a um número negativo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 2,
+        "descricao": "O aluno encontrou a diferença, mas errou o sinal.",
+        "misconception": "ERRO_DE_SINAL"
+      },
+      {
+        "id": "alt_3",
+        "valor": "-7",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou os módulos e manteve sinal negativo.",
+        "misconception": "ERRO_DE_SINAL"
+      },
+      {
+        "id": "alt_4",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 1,
+        "descricao": "O aluno ignorou o sinal negativo.",
+        "misconception": "IGNORA_SINAL"
+      }
+    ],
+    "passo": "Muito bem! Ganhar 2 pontos leva de -5 para -3.",
+    "dica": "Comece no -5 e ande 2 casas para a direita."
+  },
+  {
+    "id": "BN_07_028",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Uma corda tinha 11 metros. Foram cortados 4 metros. Quantos metros sobraram?",
+    "a": 11,
+    "b": 4,
+    "res": "7",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "7",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno realizou corretamente a subtração de medidas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "15",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de subtrair.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_3",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno respondeu a medida cortada.",
+        "misconception": "ERRO_DE_CONTAGEM"
+      },
+      {
+        "id": "alt_4",
+        "valor": "114",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou as medidas.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Cortar uma parte diminui o tamanho inicial.",
+    "dica": "Para saber quanto sobrou, subtraia 4 de 11."
+  },
+  {
+    "id": "BN_07_029",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Uma coleção tem 7 envelopes com 3 figurinhas em cada envelope. Quantas figurinhas há no total?",
+    "a": 7,
+    "b": 3,
+    "res": "21",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "21",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno multiplicou corretamente os grupos iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "10",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de multiplicar.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu os números.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "73",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou as quantidades.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! São 7 envelopes com 3 figurinhas em cada um.",
+    "dica": "Use multiplicação para contar envelopes com a mesma quantidade."
+  },
+  {
+    "id": "BN_07_030",
+    "bloco": "2",
+    "habilidade": "Operações Básicas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Um time fez 24 pontos, divididos igualmente entre 6 jogadores. Quantos pontos ficaram para cada jogador?",
+    "a": 24,
+    "b": 6,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno dividiu corretamente os pontos entre os jogadores.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "alt_2",
+        "valor": "30",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou em vez de dividir.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "alt_3",
+        "valor": "18",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno subtraiu em vez de repartir.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "alt_4",
+        "valor": "246",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno concatenou os números.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Repartir 24 pontos entre 6 jogadores é fazer 24 dividido por 6.",
+    "dica": "Procure quantos pontos cada jogador recebe."
+  }
 ]
