@@ -10218,5 +10218,1566 @@
     ],
     "passo": "Muito bem! Quatro copos de 250 mL totalizam 1000 mL.",
     "dica": "Multiplique 250 por 4."
+  },
+  
+  {
+    "id": "BN_09_001",
+    "bloco": "4",
+    "habilidade": "Álgebra Inicial",
+    "bncc": "EF06MA14",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Complete a sequência: 2, 4, 6, 8, __",
+    "a": 2,
+    "b": 8,
+    "res": "10",
+    "alternativas": [
+      {
+        "id": "BN_09_001_alt_1",
+        "valor": "10",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno identificou corretamente o padrão de soma de 2 em 2.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_001_alt_2",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno não manteve o padrão da sequência.",
+        "misconception": "RUPTURA_DE_PADRAO"
+      },
+      {
+        "id": "BN_09_001_alt_3",
+        "valor": "16",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno dobrou o último número da sequência.",
+        "misconception": "GENERALIZACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_09_001_alt_4",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno pulou um termo da sequência.",
+        "misconception": "SALTO_NUMERICO"
+      }
+    ],
+    "passo": "Muito bem! A sequência aumenta de 2 em 2.",
+    "dica": "Observe a diferença entre os números."
+  },
+  {
+    "id": "BN_09_002",
+    "bloco": "4",
+    "habilidade": "Sequências Numéricas",
+    "bncc": "EF06MA14",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Complete a sequência: 5, 10, 15, 20, __",
+    "a": 5,
+    "b": 20,
+    "res": "25",
+    "alternativas": [
+      {
+        "id": "BN_09_002_alt_1",
+        "valor": "25",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno identificou corretamente o padrão de soma de 5 em 5.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_002_alt_2",
+        "valor": "21",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou 1 em vez de seguir o padrão.",
+        "misconception": "RUPTURA_DE_PADRAO"
+      },
+      {
+        "id": "BN_09_002_alt_3",
+        "valor": "40",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno dobrou o último termo da sequência.",
+        "misconception": "GENERALIZACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_09_002_alt_4",
+        "valor": "30",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno pulou um termo da sequência.",
+        "misconception": "SALTO_NUMERICO"
+      }
+    ],
+    "passo": "Correto! Cada termo aumenta 5 unidades.",
+    "dica": "Veja quanto foi somado de um número para o próximo."
+  },
+  {
+    "id": "BN_09_003",
+    "bloco": "4",
+    "habilidade": "Padrões Numéricos",
+    "bncc": "EF06MA14",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Complete a sequência: 30, 27, 24, 21, __",
+    "a": 30,
+    "b": 21,
+    "res": "18",
+    "alternativas": [
+      {
+        "id": "BN_09_003_alt_1",
+        "valor": "18",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno identificou corretamente o padrão de diminuir 3 a cada termo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_003_alt_2",
+        "valor": "24",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 3 em vez de subtrair 3.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_003_alt_3",
+        "valor": "20",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno diminuiu apenas 1 do último termo.",
+        "misconception": "RUPTURA_DE_PADRAO"
+      },
+      {
+        "id": "BN_09_003_alt_4",
+        "valor": "15",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno pulou um termo da sequência.",
+        "misconception": "SALTO_NUMERICO"
+      }
+    ],
+    "passo": "Muito bem! A sequência diminui de 3 em 3.",
+    "dica": "Observe que os números estão ficando menores."
+  },
+  {
+    "id": "BN_09_004",
+    "bloco": "4",
+    "habilidade": "Sequência Decrescente",
+    "bncc": "EF06MA14",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Em uma contagem regressiva aparecem os números 50, 40, 30, 20, __. Qual é o próximo número?",
+    "a": 50,
+    "b": 20,
+    "res": "10",
+    "alternativas": [
+      {
+        "id": "BN_09_004_alt_1",
+        "valor": "10",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno reconheceu que a sequência diminui de 10 em 10.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_004_alt_2",
+        "valor": "30",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 10 em vez de subtrair 10.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_004_alt_3",
+        "valor": "15",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno diminuiu 5 em vez de 10.",
+        "misconception": "RUPTURA_DE_PADRAO"
+      },
+      {
+        "id": "BN_09_004_alt_4",
+        "valor": "0",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno pulou o próximo termo da sequência.",
+        "misconception": "SALTO_NUMERICO"
+      }
+    ],
+    "passo": "Isso! A contagem está diminuindo 10 unidades a cada passo.",
+    "dica": "Subtraia 10 do último número mostrado."
+  },
+  {
+    "id": "BN_09_005",
+    "bloco": "4",
+    "habilidade": "Valor Desconhecido",
+    "bncc": "EF06MA15",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Qual é o valor de x em x + 3 = 8?",
+    "a": 3,
+    "b": 8,
+    "res": "5",
+    "alternativas": [
+      {
+        "id": "BN_09_005_alt_1",
+        "valor": "5",
+        "tipo": "acerto",
+        "categoria": "incognita",
+        "descricao": "O aluno encontrou corretamente o valor que somado a 3 resulta em 8.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_005_alt_2",
+        "valor": "11",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 8 e 3 em vez de descobrir a parte que falta.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_005_alt_3",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno cometeu erro ao subtrair 3 de 8.",
+        "misconception": "ERRO_OPERACIONAL"
+      },
+      {
+        "id": "BN_09_005_alt_4",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o número conhecido da expressão.",
+        "misconception": "LEITURA_INCORRETA"
+      }
+    ],
+    "passo": "Correto! Como 5 + 3 = 8, o valor de x é 5.",
+    "dica": "Pense em qual número somado a 3 chega a 8."
+  },
+  {
+    "id": "BN_09_006",
+    "bloco": "4",
+    "habilidade": "Igualdade Matemática",
+    "bncc": "EF06MA15",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Complete a igualdade: 6 + __ = 10",
+    "a": 6,
+    "b": 10,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "BN_09_006_alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "igualdade",
+        "descricao": "O aluno identificou corretamente o número que completa a igualdade.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_006_alt_2",
+        "valor": "16",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 6 e 10 em vez de encontrar o termo que falta.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_006_alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno errou a contagem entre 6 e 10.",
+        "misconception": "ERRO_OPERACIONAL"
+      },
+      {
+        "id": "BN_09_006_alt_4",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno repetiu o número conhecido da igualdade.",
+        "misconception": "LEITURA_INCORRETA"
+      }
+    ],
+    "passo": "Muito bem! O número 4 completa a igualdade, pois 6 + 4 = 10.",
+    "dica": "Pergunte: quanto falta para 6 chegar a 10?"
+  },
+  {
+    "id": "BN_09_007",
+    "bloco": "4",
+    "habilidade": "Equação Simples",
+    "bncc": "EF06MA15",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Qual é o valor de x em x - 4 = 2?",
+    "a": 4,
+    "b": 2,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_09_007_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "incognita",
+        "descricao": "O aluno encontrou corretamente o valor que, ao tirar 4, resulta em 2.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_007_alt_2",
+        "valor": "2",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o resultado da igualdade como valor de x.",
+        "misconception": "LEITURA_INCORRETA"
+      },
+      {
+        "id": "BN_09_007_alt_3",
+        "valor": "-2",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 2,
+        "descricao": "O aluno subtraiu 4 de 2 e errou o sentido da operação.",
+        "misconception": "ERRO_DE_SINAL"
+      },
+      {
+        "id": "BN_09_007_alt_4",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o número que está sendo subtraído.",
+        "misconception": "LEITURA_INCORRETA"
+      }
+    ],
+    "passo": "Correto! Se x é 6, então 6 - 4 = 2.",
+    "dica": "Pense em qual número perde 4 e fica com 2."
+  },
+  {
+    "id": "BN_09_008",
+    "bloco": "4",
+    "habilidade": "Equação de 1º Grau Básica",
+    "bncc": "EF07MA13",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Qual é o valor de x em 2x = 10?",
+    "a": 2,
+    "b": 10,
+    "res": "5",
+    "alternativas": [
+      {
+        "id": "BN_09_008_alt_1",
+        "valor": "5",
+        "tipo": "acerto",
+        "categoria": "equacao",
+        "descricao": "O aluno identificou corretamente que 2 vezes 5 é igual a 10.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_008_alt_2",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 2 e 10 em vez de dividir por 2.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_008_alt_3",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu 2 de 10 em vez de dividir.",
+        "misconception": "OPERACAO_INADEQUADA"
+      },
+      {
+        "id": "BN_09_008_alt_4",
+        "valor": "20",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno multiplicou 10 por 2 em vez de encontrar x.",
+        "misconception": "TROCA_DE_OPERACAO"
+      }
+    ],
+    "passo": "Muito bem! 2x significa 2 vezes x, e 2 vezes 5 é 10.",
+    "dica": "Pergunte: 2 vezes qual número dá 10?"
+  },
+  {
+    "id": "BN_09_009",
+    "bloco": "4",
+    "habilidade": "Dobro",
+    "bncc": "EF07MA13",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "O dobro de um número é 14. Qual é esse número?",
+    "a": 2,
+    "b": 14,
+    "res": "7",
+    "alternativas": [
+      {
+        "id": "BN_09_009_alt_1",
+        "valor": "7",
+        "tipo": "acerto",
+        "categoria": "relacao",
+        "descricao": "O aluno identificou corretamente que o número cujo dobro é 14 é 7.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_009_alt_2",
+        "valor": "16",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu dobro com somar 2.",
+        "misconception": "CONFUSAO_DOBRO_SOMA"
+      },
+      {
+        "id": "BN_09_009_alt_3",
+        "valor": "28",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno dobrou 14 em vez de encontrar sua metade.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "BN_09_009_alt_4",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu 2 de 14 em vez de dividir por 2.",
+        "misconception": "TROCA_DE_OPERACAO"
+      }
+    ],
+    "passo": "Isso! Se o dobro é 14, o número é metade de 14.",
+    "dica": "Procure o número que multiplicado por 2 resulta em 14."
+  },
+  {
+    "id": "BN_09_010",
+    "bloco": "4",
+    "habilidade": "Triplo",
+    "bncc": "EF07MA13",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "O triplo de um número é 18. Qual é esse número?",
+    "a": 3,
+    "b": 18,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_09_010_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "relacao",
+        "descricao": "O aluno identificou corretamente que 3 vezes 6 é 18.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_010_alt_2",
+        "valor": "21",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu triplo com somar 3.",
+        "misconception": "CONFUSAO_TRIPLO_SOMA"
+      },
+      {
+        "id": "BN_09_010_alt_3",
+        "valor": "54",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno multiplicou 18 por 3 em vez de dividir.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "BN_09_010_alt_4",
+        "valor": "15",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu 3 de 18 em vez de dividir por 3.",
+        "misconception": "TROCA_DE_OPERACAO"
+      }
+    ],
+    "passo": "Correto! O número é 6, pois 3 vezes 6 é 18.",
+    "dica": "Pense em qual número multiplicado por 3 resulta em 18."
+  },
+  {
+    "id": "BN_09_011",
+    "bloco": "4",
+    "habilidade": "Metade",
+    "bncc": "EF07MA13",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "A metade de um número é 9. Qual é esse número?",
+    "a": 2,
+    "b": 9,
+    "res": "18",
+    "alternativas": [
+      {
+        "id": "BN_09_011_alt_1",
+        "valor": "18",
+        "tipo": "acerto",
+        "categoria": "relacao",
+        "descricao": "O aluno identificou corretamente que metade de 18 é 9.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_011_alt_2",
+        "valor": "4,5",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno calculou a metade de 9 em vez de descobrir o número inicial.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "BN_09_011_alt_3",
+        "valor": "11",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu metade com somar 2.",
+        "misconception": "CONFUSAO_ENTRE_METADE_E_SOMA"
+      },
+      {
+        "id": "BN_09_011_alt_4",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno repetiu o valor da metade como se fosse o número inteiro.",
+        "misconception": "LEITURA_INCORRETA"
+      }
+    ],
+    "passo": "Muito bem! Se a metade é 9, o número inteiro é 18.",
+    "dica": "Dobre 9 para encontrar o número inteiro."
+  },
+  {
+    "id": "BN_09_012",
+    "bloco": "4",
+    "habilidade": "Expressão Algébrica Simples",
+    "bncc": "EF07MA14",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Se n = 4, qual é o valor de n + 5?",
+    "a": 4,
+    "b": 5,
+    "res": "9",
+    "alternativas": [
+      {
+        "id": "BN_09_012_alt_1",
+        "valor": "9",
+        "tipo": "acerto",
+        "categoria": "substituicao",
+        "descricao": "O aluno substituiu n por 4 e calculou 4 + 5 corretamente.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_012_alt_2",
+        "valor": "20",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno multiplicou 4 por 5 em vez de somar.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_012_alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu apenas o número somado a n.",
+        "misconception": "LEITURA_INCORRETA"
+      },
+      {
+        "id": "BN_09_012_alt_4",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "substituicao",
+        "peso": 1,
+        "descricao": "O aluno substituiu n, mas não realizou a soma.",
+        "misconception": "SUBSTITUICAO_INCOMPLETA"
+      }
+    ],
+    "passo": "Correto! Substituindo n por 4, temos 4 + 5 = 9.",
+    "dica": "Troque a letra n pelo número 4."
+  },
+  {
+    "id": "BN_09_013",
+    "bloco": "4",
+    "habilidade": "Substituição de Valores",
+    "bncc": "EF07MA14",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Se x = 3, qual é o valor de 2x?",
+    "a": 2,
+    "b": 3,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_09_013_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "substituicao",
+        "descricao": "O aluno substituiu x por 3 e calculou 2 vezes 3 corretamente.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_013_alt_2",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno interpretou 2x como 2 + x.",
+        "misconception": "CONFUSAO_MULTIPLICACAO_SOMA"
+      },
+      {
+        "id": "BN_09_013_alt_3",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "substituicao",
+        "peso": 1,
+        "descricao": "O aluno substituiu x, mas não multiplicou por 2.",
+        "misconception": "SUBSTITUICAO_INCOMPLETA"
+      },
+      {
+        "id": "BN_09_013_alt_4",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno multiplicou 3 por 3 em vez de 2 por 3.",
+        "misconception": "SUBSTITUICAO_ERRADA"
+      }
+    ],
+    "passo": "Muito bem! 2x significa 2 vezes x, então 2 vezes 3 é 6.",
+    "dica": "Quando há um número junto da letra, pense em multiplicação."
+  },
+  {
+    "id": "BN_09_014",
+    "bloco": "4",
+    "habilidade": "Expressões Simples",
+    "bncc": "EF07MA14",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Se a = 7, qual é o valor de a - 2?",
+    "a": 7,
+    "b": 2,
+    "res": "5",
+    "alternativas": [
+      {
+        "id": "BN_09_014_alt_1",
+        "valor": "5",
+        "tipo": "acerto",
+        "categoria": "substituicao",
+        "descricao": "O aluno substituiu a por 7 e calculou 7 - 2 corretamente.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_014_alt_2",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 7 e 2 em vez de subtrair.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_014_alt_3",
+        "valor": "-5",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 1,
+        "descricao": "O aluno inverteu a ordem da subtração.",
+        "misconception": "ERRO_DE_SINAL"
+      },
+      {
+        "id": "BN_09_014_alt_4",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "substituicao",
+        "peso": 1,
+        "descricao": "O aluno substituiu a, mas não realizou a subtração.",
+        "misconception": "SUBSTITUICAO_INCOMPLETA"
+      }
+    ],
+    "passo": "Isso! Colocando 7 no lugar de a, fica 7 - 2 = 5.",
+    "dica": "Substitua a letra pelo número indicado."
+  },
+  {
+    "id": "BN_09_015",
+    "bloco": "4",
+    "habilidade": "Relações Numéricas",
+    "bncc": "EF07MA14",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Carlos tem 6 figurinhas. João tem o dobro. Quantas figurinhas João tem?",
+    "a": 6,
+    "b": 2,
+    "res": "12",
+    "alternativas": [
+      {
+        "id": "BN_09_015_alt_1",
+        "valor": "12",
+        "tipo": "acerto",
+        "categoria": "relacao",
+        "descricao": "O aluno calculou corretamente o dobro de 6.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_015_alt_2",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu dobro com somar 2.",
+        "misconception": "CONFUSAO_DOBRO_SOMA"
+      },
+      {
+        "id": "BN_09_015_alt_3",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno calculou a metade de 6 em vez do dobro.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "BN_09_015_alt_4",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno repetiu a quantidade inicial.",
+        "misconception": "LEITURA_INCOMPLETA"
+      }
+    ],
+    "passo": "Correto! O dobro de 6 é 12.",
+    "dica": "Dobro significa multiplicar por 2."
+  },
+  {
+    "id": "BN_09_016",
+    "bloco": "4",
+    "habilidade": "Padrão Visual",
+    "bncc": "EF08MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Em um padrão, a 1ª figura tem 2 bolinhas, a 2ª tem 4 bolinhas e a 3ª tem 6 bolinhas. Quantas bolinhas terá a 4ª figura?",
+    "a": 2,
+    "b": 4,
+    "res": "8",
+    "alternativas": [
+      {
+        "id": "BN_09_016_alt_1",
+        "valor": "8",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno identificou que o padrão aumenta de 2 em 2 bolinhas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_016_alt_2",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou 1 em vez de manter o padrão.",
+        "misconception": "RUPTURA_DE_PADRAO"
+      },
+      {
+        "id": "BN_09_016_alt_3",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno dobrou a quantidade da 3ª figura.",
+        "misconception": "GENERALIZACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_09_016_alt_4",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno repetiu a quantidade da 3ª figura.",
+        "misconception": "LEITURA_INCOMPLETA"
+      }
+    ],
+    "passo": "Muito bem! Cada figura ganha 2 bolinhas, então a 4ª terá 8.",
+    "dica": "Veja quantas bolinhas aumentam de uma figura para a próxima."
+  },
+  {
+    "id": "BN_09_017",
+    "bloco": "4",
+    "habilidade": "Tabela de Padrões",
+    "bncc": "EF08MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Em uma tabela, 1 pacote tem 4 lápis, 2 pacotes têm 8 lápis e 3 pacotes têm 12 lápis. Quantos lápis há em 4 pacotes?",
+    "a": 4,
+    "b": 12,
+    "res": "16",
+    "alternativas": [
+      {
+        "id": "BN_09_017_alt_1",
+        "valor": "16",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno percebeu que cada pacote acrescenta 4 lápis.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_017_alt_2",
+        "valor": "13",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou apenas 1 ao valor anterior.",
+        "misconception": "RUPTURA_DE_PADRAO"
+      },
+      {
+        "id": "BN_09_017_alt_3",
+        "valor": "24",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno dobrou 12 em vez de acrescentar mais 4.",
+        "misconception": "GENERALIZACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_09_017_alt_4",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno repetiu o valor de 3 pacotes.",
+        "misconception": "LEITURA_INCOMPLETA"
+      }
+    ],
+    "passo": "Isso! Cada pacote tem 4 lápis, então 4 pacotes têm 16 lápis.",
+    "dica": "Multiplique a quantidade de pacotes por 4."
+  },
+  {
+    "id": "BN_09_018",
+    "bloco": "4",
+    "habilidade": "Generalização Simples",
+    "bncc": "EF08MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Uma regra diz: para encontrar o próximo número, some 3. Começando em 4, qual é o próximo número?",
+    "a": 4,
+    "b": 3,
+    "res": "7",
+    "alternativas": [
+      {
+        "id": "BN_09_018_alt_1",
+        "valor": "7",
+        "tipo": "acerto",
+        "categoria": "regra",
+        "descricao": "O aluno aplicou corretamente a regra de somar 3.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_018_alt_2",
+        "valor": "1",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno subtraiu 3 em vez de somar.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_018_alt_3",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno multiplicou 4 por 3 em vez de somar.",
+        "misconception": "OPERACAO_INADEQUADA"
+      },
+      {
+        "id": "BN_09_018_alt_4",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno manteve o número inicial sem aplicar a regra.",
+        "misconception": "REGRA_NAO_APLICADA"
+      }
+    ],
+    "passo": "Correto! Aplicando a regra, 4 + 3 = 7.",
+    "dica": "Use a regra exatamente como foi dada."
+  },
+  {
+    "id": "BN_09_019",
+    "bloco": "4",
+    "habilidade": "Igualdade",
+    "bncc": "EF08MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Qual número completa a igualdade: 9 + 2 = __ + 5?",
+    "a": 9,
+    "b": 5,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_09_019_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "igualdade",
+        "descricao": "O aluno identificou que os dois lados precisam ter o mesmo valor.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_019_alt_2",
+        "valor": "11",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno calculou apenas o lado esquerdo e colocou o total no espaço.",
+        "misconception": "CONFUSAO_DE_IGUALDADE"
+      },
+      {
+        "id": "BN_09_019_alt_3",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno subtraiu 5 de 9 sem considerar o 2.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_09_019_alt_4",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno cometeu erro ao calcular quanto falta para chegar a 11.",
+        "misconception": "ERRO_OPERACIONAL"
+      }
+    ],
+    "passo": "Muito bem! Como 9 + 2 = 11, precisamos de 6 + 5 = 11.",
+    "dica": "Calcule primeiro o valor do lado esquerdo."
+  },
+  {
+    "id": "BN_09_020",
+    "bloco": "4",
+    "habilidade": "Equilíbrio da Igualdade",
+    "bncc": "EF08MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Uma balança está equilibrada: x + 2 é igual a 7. Qual é o valor de x?",
+    "a": 2,
+    "b": 7,
+    "res": "5",
+    "alternativas": [
+      {
+        "id": "BN_09_020_alt_1",
+        "valor": "5",
+        "tipo": "acerto",
+        "categoria": "igualdade",
+        "descricao": "O aluno encontrou corretamente o valor que mantém a balança equilibrada.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_020_alt_2",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 7 e 2 em vez de encontrar o valor que falta.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_020_alt_3",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o total da balança como valor de x.",
+        "misconception": "CONFUSAO_DE_IGUALDADE"
+      },
+      {
+        "id": "BN_09_020_alt_4",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno errou a subtração necessária para encontrar x.",
+        "misconception": "ERRO_OPERACIONAL"
+      }
+    ],
+    "passo": "Correto! Se x + 2 = 7, então x precisa ser 5.",
+    "dica": "Pense no que falta para 2 chegar a 7."
+  },
+  {
+    "id": "BN_09_021",
+    "bloco": "4",
+    "habilidade": "Equação Básica",
+    "bncc": "EF08MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Qual é o valor de y em y + 6 = 13?",
+    "a": 6,
+    "b": 13,
+    "res": "7",
+    "alternativas": [
+      {
+        "id": "BN_09_021_alt_1",
+        "valor": "7",
+        "tipo": "acerto",
+        "categoria": "equacao",
+        "descricao": "O aluno identificou corretamente que 7 + 6 = 13.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_021_alt_2",
+        "valor": "19",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 13 e 6 em vez de subtrair.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_021_alt_3",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o número conhecido da expressão.",
+        "misconception": "LEITURA_INCORRETA"
+      },
+      {
+        "id": "BN_09_021_alt_4",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno cometeu erro ao calcular a diferença entre 13 e 6.",
+        "misconception": "ERRO_OPERACIONAL"
+      }
+    ],
+    "passo": "Isso! O número 7 completa a igualdade, pois 7 + 6 = 13.",
+    "dica": "Descubra quanto falta para 6 chegar a 13."
+  },
+  {
+    "id": "BN_09_022",
+    "bloco": "4",
+    "habilidade": "Operações com Incógnita",
+    "bncc": "EF08MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Qual é o valor de x em 3x = 12?",
+    "a": 3,
+    "b": 12,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "BN_09_022_alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "equacao",
+        "descricao": "O aluno identificou corretamente que 3 vezes 4 é 12.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_022_alt_2",
+        "valor": "15",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 3 e 12 em vez de dividir 12 por 3.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_022_alt_3",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu 3 de 12 em vez de dividir.",
+        "misconception": "OPERACAO_INADEQUADA"
+      },
+      {
+        "id": "BN_09_022_alt_4",
+        "valor": "36",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno multiplicou 12 por 3 em vez de encontrar x.",
+        "misconception": "OPERACAO_INVERTIDA"
+      }
+    ],
+    "passo": "Muito bem! Como 3 vezes 4 é 12, x vale 4.",
+    "dica": "Pergunte: 3 vezes qual número resulta em 12?"
+  },
+  {
+    "id": "BN_09_023",
+    "bloco": "4",
+    "habilidade": "Sequência com Multiplicação",
+    "bncc": "EF08MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Complete a sequência: 3, 6, 12, 24, __",
+    "a": 3,
+    "b": 24,
+    "res": "48",
+    "alternativas": [
+      {
+        "id": "BN_09_023_alt_1",
+        "valor": "48",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno identificou corretamente que cada termo é o dobro do anterior.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_023_alt_2",
+        "valor": "27",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou 3 ao último termo em vez de dobrar.",
+        "misconception": "CONFUSAO_DOBRO_SOMA"
+      },
+      {
+        "id": "BN_09_023_alt_3",
+        "valor": "36",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou 12 ao último termo, repetindo a diferença anterior.",
+        "misconception": "GENERALIZACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_09_023_alt_4",
+        "valor": "42",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno leu ou organizou incorretamente o último número.",
+        "misconception": "LEITURA_INCORRETA_DA_SEQUENCIA"
+      }
+    ],
+    "passo": "Correto! Cada número é o dobro do anterior, então 24 x 2 = 48.",
+    "dica": "Veja que 3 virou 6, 6 virou 12 e 12 virou 24."
+  },
+  {
+    "id": "BN_09_024",
+    "bloco": "4",
+    "habilidade": "Relação entre Números",
+    "bncc": "EF09MA09",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Uma receita usa 2 ovos para 1 bolo. Quantos ovos são usados para 3 bolos iguais?",
+    "a": 2,
+    "b": 3,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_09_024_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "relacao",
+        "descricao": "O aluno multiplicou corretamente 2 ovos por 3 bolos.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_024_alt_2",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 2 e 3 em vez de multiplicar.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_024_alt_3",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu apenas a quantidade de bolos.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_09_024_alt_4",
+        "valor": "2",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas a quantidade para 1 bolo.",
+        "misconception": "REGRA_NAO_APLICADA"
+      }
+    ],
+    "passo": "Muito bem! Se 1 bolo usa 2 ovos, 3 bolos usam 2 x 3 = 6 ovos.",
+    "dica": "Repita a quantidade de ovos para cada bolo."
+  },
+  {
+    "id": "BN_09_025",
+    "bloco": "4",
+    "habilidade": "Expressão Verbal",
+    "bncc": "EF09MA09",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Pensei em um número. Somei 4 e obtive 11. Em que número pensei?",
+    "a": 4,
+    "b": 11,
+    "res": "7",
+    "alternativas": [
+      {
+        "id": "BN_09_025_alt_1",
+        "valor": "7",
+        "tipo": "acerto",
+        "categoria": "incognita",
+        "descricao": "O aluno identificou corretamente o número que somado a 4 resulta em 11.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_025_alt_2",
+        "valor": "15",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 11 e 4 em vez de encontrar o número inicial.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_025_alt_3",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno errou ao calcular a diferença entre 11 e 4.",
+        "misconception": "ERRO_OPERACIONAL"
+      },
+      {
+        "id": "BN_09_025_alt_4",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o valor que foi somado ao número pensado.",
+        "misconception": "LEITURA_INCORRETA"
+      }
+    ],
+    "passo": "Isso! O número pensado foi 7, pois 7 + 4 = 11.",
+    "dica": "Descubra qual número precisa de mais 4 para chegar a 11."
+  },
+  {
+    "id": "BN_09_026",
+    "bloco": "4",
+    "habilidade": "Equação Verbal",
+    "bncc": "EF09MA09",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Um número menos 5 é igual a 8. Qual é esse número?",
+    "a": 5,
+    "b": 8,
+    "res": "13",
+    "alternativas": [
+      {
+        "id": "BN_09_026_alt_1",
+        "valor": "13",
+        "tipo": "acerto",
+        "categoria": "incognita",
+        "descricao": "O aluno identificou corretamente o número que, ao tirar 5, resulta em 8.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_026_alt_2",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno calculou 8 - 5 em vez de descobrir o número inicial.",
+        "misconception": "OPERACAO_INVERTIDA"
+      },
+      {
+        "id": "BN_09_026_alt_3",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno repetiu o resultado como se fosse o número inicial.",
+        "misconception": "LEITURA_INCORRETA"
+      },
+      {
+        "id": "BN_09_026_alt_4",
+        "valor": "-13",
+        "tipo": "distrator",
+        "categoria": "sinal",
+        "peso": 1,
+        "descricao": "O aluno chegou ao número correto, mas colocou sinal negativo sem necessidade.",
+        "misconception": "ERRO_DE_SINAL"
+      }
+    ],
+    "passo": "Correto! O número é 13, pois 13 - 5 = 8.",
+    "dica": "Pense no número que perde 5 e fica com 8."
+  },
+  {
+    "id": "BN_09_027",
+    "bloco": "4",
+    "habilidade": "Substituição Simples",
+    "bncc": "EF09MA09",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Se m = 5, qual é o valor de m + m?",
+    "a": 5,
+    "b": 2,
+    "res": "10",
+    "alternativas": [
+      {
+        "id": "BN_09_027_alt_1",
+        "valor": "10",
+        "tipo": "acerto",
+        "categoria": "substituicao",
+        "descricao": "O aluno substituiu m por 5 nas duas posições e somou corretamente.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_027_alt_2",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu m + m com 5 + 2.",
+        "misconception": "SUBSTITUICAO_ERRADA"
+      },
+      {
+        "id": "BN_09_027_alt_3",
+        "valor": "25",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno multiplicou 5 por 5 em vez de somar 5 + 5.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_027_alt_4",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "substituicao",
+        "peso": 1,
+        "descricao": "O aluno substituiu apenas uma ocorrência de m.",
+        "misconception": "SUBSTITUICAO_INCOMPLETA"
+      }
+    ],
+    "passo": "Muito bem! Como m vale 5, m + m é 5 + 5 = 10.",
+    "dica": "Troque cada letra m pelo número 5."
+  },
+  {
+    "id": "BN_09_028",
+    "bloco": "4",
+    "habilidade": "Padrão de Figuras",
+    "bncc": "EF08MA06",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Um desenho tem 1 triângulo na 1ª etapa, 2 triângulos na 2ª etapa e 3 triângulos na 3ª etapa. Quantos triângulos terá a 4ª etapa?",
+    "a": 1,
+    "b": 4,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "BN_09_028_alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno reconheceu que a quantidade aumenta de 1 em 1.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_028_alt_2",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno dobrou a quantidade da 3ª etapa.",
+        "misconception": "GENERALIZACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_09_028_alt_3",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno repetiu a quantidade da 3ª etapa.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_09_028_alt_4",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno pulou um termo do padrão.",
+        "misconception": "SALTO_NUMERICO"
+      }
+    ],
+    "passo": "Isso! O padrão aumenta um triângulo a cada etapa.",
+    "dica": "Compare a quantidade de uma etapa com a próxima."
+  },
+  {
+    "id": "BN_09_029",
+    "bloco": "4",
+    "habilidade": "Igualdade com Operações",
+    "bncc": "EF08MA07",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Qual número completa a igualdade: 4 x __ = 20?",
+    "a": 4,
+    "b": 20,
+    "res": "5",
+    "alternativas": [
+      {
+        "id": "BN_09_029_alt_1",
+        "valor": "5",
+        "tipo": "acerto",
+        "categoria": "igualdade",
+        "descricao": "O aluno encontrou corretamente o número que multiplicado por 4 resulta em 20.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_029_alt_2",
+        "valor": "24",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 4 e 20 em vez de descobrir o fator que falta.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_029_alt_3",
+        "valor": "16",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu 4 de 20 em vez de dividir por 4.",
+        "misconception": "OPERACAO_INADEQUADA"
+      },
+      {
+        "id": "BN_09_029_alt_4",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno repetiu o fator conhecido da igualdade.",
+        "misconception": "LEITURA_INCORRETA"
+      }
+    ],
+    "passo": "Correto! 4 vezes 5 é igual a 20.",
+    "dica": "Pense na tabuada do 4."
+  },
+  {
+    "id": "BN_09_030",
+    "bloco": "4",
+    "habilidade": "Interpretação Algébrica Inicial",
+    "bncc": "EF09MA09",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Luísa tinha algumas canetas. Ganhou 3 e ficou com 9 canetas. Quantas canetas ela tinha antes?",
+    "a": 3,
+    "b": 9,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_09_030_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "incognita",
+        "descricao": "O aluno identificou corretamente a quantidade inicial antes de Luísa ganhar 3 canetas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_09_030_alt_2",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 9 e 3 em vez de encontrar a quantidade inicial.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_09_030_alt_3",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu apenas a quantidade de canetas recebidas.",
+        "misconception": "LEITURA_INCORRETA"
+      },
+      {
+        "id": "BN_09_030_alt_4",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu a quantidade final como se fosse a inicial.",
+        "misconception": "CONFUSAO_ENTRE_INICIAL_E_FINAL"
+      }
+    ],
+    "passo": "Muito bem! Se ela ganhou 3 e ficou com 9, antes tinha 6 canetas.",
+    "dica": "Tire as 3 canetas que ela ganhou do total final."
   }
 ]
