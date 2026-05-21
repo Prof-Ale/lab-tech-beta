@@ -42,13 +42,23 @@ export class ProfileEngine {
         }
     }
 
-    inicializarEstudante(estudanteId) {
+   inicializarEstudante(estudanteId) {
         if (!estudanteId) throw new Error('ID inválido.');
 
         // 🧠 Tenta resgatar a memória do aluno antes de criar um novo
         const perfilSalvo = this._carregarLocal(estudanteId);
         if (perfilSalvo) {
             console.log(`[ADA] Memória recuperada para: ${estudanteId}`);
+            
+            // 🛠️ MIGRATION PATCH: Atualiza perfis veteranos com os novos radares XAI
+            if (!perfilSalvo.estadoADA) {
+                perfilSalvo.estadoADA = { acertosRapidosCombo: 0, emboscadaArmada: false };
+                perfilSalvo.indicePseudoconceito = 0.0;
+                if (!perfilSalvo.mapaEtiologiaErros) perfilSalvo.mapaEtiologiaErros = {};
+                perfilSalvo.mapaEtiologiaErros.PSEUDOCONCEITO_EXPOSTO = 0;
+                console.log(`[ADA] 🔄 Mente veterana atualizada com Radar de Pseudoconceito.`);
+            }
+
             this._estadosEstudantes.set(estudanteId, perfilSalvo);
             return JSON.parse(JSON.stringify(perfilSalvo));
         }
@@ -73,7 +83,8 @@ export class ProfileEngine {
         this._estadosEstudantes.set(estudanteId, novoPerfil);
         this._salvarLocal(estudanteId, novoPerfil); // Grava a criação no HD
         return JSON.parse(JSON.stringify(novoPerfil));
-    }
+        }
+    
 
     processarEventoTelemetria(estudanteId, dadosTelemetria, metadadosSensor) {
         const normalizador = new QuestionNormalizer();
