@@ -1,8 +1,8 @@
 /**
  * @fileoverview ProfileEngine.js
  * @description Motor de Inferência Cognitiva e Rastreamento de Deriva Semiótica.
- * AGORA COM: Índice de Estabilidade, Detector de Scaffold e TIMELINE COGNITIVA LONGITUDINAL.
- * @version 8.0.0
+ * AGORA COM: SISTEMA DE CONFIANÇA INFERENCIAL (Certeza Estatística da IA).
+ * @version 9.0.0
  * @package LabTech Core Environment
  */
 
@@ -15,11 +15,12 @@ export class ProfileEngine {
         this._CONFIG = Object.freeze({
             LIMIAR_LATENCIA_IMPULSIVA_MS: 3500,
             LIMIAR_FRICCION_ERRATICA: 5,
-            MIN_ITENS_PARA_DIAGNOSTICO: 3
+            MIN_ITENS_PARA_DIAGNOSTICO: 3,
+            ITENS_IDEAIS_CONFIANCA: 25 // Ponto de saturação da curva de volume
         });
     }
 
-    // 🔒 ROTINAS DE PERSISTÊNCIA OFUSCADA (Anti-Cheating)
+    // 🔒 ROTINAS DE PERSISTÊNCIA OFUSCADA
     _salvarLocal(estudanteId, perfil) {
         try {
             const jsonStr = JSON.stringify(perfil);
@@ -49,20 +50,20 @@ export class ProfileEngine {
         if (perfilSalvo) {
             console.log(`[ADA] Memória recuperada para: ${estudanteId}`);
             
-            // 🛠️ MIGRATION PATCH V3: Injeta a Timeline Cognitiva
-            if (!perfilSalvo.historicoLongitudinal) {
+            // 🛠️ MIGRATION PATCH V4: Injeta a Confiança Inferencial
+            if (perfilSalvo.confiancaDiagnostica === undefined) {
                 perfilSalvo.estadoADA = perfilSalvo.estadoADA || { acertosRapidosCombo: 0, emboscadaArmada: false };
                 perfilSalvo.indicePseudoconceito = perfilSalvo.indicePseudoconceito || 0.0;
                 perfilSalvo.mapaEtiologiaErros = perfilSalvo.mapaEtiologiaErros || {};
-                
                 perfilSalvo.matrizTransferencia = perfilSalvo.matrizTransferencia || { procedural: { acertos: 0, total: 0 }, transferencia: { acertos: 0, total: 0 }, generalizacao: { acertos: 0, total: 0 } };
                 perfilSalvo.estabilidadeConceitual = perfilSalvo.estabilidadeConceitual || 'INDEFINIDA';
                 perfilSalvo.dependenciaScaffold = perfilSalvo.dependenciaScaffold || false;
+                perfilSalvo.historicoLongitudinal = perfilSalvo.historicoLongitudinal || [];
                 
-                // Novo Motor de Pesquisa
-                perfilSalvo.historicoLongitudinal = [];
+                // NOVO: Grau de Certeza da IA
+                perfilSalvo.confiancaDiagnostica = 0.0;
                 
-                console.log(`[ADA] 🔄 Mente veterana atualizada com Timeline Cognitiva.`);
+                console.log(`[ADA] 🔄 Mente veterana atualizada com Sistema de Confiança Inferencial.`);
             }
 
             this._estadosEstudantes.set(estudanteId, perfilSalvo);
@@ -79,12 +80,11 @@ export class ProfileEngine {
             indicePseudoconceito: 0.0, 
             estadoADA: { acertosRapidosCombo: 0, emboscadaArmada: false },
 
-            // 🔬 Laboratório Longitudinal
+            // 🔬 Laboratório Longitudinal & Confiança
+            confiancaDiagnostica: 0.0,
             matrizTransferencia: { procedural: { acertos: 0, total: 0 }, transferencia: { acertos: 0, total: 0 }, generalizacao: { acertos: 0, total: 0 } },
             estabilidadeConceitual: 'INDEFINIDA',
             dependenciaScaffold: false,
-            
-            // 🕒 O Eletroencefalograma da Aprendizagem
             historicoLongitudinal: [],
 
             metricasAcumuladas: { totalLatenciaConceptual: 0, totalFriccaoAjustes: 0, errosSequenciais: 0, taxaAcertoGeral: 0.0 },
@@ -100,7 +100,6 @@ export class ProfileEngine {
     
     // 🕒 GRAVAÇÃO DO SNAPSHOT LONGITUDINAL
     _registrarSnapshotTemporal(perfil) {
-        // Regista um snapshot de 10 em 10 itens respondidos para gerar a curva
         if (perfil.itensRespondidos % 10 === 0 && perfil.itensRespondidos > 0) {
             const snapshot = {
                 marcoTemporal: `Sessão ${Math.floor(perfil.itensRespondidos / 10)}`,
@@ -109,10 +108,11 @@ export class ProfileEngine {
                 estabilidadeConceitual: perfil.estabilidadeConceitual,
                 dependenciaScaffold: perfil.dependenciaScaffold,
                 riscoPseudoconceito: perfil.indicePseudoconceito.toFixed(2),
+                confiancaIA: perfil.confiancaDiagnostica, // 🚨 Registra a certeza na linha do tempo
                 taxaTransferencia: perfil.matrizTransferencia.transferencia.total > 0 ? (perfil.matrizTransferencia.transferencia.acertos / perfil.matrizTransferencia.transferencia.total).toFixed(2) : 0
             };
             perfil.historicoLongitudinal.push(snapshot);
-            console.log(`[ADA 🔬] Snapshot Longitudinal Gravado: ${snapshot.marcoTemporal} - Rumo ao conceito científico!`);
+            console.log(`[ADA 🔬] Snapshot Gravado (Confiança: ${snapshot.confiancaIA}%)`);
         }
     }
 
@@ -139,11 +139,10 @@ export class ProfileEngine {
         // 🧠 EMBOSCADA PEDAGÓGICA (PSEUDOCONCEITO)
         if (perfil.estadoADA.emboscadaArmada) {
             if (!ehCorreto || latenciaMs > 12000) {
-                console.warn(`🚨 [XAI] Pseudoconceito Detectado em ${perfil.id}! O aluno faliu no teste de transferência semiótica.`);
+                console.warn(`🚨 [XAI] Pseudoconceito Detectado em ${perfil.id}!`);
                 perfil.indicePseudoconceito = Math.min(1.0, perfil.indicePseudoconceito + 0.3);
                 etiologiaErro = 'PSEUDOCONCEITO_EXPOSTO';
             } else {
-                console.log(`✅ [XAI] Conceito Sólido Confirmado.`);
                 perfil.indicePseudoconceito = Math.max(0.0, perfil.indicePseudoconceito - 0.2);
             }
             perfil.estadoADA.emboscadaArmada = false;
@@ -189,7 +188,8 @@ export class ProfileEngine {
         this._computarPesosPerfis(perfil, latenciaMs, totalAjustesPreConfirmacao, ehCorreto, etiologiaErro, estagioAtual);
         this._estabilizarPerfilDominante(perfil);
         this._avaliarEstabilidadeEScaffold(perfil); 
-        this._registrarSnapshotTemporal(perfil); // 🕒 Injeta no Diário de Bordo
+        this._calcularConfiancaInferencial(perfil); // 📊 Roda o Motor de Certeza Estatística
+        this._registrarSnapshotTemporal(perfil); 
 
         this._estadosEstudantes.set(estudanteId, perfil);
         this._salvarLocal(estudanteId, perfil);
@@ -198,6 +198,7 @@ export class ProfileEngine {
             estudanteId: perfil.id,
             perfilDominante: perfil.perfilDominante,
             derivaPedagogicaGeral: perfil.derivaPedagogicaGeral,
+            confiancaIA: perfil.confiancaDiagnostica, // Devolve a certeza para a Interface
             sugestaoAcaoADA: this._gerarDiretrizIntervencaoADA(perfil, metadadosSensor),
             timestampProcessamento: new Date().toISOString(),
             perfilCompleto: perfil 
@@ -230,21 +231,46 @@ export class ProfileEngine {
         perfil.derivaPedagogicaGeral = parseFloat((Math.sqrt((scores.PROCEDURAL_MECANICO ** 2) + (scores.DEPENDENTE_CONCRETO ** 2) + (scores.IMPULSIVO_ARITMETICO ** 2)) / 17.32).toFixed(2));
     }
 
-    // 🔬 AVALIAÇÃO CIENTÍFICA LONGITUDINAL
+    // 🧮 NOVO MOTOR: CÁLCULO DE CERTEZA DA IA
+    _calcularConfiancaInferencial(perfil) {
+        if (perfil.itensRespondidos < this._CONFIG.MIN_ITENS_PARA_DIAGNOSTICO) {
+            perfil.confiancaDiagnostica = 0.0;
+            return;
+        }
+
+        // 1. Fator Volume (Curva de aprendizado da própria IA)
+        // Quanto mais questões, mais a IA confia. Chega a ~85% de peso de volume com 25 questões.
+        const pesoVolume = 1 - Math.exp(-perfil.itensRespondidos / 15);
+
+        // 2. Fator Consistência (Distância do 1º colocado para o 2º colocado)
+        const scores = Object.values(perfil.scoreMatrizesPerfeitas).sort((a, b) => b - a);
+        const top1 = scores[0];
+        const top2 = scores[1] || 0;
+        
+        let pesoConsistencia = 0;
+        if (top1 > 0) {
+            const margem = (top1 - top2) / top1; // Diferença percentual
+            pesoConsistencia = Math.min(1.0, margem * 2); // Multiplicador para acentuar a distância
+        }
+
+        // Confiança final: 60% baseado em quantas questões o aluno fez, 40% baseado na clareza do perfil
+        const confianca = (pesoVolume * 0.6) + (pesoConsistencia * 0.4);
+        
+        perfil.confiancaDiagnostica = parseFloat((confianca * 100).toFixed(1));
+    }
+
     _avaliarEstabilidadeEScaffold(perfil) {
         const mat = perfil.matrizTransferencia;
         const txProc = mat.procedural.total > 0 ? mat.procedural.acertos / mat.procedural.total : 0;
         const txTransf = mat.transferencia.total > 0 ? mat.transferencia.acertos / mat.transferencia.total : 0;
         const txGen = mat.generalizacao.total > 0 ? mat.generalizacao.acertos / mat.generalizacao.total : 0;
 
-        // 1. Índice de Estabilidade Conceitual
         if (mat.procedural.total >= 3 && mat.transferencia.total >= 2) {
             if (txProc >= 0.7 && txTransf < 0.4) perfil.estabilidadeConceitual = 'BAIXA_RISCO_PSEUDOCONCEITO';
             else if (txProc >= 0.7 && txTransf >= 0.6) perfil.estabilidadeConceitual = 'ALTA_ESTABILIZADA';
             else perfil.estabilidadeConceitual = 'EM_CONSTRUCAO';
         }
 
-        // 2. Detector de Dependência de Scaffold (Fading)
         if (mat.procedural.total >= 3 && mat.generalizacao.total >= 2) {
             if (txProc > 0.75 && txGen < 0.4) perfil.dependenciaScaffold = true;
             else if (txGen >= 0.5) perfil.dependenciaScaffold = false;
@@ -254,7 +280,9 @@ export class ProfileEngine {
     _gerarDiretrizIntervencaoADA(perfil, sensor) {
         const d = { comandoMacro: 'PADRAO', scaffoldAlvo: 'NENHUM' };
         
-        // Fading de Galperin
+        // Se a ADA não tem certeza do que está vendo (< 40%), ela não arrisca intervenções fortes.
+        if (perfil.confiancaDiagnostica < 40.0) return d; 
+
         if (perfil.dependenciaScaffold) {
             d.comandoMacro = 'TRIGGER_CONTROLLED_FADING';
             d.scaffoldAlvo = 'REDUCAO_GRADUAL_DE_SUPORTE';
