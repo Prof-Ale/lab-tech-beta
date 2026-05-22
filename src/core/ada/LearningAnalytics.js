@@ -8,6 +8,7 @@
 
 export class LearningAnalytics {
     
+    // --- 1. DASHBOARD DO ALUNO (BNCC) ---
     static gerarHtmlDashboardBNCC(historico) {
         if (!historico || Object.keys(historico).length === 0) {
             return "<p style='text-align:center; opacity:0.5; padding:20px; font-family:monospace;'>Sem dados suficientes para análise.</p>";
@@ -35,7 +36,30 @@ export class LearningAnalytics {
         return htmlFinal;
     }
 
-static gerarPainelDocenteHTML(perfil) {
+    // --- 2. EXPORTAÇÃO PARA PESQUISA (CSV) ---
+    static exportarCSV(nomeAluno, historico) {
+        if (!historico || Object.keys(historico).length === 0) { 
+            alert("Sem dados suficientes para gerar relatório."); 
+            return; 
+        }
+        let csvContent = "ESTUDANTE,HABILIDADE_BNCC,ACERTOS,ERROS_CONCEITO,ERROS_CALCULO,TAXA_ACERTO_%\n";
+        for (let hab in historico) {
+            const hist = historico[hab];
+            const total = (hist.acertos||0) + (hist.erros_conceito||0) + (hist.erros_calculo||0);
+            const tx = total > 0 ? Math.round(((hist.acertos||0) / total) * 100) : 0;
+            csvContent += `"${nomeAluno || 'Anônimo'}","${hab}",${hist.acertos||0},${hist.erros_conceito||0},${hist.erros_calculo||0},${tx}\n`;
+        }
+        const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `Relatorio_LabTech_${nomeAluno.replace(/\s+/g, '_')}.csv`;
+        document.body.appendChild(link); 
+        link.click(); 
+        document.body.removeChild(link);
+    }
+
+    // --- 3. PAINEL CLÍNICO DO DOCENTE (XAI) ---
+    static gerarPainelDocenteHTML(perfil) {
         if (!perfil) return "<p style='color:#ff3333; font-family:monospace; padding:20px;'>⚠️ Calibração Pendente. O aluno precisa interagir com o sistema.</p>";
 
         // 1. Constrói o Mapa de Etiologia (Raiz dos Erros)
@@ -163,3 +187,4 @@ static gerarPainelDocenteHTML(perfil) {
         </style>
         `;
     }
+}
