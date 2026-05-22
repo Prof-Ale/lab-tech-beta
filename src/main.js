@@ -135,6 +135,15 @@ async function processarResposta(alt, q) {
 
     if (!G.historico[hab]) {
         G.historico[hab] = { acertos: 0, erros_conceito: 0, erros_calculo: 0, desc: "Habilidade Monitorada" };
+
+      // Dentro do seu main.js, na função processarResposta:
+
+const feedbackMetacognitivo = MetacognitionEngine.gerarFeedback(updateResultado.perfilCompleto);
+
+if (feedbackMetacognitivo) {
+    // 💡 Dispara o modal ou aviso na tela do aluno
+    uiManager.mostrarAvisoMetacognitivo(feedbackMetacognitivo);
+}  
     }
 
     // Travamento visual de UX
