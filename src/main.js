@@ -1,5 +1,5 @@
 /**
- * src/main.js — MESTRE DE ORQUESTRAÇÃO (RECONSTRUÍDO)
+ * src/main.js — MESTRE DE ORQUESTRAÇÃO (RECONSTRUÍDO V2)
  */
 
 import { G } from './engine/gameState.js';
@@ -21,7 +21,51 @@ const fecharM = (id) => $(id)?.classList.remove('active');
 
 let renderizadorGrafico = null;
 
-// --- FUNÇÃO PROCESSAR RESPOSTA (A QUE VOCÊ JÁ TINHA) ---
+// --- FUNÇÕES DE DASHBOARD E LOGIN (RECUPERADAS) ---
+function atualizarDashboard() {
+    const content = $('dash-content');
+    if (!content) return;
+    if (!G.historico || Object.keys(G.historico).length === 0) {
+        content.innerHTML = "<p style='text-align:center; opacity:0.5; padding:20px; font-family:monospace;'>Aguardando coleta de dados...</p>";
+        return;
+    }
+    content.innerHTML = LearningAnalytics.gerarHtmlDashboardBNCC(G.historico);
+    const btnCsv = $('btn-export-csv');
+    if (btnCsv) btnCsv.onclick = () => LearningAnalytics.exportarCSV(G.nome, G.historico);
+}
+
+function mostrarSeletorBlocos() {
+    G.nome = $('nome-cientista')?.value.trim() || 'Cientista Anonymous';
+    G.turma = $('turma-cientista')?.value.trim() || '7ºA';
+    
+    const cacheBNCC = localStorage.getItem(`labtech_h_${G.nome}_${G.turma}`);
+    if (cacheBNCC) {
+        try { G.historico = JSON.parse(decodeURIComponent(atob(cacheBNCC))); } 
+        catch (e) { G.historico = {}; }
+    } else {
+        G.historico = {};
+    }
+
+    const instProfile = new ProfileEngine();
+    G.perfilCognitivo = instProfile.inicializarEstudante(`${G.nome}_${G.turma}`);
+
+    if (!renderizadorGrafico) {
+        renderizadorGrafico = new CanvasRenderer('canvas-game'); 
+    }
+
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    $('block-selector')?.classList.remove('hidden');
+    $('ada-command-post')?.classList.remove('active'); 
+
+    const msgBoasVindas = G.perfilCognitivo.itensRespondidos === 0
+        ? `Olá, ${G.nome}. Detectei que esta é sua primeira calibração no LabTech. Vamos iniciar o mapeamento.`
+        : `Bem-vindo de volta, ${G.nome}. Seu perfil foi restaurado.`;
+    
+    uiManager.narrarContexto(msgBoasVindas, true);
+}
+
+
+// --- FUNÇÃO PROCESSAR RESPOSTA ---
 async function processarResposta(alt, q) {
     if (G.respondeu) return;
     G.respondeu = true;
@@ -113,7 +157,7 @@ function iniciarBloco(id) {
     proximaQ();
 }
 
-// --- INITIALIZATION ---
+// --- INITIALIZATION E BINDINGS ---
 document.addEventListener('DOMContentLoaded', async () => { 
     console.log("🚀 [SISTEMA] Motor LabTech operante.");
     
@@ -126,18 +170,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     initDebugMode();
     
-    // Liga os botões de controle
-    on('btn-acessar', () => {
-        // Substitua 'mostrarSeletorBlocos' pela função que você tem no seu código para iniciar o login
-        if (typeof mostrarSeletorBlocos === 'function') mostrarSeletorBlocos();
-    });
-    
+    // Liga os botões de controle principal
+    on('btn-acessar', mostrarSeletorBlocos);
     on('btn-prox', proximaQ);
     on('btn-musica', uiManager.toggleMusica);
     on('btn-voz', uiManager.toggleVoz);
     
+    // Liga os botões de interface e modais
+    on('btn-cred', () => abrirM('mcred'));
+    on('btn-dash', () => { atualizarDashboard(); abrirM('mdash'); });
+    on('btn-reiniciar', () => { fecharM('go'); if (G.currentBlock) iniciarBloco(G.currentBlock); });
+    
+    document.querySelectorAll('.mx').forEach(btn => {
+        btn.onclick = (e) => e.target.closest('.modal').classList.remove('active');
+    });
+
+    document.querySelectorAll('[data-action="seletor"]').forEach(btn => {
+        btn.onclick = () => { fecharM('go'); mostrarSeletorBlocos(); };
+    });
+
     // Liga os botões de bloco (do 1 ao 7)
     [1,2,3,4,5,6,7].forEach(i => on(`btn-bloco-${i}`, () => iniciarBloco(i)));
+
+    // ATALHOS DO DOCENTE (Alt+P e Alt+J)
+    document.addEventListener('keydown', (e) => {
+        if (e.altKey && e.key.toLowerCase() === 'p') {
+            if (!G.perfilCognitivo) { alert("⚠️ Calibração pendente."); return; }
+            let mDoc = $('modal-docente-xai');
+            if (!mDoc) {
+                mDoc = document.createElement('div'); mDoc.id = 'modal-docente-xai'; mDoc.className = 'modal';
+                mDoc.innerHTML = `<div class="mc" style="max-width: 600px; border: 2px solid var(--choco-gold, #d4af37); background: #0a0a0a;"><button class="mx" onclick="document.getElementById('modal-docente-xai').classList.remove('active')">✕</button><div id="content-docente-xai" style="max-height: 70vh; overflow-y: auto;"></div></div>`;
+                document.body.appendChild(mDoc);
+            }
+            $('content-docente-xai').innerHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
+            mDoc.classList.add('active');
+        }
+    });
 
     console.log("🛠️ [SISTEMA] Interfaces vinculadas. Pronto para a calibração.");
 });
