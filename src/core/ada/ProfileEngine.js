@@ -1,8 +1,8 @@
 /**
  * @fileoverview ProfileEngine.js
  * @description Motor de Inferência Cognitiva e Rastreamento de Deriva Semiótica.
- * AGORA COM RADAR DE PSEUDOCONCEITO: Emboscada semiótica para testar transferência.
- * @version 6.1.0
+ * AGORA COM: Índice de Estabilidade Conceitual, Matriz de Transferência e Detector de Scaffold.
+ * @version 7.0.0
  * @package LabTech Core Environment
  */
 
@@ -23,7 +23,7 @@ export class ProfileEngine {
     _salvarLocal(estudanteId, perfil) {
         try {
             const jsonStr = JSON.stringify(perfil);
-            const b64 = btoa(encodeURIComponent(jsonStr)); // Ofuscação Base64
+            const b64 = btoa(encodeURIComponent(jsonStr)); 
             localStorage.setItem(`labtech_p_${estudanteId}`, b64);
         } catch (e) {
             console.warn("[ProfileEngine] Falha ao persistir dados na memória local:", e);
@@ -45,18 +45,22 @@ export class ProfileEngine {
    inicializarEstudante(estudanteId) {
         if (!estudanteId) throw new Error('ID inválido.');
 
-        // 🧠 Tenta resgatar a memória do aluno antes de criar um novo
         const perfilSalvo = this._carregarLocal(estudanteId);
         if (perfilSalvo) {
             console.log(`[ADA] Memória recuperada para: ${estudanteId}`);
             
-            // 🛠️ MIGRATION PATCH: Atualiza perfis veteranos com os novos radares XAI
-            if (!perfilSalvo.estadoADA) {
-                perfilSalvo.estadoADA = { acertosRapidosCombo: 0, emboscadaArmada: false };
-                perfilSalvo.indicePseudoconceito = 0.0;
-                if (!perfilSalvo.mapaEtiologiaErros) perfilSalvo.mapaEtiologiaErros = {};
-                perfilSalvo.mapaEtiologiaErros.PSEUDOCONCEITO_EXPOSTO = 0;
-                console.log(`[ADA] 🔄 Mente veterana atualizada com Radar de Pseudoconceito.`);
+            // 🛠️ MIGRATION PATCH V2: Atualiza perfis veteranos com a Pesquisa Longitudinal
+            if (!perfilSalvo.matrizTransferencia) {
+                perfilSalvo.estadoADA = perfilSalvo.estadoADA || { acertosRapidosCombo: 0, emboscadaArmada: false };
+                perfilSalvo.indicePseudoconceito = perfilSalvo.indicePseudoconceito || 0.0;
+                perfilSalvo.mapaEtiologiaErros = perfilSalvo.mapaEtiologiaErros || {};
+                
+                // Novos Módulos Científicos
+                perfilSalvo.matrizTransferencia = { procedural: { acertos: 0, total: 0 }, transferencia: { acertos: 0, total: 0 }, generalizacao: { acertos: 0, total: 0 } };
+                perfilSalvo.estabilidadeConceitual = 'INDEFINIDA';
+                perfilSalvo.dependenciaScaffold = false;
+                
+                console.log(`[ADA] 🔄 Mente veterana atualizada para Pesquisa Longitudinal Galperiniana.`);
             }
 
             this._estadosEstudantes.set(estudanteId, perfilSalvo);
@@ -70,9 +74,13 @@ export class ProfileEngine {
             perfilDominante: 'INDEFINIDO',
             derivaPedagogicaGeral: 0.0,
             
-            // 🚨 NOVO: O Radar de Falsos Positivos e Emboscadas
             indicePseudoconceito: 0.0, 
             estadoADA: { acertosRapidosCombo: 0, emboscadaArmada: false },
+
+            // 🔬 NOVO: Laboratório Longitudinal
+            matrizTransferencia: { procedural: { acertos: 0, total: 0 }, transferencia: { acertos: 0, total: 0 }, generalizacao: { acertos: 0, total: 0 } },
+            estabilidadeConceitual: 'INDEFINIDA',
+            dependenciaScaffold: false,
 
             metricasAcumuladas: { totalLatenciaConceptual: 0, totalFriccaoAjustes: 0, errosSequenciais: 0, taxaAcertoGeral: 0.0 },
             scoreMatrizesPerfeitas: { PROCEDURAL_MECANICO: 0.0, DEPENDENTE_CONCRETO: 0.0, IMPULSIVO_ARITMETICO: 0.0, CONCEITUAL_TEORICO: 0.0 },
@@ -81,11 +89,10 @@ export class ProfileEngine {
         };
 
         this._estadosEstudantes.set(estudanteId, novoPerfil);
-        this._salvarLocal(estudanteId, novoPerfil); // Grava a criação no HD
+        this._salvarLocal(estudanteId, novoPerfil); 
         return JSON.parse(JSON.stringify(novoPerfil));
-        }
+    }
     
-
     processarEventoTelemetria(estudanteId, dadosTelemetria, metadadosSensor) {
         const normalizador = new QuestionNormalizer();
         try { normalizador.normalize(metadadosSensor); } 
@@ -102,35 +109,43 @@ export class ProfileEngine {
         const alternativaAlvo = metadadosSensor.alternativas.find(alt => alt.id_alternativa === alternativaSelecionadaId || alt.id === alternativaSelecionadaId);
         const ehCorreto = alternativaAlvo ? (alternativaAlvo.tipo === 'acerto') : false;
         
-        // Transformado em 'let' para permitir reescrita em caso de pseudoconceito
-        // Estava 'categoria', nós mudamos para ler a sua taxonomia fantástica 'misconception'
         let etiologiaErro = alternativaAlvo ? (alternativaAlvo.misconception || 'ERRO_GENERICO').toUpperCase() : 'ERRO_GENERICO';
         const estagioAtual = (metadadosSensor.estagioGalperin || 'INTERNA_PURA').toUpperCase();
+        const representacaoAtual = (metadadosSensor.representacao || 'visual').toLowerCase();
 
-        // 🧠 A LÓGICA DA EMBOSCADA PEDAGÓGICA (PSEUDOCONCEITO)
+        // 🧠 EMBOSCADA PEDAGÓGICA (PSEUDOCONCEITO)
         if (perfil.estadoADA.emboscadaArmada) {
-            // Se estava na emboscada e errou, ou se demorou MUITO mais que o normal (fricção cognitiva alta)
             if (!ehCorreto || latenciaMs > 12000) {
                 console.warn(`🚨 [XAI] Pseudoconceito Detectado em ${perfil.id}! O aluno faliu no teste de transferência semiótica.`);
-                perfil.indicePseudoconceito = Math.min(1.0, perfil.indicePseudoconceito + 0.3); // Aumenta o risco
-                etiologiaErro = 'PSEUDOCONCEITO_EXPOSTO'; // Altera a raiz do erro!
+                perfil.indicePseudoconceito = Math.min(1.0, perfil.indicePseudoconceito + 0.3);
+                etiologiaErro = 'PSEUDOCONCEITO_EXPOSTO';
             } else {
-                console.log(`✅ [XAI] Conceito Sólido Confirmado. Aluno resistiu à emboscada.`);
-                perfil.indicePseudoconceito = Math.max(0.0, perfil.indicePseudoconceito - 0.2); // Reduz o risco
+                console.log(`✅ [XAI] Conceito Sólido Confirmado.`);
+                perfil.indicePseudoconceito = Math.max(0.0, perfil.indicePseudoconceito - 0.2);
             }
-            perfil.estadoADA.emboscadaArmada = false; // Desarma a arapuca
-            perfil.estadoADA.acertosRapidosCombo = 0; // Reseta o combo
+            perfil.estadoADA.emboscadaArmada = false;
+            perfil.estadoADA.acertosRapidosCombo = 0;
         } else {
-            // Analisa se deve ARMAR a emboscada para a PRÓXIMA rodada
             if (ehCorreto && latenciaMs < 7000) {
                 perfil.estadoADA.acertosRapidosCombo++;
                 if (perfil.estadoADA.acertosRapidosCombo >= 3) {
                     perfil.estadoADA.emboscadaArmada = true;
-                    console.log(`🎯 [XAI] Aluno em velocidade cruzeiro. Emboscada armada para a próxima questão!`);
                 }
             } else if (!ehCorreto) {
-                perfil.estadoADA.acertosRapidosCombo = 0; // Perdeu o combo, reseta
+                perfil.estadoADA.acertosRapidosCombo = 0;
             }
+        }
+
+        // 📊 MATRIZ DE TRANSFERÊNCIA
+        if (estagioAtual === 'MATERIALIZADA' || representacaoAtual === 'visual' || representacaoAtual === 'concreta') {
+            perfil.matrizTransferencia.procedural.total++;
+            if (ehCorreto) perfil.matrizTransferencia.procedural.acertos++;
+        } else if (estagioAtual === 'VERBAL_EXTERNA') {
+            perfil.matrizTransferencia.transferencia.total++;
+            if (ehCorreto) perfil.matrizTransferencia.transferencia.acertos++;
+        } else if (estagioAtual === 'INTERNA_PURA' || representacaoAtual === 'simbolica' || representacaoAtual === 'abstrato') {
+            perfil.matrizTransferencia.generalizacao.total++;
+            if (ehCorreto) perfil.matrizTransferencia.generalizacao.acertos++;
         }
 
         if (perfil.historicoEstagiosGalperin[estagioAtual]) {
@@ -150,19 +165,18 @@ export class ProfileEngine {
 
         this._computarPesosPerfis(perfil, latenciaMs, totalAjustesPreConfirmacao, ehCorreto, etiologiaErro, estagioAtual);
         this._estabilizarPerfilDominante(perfil);
+        this._avaliarEstabilidadeEScaffold(perfil); // 🔬 Avalia Longitudinalidade
 
         this._estadosEstudantes.set(estudanteId, perfil);
-        
-        // 💾 SALVA A FOTOGRAFIA DA MENTE DO ALUNO A CADA CLIQUE
         this._salvarLocal(estudanteId, perfil);
 
-       return {
+        return {
             estudanteId: perfil.id,
             perfilDominante: perfil.perfilDominante,
             derivaPedagogicaGeral: perfil.derivaPedagogicaGeral,
             sugestaoAcaoADA: this._gerarDiretrizIntervencaoADA(perfil, metadadosSensor),
             timestampProcessamento: new Date().toISOString(),
-            perfilCompleto: perfil // 🚨 A CURA: O Cérebro devolve a foto inteira para o main.js!
+            perfilCompleto: perfil 
         };
     }
 
@@ -192,14 +206,42 @@ export class ProfileEngine {
         perfil.derivaPedagogicaGeral = parseFloat((Math.sqrt((scores.PROCEDURAL_MECANICO ** 2) + (scores.DEPENDENTE_CONCRETO ** 2) + (scores.IMPULSIVO_ARITMETICO ** 2)) / 17.32).toFixed(2));
     }
 
+    // 🔬 AVALIAÇÃO CIENTÍFICA LONGITUDINAL
+    _avaliarEstabilidadeEScaffold(perfil) {
+        const mat = perfil.matrizTransferencia;
+        const txProc = mat.procedural.total > 0 ? mat.procedural.acertos / mat.procedural.total : 0;
+        const txTransf = mat.transferencia.total > 0 ? mat.transferencia.acertos / mat.transferencia.total : 0;
+        const txGen = mat.generalizacao.total > 0 ? mat.generalizacao.acertos / mat.generalizacao.total : 0;
+
+        // 1. Índice de Estabilidade Conceitual
+        if (mat.procedural.total >= 3 && mat.transferencia.total >= 2) {
+            if (txProc >= 0.7 && txTransf < 0.4) perfil.estabilidadeConceitual = 'BAIXA_RISCO_PSEUDOCONCEITO';
+            else if (txProc >= 0.7 && txTransf >= 0.6) perfil.estabilidadeConceitual = 'ALTA_ESTABILIZADA';
+            else perfil.estabilidadeConceitual = 'EM_CONSTRUCAO';
+        }
+
+        // 2. Detector de Dependência de Scaffold (Fading)
+        if (mat.procedural.total >= 3 && mat.generalizacao.total >= 2) {
+            if (txProc > 0.75 && txGen < 0.4) perfil.dependenciaScaffold = true;
+            else if (txGen >= 0.5) perfil.dependenciaScaffold = false;
+        }
+    }
+
     _gerarDiretrizIntervencaoADA(perfil, sensor) {
         const d = { comandoMacro: 'PADRAO', scaffoldAlvo: 'NENHUM' };
+        
+        // Fading de Galperin
+        if (perfil.dependenciaScaffold) {
+            d.comandoMacro = 'TRIGGER_CONTROLLED_FADING';
+            d.scaffoldAlvo = 'REDUCAO_GRADUAL_DE_SUPORTE';
+            return d; 
+        }
+
         if (perfil.perfilDominante === 'IMPULSIVO_ARITMETICO') { d.comandoMacro = 'INJECT_RHYTHMIC_LOCK'; d.scaffoldAlvo = 'VERBALIZATION_PROMPT'; }
         else if (perfil.perfilDominante === 'PROCEDURAL_MECANICO') { d.comandoMacro = 'FORCE_SEMIOTIC_TRANSITION'; d.scaffoldAlvo = 'CONCRETE_SCHEMATIZATION'; }
         else if (perfil.perfilDominante === 'DEPENDENTE_CONCRETO') { d.comandoMacro = 'TRIGGER_CONTROLLED_FADING'; d.scaffoldAlvo = 'ORIENTATION_CARD'; }
         
-        // 🚨 Intervenção forte caso o pseudoconceito seja muito alto
-        if (perfil.indicePseudoconceito >= 0.6) {
+        if (perfil.indicePseudoconceito >= 0.6 || perfil.estabilidadeConceitual === 'BAIXA_RISCO_PSEUDOCONCEITO') {
             d.comandoMacro = 'FORCE_SEMIOTIC_TRANSITION';
             d.scaffoldAlvo = 'CONCEPTUAL_RESET';
         }
