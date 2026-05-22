@@ -1,5 +1,5 @@
 /**
- * src/main.js — MESTRE DE ORQUESTRAÇÃO
+ * src/main.js — MESTRE DE ORQUESTRAÇÃO (RECONSTRUÍDO)
  */
 
 import { G } from './engine/gameState.js';
@@ -10,7 +10,7 @@ import { ProfileEngine } from './core/ada/ProfileEngine.js';
 import { AdaptiveSelector } from './core/ada/AdaptiveSelector.js';
 import { LearningAnalytics } from './core/ada/LearningAnalytics.js';
 import { AdaptiveAudioEngine } from './core/ada/AdaptiveAudioEngine.js';
-import { MetacognitionEngine } from './core/ada/MetacognitionEngine.js'; // 🧠 MOTOR METACOGNITIVO
+import { MetacognitionEngine } from './core/ada/MetacognitionEngine.js';
 import { CanvasRenderer } from './ui/canvasRenderer.js';
 import * as uiManager from './ui/uiManager.js';
 
@@ -21,6 +21,7 @@ const fecharM = (id) => $(id)?.classList.remove('active');
 
 let renderizadorGrafico = null;
 
+// --- FUNÇÃO PROCESSAR RESPOSTA (A QUE VOCÊ JÁ TINHA) ---
 async function processarResposta(alt, q) {
     if (G.respondeu) return;
     G.respondeu = true;
@@ -31,12 +32,10 @@ async function processarResposta(alt, q) {
     const analise = diagEngine.analisarAlternativa(alt);
     const hab = q.bncc || q.habilidade || "Geral";
 
-    // Inicializa histórico se não existir
     if (!G.historico[hab]) {
         G.historico[hab] = { acertos: 0, erros_conceito: 0, erros_calculo: 0, desc: "Habilidade Monitorada" };
     }
 
-    // Lógica de Pontuação e Som
     if (analise.correto) {
         G.acertos++; G.combo++;
         G.historico[hab].acertos++;
@@ -51,25 +50,19 @@ async function processarResposta(alt, q) {
 
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
 
-    // Telemetria ADA e Atualização de Estado
     const payloadTelemetria = { latenciaMs: latenciaSessaoMs, totalAjustesPreConfirmacao: 1, alternativaSelecionadaId: alt.id };
     const updateResultado = profEngine.processarEventoTelemetria(`${G.nome}_${G.turma}`, payloadTelemetria, q);
     
     G.perfilCognitivo = updateResultado.perfilCompleto; 
     G.adaState.comandoInterface = updateResultado.sugestaoAcaoADA.comandoMacro;
 
-    // 🧠 INJEÇÃO DO FEEDBACK METACOGNITIVO
     const feedbackMeta = MetacognitionEngine.gerarFeedback(G.perfilCognitivo);
-    if (feedbackMeta) {
-        uiManager.mostrarAvisoMetacognitivo(feedbackMeta);
-    }
+    if (feedbackMeta) uiManager.mostrarAvisoMetacognitivo(feedbackMeta);
 
-    // Feedback Visual
     uiManager.updHUD();
     const feedbackTexto = analise.correto ? q.passo : (q.dica || analise.descricao);
     uiManager.narrarContexto(feedbackTexto, analise.correto);
 
-    // Renderização
     const payloadAdaptive = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
     if (renderizadorGrafico) {
         await renderizadorGrafico.animarArcos(q, alt.valor - (parseFloat(q.a) || 0), payloadAdaptive.interfaceModifiers.modoRepresentacao);
@@ -82,4 +75,50 @@ async function processarResposta(alt, q) {
     if (G.vida <= 0) setTimeout(() => uiManager.exibirGameOver(), 800);
 }
 
-// ... (Restante do seu código main.js, mantendo as ligações dos eventos no final)
+// --- FUNÇÕES DE NAVEGAÇÃO E SETUP ---
+function proximaQ() {
+    G.respondeu = false;
+    $('fb').style.display = 'none';
+    const q = AdaptiveSelector.selecionarProximaQuestao(G.currentBlock, G.perfilCognitivo);
+    if (!q) return;
+    
+    const alerta = AdaptiveSelector.gerarMicroIntervencao(q, G.perfilCognitivo);
+    if (alerta) uiManager.narrarContexto(alerta, false);
+    
+    G.tempoInicialQuestao = Date.now();
+    renderQ(q);
+}
+
+function renderQ(q) {
+    $('conta-display').textContent = q.display;
+    $('grid-botoes').innerHTML = '';
+    $('btn-prox')?.classList.add('hidden');
+    
+    const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
+    renderizadorGrafico?.renderCv(q, null, pAdaptivo.interfaceModifiers.modoRepresentacao);
+
+    q.alternativas.sort(() => Math.random() - 0.5).forEach(alt => {
+        const b = document.createElement('button');
+        b.className = 'ba';
+        b.textContent = alt.valor;
+        b.onclick = () => processarResposta(alt, q);
+        $('grid-botoes').appendChild(b);
+    });
+}
+
+function iniciarBloco(id) {
+    G.reiniciarParaNovoBloco(id);
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    $('game-screen')?.classList.remove('hidden');
+    proximaQ();
+}
+
+// --- INITIALIZATION ---
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log("🚀 LabTech Reiniciado com sucesso.");
+    await AdaptiveSelector.carregarBancoDeQuestoes();
+    initDebugMode();
+    on('btn-acessar', () => { /* lógica de login */ });
+    on('btn-prox', proximaQ);
+    // Adicione os outros listeners conforme seu layout
+});
