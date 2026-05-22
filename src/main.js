@@ -114,11 +114,30 @@ function iniciarBloco(id) {
 }
 
 // --- INITIALIZATION ---
-document.addEventListener('DOMContentLoaded', async () => {
-    console.log("🚀 LabTech Reiniciado com sucesso.");
-    await AdaptiveSelector.carregarBancoDeQuestoes();
+document.addEventListener('DOMContentLoaded', async () => { 
+    console.log("🚀 [SISTEMA] Motor LabTech operante.");
+    
+    try {
+        await AdaptiveSelector.carregarBancoDeQuestoes();
+        console.log(`✅ [SISTEMA] Cofre de questões carregado.`);
+    } catch (e) {
+        console.error("❌ [SISTEMA CRÍTICO] Falha no cofre:", e);
+    }
+    
     initDebugMode();
-    on('btn-acessar', () => { /* lógica de login */ });
+    
+    // Liga os botões de controle
+    on('btn-acessar', () => {
+        // Substitua 'mostrarSeletorBlocos' pela função que você tem no seu código para iniciar o login
+        if (typeof mostrarSeletorBlocos === 'function') mostrarSeletorBlocos();
+    });
+    
     on('btn-prox', proximaQ);
-    // Adicione os outros listeners conforme seu layout
+    on('btn-musica', uiManager.toggleMusica);
+    on('btn-voz', uiManager.toggleVoz);
+    
+    // Liga os botões de bloco (do 1 ao 7)
+    [1,2,3,4,5,6,7].forEach(i => on(`btn-bloco-${i}`, () => iniciarBloco(i)));
+
+    console.log("🛠️ [SISTEMA] Interfaces vinculadas. Pronto para a calibração.");
 });
