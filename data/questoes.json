@@ -13340,5 +13340,1566 @@
     ],
     "passo": "Muito bem! Carla teve nota 9, a maior da tabela.",
     "dica": "Compare 8, 6 e 9."
+  },
+
+  {
+    "id": "BN_11_001",
+    "bloco": "6",
+    "habilidade": "Geometria Básica",
+    "bncc": "EF06MA18",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Qual figura geométrica possui 3 lados?",
+    "a": 3,
+    "b": 0,
+    "res": "Triângulo",
+    "alternativas": [
+      {
+        "id": "BN_11_001_alt_1",
+        "valor": "Triângulo",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou corretamente a figura com 3 lados.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_001_alt_2",
+        "valor": "Quadrado",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu a quantidade de lados da figura.",
+        "misconception": "CONFUSAO_DE_ATRIBUTOS"
+      },
+      {
+        "id": "BN_11_001_alt_3",
+        "valor": "Círculo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu uma figura curva com um polígono.",
+        "misconception": "GENERALIZACAO_VISUAL"
+      },
+      {
+        "id": "BN_11_001_alt_4",
+        "valor": "Retângulo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu o triângulo com uma figura de 4 lados.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      }
+    ],
+    "passo": "Muito bem! O triângulo é a figura que possui 3 lados.",
+    "dica": "Conte quantos lados cada figura possui."
+  },
+  {
+    "id": "BN_11_002",
+    "bloco": "6",
+    "habilidade": "Figuras Planas",
+    "bncc": "EF06MA18",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Qual figura possui 4 lados iguais?",
+    "a": 4,
+    "b": 4,
+    "res": "Quadrado",
+    "alternativas": [
+      {
+        "id": "BN_11_002_alt_1",
+        "valor": "Quadrado",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno reconheceu corretamente a figura com 4 lados iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_002_alt_2",
+        "valor": "Retângulo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu uma figura de 4 lados com o quadrado.",
+        "misconception": "CONFUSAO_DE_ATRIBUTOS"
+      },
+      {
+        "id": "BN_11_002_alt_3",
+        "valor": "Triângulo",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno errou a contagem de lados.",
+        "misconception": "ERRO_DE_CONTAGEM_DE_LADOS"
+      },
+      {
+        "id": "BN_11_002_alt_4",
+        "valor": "Círculo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu figura curva com figura formada por lados.",
+        "misconception": "GENERALIZACAO_VISUAL"
+      }
+    ],
+    "passo": "Correto! O quadrado tem 4 lados iguais.",
+    "dica": "Procure a figura com quatro lados do mesmo tamanho."
+  },
+  {
+    "id": "BN_11_003",
+    "bloco": "6",
+    "habilidade": "Reconhecimento de Formas",
+    "bncc": "EF06MA18",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Uma moeda lembra qual figura plana?",
+    "a": 0,
+    "b": 1,
+    "res": "Círculo",
+    "alternativas": [
+      {
+        "id": "BN_11_003_alt_1",
+        "valor": "Círculo",
+        "tipo": "acerto",
+        "categoria": "identificacao",
+        "descricao": "O aluno associou corretamente a forma arredondada da moeda ao círculo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_003_alt_2",
+        "valor": "Quadrado",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno confundiu a forma arredondada com uma figura de lados retos.",
+        "misconception": "ERRO_VISUAL"
+      },
+      {
+        "id": "BN_11_003_alt_3",
+        "valor": "Triângulo",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma figura com lados e vértices, diferente da moeda.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      },
+      {
+        "id": "BN_11_003_alt_4",
+        "valor": "Retângulo",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 2,
+        "descricao": "O aluno confundiu uma figura do cotidiano com outra forma plana.",
+        "misconception": "GENERALIZACAO_VISUAL"
+      }
+    ],
+    "passo": "Isso! A moeda tem formato parecido com um círculo.",
+    "dica": "Observe se a forma é arredondada ou formada por lados retos."
+  },
+  {
+    "id": "BN_11_004",
+    "bloco": "6",
+    "habilidade": "Polígonos",
+    "bncc": "EF06MA18",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "simbolica",
+    "display": "Qual figura possui 5 lados?",
+    "a": 5,
+    "b": 0,
+    "res": "Pentágono",
+    "alternativas": [
+      {
+        "id": "BN_11_004_alt_1",
+        "valor": "Pentágono",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou corretamente o polígono de 5 lados.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_004_alt_2",
+        "valor": "Quadrado",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno confundiu 5 lados com 4 lados.",
+        "misconception": "ERRO_DE_CONTAGEM_DE_LADOS"
+      },
+      {
+        "id": "BN_11_004_alt_3",
+        "valor": "Hexágono",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno confundiu pentágono com uma figura de 6 lados.",
+        "misconception": "CONFUSAO_DE_ATRIBUTOS"
+      },
+      {
+        "id": "BN_11_004_alt_4",
+        "valor": "Triângulo",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno escolheu um polígono com menos lados.",
+        "misconception": "LEITURA_PARCIAL_DA_FIGURA"
+      }
+    ],
+    "passo": "Muito bem! O pentágono possui 5 lados.",
+    "dica": "Associe o nome pentágono à quantidade 5."
+  },
+  {
+    "id": "BN_11_005",
+    "bloco": "6",
+    "habilidade": "Polígonos",
+    "bncc": "EF06MA18",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Qual figura possui 6 lados?",
+    "a": 6,
+    "b": 0,
+    "res": "Hexágono",
+    "alternativas": [
+      {
+        "id": "BN_11_005_alt_1",
+        "valor": "Hexágono",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou corretamente o polígono de 6 lados.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_005_alt_2",
+        "valor": "Pentágono",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno confundiu uma figura de 5 lados com uma de 6 lados.",
+        "misconception": "ERRO_DE_CONTAGEM_DE_LADOS"
+      },
+      {
+        "id": "BN_11_005_alt_3",
+        "valor": "Triângulo",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma figura com número de lados bem menor.",
+        "misconception": "CONFUSAO_DE_ATRIBUTOS"
+      },
+      {
+        "id": "BN_11_005_alt_4",
+        "valor": "Círculo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu uma figura curva com um polígono.",
+        "misconception": "GENERALIZACAO_VISUAL"
+      }
+    ],
+    "passo": "Correto! O hexágono tem 6 lados.",
+    "dica": "Conte os lados da figura antes de escolher."
+  },
+  {
+    "id": "BN_11_006",
+    "bloco": "6",
+    "habilidade": "Figuras Planas",
+    "bncc": "EF06MA18",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Uma porta lembra mais qual figura plana?",
+    "a": 4,
+    "b": 2,
+    "res": "Retângulo",
+    "alternativas": [
+      {
+        "id": "BN_11_006_alt_1",
+        "valor": "Retângulo",
+        "tipo": "acerto",
+        "categoria": "identificacao",
+        "descricao": "O aluno associou corretamente o formato da porta a um retângulo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_006_alt_2",
+        "valor": "Triângulo",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno confundiu a porta com uma figura de 3 lados.",
+        "misconception": "ERRO_VISUAL"
+      },
+      {
+        "id": "BN_11_006_alt_3",
+        "valor": "Círculo",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma figura curva para representar um objeto de lados retos.",
+        "misconception": "GENERALIZACAO_VISUAL"
+      },
+      {
+        "id": "BN_11_006_alt_4",
+        "valor": "Pentágono",
+        "tipo": "distrator",
+        "categoria": "classificacao",
+        "peso": 2,
+        "descricao": "O aluno confundiu a quantidade de lados do objeto.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      }
+    ],
+    "passo": "Isso! Uma porta geralmente tem formato de retângulo.",
+    "dica": "Pense na forma com 4 lados, dois mais longos e dois mais curtos."
+  },
+  {
+    "id": "BN_11_007",
+    "bloco": "6",
+    "habilidade": "Sólidos Geométricos",
+    "bncc": "EF06MA19",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Uma bola lembra qual sólido geométrico?",
+    "a": 0,
+    "b": 1,
+    "res": "Esfera",
+    "alternativas": [
+      {
+        "id": "BN_11_007_alt_1",
+        "valor": "Esfera",
+        "tipo": "acerto",
+        "categoria": "identificacao",
+        "descricao": "O aluno reconheceu corretamente a forma espacial parecida com uma bola.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_007_alt_2",
+        "valor": "Cubo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu um sólido arredondado com um sólido de faces planas.",
+        "misconception": "CONFUSAO_ENTRE_SOLIDOS"
+      },
+      {
+        "id": "BN_11_007_alt_3",
+        "valor": "Cone",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno escolheu um sólido com ponta, diferente da bola.",
+        "misconception": "ERRO_VISUAL"
+      },
+      {
+        "id": "BN_11_007_alt_4",
+        "valor": "Círculo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu uma figura plana com um sólido geométrico.",
+        "misconception": "CONFUSAO_SOLIDO_FIGURA_PLANA"
+      }
+    ],
+    "passo": "Muito bem! A bola tem formato parecido com uma esfera.",
+    "dica": "Pense em uma forma espacial totalmente arredondada."
+  },
+  {
+    "id": "BN_11_008",
+    "bloco": "6",
+    "habilidade": "Sólidos Geométricos",
+    "bncc": "EF06MA19",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Um dado comum lembra qual sólido geométrico?",
+    "a": 6,
+    "b": 8,
+    "res": "Cubo",
+    "alternativas": [
+      {
+        "id": "BN_11_008_alt_1",
+        "valor": "Cubo",
+        "tipo": "acerto",
+        "categoria": "identificacao",
+        "descricao": "O aluno associou corretamente o dado ao cubo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_008_alt_2",
+        "valor": "Esfera",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno confundiu um sólido com faces planas com um sólido arredondado.",
+        "misconception": "CONFUSAO_ENTRE_SOLIDOS"
+      },
+      {
+        "id": "BN_11_008_alt_3",
+        "valor": "Cilindro",
+        "tipo": "distrator",
+        "categoria": "classificacao",
+        "peso": 2,
+        "descricao": "O aluno confundiu o formato do dado com outro sólido geométrico.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      },
+      {
+        "id": "BN_11_008_alt_4",
+        "valor": "Quadrado",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu a face plana do dado com o sólido inteiro.",
+        "misconception": "CONFUSAO_SOLIDO_FIGURA_PLANA"
+      }
+    ],
+    "passo": "Correto! Um dado comum tem formato de cubo.",
+    "dica": "Observe que o dado tem faces quadradas."
+  },
+  {
+    "id": "BN_11_009",
+    "bloco": "6",
+    "habilidade": "Figuras Espaciais",
+    "bncc": "EF06MA19",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Uma lata de refrigerante lembra qual sólido geométrico?",
+    "a": 2,
+    "b": 0,
+    "res": "Cilindro",
+    "alternativas": [
+      {
+        "id": "BN_11_009_alt_1",
+        "valor": "Cilindro",
+        "tipo": "acerto",
+        "categoria": "identificacao",
+        "descricao": "O aluno reconheceu corretamente o formato cilíndrico da lata.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_009_alt_2",
+        "valor": "Cubo",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno confundiu um objeto arredondado com um sólido de faces quadradas.",
+        "misconception": "CONFUSAO_ENTRE_SOLIDOS"
+      },
+      {
+        "id": "BN_11_009_alt_3",
+        "valor": "Cone",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 2,
+        "descricao": "O aluno confundiu um sólido sem ponta com um sólido pontudo.",
+        "misconception": "ERRO_VISUAL"
+      },
+      {
+        "id": "BN_11_009_alt_4",
+        "valor": "Retângulo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu sólido geométrico com figura plana.",
+        "misconception": "CONFUSAO_SOLIDO_FIGURA_PLANA"
+      }
+    ],
+    "passo": "Isso! Uma lata tem formato parecido com um cilindro.",
+    "dica": "Pense em um sólido com duas bases circulares."
+  },
+  {
+    "id": "BN_11_010",
+    "bloco": "6",
+    "habilidade": "Sólidos Geométricos",
+    "bncc": "EF06MA19",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Um chapéu de festa lembra qual sólido geométrico?",
+    "a": 1,
+    "b": 0,
+    "res": "Cone",
+    "alternativas": [
+      {
+        "id": "BN_11_010_alt_1",
+        "valor": "Cone",
+        "tipo": "acerto",
+        "categoria": "identificacao",
+        "descricao": "O aluno associou corretamente o chapéu de festa ao cone.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_010_alt_2",
+        "valor": "Cilindro",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 2,
+        "descricao": "O aluno confundiu um sólido com ponta com um sólido sem ponta.",
+        "misconception": "ERRO_VISUAL"
+      },
+      {
+        "id": "BN_11_010_alt_3",
+        "valor": "Esfera",
+        "tipo": "distrator",
+        "categoria": "classificacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu um sólido arredondado sem base plana evidente.",
+        "misconception": "CONFUSAO_ENTRE_SOLIDOS"
+      },
+      {
+        "id": "BN_11_010_alt_4",
+        "valor": "Triângulo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu a aparência lateral com o sólido inteiro.",
+        "misconception": "CONFUSAO_SOLIDO_FIGURA_PLANA"
+      }
+    ],
+    "passo": "Muito bem! O chapéu de festa costuma ter formato de cone.",
+    "dica": "Procure o sólido que tem uma ponta."
+  },
+  {
+    "id": "BN_11_011",
+    "bloco": "6",
+    "habilidade": "Faces de Sólidos",
+    "bncc": "EF06MA19",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Quantas faces quadradas tem um cubo?",
+    "a": 6,
+    "b": 4,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_11_011_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "propriedade",
+        "descricao": "O aluno identificou corretamente que o cubo possui 6 faces quadradas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_011_alt_2",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno contou apenas algumas faces visíveis do cubo.",
+        "misconception": "LEITURA_PARCIAL_DA_FIGURA"
+      },
+      {
+        "id": "BN_11_011_alt_3",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu faces com vértices do cubo.",
+        "misconception": "CONFUSAO_VERTICE_FACE"
+      },
+      {
+        "id": "BN_11_011_alt_4",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu faces com arestas do cubo.",
+        "misconception": "CONFUSAO_ARESTA_FACE"
+      }
+    ],
+    "passo": "Correto! O cubo possui 6 faces, todas quadradas.",
+    "dica": "Lembre que o cubo tem frente, trás, cima, baixo e dois lados."
+  },
+  {
+    "id": "BN_11_012",
+    "bloco": "6",
+    "habilidade": "Vértices",
+    "bncc": "EF06MA19",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Quantos vértices tem um quadrado?",
+    "a": 4,
+    "b": 4,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "BN_11_012_alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "propriedade",
+        "descricao": "O aluno contou corretamente os quatro cantos do quadrado.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_012_alt_2",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno deixou de contar um dos vértices.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_11_012_alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno contou um ponto a mais que não é vértice.",
+        "misconception": "ERRO_DE_CONTAGEM"
+      },
+      {
+        "id": "BN_11_012_alt_4",
+        "valor": "0",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno não reconheceu os cantos como vértices.",
+        "misconception": "CONFUSAO_VERTICE_LADO"
+      }
+    ],
+    "passo": "Isso! O quadrado tem 4 vértices, que são seus cantos.",
+    "dica": "Conte os cantos da figura."
+  },
+  {
+    "id": "BN_11_013",
+    "bloco": "6",
+    "habilidade": "Vértices e Lados",
+    "bncc": "EF06MA19",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Quantos vértices tem um triângulo?",
+    "a": 3,
+    "b": 3,
+    "res": "3",
+    "alternativas": [
+      {
+        "id": "BN_11_013_alt_1",
+        "valor": "3",
+        "tipo": "acerto",
+        "categoria": "propriedade",
+        "descricao": "O aluno contou corretamente os três vértices do triângulo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_013_alt_2",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno confundiu triângulo com uma figura de 4 vértices.",
+        "misconception": "CONFUSAO_DE_ATRIBUTOS"
+      },
+      {
+        "id": "BN_11_013_alt_3",
+        "valor": "2",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno esqueceu um dos vértices do triângulo.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_11_013_alt_4",
+        "valor": "0",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno não reconheceu os cantos da figura como vértices.",
+        "misconception": "CONFUSAO_VERTICE_LADO"
+      }
+    ],
+    "passo": "Muito bem! O triângulo tem 3 vértices.",
+    "dica": "Vértices são os cantos da figura."
+  },
+  {
+    "id": "BN_11_014",
+    "bloco": "6",
+    "habilidade": "Ângulos",
+    "bncc": "EF07MA22",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "O canto de uma folha de papel retangular forma qual tipo de ângulo?",
+    "a": 90,
+    "b": 4,
+    "res": "Ângulo reto",
+    "alternativas": [
+      {
+        "id": "BN_11_014_alt_1",
+        "valor": "Ângulo reto",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno reconheceu corretamente o ângulo de 90 graus no canto da folha.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_014_alt_2",
+        "valor": "Ângulo aberto",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno confundiu o ângulo reto com um ângulo maior que ele.",
+        "misconception": "ERRO_VISUAL"
+      },
+      {
+        "id": "BN_11_014_alt_3",
+        "valor": "Ângulo fechado",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno confundiu o ângulo reto com um ângulo menor.",
+        "misconception": "CONFUSAO_DE_ATRIBUTOS"
+      },
+      {
+        "id": "BN_11_014_alt_4",
+        "valor": "Linha curva",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu ângulo com outro elemento geométrico.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      }
+    ],
+    "passo": "Correto! O canto de uma folha retangular forma um ângulo reto.",
+    "dica": "Pense no formato de um canto de caderno ou folha."
+  },
+  {
+    "id": "BN_11_015",
+    "bloco": "6",
+    "habilidade": "Ângulos Retos",
+    "bncc": "EF07MA22",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Qual objeto costuma ter cantos com ângulos retos?",
+    "a": 90,
+    "b": 0,
+    "res": "Caderno",
+    "alternativas": [
+      {
+        "id": "BN_11_015_alt_1",
+        "valor": "Caderno",
+        "tipo": "acerto",
+        "categoria": "identificacao",
+        "descricao": "O aluno reconheceu que o caderno retangular possui cantos com ângulos retos.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_015_alt_2",
+        "valor": "Bola",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 2,
+        "descricao": "O aluno escolheu um objeto arredondado, sem cantos retos.",
+        "misconception": "ERRO_VISUAL"
+      },
+      {
+        "id": "BN_11_015_alt_3",
+        "valor": "Laranja",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno confundiu um objeto arredondado com um objeto de cantos.",
+        "misconception": "GENERALIZACAO_VISUAL"
+      },
+      {
+        "id": "BN_11_015_alt_4",
+        "valor": "Cone de trânsito",
+        "tipo": "distrator",
+        "categoria": "classificacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu um sólido com formato pontudo, não retangular.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      }
+    ],
+    "passo": "Muito bem! Um caderno geralmente tem formato retangular e cantos retos.",
+    "dica": "Procure um objeto com cantos parecidos com os de uma folha."
+  },
+  {
+    "id": "BN_11_016",
+    "bloco": "6",
+    "habilidade": "Retas Paralelas",
+    "bncc": "EF07MA23",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Duas linhas que seguem lado a lado e não se encontram são chamadas de:",
+    "a": 2,
+    "b": 0,
+    "res": "Paralelas",
+    "alternativas": [
+      {
+        "id": "BN_11_016_alt_1",
+        "valor": "Paralelas",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou corretamente linhas que mantêm a mesma distância e não se cruzam.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_016_alt_2",
+        "valor": "Perpendiculares",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu linhas paralelas com linhas que se cruzam formando ângulo reto.",
+        "misconception": "CONFUSAO_ENTRE_RETAS"
+      },
+      {
+        "id": "BN_11_016_alt_3",
+        "valor": "Curvas",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno confundiu linhas retas lado a lado com linhas curvas.",
+        "misconception": "ERRO_VISUAL"
+      },
+      {
+        "id": "BN_11_016_alt_4",
+        "valor": "Vértices",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu retas com pontos de encontro.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      }
+    ],
+    "passo": "Isso! Linhas que seguem lado a lado sem se encontrar são paralelas.",
+    "dica": "Pense nos trilhos de um trem."
+  },
+  {
+    "id": "BN_11_017",
+    "bloco": "6",
+    "habilidade": "Retas Perpendiculares",
+    "bncc": "EF07MA23",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Duas linhas que se cruzam formando um ângulo reto são chamadas de:",
+    "a": 90,
+    "b": 2,
+    "res": "Perpendiculares",
+    "alternativas": [
+      {
+        "id": "BN_11_017_alt_1",
+        "valor": "Perpendiculares",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno reconheceu corretamente linhas que se cruzam formando ângulo reto.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_017_alt_2",
+        "valor": "Paralelas",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu linhas que se cruzam com linhas que não se encontram.",
+        "misconception": "CONFUSAO_ENTRE_RETAS"
+      },
+      {
+        "id": "BN_11_017_alt_3",
+        "valor": "Curvas",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno confundiu linhas retas cruzadas com linhas curvas.",
+        "misconception": "ERRO_VISUAL"
+      },
+      {
+        "id": "BN_11_017_alt_4",
+        "valor": "Faces",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu retas com partes de sólidos geométricos.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      }
+    ],
+    "passo": "Correto! Retas perpendiculares se cruzam formando ângulo reto.",
+    "dica": "Imagine o sinal de mais: uma linha cruza a outra."
+  },
+  {
+    "id": "BN_11_018",
+    "bloco": "6",
+    "habilidade": "Simetria",
+    "bncc": "EF07MA23",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Uma figura é simétrica quando suas duas partes são:",
+    "a": 2,
+    "b": 1,
+    "res": "Iguais ou espelhadas",
+    "alternativas": [
+      {
+        "id": "BN_11_018_alt_1",
+        "valor": "Iguais ou espelhadas",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno compreendeu que simetria envolve partes correspondentes.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_018_alt_2",
+        "valor": "Sempre curvas",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno associou simetria apenas a formas curvas.",
+        "misconception": "GENERALIZACAO_VISUAL"
+      },
+      {
+        "id": "BN_11_018_alt_3",
+        "valor": "De tamanhos diferentes",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno interpretou simetria como diferença entre partes.",
+        "misconception": "CONFUSAO_CONCEITUAL"
+      },
+      {
+        "id": "BN_11_018_alt_4",
+        "valor": "Sem lados",
+        "tipo": "distrator",
+        "categoria": "classificacao",
+        "peso": 1,
+        "descricao": "O aluno confundiu simetria com característica de figuras curvas.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      }
+    ],
+    "passo": "Muito bem! Uma figura simétrica tem partes iguais ou espelhadas.",
+    "dica": "Pense em dobrar a figura ao meio e comparar os dois lados."
+  },
+  {
+    "id": "BN_11_019",
+    "bloco": "6",
+    "habilidade": "Simetria Simples",
+    "bncc": "EF07MA23",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Qual objeto costuma apresentar simetria quando visto de frente?",
+    "a": 2,
+    "b": 0,
+    "res": "Borboleta",
+    "alternativas": [
+      {
+        "id": "BN_11_019_alt_1",
+        "valor": "Borboleta",
+        "tipo": "acerto",
+        "categoria": "identificacao",
+        "descricao": "O aluno reconheceu que os dois lados da borboleta podem ser vistos como espelhados.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_019_alt_2",
+        "valor": "Escada quebrada",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 2,
+        "descricao": "O aluno escolheu um objeto irregular que não sugere simetria simples.",
+        "misconception": "ERRO_VISUAL"
+      },
+      {
+        "id": "BN_11_019_alt_3",
+        "valor": "Pedra irregular",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno confundiu forma natural irregular com forma simétrica.",
+        "misconception": "GENERALIZACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_11_019_alt_4",
+        "valor": "Linha curva aberta",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu simetria com qualquer desenho curvo.",
+        "misconception": "GENERALIZACAO_VISUAL"
+      }
+    ],
+    "passo": "Correto! A borboleta costuma ter um lado parecido com o outro.",
+    "dica": "Procure um objeto com dois lados parecidos."
+  },
+  {
+    "id": "BN_11_020",
+    "bloco": "6",
+    "habilidade": "Localização Espacial",
+    "bncc": "EF08MA15",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Se um livro está em cima da mesa, onde está o livro em relação à mesa?",
+    "a": 1,
+    "b": 0,
+    "res": "Em cima",
+    "alternativas": [
+      {
+        "id": "BN_11_020_alt_1",
+        "valor": "Em cima",
+        "tipo": "acerto",
+        "categoria": "localizacao",
+        "descricao": "O aluno identificou corretamente a posição do livro em relação à mesa.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_020_alt_2",
+        "valor": "Embaixo",
+        "tipo": "distrator",
+        "categoria": "localizacao",
+        "peso": 2,
+        "descricao": "O aluno inverteu a relação espacial indicada.",
+        "misconception": "INVERSAO_ESPACIAL"
+      },
+      {
+        "id": "BN_11_020_alt_3",
+        "valor": "Dentro",
+        "tipo": "distrator",
+        "categoria": "localizacao",
+        "peso": 1,
+        "descricao": "O aluno confundiu posição sobre a mesa com posição interna.",
+        "misconception": "ERRO_DE_LOCALIZACAO"
+      },
+      {
+        "id": "BN_11_020_alt_4",
+        "valor": "Atrás",
+        "tipo": "distrator",
+        "categoria": "localizacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma relação espacial não indicada no enunciado.",
+        "misconception": "LEITURA_PARCIAL_DA_FIGURA"
+      }
+    ],
+    "passo": "Isso! Se o livro está sobre a mesa, ele está em cima dela.",
+    "dica": "Observe a palavra que indica a posição."
+  },
+  {
+    "id": "BN_11_021",
+    "bloco": "6",
+    "habilidade": "Localização Espacial",
+    "bncc": "EF08MA15",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Se a mochila está debaixo da cadeira, onde está a mochila em relação à cadeira?",
+    "a": 0,
+    "b": 1,
+    "res": "Embaixo",
+    "alternativas": [
+      {
+        "id": "BN_11_021_alt_1",
+        "valor": "Embaixo",
+        "tipo": "acerto",
+        "categoria": "localizacao",
+        "descricao": "O aluno reconheceu corretamente a posição da mochila em relação à cadeira.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_021_alt_2",
+        "valor": "Em cima",
+        "tipo": "distrator",
+        "categoria": "localizacao",
+        "peso": 2,
+        "descricao": "O aluno inverteu a posição indicada no enunciado.",
+        "misconception": "INVERSAO_ESPACIAL"
+      },
+      {
+        "id": "BN_11_021_alt_3",
+        "valor": "Ao lado",
+        "tipo": "distrator",
+        "categoria": "localizacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma posição próxima, mas diferente da indicada.",
+        "misconception": "ERRO_DE_LOCALIZACAO"
+      },
+      {
+        "id": "BN_11_021_alt_4",
+        "valor": "Na frente",
+        "tipo": "distrator",
+        "categoria": "localizacao",
+        "peso": 1,
+        "descricao": "O aluno interpretou parcialmente a relação espacial.",
+        "misconception": "LEITURA_PARCIAL_DA_FIGURA"
+      }
+    ],
+    "passo": "Muito bem! Debaixo significa embaixo.",
+    "dica": "Leia com atenção a palavra que indica a posição da mochila."
+  },
+  {
+    "id": "BN_11_022",
+    "bloco": "6",
+    "habilidade": "Relações Espaciais",
+    "bncc": "EF08MA15",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Se Ana está à direita de Bia, onde Ana está em relação a Bia?",
+    "a": 1,
+    "b": 2,
+    "res": "À direita",
+    "alternativas": [
+      {
+        "id": "BN_11_022_alt_1",
+        "valor": "À direita",
+        "tipo": "acerto",
+        "categoria": "localizacao",
+        "descricao": "O aluno identificou corretamente a relação espacial indicada.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_022_alt_2",
+        "valor": "À esquerda",
+        "tipo": "distrator",
+        "categoria": "localizacao",
+        "peso": 2,
+        "descricao": "O aluno confundiu direita com esquerda.",
+        "misconception": "INVERSAO_ESPACIAL"
+      },
+      {
+        "id": "BN_11_022_alt_3",
+        "valor": "Em cima",
+        "tipo": "distrator",
+        "categoria": "localizacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma direção vertical em vez de lateral.",
+        "misconception": "ERRO_DE_LOCALIZACAO"
+      },
+      {
+        "id": "BN_11_022_alt_4",
+        "valor": "Atrás",
+        "tipo": "distrator",
+        "categoria": "localizacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma posição não indicada pelo enunciado.",
+        "misconception": "LEITURA_PARCIAL_DA_FIGURA"
+      }
+    ],
+    "passo": "Correto! O enunciado informa que Ana está à direita de Bia.",
+    "dica": "Procure a palavra que indica o lado."
+  },
+  {
+    "id": "BN_11_023",
+    "bloco": "6",
+    "habilidade": "Classificação de Figuras",
+    "bncc": "EF08MA16",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "simbolica",
+    "display": "Qual das figuras é um polígono?",
+    "a": 3,
+    "b": 0,
+    "res": "Triângulo",
+    "alternativas": [
+      {
+        "id": "BN_11_023_alt_1",
+        "valor": "Triângulo",
+        "tipo": "acerto",
+        "categoria": "classificacao",
+        "descricao": "O aluno identificou corretamente uma figura fechada formada por lados retos.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_023_alt_2",
+        "valor": "Círculo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu figura curva com polígono.",
+        "misconception": "GENERALIZACAO_VISUAL"
+      },
+      {
+        "id": "BN_11_023_alt_3",
+        "valor": "Linha curva aberta",
+        "tipo": "distrator",
+        "categoria": "classificacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma figura que não é fechada nem formada por lados retos.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      },
+      {
+        "id": "BN_11_023_alt_4",
+        "valor": "Esfera",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu sólido geométrico com figura plana poligonal.",
+        "misconception": "CONFUSAO_SOLIDO_FIGURA_PLANA"
+      }
+    ],
+    "passo": "Muito bem! O triângulo é um polígono porque é fechado e tem lados retos.",
+    "dica": "Polígonos são figuras planas fechadas formadas por segmentos de reta."
+  },
+  {
+    "id": "BN_11_024",
+    "bloco": "6",
+    "habilidade": "Figuras Planas e Espaciais",
+    "bncc": "EF08MA16",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Qual alternativa apresenta uma figura plana?",
+    "a": 2,
+    "b": 3,
+    "res": "Quadrado",
+    "alternativas": [
+      {
+        "id": "BN_11_024_alt_1",
+        "valor": "Quadrado",
+        "tipo": "acerto",
+        "categoria": "classificacao",
+        "descricao": "O aluno identificou corretamente o quadrado como figura plana.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_024_alt_2",
+        "valor": "Cubo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu sólido geométrico com figura plana.",
+        "misconception": "CONFUSAO_SOLIDO_FIGURA_PLANA"
+      },
+      {
+        "id": "BN_11_024_alt_3",
+        "valor": "Cilindro",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno escolheu um sólido em vez de uma figura plana.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      },
+      {
+        "id": "BN_11_024_alt_4",
+        "valor": "Cone",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu objeto espacial com figura plana.",
+        "misconception": "CONFUSAO_SOLIDO_FIGURA_PLANA"
+      }
+    ],
+    "passo": "Correto! O quadrado é uma figura plana.",
+    "dica": "Figura plana não tem profundidade como um sólido."
+  },
+  {
+    "id": "BN_11_025",
+    "bloco": "6",
+    "habilidade": "Figuras Espaciais",
+    "bncc": "EF08MA16",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Qual alternativa apresenta um sólido geométrico?",
+    "a": 3,
+    "b": 0,
+    "res": "Cubo",
+    "alternativas": [
+      {
+        "id": "BN_11_025_alt_1",
+        "valor": "Cubo",
+        "tipo": "acerto",
+        "categoria": "classificacao",
+        "descricao": "O aluno identificou corretamente o cubo como sólido geométrico.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_025_alt_2",
+        "valor": "Quadrado",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu uma figura plana com um sólido geométrico.",
+        "misconception": "CONFUSAO_SOLIDO_FIGURA_PLANA"
+      },
+      {
+        "id": "BN_11_025_alt_3",
+        "valor": "Triângulo",
+        "tipo": "distrator",
+        "categoria": "classificacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma figura plana em vez de um sólido.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      },
+      {
+        "id": "BN_11_025_alt_4",
+        "valor": "Círculo",
+        "tipo": "distrator",
+        "categoria": "classificacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma figura plana curva em vez de um sólido.",
+        "misconception": "CONFUSAO_SOLIDO_FIGURA_PLANA"
+      }
+    ],
+    "passo": "Isso! O cubo é um sólido geométrico.",
+    "dica": "Sólidos têm três dimensões, como objetos que podemos segurar."
+  },
+  {
+    "id": "BN_11_026",
+    "bloco": "6",
+    "habilidade": "Arestas",
+    "bncc": "EF09MA13",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "No cubo, as arestas são:",
+    "a": 12,
+    "b": 6,
+    "res": "Os encontros entre duas faces",
+    "alternativas": [
+      {
+        "id": "BN_11_026_alt_1",
+        "valor": "Os encontros entre duas faces",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno compreendeu que arestas são as linhas onde duas faces se encontram.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_026_alt_2",
+        "valor": "Os cantos do cubo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu arestas com vértices.",
+        "misconception": "CONFUSAO_ARESTA_VERTICE"
+      },
+      {
+        "id": "BN_11_026_alt_3",
+        "valor": "As partes planas do cubo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu arestas com faces.",
+        "misconception": "CONFUSAO_ARESTA_FACE"
+      },
+      {
+        "id": "BN_11_026_alt_4",
+        "valor": "As curvas do cubo",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno atribuiu curvas a um sólido formado por faces planas.",
+        "misconception": "ERRO_VISUAL"
+      }
+    ],
+    "passo": "Muito bem! Arestas são as linhas onde duas faces se encontram.",
+    "dica": "Observe as linhas que aparecem nas bordas do cubo."
+  },
+  {
+    "id": "BN_11_027",
+    "bloco": "6",
+    "habilidade": "Faces e Vértices",
+    "bncc": "EF09MA13",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "No cubo, os vértices são:",
+    "a": 8,
+    "b": 12,
+    "res": "Os cantos do cubo",
+    "alternativas": [
+      {
+        "id": "BN_11_027_alt_1",
+        "valor": "Os cantos do cubo",
+        "tipo": "acerto",
+        "categoria": "conceito",
+        "descricao": "O aluno identificou corretamente vértices como os cantos do cubo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_027_alt_2",
+        "valor": "As faces quadradas",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu vértices com faces.",
+        "misconception": "CONFUSAO_VERTICE_FACE"
+      },
+      {
+        "id": "BN_11_027_alt_3",
+        "valor": "As linhas das bordas",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno confundiu vértices com arestas.",
+        "misconception": "CONFUSAO_VERTICE_ARESTA"
+      },
+      {
+        "id": "BN_11_027_alt_4",
+        "valor": "As partes curvas",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno indicou uma característica que não pertence ao cubo.",
+        "misconception": "ERRO_VISUAL"
+      }
+    ],
+    "passo": "Correto! Os vértices são os cantos do cubo.",
+    "dica": "Procure os pontos onde as bordas se encontram."
+  },
+  {
+    "id": "BN_11_028",
+    "bloco": "6",
+    "habilidade": "Reconhecimento de Polígonos",
+    "bncc": "EF09MA13",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "simbolica",
+    "display": "Qual figura não é um polígono?",
+    "a": 0,
+    "b": 3,
+    "res": "Círculo",
+    "alternativas": [
+      {
+        "id": "BN_11_028_alt_1",
+        "valor": "Círculo",
+        "tipo": "acerto",
+        "categoria": "classificacao",
+        "descricao": "O aluno reconheceu que o círculo não é polígono porque não possui lados retos.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_028_alt_2",
+        "valor": "Triângulo",
+        "tipo": "distrator",
+        "categoria": "classificacao",
+        "peso": 2,
+        "descricao": "O aluno classificou incorretamente um polígono de 3 lados.",
+        "misconception": "ERRO_DE_CLASSIFICACAO"
+      },
+      {
+        "id": "BN_11_028_alt_3",
+        "valor": "Quadrado",
+        "tipo": "distrator",
+        "categoria": "classificacao",
+        "peso": 1,
+        "descricao": "O aluno confundiu uma figura de lados retos com uma figura não poligonal.",
+        "misconception": "CONFUSAO_DE_ATRIBUTOS"
+      },
+      {
+        "id": "BN_11_028_alt_4",
+        "valor": "Pentágono",
+        "tipo": "distrator",
+        "categoria": "classificacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu um polígono como se não fosse polígono.",
+        "misconception": "LEITURA_PARCIAL_DA_FIGURA"
+      }
+    ],
+    "passo": "Isso! O círculo não é polígono, pois não tem lados retos.",
+    "dica": "Polígonos têm lados formados por segmentos de reta."
+  },
+  {
+    "id": "BN_11_029",
+    "bloco": "6",
+    "habilidade": "Relações Geométricas",
+    "bncc": "EF09MA13",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "visual",
+    "display": "Qual figura tem mais lados: triângulo ou quadrado?",
+    "a": 3,
+    "b": 4,
+    "res": "Quadrado",
+    "alternativas": [
+      {
+        "id": "BN_11_029_alt_1",
+        "valor": "Quadrado",
+        "tipo": "acerto",
+        "categoria": "comparacao",
+        "descricao": "O aluno comparou corretamente 4 lados com 3 lados.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_029_alt_2",
+        "valor": "Triângulo",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno confundiu a quantidade de lados das figuras.",
+        "misconception": "ERRO_DE_CONTAGEM_DE_LADOS"
+      },
+      {
+        "id": "BN_11_029_alt_3",
+        "valor": "Os dois têm a mesma quantidade",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 1,
+        "descricao": "O aluno não comparou corretamente 3 e 4 lados.",
+        "misconception": "COMPARACAO_INCORRETA"
+      },
+      {
+        "id": "BN_11_029_alt_4",
+        "valor": "Nenhum dos dois tem lados",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno não reconheceu lados em figuras poligonais simples.",
+        "misconception": "CONFUSAO_CONCEITUAL"
+      }
+    ],
+    "passo": "Muito bem! O quadrado tem 4 lados e o triângulo tem 3.",
+    "dica": "Conte os lados das duas figuras e compare."
+  },
+  {
+    "id": "BN_11_030",
+    "bloco": "6",
+    "habilidade": "Identificação Geométrica",
+    "bncc": "EF08MA16",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "MATERIALIZADA",
+    "representacao": "concreta",
+    "display": "Uma caixa de sapatos lembra mais qual sólido geométrico?",
+    "a": 6,
+    "b": 8,
+    "res": "Paralelepípedo",
+    "alternativas": [
+      {
+        "id": "BN_11_030_alt_1",
+        "valor": "Paralelepípedo",
+        "tipo": "acerto",
+        "categoria": "identificacao",
+        "descricao": "O aluno associou corretamente a caixa de sapatos a um paralelepípedo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_11_030_alt_2",
+        "valor": "Esfera",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno confundiu uma caixa com um sólido arredondado.",
+        "misconception": "ERRO_VISUAL"
+      },
+      {
+        "id": "BN_11_030_alt_3",
+        "valor": "Cone",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno escolheu um sólido com ponta, diferente de uma caixa.",
+        "misconception": "CONFUSAO_ENTRE_SOLIDOS"
+      },
+      {
+        "id": "BN_11_030_alt_4",
+        "valor": "Retângulo",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu uma face da caixa com o sólido inteiro.",
+        "misconception": "CONFUSAO_SOLIDO_FIGURA_PLANA"
+      }
+    ],
+    "passo": "Correto! Uma caixa de sapatos lembra um paralelepípedo.",
+    "dica": "Pense em um sólido parecido com uma caixa retangular."
   }
 ]
