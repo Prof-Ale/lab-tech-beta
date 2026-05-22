@@ -11779,5 +11779,1566 @@
     ],
     "passo": "Muito bem! Se ela ganhou 3 e ficou com 9, antes tinha 6 canetas.",
     "dica": "Tire as 3 canetas que ela ganhou do total final."
+  },
+  
+  {
+    "id": "BN_10_001",
+    "bloco": "5",
+    "habilidade": "Estatística Básica",
+    "bncc": "EF06MA32",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Uma turma registrou a quantidade de livros lidos na semana: Ana = 2, Bruno = 4, Carla = 3 e Diego = 1. Quantos livros foram lidos ao todo?",
+    "a": 2,
+    "b": 4,
+    "res": "10",
+    "alternativas": [
+      {
+        "id": "BN_10_001_alt_1",
+        "valor": "10",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente todos os valores.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_001_alt_2",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno esqueceu de somar um dos valores.",
+        "misconception": "OMISSAO_DE_DADO"
+      },
+      {
+        "id": "BN_10_001_alt_3",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno escolheu apenas o maior valor da tabela.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_001_alt_4",
+        "valor": "24",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno juntou os números apresentados sem somar corretamente.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Muito bem! Para descobrir o total, somamos todos os valores.",
+    "dica": "Some os dados apresentados na tabela."
+  },
+  {
+    "id": "BN_10_002",
+    "bloco": "5",
+    "habilidade": "Leitura de Gráfico",
+    "bncc": "EF06MA31",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Em um gráfico de barras, as frutas preferidas foram: maçã = 5 votos, banana = 8 votos e uva = 3 votos. Qual fruta recebeu mais votos?",
+    "a": 5,
+    "b": 8,
+    "res": "banana",
+    "alternativas": [
+      {
+        "id": "BN_10_002_alt_1",
+        "valor": "banana",
+        "tipo": "acerto",
+        "categoria": "interpretacao",
+        "descricao": "O aluno identificou corretamente o maior valor do gráfico.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_002_alt_2",
+        "valor": "maçã",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma categoria com valor intermediário.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_002_alt_3",
+        "valor": "uva",
+        "tipo": "distrator",
+        "categoria": "interpretacao",
+        "peso": 2,
+        "descricao": "O aluno escolheu a fruta com menor quantidade de votos.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_10_002_alt_4",
+        "valor": "maçã e uva",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 1,
+        "descricao": "O aluno combinou duas categorias sem comparar o maior valor.",
+        "misconception": "COMPARACAO_INCORRETA"
+      }
+    ],
+    "passo": "Correto! Banana recebeu 8 votos, que é a maior quantidade.",
+    "dica": "Procure a barra ou valor mais alto."
+  },
+  {
+    "id": "BN_10_003",
+    "bloco": "5",
+    "habilidade": "Comparação de Dados",
+    "bncc": "EF06MA31",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Uma tabela mostra a quantidade de alunos em três clubes: xadrez = 6, leitura = 4 e teatro = 9. Qual clube tem menos alunos?",
+    "a": 6,
+    "b": 4,
+    "res": "leitura",
+    "alternativas": [
+      {
+        "id": "BN_10_003_alt_1",
+        "valor": "leitura",
+        "tipo": "acerto",
+        "categoria": "comparacao",
+        "descricao": "O aluno identificou corretamente o menor valor da tabela.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_003_alt_2",
+        "valor": "xadrez",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu um valor intermediário.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_003_alt_3",
+        "valor": "teatro",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 2,
+        "descricao": "O aluno escolheu o maior valor em vez do menor.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_003_alt_4",
+        "valor": "xadrez e teatro",
+        "tipo": "distrator",
+        "categoria": "interpretacao",
+        "peso": 1,
+        "descricao": "O aluno selecionou duas categorias sem identificar a menor.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Isso! Leitura tem 4 alunos, que é a menor quantidade.",
+    "dica": "Compare os três números e escolha o menor."
+  },
+  {
+    "id": "BN_10_004",
+    "bloco": "5",
+    "habilidade": "Média Aritmética Simples",
+    "bncc": "EF07MA35",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "As notas de três atividades foram 2, 4 e 6. Qual é a média dessas notas?",
+    "a": 2,
+    "b": 6,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "BN_10_004_alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "media",
+        "descricao": "O aluno somou os valores e dividiu pela quantidade de notas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_004_alt_2",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno calculou apenas o total e não dividiu pela quantidade de dados.",
+        "misconception": "TROCA_ENTRE_MEDIA_E_TOTAL"
+      },
+      {
+        "id": "BN_10_004_alt_3",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o maior valor apresentado.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_004_alt_4",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno dividiu incorretamente o total.",
+        "misconception": "ERRO_DE_SOMA"
+      }
+    ],
+    "passo": "Muito bem! Somamos 2 + 4 + 6 = 12 e dividimos por 3, obtendo 4.",
+    "dica": "Some as notas e divida pela quantidade de notas."
+  },
+  {
+    "id": "BN_10_005",
+    "bloco": "5",
+    "habilidade": "Média Aritmética",
+    "bncc": "EF07MA35",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Pedro fez 5 pontos em um jogo, depois 7 pontos e depois 9 pontos. Qual foi a média de pontos?",
+    "a": 5,
+    "b": 9,
+    "res": "7",
+    "alternativas": [
+      {
+        "id": "BN_10_005_alt_1",
+        "valor": "7",
+        "tipo": "acerto",
+        "categoria": "media",
+        "descricao": "O aluno calculou corretamente a média dos três valores.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_005_alt_2",
+        "valor": "21",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou os pontos, mas não dividiu por 3.",
+        "misconception": "TROCA_ENTRE_MEDIA_E_TOTAL"
+      },
+      {
+        "id": "BN_10_005_alt_3",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o maior valor da lista.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_005_alt_4",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno cometeu erro ao dividir o total.",
+        "misconception": "ERRO_DE_SOMA"
+      }
+    ],
+    "passo": "Correto! 5 + 7 + 9 = 21, e 21 dividido por 3 é 7.",
+    "dica": "Calcule o total e divida por 3."
+  },
+  {
+    "id": "BN_10_006",
+    "bloco": "5",
+    "habilidade": "Moda",
+    "bncc": "EF07MA35",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Em uma pesquisa, as cores escolhidas foram: azul, vermelho, azul, verde e azul. Qual é a moda?",
+    "a": 3,
+    "b": 1,
+    "res": "azul",
+    "alternativas": [
+      {
+        "id": "BN_10_006_alt_1",
+        "valor": "azul",
+        "tipo": "acerto",
+        "categoria": "moda",
+        "descricao": "O aluno identificou corretamente a cor que aparece mais vezes.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_006_alt_2",
+        "valor": "vermelho",
+        "tipo": "distrator",
+        "categoria": "frequencia",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma cor que aparece apenas uma vez.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_006_alt_3",
+        "valor": "verde",
+        "tipo": "distrator",
+        "categoria": "frequencia",
+        "peso": 1,
+        "descricao": "O aluno escolheu outra cor de baixa frequência.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_10_006_alt_4",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno indicou a frequência da moda em vez da categoria modal.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Isso! A moda é azul, pois é a cor que mais aparece.",
+    "dica": "Conte quantas vezes cada cor aparece."
+  },
+  {
+    "id": "BN_10_007",
+    "bloco": "5",
+    "habilidade": "Moda em Dados Numéricos",
+    "bncc": "EF07MA35",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Observe os números: 3, 2, 3, 4, 3. Qual número aparece mais vezes?",
+    "a": 3,
+    "b": 2,
+    "res": "3",
+    "alternativas": [
+      {
+        "id": "BN_10_007_alt_1",
+        "valor": "3",
+        "tipo": "acerto",
+        "categoria": "moda",
+        "descricao": "O aluno identificou corretamente o número com maior frequência.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_007_alt_2",
+        "valor": "2",
+        "tipo": "distrator",
+        "categoria": "frequencia",
+        "peso": 1,
+        "descricao": "O aluno escolheu o menor número da lista.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_007_alt_3",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "frequencia",
+        "peso": 1,
+        "descricao": "O aluno escolheu o maior número da lista, não o mais frequente.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_007_alt_4",
+        "valor": "15",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou os dados em vez de identificar a frequência.",
+        "misconception": "TROCA_ENTRE_TOTAL_E_FREQUENCIA"
+      }
+    ],
+    "passo": "Muito bem! O número 3 aparece três vezes, mais que os outros.",
+    "dica": "Conte a frequência de cada número."
+  },
+  {
+    "id": "BN_10_008",
+    "bloco": "5",
+    "habilidade": "Frequência",
+    "bncc": "EF06MA32",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Em uma pesquisa de esportes preferidos, futebol recebeu 12 votos, vôlei 6 votos e basquete 4 votos. Quantos votos recebeu futebol?",
+    "a": 12,
+    "b": 6,
+    "res": "12",
+    "alternativas": [
+      {
+        "id": "BN_10_008_alt_1",
+        "valor": "12",
+        "tipo": "acerto",
+        "categoria": "leitura",
+        "descricao": "O aluno leu corretamente a frequência da categoria futebol.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_008_alt_2",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno leu a frequência da categoria vôlei.",
+        "misconception": "LEITURA_INCORRETA"
+      },
+      {
+        "id": "BN_10_008_alt_3",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno leu a frequência da categoria basquete.",
+        "misconception": "LEITURA_INCORRETA"
+      },
+      {
+        "id": "BN_10_008_alt_4",
+        "valor": "22",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou todos os votos em vez de ler apenas futebol.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Correto! A tabela informa que futebol recebeu 12 votos.",
+    "dica": "Procure apenas a linha ou barra de futebol."
+  },
+  {
+    "id": "BN_10_009",
+    "bloco": "5",
+    "habilidade": "Maior Valor",
+    "bncc": "EF06MA31",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Na cantina, foram vendidos: suco = 15, água = 20 e leite = 8. Qual produto foi mais vendido?",
+    "a": 15,
+    "b": 20,
+    "res": "água",
+    "alternativas": [
+      {
+        "id": "BN_10_009_alt_1",
+        "valor": "água",
+        "tipo": "acerto",
+        "categoria": "comparacao",
+        "descricao": "O aluno identificou corretamente o produto com maior quantidade vendida.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_009_alt_2",
+        "valor": "suco",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu um valor intermediário.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_009_alt_3",
+        "valor": "leite",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 2,
+        "descricao": "O aluno escolheu o menor valor da lista.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_10_009_alt_4",
+        "valor": "suco e leite",
+        "tipo": "distrator",
+        "categoria": "organizacao",
+        "peso": 1,
+        "descricao": "O aluno agrupou categorias sem comparar corretamente.",
+        "misconception": "COMPARACAO_INCORRETA"
+      }
+    ],
+    "passo": "Isso! Água teve 20 vendas, a maior quantidade.",
+    "dica": "Compare 15, 20 e 8."
+  },
+  {
+    "id": "BN_10_010",
+    "bloco": "5",
+    "habilidade": "Comparação de Quantidades",
+    "bncc": "EF06MA32",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Em uma votação, 9 alunos escolheram cinema e 4 escolheram teatro. Quantos alunos a mais escolheram cinema?",
+    "a": 9,
+    "b": 4,
+    "res": "5",
+    "alternativas": [
+      {
+        "id": "BN_10_010_alt_1",
+        "valor": "5",
+        "tipo": "acerto",
+        "categoria": "comparacao",
+        "descricao": "O aluno calculou corretamente a diferença entre as quantidades.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_010_alt_2",
+        "valor": "13",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou as quantidades em vez de comparar a diferença.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_10_010_alt_3",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o maior valor em vez da diferença.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_010_alt_4",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o menor valor em vez da diferença.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      }
+    ],
+    "passo": "Muito bem! Para saber quantos a mais, fazemos 9 - 4 = 5.",
+    "dica": "Subtraia a menor quantidade da maior."
+  },
+  {
+    "id": "BN_10_011",
+    "bloco": "5",
+    "habilidade": "Total em Gráfico",
+    "bncc": "EF07MA36",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Um gráfico mostra os brinquedos preferidos: bola = 3, carrinho = 5 e boneca = 2. Quantos alunos participaram da pesquisa?",
+    "a": 3,
+    "b": 5,
+    "res": "10",
+    "alternativas": [
+      {
+        "id": "BN_10_011_alt_1",
+        "valor": "10",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente todas as frequências.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_011_alt_2",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno esqueceu de somar uma das categorias.",
+        "misconception": "OMISSAO_DE_DADO"
+      },
+      {
+        "id": "BN_10_011_alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 2,
+        "descricao": "O aluno escolheu apenas a maior frequência.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_011_alt_4",
+        "valor": "352",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno juntou os números na ordem apresentada.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Correto! Somando 3 + 5 + 2, temos 10 participantes.",
+    "dica": "Some todas as barras do gráfico."
+  },
+  {
+    "id": "BN_10_012",
+    "bloco": "5",
+    "habilidade": "Probabilidade Intuitiva",
+    "bncc": "EF07MA36",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Em uma caixa há 3 bolas vermelhas, 1 azul e 2 verdes. Sem olhar, qual cor tem mais chance de sair?",
+    "a": 3,
+    "b": 1,
+    "res": "vermelha",
+    "alternativas": [
+      {
+        "id": "BN_10_012_alt_1",
+        "valor": "vermelha",
+        "tipo": "acerto",
+        "categoria": "probabilidade",
+        "descricao": "O aluno identificou corretamente a cor com maior quantidade na caixa.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_012_alt_2",
+        "valor": "azul",
+        "tipo": "distrator",
+        "categoria": "probabilidade",
+        "peso": 2,
+        "descricao": "O aluno escolheu a cor com menor quantidade.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_10_012_alt_3",
+        "valor": "verde",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma cor frequente, mas não a mais frequente.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_012_alt_4",
+        "valor": "todas têm a mesma chance",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno ignorou que as quantidades são diferentes.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Isso! A cor vermelha aparece 3 vezes, mais que as outras.",
+    "dica": "A cor com maior quantidade tem mais chance."
+  },
+  {
+    "id": "BN_10_013",
+    "bloco": "5",
+    "habilidade": "Probabilidade Simples",
+    "bncc": "EF07MA36",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Ao jogar um dado comum, qual número tem mais chance de sair?",
+    "a": 1,
+    "b": 6,
+    "res": "todos têm a mesma chance",
+    "alternativas": [
+      {
+        "id": "BN_10_013_alt_1",
+        "valor": "todos têm a mesma chance",
+        "tipo": "acerto",
+        "categoria": "probabilidade",
+        "descricao": "O aluno reconheceu que todos os lados de um dado comum têm a mesma chance.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_013_alt_2",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "probabilidade",
+        "peso": 2,
+        "descricao": "O aluno escolheu o maior número como se fosse mais provável.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_013_alt_3",
+        "valor": "1",
+        "tipo": "distrator",
+        "categoria": "probabilidade",
+        "peso": 1,
+        "descricao": "O aluno escolheu o primeiro número sem considerar as chances iguais.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_013_alt_4",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "probabilidade",
+        "peso": 1,
+        "descricao": "O aluno escolheu um número intermediário sem justificativa estatística.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Muito bem! Em um dado comum, todos os números têm a mesma chance.",
+    "dica": "O dado tem uma face para cada número."
+  },
+  {
+    "id": "BN_10_014",
+    "bloco": "5",
+    "habilidade": "Organização de Dados",
+    "bncc": "EF08MA23",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Organize os dados em ordem crescente: 4, 2, 5, 1.",
+    "a": 4,
+    "b": 1,
+    "res": "1, 2, 4, 5",
+    "alternativas": [
+      {
+        "id": "BN_10_014_alt_1",
+        "valor": "1, 2, 4, 5",
+        "tipo": "acerto",
+        "categoria": "organizacao",
+        "descricao": "O aluno organizou corretamente os números do menor para o maior.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_014_alt_2",
+        "valor": "5, 4, 2, 1",
+        "tipo": "distrator",
+        "categoria": "organizacao",
+        "peso": 2,
+        "descricao": "O aluno organizou em ordem decrescente.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_10_014_alt_3",
+        "valor": "4, 2, 5, 1",
+        "tipo": "distrator",
+        "categoria": "organizacao",
+        "peso": 1,
+        "descricao": "O aluno manteve a ordem original dos dados.",
+        "misconception": "ORGANIZACAO_INCOMPLETA"
+      },
+      {
+        "id": "BN_10_014_alt_4",
+        "valor": "1, 4, 2, 5",
+        "tipo": "distrator",
+        "categoria": "organizacao",
+        "peso": 1,
+        "descricao": "O aluno iniciou corretamente, mas não ordenou todos os valores.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      }
+    ],
+    "passo": "Correto! Em ordem crescente, os números ficam 1, 2, 4, 5.",
+    "dica": "Comece pelo menor número e siga até o maior."
+  },
+  {
+    "id": "BN_10_015",
+    "bloco": "5",
+    "habilidade": "Contagem de Frequência",
+    "bncc": "EF08MA23",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Os animais de estimação citados foram: cão, gato, cão, peixe e cão. Quantas vezes apareceu cão?",
+    "a": 3,
+    "b": 1,
+    "res": "3",
+    "alternativas": [
+      {
+        "id": "BN_10_015_alt_1",
+        "valor": "3",
+        "tipo": "acerto",
+        "categoria": "frequencia",
+        "descricao": "O aluno contou corretamente quantas vezes cão apareceu.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_015_alt_2",
+        "valor": "2",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno deixou de contar uma ocorrência de cão.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_10_015_alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno contou todos os animais citados em vez de apenas cão.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_10_015_alt_4",
+        "valor": "1",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno contou apenas a primeira ocorrência de cão.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      }
+    ],
+    "passo": "Isso! A palavra cão aparece três vezes na lista.",
+    "dica": "Conte apenas as vezes em que aparece cão."
+  },
+  {
+    "id": "BN_10_016",
+    "bloco": "5",
+    "habilidade": "Leitura de Tabela",
+    "bncc": "EF08MA23",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Uma tabela mostra como os alunos chegam à escola: ônibus = 12, bicicleta = 4 e a pé = 6. Quantos alunos chegam de ônibus?",
+    "a": 12,
+    "b": 4,
+    "res": "12",
+    "alternativas": [
+      {
+        "id": "BN_10_016_alt_1",
+        "valor": "12",
+        "tipo": "acerto",
+        "categoria": "leitura",
+        "descricao": "O aluno leu corretamente o dado correspondente a ônibus.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_016_alt_2",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno leu o dado correspondente a bicicleta.",
+        "misconception": "LEITURA_INCORRETA"
+      },
+      {
+        "id": "BN_10_016_alt_3",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno leu o dado correspondente a a pé.",
+        "misconception": "LEITURA_INCORRETA"
+      },
+      {
+        "id": "BN_10_016_alt_4",
+        "valor": "22",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou todas as categorias em vez de selecionar ônibus.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Muito bem! A tabela informa que 12 alunos chegam de ônibus.",
+    "dica": "Procure a informação da categoria ônibus."
+  },
+  {
+    "id": "BN_10_017",
+    "bloco": "5",
+    "habilidade": "Interpretação de Dados",
+    "bncc": "EF08MA24",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Em uma pesquisa sobre matérias preferidas, matemática teve 7 votos, ciências teve 5 e história teve 3. Qual matéria teve mais votos?",
+    "a": 7,
+    "b": 5,
+    "res": "matemática",
+    "alternativas": [
+      {
+        "id": "BN_10_017_alt_1",
+        "valor": "matemática",
+        "tipo": "acerto",
+        "categoria": "comparacao",
+        "descricao": "O aluno identificou corretamente a categoria com maior frequência.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_017_alt_2",
+        "valor": "ciências",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma categoria de valor intermediário.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_017_alt_3",
+        "valor": "história",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 2,
+        "descricao": "O aluno escolheu a categoria com menor frequência.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_10_017_alt_4",
+        "valor": "ciências e história",
+        "tipo": "distrator",
+        "categoria": "organizacao",
+        "peso": 1,
+        "descricao": "O aluno agrupou categorias sem responder à pergunta.",
+        "misconception": "COMPARACAO_INCORRETA"
+      }
+    ],
+    "passo": "Correto! Matemática teve 7 votos, mais que as outras matérias.",
+    "dica": "Escolha a matéria com o maior número de votos."
+  },
+  {
+    "id": "BN_10_018",
+    "bloco": "5",
+    "habilidade": "Média Simples",
+    "bncc": "EF08MA24",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "As notas de Lara foram 6, 6, 9 e 7. Qual é a média dessas notas?",
+    "a": 6,
+    "b": 7,
+    "res": "7",
+    "alternativas": [
+      {
+        "id": "BN_10_018_alt_1",
+        "valor": "7",
+        "tipo": "acerto",
+        "categoria": "media",
+        "descricao": "O aluno somou as quatro notas e dividiu por 4 corretamente.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_018_alt_2",
+        "valor": "28",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno calculou o total, mas não dividiu pela quantidade de notas.",
+        "misconception": "TROCA_ENTRE_MEDIA_E_TOTAL"
+      },
+      {
+        "id": "BN_10_018_alt_3",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu a maior nota.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_018_alt_4",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "frequencia",
+        "peso": 1,
+        "descricao": "O aluno escolheu o valor que se repete em vez de calcular a média.",
+        "misconception": "TROCA_ENTRE_MEDIA_E_MODA"
+      }
+    ],
+    "passo": "Isso! 6 + 6 + 9 + 7 = 28, e 28 dividido por 4 é 7.",
+    "dica": "Some as quatro notas e divida por 4."
+  },
+  {
+    "id": "BN_10_019",
+    "bloco": "5",
+    "habilidade": "Soma de Frequências",
+    "bncc": "EF08MA24",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "A presença em três dias foi: segunda = 20 alunos, terça = 18 e quarta = 22. Quantos alunos foram registrados ao todo nesses três dias?",
+    "a": 20,
+    "b": 18,
+    "res": "60",
+    "alternativas": [
+      {
+        "id": "BN_10_019_alt_1",
+        "valor": "60",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente as três quantidades.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_019_alt_2",
+        "valor": "58",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno cometeu erro de soma.",
+        "misconception": "ERRO_DE_SOMA"
+      },
+      {
+        "id": "BN_10_019_alt_3",
+        "valor": "22",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 2,
+        "descricao": "O aluno escolheu apenas o maior valor apresentado.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_019_alt_4",
+        "valor": "38",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou apenas dois dos três valores.",
+        "misconception": "OMISSAO_DE_DADO"
+      }
+    ],
+    "passo": "Muito bem! O total é 20 + 18 + 22 = 60.",
+    "dica": "Some as presenças dos três dias."
+  },
+  {
+    "id": "BN_10_020",
+    "bloco": "5",
+    "habilidade": "Menor Valor",
+    "bncc": "EF06MA31",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Três alunos beberam água no recreio: Rui = 5 copos, Nina = 3 copos e Leo = 4 copos. Quem bebeu menos água?",
+    "a": 5,
+    "b": 3,
+    "res": "Nina",
+    "alternativas": [
+      {
+        "id": "BN_10_020_alt_1",
+        "valor": "Nina",
+        "tipo": "acerto",
+        "categoria": "comparacao",
+        "descricao": "O aluno identificou corretamente o menor valor da tabela.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_020_alt_2",
+        "valor": "Rui",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 2,
+        "descricao": "O aluno escolheu o maior valor em vez do menor.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_020_alt_3",
+        "valor": "Leo",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu o valor intermediário.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_020_alt_4",
+        "valor": "Rui e Leo",
+        "tipo": "distrator",
+        "categoria": "interpretacao",
+        "peso": 1,
+        "descricao": "O aluno agrupou nomes sem comparar corretamente os valores.",
+        "misconception": "COMPARACAO_INCORRETA"
+      }
+    ],
+    "passo": "Correto! Nina bebeu 3 copos, que é a menor quantidade.",
+    "dica": "Procure quem tem o menor número de copos."
+  },
+  {
+    "id": "BN_10_021",
+    "bloco": "5",
+    "habilidade": "Frequência em Lista",
+    "bncc": "EF08MA23",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "Em uma lista aparecem as letras: A, A, B, C, A, B. Quantas vezes a letra A aparece?",
+    "a": 3,
+    "b": 2,
+    "res": "3",
+    "alternativas": [
+      {
+        "id": "BN_10_021_alt_1",
+        "valor": "3",
+        "tipo": "acerto",
+        "categoria": "frequencia",
+        "descricao": "O aluno contou corretamente as ocorrências da letra A.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_021_alt_2",
+        "valor": "2",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno deixou de contar uma ocorrência da letra A.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_10_021_alt_3",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "interpretacao",
+        "peso": 2,
+        "descricao": "O aluno contou todas as letras da lista.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_10_021_alt_4",
+        "valor": "1",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno contou apenas a primeira ocorrência da letra A.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      }
+    ],
+    "passo": "Isso! A letra A aparece três vezes.",
+    "dica": "Conte somente as letras A."
+  },
+  {
+    "id": "BN_10_022",
+    "bloco": "5",
+    "habilidade": "Chance Mais Provável",
+    "bncc": "EF09MA22",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Em um saco há 5 fichas amarelas e 2 fichas pretas. Qual cor tem mais chance de ser retirada?",
+    "a": 5,
+    "b": 2,
+    "res": "amarela",
+    "alternativas": [
+      {
+        "id": "BN_10_022_alt_1",
+        "valor": "amarela",
+        "tipo": "acerto",
+        "categoria": "probabilidade",
+        "descricao": "O aluno identificou corretamente a cor com maior quantidade de fichas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_022_alt_2",
+        "valor": "preta",
+        "tipo": "distrator",
+        "categoria": "probabilidade",
+        "peso": 2,
+        "descricao": "O aluno escolheu a cor com menor quantidade.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_10_022_alt_3",
+        "valor": "as duas têm a mesma chance",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 1,
+        "descricao": "O aluno não considerou que as quantidades são diferentes.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_022_alt_4",
+        "valor": "nenhuma cor",
+        "tipo": "distrator",
+        "categoria": "interpretacao",
+        "peso": 1,
+        "descricao": "O aluno não interpretou a relação entre quantidade e chance.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Muito bem! Há mais fichas amarelas, então essa cor tem mais chance.",
+    "dica": "Compare as quantidades de fichas."
+  },
+  {
+    "id": "BN_10_023",
+    "bloco": "5",
+    "habilidade": "Total em Tabela",
+    "bncc": "EF06MA32",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Uma tabela mostra vitórias em jogos: time A = 3, time B = 2 e time C = 5. Quantas vitórias há ao todo?",
+    "a": 3,
+    "b": 2,
+    "res": "10",
+    "alternativas": [
+      {
+        "id": "BN_10_023_alt_1",
+        "valor": "10",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente as vitórias dos três times.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_023_alt_2",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno omitiu um dos valores da tabela.",
+        "misconception": "OMISSAO_DE_DADO"
+      },
+      {
+        "id": "BN_10_023_alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 2,
+        "descricao": "O aluno escolheu apenas o maior valor.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_023_alt_4",
+        "valor": "325",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno juntou os números sem realizar a soma.",
+        "misconception": "JUSTAPOSICAO_NUMERICA"
+      }
+    ],
+    "passo": "Correto! Somando 3 + 2 + 5, encontramos 10 vitórias.",
+    "dica": "Some as vitórias dos três times."
+  },
+  {
+    "id": "BN_10_024",
+    "bloco": "5",
+    "habilidade": "Moda em Categorias",
+    "bncc": "EF07MA35",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Os tamanhos de camisetas pedidos foram: P, M, M, G e M. Qual tamanho foi mais pedido?",
+    "a": 3,
+    "b": 1,
+    "res": "M",
+    "alternativas": [
+      {
+        "id": "BN_10_024_alt_1",
+        "valor": "M",
+        "tipo": "acerto",
+        "categoria": "moda",
+        "descricao": "O aluno identificou corretamente o tamanho que aparece mais vezes.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_024_alt_2",
+        "valor": "P",
+        "tipo": "distrator",
+        "categoria": "frequencia",
+        "peso": 1,
+        "descricao": "O aluno escolheu um tamanho que aparece apenas uma vez.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_024_alt_3",
+        "valor": "G",
+        "tipo": "distrator",
+        "categoria": "frequencia",
+        "peso": 1,
+        "descricao": "O aluno escolheu outro tamanho de baixa frequência.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_10_024_alt_4",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno informou a frequência em vez do tamanho mais pedido.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Isso! O tamanho M aparece três vezes, mais que os outros.",
+    "dica": "Conte quantas vezes cada tamanho aparece."
+  },
+  {
+    "id": "BN_10_025",
+    "bloco": "5",
+    "habilidade": "Leitura de Gráfico de Barras",
+    "bncc": "EF08MA24",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Em um gráfico, os votos foram: desenho = 6, filme = 4 e jogo = 8. Qual opção teve exatamente 6 votos?",
+    "a": 6,
+    "b": 4,
+    "res": "desenho",
+    "alternativas": [
+      {
+        "id": "BN_10_025_alt_1",
+        "valor": "desenho",
+        "tipo": "acerto",
+        "categoria": "leitura",
+        "descricao": "O aluno identificou corretamente a categoria associada ao valor 6.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_025_alt_2",
+        "valor": "filme",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu a categoria com 4 votos.",
+        "misconception": "LEITURA_INCORRETA"
+      },
+      {
+        "id": "BN_10_025_alt_3",
+        "valor": "jogo",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 2,
+        "descricao": "O aluno escolheu a categoria com maior quantidade de votos.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_025_alt_4",
+        "valor": "filme e jogo",
+        "tipo": "distrator",
+        "categoria": "interpretacao",
+        "peso": 1,
+        "descricao": "O aluno selecionou categorias que não correspondem ao valor pedido.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Muito bem! A opção desenho teve exatamente 6 votos.",
+    "dica": "Procure qual categoria está ligada ao número 6."
+  },
+  {
+    "id": "BN_10_026",
+    "bloco": "5",
+    "habilidade": "Média de Temperaturas",
+    "bncc": "EF08MA24",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "simbolica",
+    "display": "As temperaturas de três dias foram 20, 22 e 24 graus. Qual é a média das temperaturas?",
+    "a": 20,
+    "b": 24,
+    "res": "22",
+    "alternativas": [
+      {
+        "id": "BN_10_026_alt_1",
+        "valor": "22",
+        "tipo": "acerto",
+        "categoria": "media",
+        "descricao": "O aluno somou as temperaturas e dividiu por 3 corretamente.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_026_alt_2",
+        "valor": "66",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou os valores, mas não dividiu pela quantidade de dias.",
+        "misconception": "TROCA_ENTRE_MEDIA_E_TOTAL"
+      },
+      {
+        "id": "BN_10_026_alt_3",
+        "valor": "24",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu a maior temperatura.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_026_alt_4",
+        "valor": "20",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu a menor temperatura.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      }
+    ],
+    "passo": "Correto! 20 + 22 + 24 = 66, e 66 dividido por 3 é 22.",
+    "dica": "Some as três temperaturas e divida por 3."
+  },
+  {
+    "id": "BN_10_027",
+    "bloco": "5",
+    "habilidade": "Diferença entre Dados",
+    "bncc": "EF06MA32",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Em uma pizzaria, foram vendidas 9 pizzas de queijo e 7 de calabresa. Quantas pizzas de queijo foram vendidas a mais?",
+    "a": 9,
+    "b": 7,
+    "res": "2",
+    "alternativas": [
+      {
+        "id": "BN_10_027_alt_1",
+        "valor": "2",
+        "tipo": "acerto",
+        "categoria": "comparacao",
+        "descricao": "O aluno calculou corretamente a diferença entre 9 e 7.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_027_alt_2",
+        "valor": "16",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou as duas quantidades em vez de comparar.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_10_027_alt_3",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu a quantidade maior em vez da diferença.",
+        "misconception": "ESCOLHA_DO_MAIOR_VALOR"
+      },
+      {
+        "id": "BN_10_027_alt_4",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu a quantidade menor em vez da diferença.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      }
+    ],
+    "passo": "Isso! Foram 9 de queijo e 7 de calabresa, então a diferença é 2.",
+    "dica": "Faça 9 menos 7."
+  },
+  {
+    "id": "BN_10_028",
+    "bloco": "5",
+    "habilidade": "Coleta de Informações",
+    "bncc": "EF09MA22",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Para descobrir a fruta preferida da turma, qual pergunta deve ser feita aos alunos?",
+    "a": 1,
+    "b": 4,
+    "res": "Qual é sua fruta preferida?",
+    "alternativas": [
+      {
+        "id": "BN_10_028_alt_1",
+        "valor": "Qual é sua fruta preferida?",
+        "tipo": "acerto",
+        "categoria": "coleta",
+        "descricao": "O aluno escolheu uma pergunta adequada para coletar a informação desejada.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_028_alt_2",
+        "valor": "Quantos anos você tem?",
+        "tipo": "distrator",
+        "categoria": "interpretacao",
+        "peso": 2,
+        "descricao": "O aluno escolheu uma pergunta que não coleta dados sobre fruta preferida.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_10_028_alt_3",
+        "valor": "Você gosta de matemática?",
+        "tipo": "distrator",
+        "categoria": "coleta",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma pergunta de pesquisa, mas sobre outro tema.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_028_alt_4",
+        "valor": "Qual é sua cor preferida?",
+        "tipo": "distrator",
+        "categoria": "coleta",
+        "peso": 1,
+        "descricao": "O aluno confundiu o tema da pesquisa.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Muito bem! Para saber a fruta preferida, a pergunta precisa falar sobre frutas.",
+    "dica": "Escolha a pergunta que combina com a informação desejada."
+  },
+  {
+    "id": "BN_10_029",
+    "bloco": "5",
+    "habilidade": "Probabilidade com Mesma Chance",
+    "bncc": "EF09MA22",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "concreta",
+    "display": "Em uma caixa há 4 bolas verdes e 4 bolas vermelhas. Qual cor tem mais chance de sair?",
+    "a": 4,
+    "b": 4,
+    "res": "as duas têm a mesma chance",
+    "alternativas": [
+      {
+        "id": "BN_10_029_alt_1",
+        "valor": "as duas têm a mesma chance",
+        "tipo": "acerto",
+        "categoria": "probabilidade",
+        "descricao": "O aluno reconheceu que as quantidades iguais geram chances iguais.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_029_alt_2",
+        "valor": "verde",
+        "tipo": "distrator",
+        "categoria": "probabilidade",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma cor sem considerar que as quantidades são iguais.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_029_alt_3",
+        "valor": "vermelha",
+        "tipo": "distrator",
+        "categoria": "probabilidade",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma cor específica apesar da igualdade das quantidades.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_10_029_alt_4",
+        "valor": "nenhuma tem chance",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu chances iguais com ausência de chance.",
+        "misconception": "CONFUSAO_CONCEITUAL"
+      }
+    ],
+    "passo": "Correto! Como há 4 bolas de cada cor, as chances são iguais.",
+    "dica": "Compare as quantidades de cada cor."
+  },
+  {
+    "id": "BN_10_030",
+    "bloco": "5",
+    "habilidade": "Maior Valor em Tabela",
+    "bncc": "EF06MA31",
+    "cargaCognitiva": 1,
+    "estagioGalperin": "VERBAL_EXTERNA",
+    "representacao": "visual",
+    "display": "Uma tabela de notas mostra: Ana = 8, Bruno = 6 e Carla = 9. Quem teve a maior nota?",
+    "a": 8,
+    "b": 6,
+    "res": "Carla",
+    "alternativas": [
+      {
+        "id": "BN_10_030_alt_1",
+        "valor": "Carla",
+        "tipo": "acerto",
+        "categoria": "comparacao",
+        "descricao": "O aluno identificou corretamente a maior nota da tabela.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_10_030_alt_2",
+        "valor": "Ana",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma nota alta, mas não a maior.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_10_030_alt_3",
+        "valor": "Bruno",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 2,
+        "descricao": "O aluno escolheu a menor nota em vez da maior.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_10_030_alt_4",
+        "valor": "Ana e Bruno",
+        "tipo": "distrator",
+        "categoria": "organizacao",
+        "peso": 1,
+        "descricao": "O aluno agrupou nomes sem identificar a maior nota.",
+        "misconception": "COMPARACAO_INCORRETA"
+      }
+    ],
+    "passo": "Muito bem! Carla teve nota 9, a maior da tabela.",
+    "dica": "Compare 8, 6 e 9."
   }
 ]
