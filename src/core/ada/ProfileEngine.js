@@ -1,8 +1,8 @@
 /**
  * @fileoverview ProfileEngine.js
  * @description Motor de Inferência Cognitiva e Rastreamento de Deriva Semiótica.
- * AGORA COM: Índice de Estabilidade Conceitual, Matriz de Transferência e Detector de Scaffold.
- * @version 7.0.0
+ * AGORA COM: Índice de Estabilidade, Detector de Scaffold e TIMELINE COGNITIVA LONGITUDINAL.
+ * @version 8.0.0
  * @package LabTech Core Environment
  */
 
@@ -49,18 +49,20 @@ export class ProfileEngine {
         if (perfilSalvo) {
             console.log(`[ADA] Memória recuperada para: ${estudanteId}`);
             
-            // 🛠️ MIGRATION PATCH V2: Atualiza perfis veteranos com a Pesquisa Longitudinal
-            if (!perfilSalvo.matrizTransferencia) {
+            // 🛠️ MIGRATION PATCH V3: Injeta a Timeline Cognitiva
+            if (!perfilSalvo.historicoLongitudinal) {
                 perfilSalvo.estadoADA = perfilSalvo.estadoADA || { acertosRapidosCombo: 0, emboscadaArmada: false };
                 perfilSalvo.indicePseudoconceito = perfilSalvo.indicePseudoconceito || 0.0;
                 perfilSalvo.mapaEtiologiaErros = perfilSalvo.mapaEtiologiaErros || {};
                 
-                // Novos Módulos Científicos
-                perfilSalvo.matrizTransferencia = { procedural: { acertos: 0, total: 0 }, transferencia: { acertos: 0, total: 0 }, generalizacao: { acertos: 0, total: 0 } };
-                perfilSalvo.estabilidadeConceitual = 'INDEFINIDA';
-                perfilSalvo.dependenciaScaffold = false;
+                perfilSalvo.matrizTransferencia = perfilSalvo.matrizTransferencia || { procedural: { acertos: 0, total: 0 }, transferencia: { acertos: 0, total: 0 }, generalizacao: { acertos: 0, total: 0 } };
+                perfilSalvo.estabilidadeConceitual = perfilSalvo.estabilidadeConceitual || 'INDEFINIDA';
+                perfilSalvo.dependenciaScaffold = perfilSalvo.dependenciaScaffold || false;
                 
-                console.log(`[ADA] 🔄 Mente veterana atualizada para Pesquisa Longitudinal Galperiniana.`);
+                // Novo Motor de Pesquisa
+                perfilSalvo.historicoLongitudinal = [];
+                
+                console.log(`[ADA] 🔄 Mente veterana atualizada com Timeline Cognitiva.`);
             }
 
             this._estadosEstudantes.set(estudanteId, perfilSalvo);
@@ -77,10 +79,13 @@ export class ProfileEngine {
             indicePseudoconceito: 0.0, 
             estadoADA: { acertosRapidosCombo: 0, emboscadaArmada: false },
 
-            // 🔬 NOVO: Laboratório Longitudinal
+            // 🔬 Laboratório Longitudinal
             matrizTransferencia: { procedural: { acertos: 0, total: 0 }, transferencia: { acertos: 0, total: 0 }, generalizacao: { acertos: 0, total: 0 } },
             estabilidadeConceitual: 'INDEFINIDA',
             dependenciaScaffold: false,
+            
+            // 🕒 O Eletroencefalograma da Aprendizagem
+            historicoLongitudinal: [],
 
             metricasAcumuladas: { totalLatenciaConceptual: 0, totalFriccaoAjustes: 0, errosSequenciais: 0, taxaAcertoGeral: 0.0 },
             scoreMatrizesPerfeitas: { PROCEDURAL_MECANICO: 0.0, DEPENDENTE_CONCRETO: 0.0, IMPULSIVO_ARITMETICO: 0.0, CONCEITUAL_TEORICO: 0.0 },
@@ -93,6 +98,24 @@ export class ProfileEngine {
         return JSON.parse(JSON.stringify(novoPerfil));
     }
     
+    // 🕒 GRAVAÇÃO DO SNAPSHOT LONGITUDINAL
+    _registrarSnapshotTemporal(perfil) {
+        // Regista um snapshot de 10 em 10 itens respondidos para gerar a curva
+        if (perfil.itensRespondidos % 10 === 0 && perfil.itensRespondidos > 0) {
+            const snapshot = {
+                marcoTemporal: `Sessão ${Math.floor(perfil.itensRespondidos / 10)}`,
+                data: new Date().toISOString(),
+                perfilDominante: perfil.perfilDominante,
+                estabilidadeConceitual: perfil.estabilidadeConceitual,
+                dependenciaScaffold: perfil.dependenciaScaffold,
+                riscoPseudoconceito: perfil.indicePseudoconceito.toFixed(2),
+                taxaTransferencia: perfil.matrizTransferencia.transferencia.total > 0 ? (perfil.matrizTransferencia.transferencia.acertos / perfil.matrizTransferencia.transferencia.total).toFixed(2) : 0
+            };
+            perfil.historicoLongitudinal.push(snapshot);
+            console.log(`[ADA 🔬] Snapshot Longitudinal Gravado: ${snapshot.marcoTemporal} - Rumo ao conceito científico!`);
+        }
+    }
+
     processarEventoTelemetria(estudanteId, dadosTelemetria, metadadosSensor) {
         const normalizador = new QuestionNormalizer();
         try { normalizador.normalize(metadadosSensor); } 
@@ -165,7 +188,8 @@ export class ProfileEngine {
 
         this._computarPesosPerfis(perfil, latenciaMs, totalAjustesPreConfirmacao, ehCorreto, etiologiaErro, estagioAtual);
         this._estabilizarPerfilDominante(perfil);
-        this._avaliarEstabilidadeEScaffold(perfil); // 🔬 Avalia Longitudinalidade
+        this._avaliarEstabilidadeEScaffold(perfil); 
+        this._registrarSnapshotTemporal(perfil); // 🕒 Injeta no Diário de Bordo
 
         this._estadosEstudantes.set(estudanteId, perfil);
         this._salvarLocal(estudanteId, perfil);
