@@ -2,7 +2,8 @@
  * @fileoverview LearningAnalytics.js
  * @description Motor de Telemetria e Geração de Relatórios do LabTech.
  * Converte dados atômicos em visualizações compreensíveis (BNCC e Painel Clínico XAI).
- * @version 3.0.0
+ * AGORA COM: Painel Longitudinal de Galperin (Estabilidade, Transferência e Fading).
+ * @version 4.0.0
  * @package LabTech / Core ADA
  */
 
@@ -66,16 +67,16 @@ export class LearningAnalytics {
 
     /**
      * 🧠 A EVOLUÇÃO: Gera o HTML rico do Painel de Explicabilidade da IA (XAI)
+     * AGORA COM PESQUISA LONGITUDINAL DE GALPERIN INJETADA!
      */
     static gerarPainelDocenteHTML(perfil) {
         if (!perfil) return "<p>Calibração Pendente...</p>";
 
-        // Constrói barras visuais para o Mapa de Erros
+        // 1. Constrói o Mapa de Etiologia (Raiz dos Erros)
         let etiologiaHtml = '';
         const mapaErros = perfil.mapaEtiologiaErros || {};
         for (let [erro, cont] of Object.entries(mapaErros)) {
             if (cont > 0) {
-                // Limita a barra em 10 erros para não vazar o layout (1 erro = 10%)
                 const width = Math.min(100, cont * 10); 
                 etiologiaHtml += `
                 <div style="margin-bottom: 8px;">
@@ -90,7 +91,7 @@ export class LearningAnalytics {
             }
         }
 
-        // Constrói a lista do Score de Matrizes
+        // 2. Constrói a Matriz de Tendências Cognitivas
         let scoresHtml = '';
         const scores = perfil.scoreMatrizesPerfeitas || {};
         for (let [p, score] of Object.entries(scores)) {
@@ -100,6 +101,36 @@ export class LearningAnalytics {
                 <span style="color: var(--choco-gold, #d4af37); font-weight:bold;">${score.toFixed(2)}</span>
             </div>`;
         }
+
+        // 3. 🔬 NOVO: Constrói a Matriz de Transferência de Galperin
+        const mat = perfil.matrizTransferencia || { procedural: {acertos:0, total:0}, transferencia: {acertos:0, total:0}, generalizacao: {acertos:0, total:0} };
+        const txProc = mat.procedural.total > 0 ? (mat.procedural.acertos / mat.procedural.total) * 100 : 0;
+        const txTransf = mat.transferencia.total > 0 ? (mat.transferencia.acertos / mat.transferencia.total) * 100 : 0;
+        const txGen = mat.generalizacao.total > 0 ? (mat.generalizacao.acertos / mat.generalizacao.total) * 100 : 0;
+
+        const htmlMatrizTransferencia = `
+            <div style="margin-bottom: 8px;">
+                <div style="display:flex; justify-content:space-between; font-size: 10px; color: #bbb;"><span>1. Procedimento (Acertos/Tentativas)</span><span>${Math.round(txProc)}%</span></div>
+                <div style="width: 100%; background: #222; height: 6px; border-radius: 3px;"><div style="width: ${txProc}%; background: #00ff66; height: 100%; border-radius: 3px;"></div></div>
+            </div>
+            <div style="margin-bottom: 8px;">
+                <div style="display:flex; justify-content:space-between; font-size: 10px; color: #bbb;"><span>2. Transferência (Textual/Semântica)</span><span>${Math.round(txTransf)}%</span></div>
+                <div style="width: 100%; background: #222; height: 6px; border-radius: 3px;"><div style="width: ${txTransf}%; background: #ffbb33; height: 100%; border-radius: 3px;"></div></div>
+            </div>
+            <div style="margin-bottom: 8px;">
+                <div style="display:flex; justify-content:space-between; font-size: 10px; color: #bbb;"><span>3. Generalização (Abstrata/Simbólica)</span><span>${Math.round(txGen)}%</span></div>
+                <div style="width: 100%; background: #222; height: 6px; border-radius: 3px;"><div style="width: ${txGen}%; background: #00eaff; height: 100%; border-radius: 3px;"></div></div>
+            </div>
+        `;
+
+        // 4. 🔬 NOVO: Semáforo de Estabilidade e Fading
+        const estabilidade = perfil.estabilidadeConceitual || 'INDEFINIDA';
+        let corEstabilidade = '#aaa';
+        if (estabilidade === 'ALTA_ESTABILIZADA') corEstabilidade = '#00ff66';
+        if (estabilidade === 'EM_CONSTRUCAO') corEstabilidade = '#ffbb33';
+        if (estabilidade === 'BAIXA_RISCO_PSEUDOCONCEITO') corEstabilidade = '#ff3333';
+
+        const dependente = perfil.dependenciaScaffold ? '<span style="color:#ff3333; font-weight:bold;">SIM (Fading Necessário)</span>' : '<span style="color:#00ff66;">NÃO (Autônomo)</span>';
 
         return `
         <div style="padding: 10px; color: white; text-align: left;">
@@ -118,6 +149,23 @@ export class LearningAnalytics {
             </div>
 
             <div style="margin-top: 15px; display: grid; grid-template-columns: 1fr; gap: 15px;">
+                
+                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border-left: 3px solid #ffbb33;">
+                    <h3 style="font-size: 12px; color: #aaa; margin-top:0;">MATRIZ DE TRANSFERÊNCIA DE GALPERIN</h3>
+                    ${htmlMatrizTransferencia}
+                    
+                    <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #444;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                            <span style="font-size: 11px; color:#aaa;">Estabilidade Conceitual:</span> 
+                            <b style="color: ${corEstabilidade}; font-size: 11px;">${estabilidade.replace(/_/g, ' ')}</b>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="font-size: 11px; color:#aaa;">Dependência de Scaffold Visual:</span> 
+                            <span style="font-size: 11px;">${dependente}</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border-left: 3px solid var(--choco-gold, #d4af37);">
                     <h3 style="font-size: 12px; color: #aaa; margin-top:0;">MATRIZ DE TENDÊNCIAS COGNITIVAS</h3>
                     ${scoresHtml}
@@ -131,6 +179,7 @@ export class LearningAnalytics {
                     <h3 style="font-size: 12px; color: #aaa; margin-top:0;">MAPA DE ETIOLOGIA (RAIZ DOS ERROS)</h3>
                     ${etiologiaHtml || '<p style="font-size:11px; color:#00ff66; margin:0;">Nenhum erro processado no histórico.</p>'}
                 </div>
+
             </div>
         </div>
         `;
