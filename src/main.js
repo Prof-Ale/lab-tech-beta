@@ -107,9 +107,16 @@ async function processarResposta(alt, q) {
     const feedbackTexto = analise.correto ? q.passo : (q.dica || analise.descricao);
     uiManager.narrarContexto(feedbackTexto, analise.correto);
 
+    // 🛡️ MATEMÁTICA DEFENSIVA INJETADA AQUI:
+    // Extrai apenas os números da pergunta e da resposta, ignorando textos.
+    const pontoA = parseFloat(String(q.a || q.inicio || q.valorInicial).replace(/[^\d.-]/g, '')) || 0;
+    const pontoB = parseFloat(String(alt.valor).replace(/[^\d.-]/g, '')) || 0;
+    const deslocamento = pontoB - pontoA;
+
     const payloadAdaptive = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
     if (renderizadorGrafico) {
-        await renderizadorGrafico.animarArcos(q, alt.valor - (parseFloat(q.a) || 0), payloadAdaptive.interfaceModifiers.modoRepresentacao);
+        // Agora usamos a variável 'deslocamento' limpa, evitando o NaN
+        await renderizadorGrafico.animarArcos(q, deslocamento, payloadAdaptive.interfaceModifiers.modoRepresentacao);
     }
 
     const fbContainer = $('fb');
