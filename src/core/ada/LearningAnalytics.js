@@ -35,70 +35,131 @@ export class LearningAnalytics {
         return htmlFinal;
     }
 
-    static gerarPainelDocenteHTML(perfil) {
-        if (!perfil) return "<p>Calibração Pendente...</p>";
+static gerarPainelDocenteHTML(perfil) {
+        if (!perfil) return "<p style='color:#ff3333; font-family:monospace; padding:20px;'>⚠️ Calibração Pendente. O aluno precisa interagir com o sistema.</p>";
 
-        // Processamento de dados de erros
+        // 1. Constrói o Mapa de Etiologia (Raiz dos Erros)
         let etiologiaHtml = '';
-        for (let [erro, cont] of Object.entries(perfil.mapaEtiologiaErros || {})) {
+        const mapaErros = perfil.mapaEtiologiaErros || {};
+        for (let [erro, cont] of Object.entries(mapaErros)) {
             if (cont > 0) {
                 const width = Math.min(100, cont * 10); 
-                etiologiaHtml += `<div style="margin-bottom: 8px;"><div style="display:flex; justify-content:space-between; font-size: 10px; color: #bbb;"><span>${erro.replace(/_/g, ' ')}</span><span>${cont}</span></div><div style="width: 100%; background: #222; height: 6px; border-radius: 3px; margin-top:2px;"><div style="width: ${width}%; background: var(--neon-red, #ff3333); height: 100%; border-radius: 3px;"></div></div></div>`;
+                etiologiaHtml += `
+                <div style="margin-bottom: 10px;">
+                    <div style="display:flex; justify-content:space-between; font-size: 11px; color: #ccc; font-family: monospace;">
+                        <span>${erro.replace(/_/g, ' ')}</span>
+                        <span style="color: var(--neon-red, #ff3333); font-weight:bold;">${cont}x</span>
+                    </div>
+                    <div style="width: 100%; background: rgba(0,0,0,0.5); height: 8px; border-radius: 4px; margin-top:3px; border: 1px solid #333;">
+                        <div style="width: ${width}%; background: linear-gradient(90deg, #880000, #ff3333); height: 100%; border-radius: 3px;"></div>
+                    </div>
+                </div>`;
             }
         }
 
-        // Processamento de Scores
+        // 2. Constrói a Matriz de Tendências Cognitivas
         let scoresHtml = '';
-        for (let [p, score] of Object.entries(perfil.scoreMatrizesPerfeitas || {})) {
-            scoresHtml += `<div style="display:flex; justify-content: space-between; font-size: 11px; margin-bottom:6px; border-bottom: 1px solid #333;"><span style="color: var(--neon-cyan, #00eaff);">${p.replace(/_/g, ' ')}</span><span style="color: var(--choco-gold, #d4af37); font-weight:bold;">${score.toFixed(2)}</span></div>`;
+        const scores = perfil.scoreMatrizesPerfeitas || {};
+        for (let [p, score] of Object.entries(scores)) {
+            scoresHtml += `
+            <div style="display:flex; justify-content: space-between; font-size: 12px; margin-bottom:8px; border-bottom: 1px dashed #333; padding-bottom: 4px;">
+                <span style="color: var(--neon-cyan, #00eaff);">${p.replace(/_/g, ' ')}</span>
+                <span style="color: var(--choco-gold, #d4af37); font-weight:bold; font-family: monospace; font-size: 14px;">${score.toFixed(2)}</span>
+            </div>`;
         }
 
-        // Processamento de Transferência
+        // 3. Constrói a Matriz de Transferência de Galperin
         const mat = perfil.matrizTransferencia || { procedural: {acertos:0, total:0}, transferencia: {acertos:0, total:0}, generalizacao: {acertos:0, total:0} };
         const txProc = mat.procedural.total > 0 ? (mat.procedural.acertos / mat.procedural.total) * 100 : 0;
         const txTransf = mat.transferencia.total > 0 ? (mat.transferencia.acertos / mat.transferencia.total) * 100 : 0;
         const txGen = mat.generalizacao.total > 0 ? (mat.generalizacao.acertos / mat.generalizacao.total) * 100 : 0;
 
-        const corEstabilidade = perfil.estabilidadeConceitual === 'ALTA_ESTABILIZADA' ? '#00ff66' : (perfil.estabilidadeConceitual === 'BAIXA_RISCO_PSEUDOCONCEITO' ? '#ff3333' : '#ffbb33');
-        const dependente = perfil.dependenciaScaffold ? '<span style="color:#ff3333; font-weight:bold;">SIM (Fading Necessário)</span>' : '<span style="color:#00ff66;">NÃO</span>';
+        const htmlMatrizTransferencia = `
+            <div style="margin-bottom: 10px;">
+                <div style="display:flex; justify-content:space-between; font-size: 11px; color: #ccc;"><span>[ZDP 1] Procedimento Visual</span><span style="color:#00ff66;">${Math.round(txProc)}%</span></div>
+                <div style="width: 100%; background: #111; height: 6px; border-radius: 3px; margin-top:2px;"><div style="width: ${txProc}%; background: #00ff66; height: 100%; border-radius: 3px;"></div></div>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <div style="display:flex; justify-content:space-between; font-size: 11px; color: #ccc;"><span>[ZDP 2] Transferência Textual</span><span style="color:#ffbb33;">${Math.round(txTransf)}%</span></div>
+                <div style="width: 100%; background: #111; height: 6px; border-radius: 3px; margin-top:2px;"><div style="width: ${txTransf}%; background: #ffbb33; height: 100%; border-radius: 3px;"></div></div>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <div style="display:flex; justify-content:space-between; font-size: 11px; color: #ccc;"><span>[ZDP 3] Generalização Abstrata</span><span style="color:#00eaff;">${Math.round(txGen)}%</span></div>
+                <div style="width: 100%; background: #111; height: 6px; border-radius: 3px; margin-top:2px;"><div style="width: ${txGen}%; background: #00eaff; height: 100%; border-radius: 3px;"></div></div>
+            </div>
+        `;
+
+        // 4. Semáforo de Estabilidade e Fading
+        const estabilidade = perfil.estabilidadeConceitual || 'INDEFINIDA';
+        let corEstabilidade = '#aaa';
+        if (estabilidade === 'ALTA_ESTABILIZADA') corEstabilidade = '#00ff66';
+        if (estabilidade === 'EM_CONSTRUCAO') corEstabilidade = '#ffbb33';
+        if (estabilidade === 'BAIXA_RISCO_PSEUDOCONCEITO') corEstabilidade = '#ff3333';
+
+        const dependente = perfil.dependenciaScaffold ? '<span style="color:#ff3333; font-weight:bold; animation: blink 2s infinite;">SIM (Requer Fading)</span>' : '<span style="color:#00ff66;">NÃO (Autônomo)</span>';
 
         return `
-        <div style="padding: 10px; color: white; text-align: left;">
-            <h2 style="color: var(--choco-gold, #d4af37); text-align: center; font-family: 'Orbitron', sans-serif; margin-top: 0;">RADIOGRAFIA DA I.A. (XAI)</h2>
+        <div style="padding: 15px; color: white; text-align: left;">
+            <h2 style="color: var(--choco-gold, #d4af37); text-align: center; font-family: 'Orbitron', sans-serif; margin-top: 0; letter-spacing: 2px;">RADIOGRAFIA DA I.A. (XAI)</h2>
             
-            <div style="display: flex; justify-content: space-between; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.7); padding: 15px; border-radius: 8px; border: 1px solid #333;">
                 <div>
-                    <p style="margin:0; font-size: 10px; color: #888;">ESTUDANTE</p>
-                    <p style="margin:0; font-weight: bold; font-size: 16px;">${perfil.id.replace('_', ' | ')}</p>
+                    <p style="margin:0; font-size: 11px; color: #888; letter-spacing: 1px;">ESTUDANTE AVALIADO</p>
+                    <p style="margin:0; font-weight: bold; font-size: 18px; font-family: monospace;">${perfil.id.replace('_', ' | ')}</p>
                 </div>
                 <div style="text-align: right;">
-                    <p style="margin:0; font-size: 10px; color: #888;">DIAGNÓSTICO</p>
-                    <p style="margin:0; font-weight: bold; font-size: 16px; color: var(--neon-cyan, #00eaff);">${perfil.perfilDominante.replace(/_/g, ' ')}</p>
+                    <p style="margin:0; font-size: 11px; color: #888; letter-spacing: 1px;">DIAGNÓSTICO DOMINANTE</p>
+                    <p style="margin:0; font-weight: bold; font-size: 18px; color: var(--neon-cyan, #00eaff); text-transform: uppercase;">${perfil.perfilDominante.replace(/_/g, ' ')}</p>
                 </div>
             </div>
 
-            <div style="margin-top: 10px; background: rgba(0,0,0,0.6); padding: 8px; border-radius: 4px; border: 1px solid #444;">
-                <div style="display:flex; justify-content:space-between; font-size: 10px; color: #888;">
-                    <span>CERTEZA DA I.A. (CONFIANÇA)</span>
-                    <span>${perfil.confiancaDiagnostica || 0}%</span>
+            <div style="margin-top: 15px; background: rgba(0,0,0,0.8); padding: 12px; border-radius: 8px; border-left: 4px solid ${perfil.confiancaDiagnostica > 60 ? '#00eaff' : '#ffbb33'};">
+                <div style="display:flex; justify-content:space-between; font-size: 12px; color: #aaa; margin-bottom: 5px;">
+                    <span style="letter-spacing: 1px;">ÍNDICE DE CONFIANÇA ESTATÍSTICA DA IA</span>
+                    <span style="font-weight:bold; color:white;">${perfil.confiancaDiagnostica || 0}%</span>
                 </div>
-                <div style="width: 100%; background: #222; height: 6px; border-radius: 3px; margin-top:4px;">
-                    <div style="width: ${perfil.confiancaDiagnostica || 0}%; background: ${perfil.confiancaDiagnostica > 40 ? '#00eaff' : '#d4af37'}; height: 100%; border-radius: 3px;"></div>
+                <div style="width: 100%; background: #222; height: 8px; border-radius: 4px;">
+                    <div style="width: ${perfil.confiancaDiagnostica || 0}%; background: ${perfil.confiancaDiagnostica > 60 ? 'var(--neon-cyan, #00eaff)' : '#ffbb33'}; height: 100%; border-radius: 4px; box-shadow: 0 0 10px ${perfil.confiancaDiagnostica > 60 ? '#00eaff' : '#ffbb33'};"></div>
                 </div>
             </div>
 
-            <div style="margin-top: 15px; display: grid; grid-template-columns: 1fr; gap: 15px;">
-                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border-left: 3px solid #ffbb33;">
-                    <h3 style="font-size: 12px; color: #aaa; margin-top:0;">MATRIZ DE TRANSFERÊNCIA</h3>
-                    <div style="font-size:10px; color:#bbb;">Procedural: ${Math.round(txProc)}% | Transf: ${Math.round(txTransf)}% | Gen: ${Math.round(txGen)}%</div>
-                    <div style="margin-top:10px; font-size: 11px;">Estabilidade: <b style="color:${corEstabilidade}">${perfil.estabilidadeConceitual}</b></div>
-                    <div style="font-size: 11px;">Scaffold Visual: ${dependente}</div>
+            <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                
+                <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; border-top: 3px solid #ffbb33; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                    <h3 style="font-size: 13px; color: #fff; margin-top:0; border-bottom: 1px solid #333; padding-bottom: 8px;"><i class="fas fa-layer-group"></i> MATRIZ DE TRANSFERÊNCIA</h3>
+                    ${htmlMatrizTransferencia}
+                    <div style="margin-top: 15px; padding-top: 10px; border-top: 1px dashed #444; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 4px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                            <span style="font-size: 12px; color:#aaa;">Estabilidade Conceitual:</span> 
+                            <b style="color: ${corEstabilidade}; font-size: 11px;">${estabilidade.replace(/_/g, ' ')}</b>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="font-size: 12px; color:#aaa;">Dependência Visual:</span> 
+                            <span style="font-size: 11px;">${dependente}</span>
+                        </div>
+                    </div>
                 </div>
-                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; border-left: 3px solid var(--neon-red, #ff3333);">
-                    <h3 style="font-size: 12px; color: #aaa; margin-top:0;">ETIOLOGIA DOS ERROS</h3>
-                    ${etiologiaHtml}
+
+                <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; border-top: 3px solid var(--choco-gold, #d4af37); box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                    <h3 style="font-size: 13px; color: #fff; margin-top:0; border-bottom: 1px solid #333; padding-bottom: 8px;"><i class="fas fa-brain"></i> TENDÊNCIAS COGNITIVAS</h3>
+                    ${scoresHtml}
+                    <div style="margin-top: 15px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 4px; display:flex; justify-content:space-between;">
+                        <span style="font-size: 12px; color:#aaa;">Risco de Deriva:</span> 
+                        <b style="color: ${perfil.derivaPedagogicaGeral > 0.5 ? '#ff3333' : '#00ff66'}; font-size: 14px;">${perfil.derivaPedagogicaGeral}</b>
+                    </div>
                 </div>
+
+                <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; border-top: 3px solid var(--neon-red, #ff3333); box-shadow: 0 4px 6px rgba(0,0,0,0.3); grid-column: 1 / -1;">
+                    <h3 style="font-size: 13px; color: #fff; margin-top:0; border-bottom: 1px solid #333; padding-bottom: 8px;"><i class="fas fa-bug"></i> MAPA DE ETIOLOGIA (RAIZ DOS ERROS)</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 10px;">
+                        ${etiologiaHtml || '<p style="font-size:12px; color:#00ff66; margin:0; text-align:center; width:100%;">Nenhuma anomalia processada no histórico.</p>'}
+                    </div>
+                </div>
+
             </div>
-        </div>`;
+        </div>
+        <style>
+            @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        </style>
+        `;
     }
-}
