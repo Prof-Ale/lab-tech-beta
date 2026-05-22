@@ -14901,5 +14901,1566 @@
     ],
     "passo": "Correto! Uma caixa de sapatos lembra um paralelepípedo.",
     "dica": "Pense em um sólido parecido com uma caixa retangular."
+  },
+
+  {
+    "id": "BN_OB_001",
+    "bloco": "7",
+    "habilidade": "Raciocínio Lógico e Resolução de Problemas",
+    "bncc": "EF07MA13",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "simbolica",
+    "display": "Em uma sequência, cada número é o dobro do anterior. Se o primeiro número é 3, qual será o quarto número da sequência?",
+    "a": 3,
+    "b": 4,
+    "res": "24",
+    "alternativas": [
+      {
+        "id": "BN_OB_001_alt_1",
+        "valor": "24",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno identificou corretamente o padrão de duplicação.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_001_alt_2",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno interrompeu a sequência antes do quarto termo.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_001_alt_3",
+        "valor": "48",
+        "tipo": "distrator",
+        "categoria": "padrao",
+        "peso": 2,
+        "descricao": "O aluno continuou um passo além da sequência.",
+        "misconception": "EXTRAPOLACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_OB_001_alt_4",
+        "valor": "18",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno somou 6 a cada passo em vez de dobrar.",
+        "misconception": "OPERACAO_INADEQUADA"
+      }
+    ],
+    "passo": "Muito bem! A sequência é 3, 6, 12, 24.",
+    "dica": "Monte a sequência termo por termo."
+  },
+  {
+    "id": "BN_OB_002",
+    "bloco": "7",
+    "habilidade": "Padrões Numéricos",
+    "bncc": "EF06MA14",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "simbolica",
+    "display": "Observe a sequência: 1, 4, 7, 10, __. Qual é o próximo número?",
+    "a": 3,
+    "b": 10,
+    "res": "13",
+    "alternativas": [
+      {
+        "id": "BN_OB_002_alt_1",
+        "valor": "13",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno percebeu que a sequência aumenta de 3 em 3.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_002_alt_2",
+        "valor": "11",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou apenas 1 ao último termo.",
+        "misconception": "RUPTURA_DE_PADRAO"
+      },
+      {
+        "id": "BN_OB_002_alt_3",
+        "valor": "14",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou 4 em vez de 3 ao último termo.",
+        "misconception": "ERRO_DE_PADRAO"
+      },
+      {
+        "id": "BN_OB_002_alt_4",
+        "valor": "16",
+        "tipo": "distrator",
+        "categoria": "padrao",
+        "peso": 2,
+        "descricao": "O aluno pulou um termo da sequência.",
+        "misconception": "EXTRAPOLACAO_INDEVIDA"
+      }
+    ],
+    "passo": "Correto! A diferença entre os termos é sempre 3.",
+    "dica": "Compare cada número com o anterior."
+  },
+  {
+    "id": "BN_OB_003",
+    "bloco": "7",
+    "habilidade": "Estratégias Aritméticas",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "simbolica",
+    "display": "Sem fazer conta longa, qual é o resultado de 25 + 25 + 25 + 25?",
+    "a": 25,
+    "b": 4,
+    "res": "100",
+    "alternativas": [
+      {
+        "id": "BN_OB_003_alt_1",
+        "valor": "100",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno reconheceu que quatro grupos de 25 formam 100.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_003_alt_2",
+        "valor": "50",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou apenas dois dos quatro termos.",
+        "misconception": "CALCULO_PARCIAL"
+      },
+      {
+        "id": "BN_OB_003_alt_3",
+        "valor": "75",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno somou apenas três termos.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_003_alt_4",
+        "valor": "125",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno acrescentou um grupo de 25 a mais.",
+        "misconception": "EXTRAPOLACAO_INDEVIDA"
+      }
+    ],
+    "passo": "Muito bem! Quatro vezes 25 é igual a 100.",
+    "dica": "Pense em moedas de 25 centavos formando 1 real."
+  },
+  {
+    "id": "BN_OB_004",
+    "bloco": "7",
+    "habilidade": "Contagem e Organização",
+    "bncc": "EF07MA04",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "concreta",
+    "display": "Quatro amigos se cumprimentam uma vez cada par. Quantos cumprimentos acontecem ao todo?",
+    "a": 4,
+    "b": 2,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_OB_004_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "contagem",
+        "descricao": "O aluno contou corretamente todos os pares de amigos.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_004_alt_2",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno contou apenas a quantidade de amigos.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_004_alt_3",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno contou cada cumprimento duas vezes.",
+        "misconception": "DUPLA_CONTAGEM"
+      },
+      {
+        "id": "BN_OB_004_alt_4",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno multiplicou 4 por 3 sem retirar repetições.",
+        "misconception": "ASSOCIACAO_INDEVIDA"
+      }
+    ],
+    "passo": "Correto! Os pares possíveis entre 4 amigos são 6.",
+    "dica": "Liste os pares sem repetir a ordem."
+  },
+  {
+    "id": "BN_OB_005",
+    "bloco": "7",
+    "habilidade": "Combinatória Básica",
+    "bncc": "EF07MA04",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "concreta",
+    "display": "Joana tem 2 camisetas e 3 bermudas. De quantas maneiras diferentes ela pode escolher uma camiseta e uma bermuda?",
+    "a": 2,
+    "b": 3,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_OB_005_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "contagem",
+        "descricao": "O aluno multiplicou corretamente as opções de camiseta pelas opções de bermuda.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_005_alt_2",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou as opções em vez de combinar cada camiseta com cada bermuda.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_OB_005_alt_3",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas as bermudas.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_005_alt_4",
+        "valor": "2",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas as camisetas.",
+        "misconception": "CALCULO_PARCIAL"
+      }
+    ],
+    "passo": "Muito bem! Cada uma das 2 camisetas pode ser usada com 3 bermudas, totalizando 6 combinações.",
+    "dica": "Combine cada camiseta com todas as bermudas."
+  },
+  {
+    "id": "BN_OB_006",
+    "bloco": "7",
+    "habilidade": "Raciocínio Espacial",
+    "bncc": "EF06MA18",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "visual",
+    "display": "Um retângulo é formado por 3 linhas e 4 colunas de quadradinhos. Quantos quadradinhos há no total?",
+    "a": 3,
+    "b": 4,
+    "res": "12",
+    "alternativas": [
+      {
+        "id": "BN_OB_006_alt_1",
+        "valor": "12",
+        "tipo": "acerto",
+        "categoria": "geometria",
+        "descricao": "O aluno multiplicou corretamente linhas por colunas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_006_alt_2",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou linhas e colunas em vez de contar todos os quadradinhos.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_OB_006_alt_3",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno contou apenas parte da malha.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_006_alt_4",
+        "valor": "16",
+        "tipo": "distrator",
+        "categoria": "geometria",
+        "peso": 1,
+        "descricao": "O aluno tratou a figura como se fosse 4 por 4.",
+        "misconception": "GENERALIZACAO_INCORRETA"
+      }
+    ],
+    "passo": "Correto! São 3 linhas com 4 quadradinhos em cada uma: 3 x 4 = 12.",
+    "dica": "Conte por linhas ou use multiplicação."
+  },
+  {
+    "id": "BN_OB_007",
+    "bloco": "7",
+    "habilidade": "Divisibilidade",
+    "bncc": "EF06MA06",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "simbolica",
+    "display": "Qual número maior que 20 e menor que 30 é divisível por 5?",
+    "a": 20,
+    "b": 30,
+    "res": "25",
+    "alternativas": [
+      {
+        "id": "BN_OB_007_alt_1",
+        "valor": "25",
+        "tipo": "acerto",
+        "categoria": "divisibilidade",
+        "descricao": "O aluno identificou corretamente o múltiplo de 5 no intervalo pedido.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_007_alt_2",
+        "valor": "20",
+        "tipo": "distrator",
+        "categoria": "intervalo",
+        "peso": 2,
+        "descricao": "O aluno escolheu um número que não é maior que 20.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_OB_007_alt_3",
+        "valor": "30",
+        "tipo": "distrator",
+        "categoria": "intervalo",
+        "peso": 2,
+        "descricao": "O aluno escolheu um número que não é menor que 30.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_007_alt_4",
+        "valor": "24",
+        "tipo": "distrator",
+        "categoria": "divisibilidade",
+        "peso": 1,
+        "descricao": "O aluno escolheu um número do intervalo que não é divisível por 5.",
+        "misconception": "ASSOCIACAO_INDEVIDA"
+      }
+    ],
+    "passo": "Muito bem! Entre 20 e 30, o múltiplo de 5 é 25.",
+    "dica": "Procure os números terminados em 0 ou 5 e respeite o intervalo."
+  },
+  {
+    "id": "BN_OB_008",
+    "bloco": "7",
+    "habilidade": "Paridade",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "simbolica",
+    "display": "A soma de 7 + 9 + 11 é um número par ou ímpar?",
+    "a": 7,
+    "b": 11,
+    "res": "Ímpar",
+    "alternativas": [
+      {
+        "id": "BN_OB_008_alt_1",
+        "valor": "Ímpar",
+        "tipo": "acerto",
+        "categoria": "paridade",
+        "descricao": "O aluno percebeu que a soma de três números ímpares é ímpar.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_008_alt_2",
+        "valor": "Par",
+        "tipo": "distrator",
+        "categoria": "paridade",
+        "peso": 2,
+        "descricao": "O aluno generalizou incorretamente que soma de ímpares sempre é par.",
+        "misconception": "GENERALIZACAO_INCORRETA"
+      },
+      {
+        "id": "BN_OB_008_alt_3",
+        "valor": "Não é possível saber",
+        "tipo": "distrator",
+        "categoria": "interpretacao",
+        "peso": 1,
+        "descricao": "O aluno não usou a informação dos números apresentados.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_OB_008_alt_4",
+        "valor": "Depende da ordem",
+        "tipo": "distrator",
+        "categoria": "logica",
+        "peso": 1,
+        "descricao": "O aluno achou que a ordem da soma altera a paridade.",
+        "misconception": "ERRO_DE_LOGICA"
+      }
+    ],
+    "passo": "Correto! 7 + 9 + 11 = 27, que é ímpar.",
+    "dica": "Faça a soma ou observe a quantidade de números ímpares."
+  },
+  {
+    "id": "BN_OB_009",
+    "bloco": "7",
+    "habilidade": "Sequências e Padrões",
+    "bncc": "EF08MA06",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "visual",
+    "display": "Uma figura tem 1 palito no primeiro desenho, 3 palitos no segundo e 5 palitos no terceiro. Mantendo o padrão, quantos palitos terá o quarto desenho?",
+    "a": 2,
+    "b": 5,
+    "res": "7",
+    "alternativas": [
+      {
+        "id": "BN_OB_009_alt_1",
+        "valor": "7",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno percebeu que a quantidade aumenta de 2 em 2.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_009_alt_2",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "padrao",
+        "peso": 1,
+        "descricao": "O aluno somou apenas 1 ao termo anterior.",
+        "misconception": "RUPTURA_DE_PADRAO"
+      },
+      {
+        "id": "BN_OB_009_alt_3",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou 3 ao termo anterior.",
+        "misconception": "ERRO_DE_PADRAO"
+      },
+      {
+        "id": "BN_OB_009_alt_4",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "padrao",
+        "peso": 2,
+        "descricao": "O aluno pulou um termo do padrão.",
+        "misconception": "EXTRAPOLACAO_INDEVIDA"
+      }
+    ],
+    "passo": "Muito bem! A sequência 1, 3, 5 continua com 7.",
+    "dica": "Observe quanto aumenta de um desenho para o próximo."
+  },
+  {
+    "id": "BN_OB_010",
+    "bloco": "7",
+    "habilidade": "Geometria e Perímetro",
+    "bncc": "EF08MA19",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "visual",
+    "display": "Um quadrado tem perímetro 20 cm. Qual é a medida de cada lado?",
+    "a": 20,
+    "b": 4,
+    "res": "5 cm",
+    "alternativas": [
+      {
+        "id": "BN_OB_010_alt_1",
+        "valor": "5 cm",
+        "tipo": "acerto",
+        "categoria": "geometria",
+        "descricao": "O aluno dividiu corretamente o perímetro pelos 4 lados do quadrado.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_010_alt_2",
+        "valor": "4 cm",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 1,
+        "descricao": "O aluno escolheu a quantidade de lados como medida do lado.",
+        "misconception": "ASSOCIACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_OB_010_alt_3",
+        "valor": "10 cm",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno dividiu o perímetro por 2 em vez de por 4.",
+        "misconception": "CALCULO_PARCIAL"
+      },
+      {
+        "id": "BN_OB_010_alt_4",
+        "valor": "20 cm",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno repetiu o perímetro como se fosse lado.",
+        "misconception": "LEITURA_INCOMPLETA"
+      }
+    ],
+    "passo": "Correto! Como o quadrado tem 4 lados iguais, 20 dividido por 4 é 5.",
+    "dica": "Divida o perímetro igualmente entre os quatro lados."
+  },
+  {
+    "id": "BN_OB_011",
+    "bloco": "7",
+    "habilidade": "Álgebra e Valor Desconhecido",
+    "bncc": "EF09MA09",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "simbolica",
+    "display": "Pensei em um número. Multipliquei por 3 e obtive 21. Em que número pensei?",
+    "a": 3,
+    "b": 21,
+    "res": "7",
+    "alternativas": [
+      {
+        "id": "BN_OB_011_alt_1",
+        "valor": "7",
+        "tipo": "acerto",
+        "categoria": "algebra",
+        "descricao": "O aluno identificou corretamente o número que multiplicado por 3 resulta em 21.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_011_alt_2",
+        "valor": "18",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno subtraiu 3 de 21 em vez de dividir.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_OB_011_alt_3",
+        "valor": "24",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou 3 a 21 em vez de encontrar o número inicial.",
+        "misconception": "OPERACAO_INADEQUADA"
+      },
+      {
+        "id": "BN_OB_011_alt_4",
+        "valor": "63",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno multiplicou 21 por 3 em vez de desfazer a operação.",
+        "misconception": "OPERACAO_INVERTIDA"
+      }
+    ],
+    "passo": "Muito bem! O número é 7, pois 7 x 3 = 21.",
+    "dica": "Pergunte: 3 vezes qual número dá 21?"
+  },
+  {
+    "id": "BN_OB_012",
+    "bloco": "7",
+    "habilidade": "Raciocínio Lógico",
+    "bncc": "EF07MA13",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "concreta",
+    "display": "Em uma fila, Lucas é o 3º a partir do começo e o 4º a partir do fim. Quantas pessoas há na fila?",
+    "a": 3,
+    "b": 4,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_OB_012_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "logica",
+        "descricao": "O aluno somou as posições e retirou a dupla contagem de Lucas.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_012_alt_2",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno somou 3 e 4 sem perceber que Lucas foi contado duas vezes.",
+        "misconception": "DUPLA_CONTAGEM"
+      },
+      {
+        "id": "BN_OB_012_alt_3",
+        "valor": "4",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno considerou apenas a posição a partir do fim.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_012_alt_4",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno retirou duas pessoas ao ajustar a contagem.",
+        "misconception": "ERRO_DE_CONTAGEM"
+      }
+    ],
+    "passo": "Correto! São 2 pessoas antes de Lucas, Lucas e 3 depois dele: 6 pessoas.",
+    "dica": "Conte as pessoas antes e depois de Lucas."
+  },
+  {
+    "id": "BN_OB_013",
+    "bloco": "7",
+    "habilidade": "Problemas de Percurso",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "concreta",
+    "display": "Um robô anda 2 passos para frente, depois mais 3 passos para frente e volta 1 passo. A quantos passos do início ele fica?",
+    "a": 2,
+    "b": 3,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "BN_OB_013_alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "aritmetica",
+        "descricao": "O aluno calculou corretamente o deslocamento final.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_013_alt_2",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 2,
+        "descricao": "O aluno somou os passos para frente e ignorou a volta.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_013_alt_3",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno somou também o passo de volta como se fosse para frente.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_OB_013_alt_4",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno fez apenas 3 menos 1 e esqueceu os 2 primeiros passos.",
+        "misconception": "CALCULO_PARCIAL"
+      }
+    ],
+    "passo": "Muito bem! O robô avança 2 + 3 = 5 passos e volta 1, ficando a 4 passos do início.",
+    "dica": "Some os avanços e depois retire o passo de volta."
+  },
+  {
+    "id": "BN_OB_014",
+    "bloco": "7",
+    "habilidade": "Interpretação de Tabela",
+    "bncc": "EF09MA22",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "visual",
+    "display": "Em uma tabela, Ana fez 12 pontos, Beto fez 9 e Carla fez 15. Quantos pontos Carla fez a mais que Beto?",
+    "a": 15,
+    "b": 9,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_OB_014_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "interpretacao",
+        "descricao": "O aluno comparou corretamente os pontos de Carla e Beto.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_014_alt_2",
+        "valor": "24",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 2,
+        "descricao": "O aluno somou os pontos de Carla e Beto em vez de calcular a diferença.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_OB_014_alt_3",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno comparou Carla com Ana em vez de Beto.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_OB_014_alt_4",
+        "valor": "15",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu apenas a pontuação de Carla.",
+        "misconception": "LEITURA_INCOMPLETA"
+      }
+    ],
+    "passo": "Correto! Carla fez 15 pontos e Beto fez 9; a diferença é 6.",
+    "dica": "Subtraia os pontos de Beto dos pontos de Carla."
+  },
+  {
+    "id": "BN_OB_015",
+    "bloco": "7",
+    "habilidade": "Contagem de Possibilidades",
+    "bncc": "EF07MA04",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "concreta",
+    "display": "Com os algarismos 1, 2 e 3, quantos números de dois algarismos diferentes podem ser formados?",
+    "a": 3,
+    "b": 2,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_OB_015_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "contagem",
+        "descricao": "O aluno contou corretamente as possibilidades com algarismos diferentes.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_015_alt_2",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno contou apenas a escolha do primeiro algarismo.",
+        "misconception": "CALCULO_PARCIAL"
+      },
+      {
+        "id": "BN_OB_015_alt_3",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno permitiu repetição de algarismos, contrariando o enunciado.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_015_alt_4",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno omitiu uma das possibilidades.",
+        "misconception": "ERRO_DE_CONTAGEM"
+      }
+    ],
+    "passo": "Muito bem! Para a dezena há 3 escolhas e para a unidade restam 2, totalizando 6.",
+    "dica": "Liste exemplos como 12, 13, 21 e continue sem repetir algarismos."
+  },
+  {
+    "id": "BN_OB_016",
+    "bloco": "7",
+    "habilidade": "Estimativa e Estratégia",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "simbolica",
+    "display": "Qual resultado está mais perto de 100: 48 + 49, 30 + 40 ou 80 + 30?",
+    "a": 48,
+    "b": 49,
+    "res": "48 + 49",
+    "alternativas": [
+      {
+        "id": "BN_OB_016_alt_1",
+        "valor": "48 + 49",
+        "tipo": "acerto",
+        "categoria": "estimativa",
+        "descricao": "O aluno percebeu que 48 + 49 = 97, valor mais próximo de 100.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_016_alt_2",
+        "valor": "30 + 40",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma soma distante de 100.",
+        "misconception": "ERRO_DE_ESTIMATIVA"
+      },
+      {
+        "id": "BN_OB_016_alt_3",
+        "valor": "80 + 30",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno escolheu 110 sem comparar a distância até 100.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_OB_016_alt_4",
+        "valor": "Todos são iguais",
+        "tipo": "distrator",
+        "categoria": "logica",
+        "peso": 1,
+        "descricao": "O aluno não comparou os resultados das somas.",
+        "misconception": "LEITURA_INCOMPLETA"
+      }
+    ],
+    "passo": "Correto! 48 + 49 = 97, que está a 3 de 100.",
+    "dica": "Calcule ou estime cada soma e compare com 100."
+  },
+  {
+    "id": "BN_OB_017",
+    "bloco": "7",
+    "habilidade": "Padrões em Figuras",
+    "bncc": "EF08MA06",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "visual",
+    "display": "Na etapa 1 há 2 bolinhas. Na etapa 2 há 4 bolinhas. Na etapa 3 há 6 bolinhas. Quantas bolinhas há na etapa 5?",
+    "a": 2,
+    "b": 5,
+    "res": "10",
+    "alternativas": [
+      {
+        "id": "BN_OB_017_alt_1",
+        "valor": "10",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno reconheceu que cada etapa tem o dobro do número da etapa.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_017_alt_2",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno parou na etapa 4 em vez da etapa 5.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_017_alt_3",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "padrao",
+        "peso": 2,
+        "descricao": "O aluno avançou até a etapa 6.",
+        "misconception": "EXTRAPOLACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_OB_017_alt_4",
+        "valor": "7",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno somou 2 e 5 em vez de aplicar o padrão.",
+        "misconception": "TROCA_DE_OPERACAO"
+      }
+    ],
+    "passo": "Muito bem! A etapa 5 tem 2 x 5 = 10 bolinhas.",
+    "dica": "Relacione o número da etapa com a quantidade de bolinhas."
+  },
+  {
+    "id": "BN_OB_018",
+    "bloco": "7",
+    "habilidade": "Geometria e Área",
+    "bncc": "EF08MA19",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "visual",
+    "display": "Um retângulo mede 6 cm por 2 cm. Um quadrado mede 3 cm por 3 cm. Qual figura tem maior área?",
+    "a": 6,
+    "b": 3,
+    "res": "Retângulo",
+    "alternativas": [
+      {
+        "id": "BN_OB_018_alt_1",
+        "valor": "Retângulo",
+        "tipo": "acerto",
+        "categoria": "geometria",
+        "descricao": "O aluno comparou corretamente as áreas: 12 cm² e 9 cm².",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_018_alt_2",
+        "valor": "Quadrado",
+        "tipo": "distrator",
+        "categoria": "geometria",
+        "peso": 2,
+        "descricao": "O aluno escolheu o quadrado por ter lados iguais, sem calcular a área.",
+        "misconception": "ASSOCIACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_OB_018_alt_3",
+        "valor": "As duas têm a mesma área",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 1,
+        "descricao": "O aluno não comparou corretamente 12 e 9.",
+        "misconception": "ERRO_DE_COMPARACAO"
+      },
+      {
+        "id": "BN_OB_018_alt_4",
+        "valor": "Não é possível saber",
+        "tipo": "distrator",
+        "categoria": "interpretacao",
+        "peso": 1,
+        "descricao": "O aluno não usou as medidas informadas.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Correto! A área do retângulo é 12 cm², maior que os 9 cm² do quadrado.",
+    "dica": "Multiplique as medidas de cada figura e compare."
+  },
+  {
+    "id": "BN_OB_019",
+    "bloco": "7",
+    "habilidade": "Lógica com Condições",
+    "bncc": "EF07MA13",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "simbolica",
+    "display": "Um número é maior que 10, menor que 20 e é par. Qual das opções pode ser esse número?",
+    "a": 10,
+    "b": 20,
+    "res": "14",
+    "alternativas": [
+      {
+        "id": "BN_OB_019_alt_1",
+        "valor": "14",
+        "tipo": "acerto",
+        "categoria": "logica",
+        "descricao": "O aluno escolheu um número que satisfaz todas as condições.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_019_alt_2",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "intervalo",
+        "peso": 1,
+        "descricao": "O aluno escolheu um número menor que 10.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_019_alt_3",
+        "valor": "15",
+        "tipo": "distrator",
+        "categoria": "paridade",
+        "peso": 2,
+        "descricao": "O aluno respeitou o intervalo, mas ignorou que o número deve ser par.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_OB_019_alt_4",
+        "valor": "22",
+        "tipo": "distrator",
+        "categoria": "intervalo",
+        "peso": 1,
+        "descricao": "O aluno escolheu um número par, mas fora do intervalo.",
+        "misconception": "LEITURA_PARCIAL"
+      }
+    ],
+    "passo": "Muito bem! 14 é maior que 10, menor que 20 e é par.",
+    "dica": "Teste cada condição uma por uma."
+  },
+  {
+    "id": "BN_OB_020",
+    "bloco": "7",
+    "habilidade": "Raciocínio com Operações",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "concreta",
+    "display": "Maria tinha 18 figurinhas. Deu metade para sua irmã. Depois ganhou 4. Com quantas figurinhas ficou?",
+    "a": 18,
+    "b": 4,
+    "res": "13",
+    "alternativas": [
+      {
+        "id": "BN_OB_020_alt_1",
+        "valor": "13",
+        "tipo": "acerto",
+        "categoria": "aritmetica",
+        "descricao": "O aluno calculou metade de 18 e depois somou 4 corretamente.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_020_alt_2",
+        "valor": "22",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 2,
+        "descricao": "O aluno somou 4 sem considerar que Maria deu metade das figurinhas.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_020_alt_3",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno calculou apenas a metade e esqueceu o ganho de 4.",
+        "misconception": "CALCULO_PARCIAL"
+      },
+      {
+        "id": "BN_OB_020_alt_4",
+        "valor": "14",
+        "tipo": "distrator",
+        "categoria": "operacao",
+        "peso": 1,
+        "descricao": "O aluno retirou 4 da quantidade inicial em vez de seguir a ordem do problema.",
+        "misconception": "ERRO_DE_LOGICA"
+      }
+    ],
+    "passo": "Correto! Metade de 18 é 9; depois 9 + 4 = 13.",
+    "dica": "Resolva as ações na ordem em que aparecem."
+  },
+  {
+    "id": "BN_OB_021",
+    "bloco": "7",
+    "habilidade": "Organização Lógica",
+    "bncc": "EF09MA22",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "concreta",
+    "display": "Três caixas têm etiquetas A, B e C. A caixa A tem 5 bolas, a B tem 8 e a C tem 6. Qual caixa tem quantidade entre as outras duas?",
+    "a": 5,
+    "b": 8,
+    "res": "C",
+    "alternativas": [
+      {
+        "id": "BN_OB_021_alt_1",
+        "valor": "C",
+        "tipo": "acerto",
+        "categoria": "ordenacao",
+        "descricao": "O aluno identificou que 6 está entre 5 e 8.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_021_alt_2",
+        "valor": "A",
+        "tipo": "distrator",
+        "categoria": "ordenacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu a menor quantidade.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_OB_021_alt_3",
+        "valor": "B",
+        "tipo": "distrator",
+        "categoria": "ordenacao",
+        "peso": 2,
+        "descricao": "O aluno escolheu a maior quantidade.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_OB_021_alt_4",
+        "valor": "A e B",
+        "tipo": "distrator",
+        "categoria": "logica",
+        "peso": 1,
+        "descricao": "O aluno indicou os extremos em vez do valor intermediário.",
+        "misconception": "ASSOCIACAO_INDEVIDA"
+      }
+    ],
+    "passo": "Muito bem! Ordenando as quantidades, temos 5, 6 e 8; a caixa C fica no meio.",
+    "dica": "Coloque os números em ordem crescente."
+  },
+  {
+    "id": "BN_OB_022",
+    "bloco": "7",
+    "habilidade": "Geometria e Ângulos",
+    "bncc": "EF07MA22",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "visual",
+    "display": "Um quadrado tem 4 ângulos retos. Dois quadrados juntos lado a lado formam um retângulo. Quantos ângulos retos tem o contorno desse retângulo?",
+    "a": 4,
+    "b": 2,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "BN_OB_022_alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "geometria",
+        "descricao": "O aluno percebeu que o contorno do novo retângulo continua tendo 4 ângulos retos.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_022_alt_2",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 2,
+        "descricao": "O aluno somou os ângulos dos dois quadrados sem considerar o contorno final.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_OB_022_alt_3",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "contagem",
+        "peso": 1,
+        "descricao": "O aluno contou alguns ângulos internos além do contorno.",
+        "misconception": "LEITURA_PARCIAL_DA_FIGURA"
+      },
+      {
+        "id": "BN_OB_022_alt_4",
+        "valor": "2",
+        "tipo": "distrator",
+        "categoria": "visual",
+        "peso": 1,
+        "descricao": "O aluno contou apenas dois cantos visíveis ou destacados.",
+        "misconception": "CONTAGEM_INCOMPLETA"
+      }
+    ],
+    "passo": "Correto! O contorno de um retângulo tem 4 cantos, todos ângulos retos.",
+    "dica": "Pense apenas no contorno da figura formada."
+  },
+  {
+    "id": "BN_OB_023",
+    "bloco": "7",
+    "habilidade": "Sequência com Alternância",
+    "bncc": "EF06MA14",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "simbolica",
+    "display": "Complete a sequência: 2, 5, 4, 7, 6, 9, __. O padrão alterna somar 3 e subtrair 1.",
+    "a": 3,
+    "b": 1,
+    "res": "8",
+    "alternativas": [
+      {
+        "id": "BN_OB_023_alt_1",
+        "valor": "8",
+        "tipo": "acerto",
+        "categoria": "padrao",
+        "descricao": "O aluno aplicou corretamente a alternância e subtraiu 1 de 9.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_023_alt_2",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "padrao",
+        "peso": 2,
+        "descricao": "O aluno somou 3 novamente em vez de alternar a operação.",
+        "misconception": "GENERALIZACAO_INCORRETA"
+      },
+      {
+        "id": "BN_OB_023_alt_3",
+        "valor": "10",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou 1 em vez de subtrair 1.",
+        "misconception": "TROCA_DE_OPERACAO"
+      },
+      {
+        "id": "BN_OB_023_alt_4",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno repetiu um termo anterior da sequência.",
+        "misconception": "LEITURA_INCOMPLETA"
+      }
+    ],
+    "passo": "Muito bem! Depois de somar 3 para chegar a 9, o próximo passo é subtrair 1.",
+    "dica": "Siga a ordem das operações: +3, -1, +3, -1."
+  },
+  {
+    "id": "BN_OB_024",
+    "bloco": "7",
+    "habilidade": "Problema de Idades",
+    "bncc": "EF07MA13",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "concreta",
+    "display": "Hoje, Ana tem 10 anos e seu irmão tem 6. Daqui a 3 anos, qual será a diferença de idade entre eles?",
+    "a": 10,
+    "b": 6,
+    "res": "4 anos",
+    "alternativas": [
+      {
+        "id": "BN_OB_024_alt_1",
+        "valor": "4 anos",
+        "tipo": "acerto",
+        "categoria": "logica",
+        "descricao": "O aluno percebeu que a diferença de idade permanece a mesma.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_024_alt_2",
+        "valor": "7 anos",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno somou 3 à diferença atual.",
+        "misconception": "GENERALIZACAO_INCORRETA"
+      },
+      {
+        "id": "BN_OB_024_alt_3",
+        "valor": "3 anos",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu apenas o tempo que vai passar.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_024_alt_4",
+        "valor": "10 anos",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno calculou a idade futura do irmão em vez da diferença.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Correto! A diferença continua sendo 10 - 6 = 4 anos.",
+    "dica": "Quando todos envelhecem o mesmo tempo, a diferença não muda."
+  },
+  {
+    "id": "BN_OB_025",
+    "bloco": "7",
+    "habilidade": "Raciocínio com Resto",
+    "bncc": "EF06MA06",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "concreta",
+    "display": "Há 17 balas para colocar igualmente em saquinhos com 5 balas cada. Quantas balas sobram?",
+    "a": 17,
+    "b": 5,
+    "res": "2",
+    "alternativas": [
+      {
+        "id": "BN_OB_025_alt_1",
+        "valor": "2",
+        "tipo": "acerto",
+        "categoria": "divisibilidade",
+        "descricao": "O aluno encontrou corretamente o resto da divisão de 17 por 5.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_025_alt_2",
+        "valor": "3",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 2,
+        "descricao": "O aluno indicou a quantidade de saquinhos completos em vez do resto.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      },
+      {
+        "id": "BN_OB_025_alt_3",
+        "valor": "5",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno escolheu a capacidade de cada saquinho como sobra.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_025_alt_4",
+        "valor": "1",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno cometeu erro ao calcular o resto.",
+        "misconception": "ERRO_DE_CALCULO"
+      }
+    ],
+    "passo": "Muito bem! 15 balas formam 3 saquinhos completos e sobram 2 balas.",
+    "dica": "Procure o maior múltiplo de 5 que não passa de 17."
+  },
+  {
+    "id": "BN_OB_026",
+    "bloco": "7",
+    "habilidade": "Comparação de Perímetros",
+    "bncc": "EF08MA19",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "visual",
+    "display": "Um quadrado de lado 4 cm e um retângulo de lados 5 cm e 3 cm têm qual relação de perímetro?",
+    "a": 4,
+    "b": 5,
+    "res": "Têm o mesmo perímetro",
+    "alternativas": [
+      {
+        "id": "BN_OB_026_alt_1",
+        "valor": "Têm o mesmo perímetro",
+        "tipo": "acerto",
+        "categoria": "geometria",
+        "descricao": "O aluno calculou corretamente que ambos têm perímetro 16 cm.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_026_alt_2",
+        "valor": "O quadrado tem maior perímetro",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 1,
+        "descricao": "O aluno associou lados iguais a maior perímetro sem calcular.",
+        "misconception": "ASSOCIACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_OB_026_alt_3",
+        "valor": "O retângulo tem maior perímetro",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 2,
+        "descricao": "O aluno escolheu o retângulo por ter um lado maior.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_OB_026_alt_4",
+        "valor": "Não é possível comparar",
+        "tipo": "distrator",
+        "categoria": "interpretacao",
+        "peso": 1,
+        "descricao": "O aluno não usou as medidas dadas para comparar.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Correto! O quadrado tem perímetro 16 cm e o retângulo também tem 16 cm.",
+    "dica": "Some todos os lados de cada figura."
+  },
+  {
+    "id": "BN_OB_027",
+    "bloco": "7",
+    "habilidade": "Probabilidade Intuitiva",
+    "bncc": "EF09MA22",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "concreta",
+    "display": "Em uma caixa há 4 bolas azuis, 4 vermelhas e 1 verde. Sem olhar, qual cor é menos provável de sair?",
+    "a": 4,
+    "b": 1,
+    "res": "Verde",
+    "alternativas": [
+      {
+        "id": "BN_OB_027_alt_1",
+        "valor": "Verde",
+        "tipo": "acerto",
+        "categoria": "probabilidade",
+        "descricao": "O aluno identificou corretamente a cor com menor quantidade na caixa.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_027_alt_2",
+        "valor": "Azul",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma das cores com maior quantidade.",
+        "misconception": "LEITURA_SUPERFICIAL"
+      },
+      {
+        "id": "BN_OB_027_alt_3",
+        "valor": "Vermelha",
+        "tipo": "distrator",
+        "categoria": "comparacao",
+        "peso": 1,
+        "descricao": "O aluno escolheu uma cor que tem a mesma quantidade que azul.",
+        "misconception": "ERRO_DE_COMPARACAO"
+      },
+      {
+        "id": "BN_OB_027_alt_4",
+        "valor": "Todas têm a mesma chance",
+        "tipo": "distrator",
+        "categoria": "probabilidade",
+        "peso": 2,
+        "descricao": "O aluno ignorou que a bola verde aparece menos vezes.",
+        "misconception": "ERRO_DE_INTERPRETACAO"
+      }
+    ],
+    "passo": "Muito bem! A cor verde aparece apenas uma vez, então é a menos provável.",
+    "dica": "Compare as quantidades de bolas de cada cor."
+  },
+  {
+    "id": "BN_OB_028",
+    "bloco": "7",
+    "habilidade": "Operações Inteligentes",
+    "bncc": "EF06MA03",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "simbolica",
+    "display": "Qual é o valor de 19 + 21 + 20?",
+    "a": 19,
+    "b": 21,
+    "res": "60",
+    "alternativas": [
+      {
+        "id": "BN_OB_028_alt_1",
+        "valor": "60",
+        "tipo": "acerto",
+        "categoria": "calculo",
+        "descricao": "O aluno somou corretamente os três números, podendo usar 19 + 21 = 40.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_028_alt_2",
+        "valor": "40",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno somou apenas 19 e 21, esquecendo o 20.",
+        "misconception": "CALCULO_PARCIAL"
+      },
+      {
+        "id": "BN_OB_028_alt_3",
+        "valor": "59",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno cometeu erro de soma por uma unidade.",
+        "misconception": "ERRO_DE_CALCULO"
+      },
+      {
+        "id": "BN_OB_028_alt_4",
+        "valor": "70",
+        "tipo": "distrator",
+        "categoria": "estimativa",
+        "peso": 2,
+        "descricao": "O aluno fez uma estimativa alta sem calcular corretamente.",
+        "misconception": "ERRO_DE_ESTIMATIVA"
+      }
+    ],
+    "passo": "Correto! Podemos fazer 19 + 21 = 40 e depois 40 + 20 = 60.",
+    "dica": "Agrupe números que formam dezenas completas."
+  },
+  {
+    "id": "BN_OB_029",
+    "bloco": "7",
+    "habilidade": "Raciocínio Geométrico",
+    "bncc": "EF09MA13",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "visual",
+    "display": "Um cubo tem 6 faces. Se pintamos apenas a face de cima e a face de baixo, quantas faces ficam sem pintura?",
+    "a": 6,
+    "b": 2,
+    "res": "4",
+    "alternativas": [
+      {
+        "id": "BN_OB_029_alt_1",
+        "valor": "4",
+        "tipo": "acerto",
+        "categoria": "geometria",
+        "descricao": "O aluno subtraiu corretamente as 2 faces pintadas das 6 faces do cubo.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_029_alt_2",
+        "valor": "2",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno respondeu a quantidade de faces pintadas.",
+        "misconception": "LEITURA_INCOMPLETA"
+      },
+      {
+        "id": "BN_OB_029_alt_3",
+        "valor": "6",
+        "tipo": "distrator",
+        "categoria": "geometria",
+        "peso": 1,
+        "descricao": "O aluno repetiu o total de faces do cubo.",
+        "misconception": "CALCULO_PARCIAL"
+      },
+      {
+        "id": "BN_OB_029_alt_4",
+        "valor": "8",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno confundiu faces com vértices do cubo.",
+        "misconception": "ASSOCIACAO_INDEVIDA"
+      }
+    ],
+    "passo": "Muito bem! O cubo tem 6 faces; pintando 2, ficam 4 sem pintura.",
+    "dica": "Retire do total de faces as que foram pintadas."
+  },
+  {
+    "id": "BN_OB_030",
+    "bloco": "7",
+    "habilidade": "Interpretação e Estratégia Matemática",
+    "bncc": "EF09MA09",
+    "cargaCognitiva": 2,
+    "estagioGalperin": "MENTAL",
+    "representacao": "concreta",
+    "display": "Um número somado com seu dobro resulta em 18. Qual é esse número?",
+    "a": 2,
+    "b": 18,
+    "res": "6",
+    "alternativas": [
+      {
+        "id": "BN_OB_030_alt_1",
+        "valor": "6",
+        "tipo": "acerto",
+        "categoria": "algebra",
+        "descricao": "O aluno percebeu que o número mais seu dobro equivale a três vezes o número.",
+        "misconception": "NENHUMA"
+      },
+      {
+        "id": "BN_OB_030_alt_2",
+        "valor": "9",
+        "tipo": "distrator",
+        "categoria": "conceito",
+        "peso": 2,
+        "descricao": "O aluno calculou apenas a metade de 18, confundindo dobro com soma simples.",
+        "misconception": "GENERALIZACAO_INCORRETA"
+      },
+      {
+        "id": "BN_OB_030_alt_3",
+        "valor": "12",
+        "tipo": "distrator",
+        "categoria": "calculo",
+        "peso": 1,
+        "descricao": "O aluno escolheu o dobro do valor correto.",
+        "misconception": "ASSOCIACAO_INDEVIDA"
+      },
+      {
+        "id": "BN_OB_030_alt_4",
+        "valor": "18",
+        "tipo": "distrator",
+        "categoria": "leitura",
+        "peso": 1,
+        "descricao": "O aluno repetiu o resultado final como se fosse o número inicial.",
+        "misconception": "LEITURA_INCOMPLETA"
+      }
+    ],
+    "passo": "Correto! Se o número é 6, seu dobro é 12, e 6 + 12 = 18.",
+    "dica": "Teste números pequenos ou pense em três partes iguais formando 18."
   }
 ]
