@@ -225,6 +225,43 @@ export function exibirGameOver() {
 
     narrarContexto(`Alerta: Estabilidade do núcleo perdida. Taxa de sincronia calculada em ${taxaSincronia} por cento. Reinicie o terminal para calibração.`, false);
 }
+/**
+ * Exibe um alerta metacognitivo na tela do aluno, 
+ * promovendo a consciência sobre o próprio processo de aprendizagem.
+ * @param {string} mensagem - Insight gerado pelo MetacognitionEngine
+ */
+export function mostrarAvisoMetacognitivo(mensagem) {
+    // Verifica se já existe um aviso ativo para não sobrepor (Overlap control)
+    if (document.getElementById('meta-alert')) return;
+
+    const alertDiv = document.createElement('div');
+    alertDiv.id = 'meta-alert';
+    alertDiv.style.cssText = `
+        position: fixed; top: 20%; left: 50%; transform: translateX(-50%);
+        width: 80%; max-width: 500px;
+        background: rgba(0, 0, 0, 0.9);
+        border: 2px solid var(--neon-cyan, #00eaff);
+        color: white; padding: 20px; border-radius: 10px;
+        z-index: 99999; text-align: center; font-family: 'Orbitron', sans-serif;
+        box-shadow: 0 0 20px rgba(0, 234, 255, 0.5);
+    `;
+
+    alertDiv.innerHTML = `
+        <h3 style="color: var(--neon-cyan, #00eaff); margin-top:0; font-size: 14px;">🧠 INSIGHT COGNITIVO</h3>
+        <p style="font-family: 'Nunito', sans-serif; font-size: 14px; line-height: 1.5; color: #eee;">${mensagem}</p>
+        <button id="btn-meta-close" style="
+            background: transparent; border: 1px solid white; color: white;
+            padding: 5px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px;
+        ">Entendido</button>
+    `;
+
+    document.body.appendChild(alertDiv);
+
+    // Auto-remove após 8 segundos ou ao clicar
+    const fechar = () => { if(document.body.contains(alertDiv)) document.body.removeChild(alertDiv); };
+    document.getElementById('btn-meta-close').onclick = fechar;
+    setTimeout(fechar, 8000);
+}
 
 /**
  * Alimenta e constrói o painel de telemetria curricular da BNCC para o painel do estudante.
