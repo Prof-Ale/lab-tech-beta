@@ -141,8 +141,7 @@ async function processarResposta(alt, q) {
 
     if (G.vida <= 0) setTimeout(() => uiManager.exibirGameOver(), 800);
 }
-    }
-
+    
     const fbContainer = $('fb');
     if (fbContainer) { fbContainer.textContent = feedbackTexto; fbContainer.style.display = 'block'; }
     $('btn-prox')?.classList.remove('hidden');
