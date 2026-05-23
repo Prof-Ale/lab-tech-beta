@@ -173,7 +173,7 @@ export class LearningAnalytics {
                     </div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; border-top: 3px solid var(--neon-red, #ff3333); box-shadow: 0 4px 6px rgba(0,0,0,0.3); grid-column: 1 / -1;">
+              <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; border-top: 3px solid var(--neon-red, #ff3333); box-shadow: 0 4px 6px rgba(0,0,0,0.3); grid-column: 1 / -1;">
                     <h3 style="font-size: 13px; color: #fff; margin-top:0; border-bottom: 1px solid #333; padding-bottom: 8px;"><i class="fas fa-bug"></i> MAPA DE ETIOLOGIA (RAIZ DOS ERROS)</h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 10px;">
                         ${etiologiaHtml || '<p style="font-size:12px; color:#00ff66; margin:0; text-align:center; width:100%;">Nenhuma anomalia processada no histórico.</p>'}
@@ -181,10 +181,18 @@ export class LearningAnalytics {
                 </div>
 
             </div>
+
+            <div style="text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px dashed #333;">
+                <button id="btn-export-xai-csv" style="background: rgba(0, 234, 255, 0.1); border: 1px solid var(--neon-cyan, #00eaff); color: var(--neon-cyan, #00eaff); padding: 10px 25px; border-radius: 4px; font-family: 'Orbitron', sans-serif; cursor: pointer; transition: all 0.3s; font-size: 12px; letter-spacing: 1px;">
+                    ⬇️ EXPORTAR DADOS DA SESSÃO (CSV)
+                </button>
+            </div>
+            
         </div>
         <style>
             @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+            #btn-export-xai-csv:hover { background: var(--neon-cyan, #00eaff); color: black !important; }
         </style>
-        `;
+        `; 
     }
 }
