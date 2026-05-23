@@ -97,8 +97,6 @@ async function processarResposta(alt, q) {
     const payloadTelemetria = { latenciaMs: latenciaSessaoMs, totalAjustesPreConfirmacao: 1, alternativaSelecionadaId: alt.id };
     const updateResultado = profEngine.processarEventoTelemetria(`${G.nome}_${G.turma}`, payloadTelemetria, q);
     
-   // ... [código anterior da pontuação e telemetria] ...
-    
     G.perfilCognitivo = updateResultado.perfilCompleto; 
     G.adaState.comandoInterface = updateResultado.sugestaoAcaoADA.comandoMacro;
 
@@ -141,13 +139,7 @@ async function processarResposta(alt, q) {
 
     if (G.vida <= 0) setTimeout(() => uiManager.exibirGameOver(), 800);
 }
-    
-    const fbContainer = $('fb');
-    if (fbContainer) { fbContainer.textContent = feedbackTexto; fbContainer.style.display = 'block'; }
-    $('btn-prox')?.classList.remove('hidden');
 
-    if (G.vida <= 0) setTimeout(() => uiManager.exibirGameOver(), 800);
-}
 
 // --- FUNÇÕES DE NAVEGAÇÃO E SETUP ---
 function proximaQ() {
