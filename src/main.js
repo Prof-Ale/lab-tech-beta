@@ -97,23 +97,50 @@ async function processarResposta(alt, q) {
     const payloadTelemetria = { latenciaMs: latenciaSessaoMs, totalAjustesPreConfirmacao: 1, alternativaSelecionadaId: alt.id };
     const updateResultado = profEngine.processarEventoTelemetria(`${G.nome}_${G.turma}`, payloadTelemetria, q);
     
+   // ... [código anterior da pontuação e telemetria] ...
+    
     G.perfilCognitivo = updateResultado.perfilCompleto; 
     G.adaState.comandoInterface = updateResultado.sugestaoAcaoADA.comandoMacro;
 
-    const feedbackMeta = MetacognitionEngine.gerarFeedback(G.perfilCognitivo);
-    if (feedbackMeta) uiManager.mostrarAvisoMetacognitivo(feedbackMeta);
+    // 🧠 INJEÇÃO DO FEEDBACK METACOGNITIVO (BLINDADA)
+    try {
+        const feedbackMeta = MetacognitionEngine.gerarFeedback(G.perfilCognitivo);
+        if (feedbackMeta) {
+            uiManager.mostrarAvisoMetacognitivo(feedbackMeta);
+        }
+    } catch (err) {
+        console.warn("⚠️ [Metacognição] Motor isolado por falha técnica. O jogo continuará.", err);
+    }
 
+    // Feedback Visual e Atualização do HUD
     uiManager.updHUD();
     const feedbackTexto = analise.correto ? q.passo : (q.dica || analise.descricao);
     uiManager.narrarContexto(feedbackTexto, analise.correto);
 
-    const pontoA = parseFloat(String(q.a || q.inicio || q.valorInicial).replace(/[^\d.-]/g, '')) || 0;
-    const pontoB = parseFloat(String(alt.valor).replace(/[^\d.-]/g, '')) || 0;
-    const deslocamento = pontoB - pontoA;
+    // 🚀 LIBERAÇÃO GARANTIDA DA INTERFACE (O Botão Próximo nunca mais trava)
+    const fbContainer = $('fb');
+    if (fbContainer) { 
+        fbContainer.textContent = feedbackTexto; 
+        fbContainer.style.display = 'block'; 
+    }
+    $('btn-prox')?.classList.remove('hidden'); // Botão revelado antes da animação!
 
-    const payloadAdaptive = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
-    if (renderizadorGrafico) {
-        await renderizadorGrafico.animarArcos(q, deslocamento, payloadAdaptive.interfaceModifiers.modoRepresentacao);
+    // 🎨 RENDERIZAÇÃO GRÁFICA (BLINDADA)
+    try {
+        const pontoA = parseFloat(String(q.a || q.inicio || q.valorInicial).replace(/[^\d.-]/g, '')) || 0;
+        const pontoB = parseFloat(String(alt.valor).replace(/[^\d.-]/g, '')) || 0;
+        const deslocamento = pontoB - pontoA;
+
+        const payloadAdaptive = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
+        if (renderizadorGrafico) {
+            await renderizadorGrafico.animarArcos(q, deslocamento, payloadAdaptive.interfaceModifiers.modoRepresentacao);
+        }
+    } catch (err) {
+        console.warn("⚠️ [Renderização] Falha na animação vetorial, mas o jogo não vai travar:", err);
+    }
+
+    if (G.vida <= 0) setTimeout(() => uiManager.exibirGameOver(), 800);
+}
     }
 
     const fbContainer = $('fb');
