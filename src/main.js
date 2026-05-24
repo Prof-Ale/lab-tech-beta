@@ -36,9 +36,13 @@ function atualizarDashboard() {
 
 // --- FUNÇÕES DE DASHBOARD E LOGIN ---
 function mostrarSeletorBlocos() {
-    // 🛡️ CIRURGIA: Padronização forçada para MAIÚSCULAS para evitar duplicidade de perfis
-    G.nome = ($('nome-cientista')?.value.trim() || 'Cientista Anonymous').toUpperCase();
-    G.turma = ($('turma-cientista')?.value.trim() || '7ºA').toUpperCase();
+    let nomeRaw = $('nome-cientista')?.value.trim() || 'Cientista Anonymous';
+    let turmaRaw = $('turma-cientista')?.value.trim() || '7ºA';
+
+    // 🛡️ CIRURGIA DE UX: Converte para "Title Case" (Primeira maiúscula, resto minúscula).
+    // Ex: "ALÊ" ou "alê" viram "Alê". Isso evita que a voz soletre siglas e unifica o perfil!
+    G.nome = nomeRaw.charAt(0).toUpperCase() + nomeRaw.slice(1).toLowerCase();
+    G.turma = turmaRaw.toUpperCase(); // Turmas costumam ser siglas (7ºA), então fica maiúsculo
     
     const cacheBNCC = localStorage.getItem(`labtech_h_${G.nome}_${G.turma}`);
     if (cacheBNCC) {
@@ -65,7 +69,6 @@ function mostrarSeletorBlocos() {
     
     uiManager.narrarContexto(msgBoasVindas, true);
 }
-
 
 // --- FUNÇÃO PROCESSAR RESPOSTA ---
 async function processarResposta(alt, q) {
