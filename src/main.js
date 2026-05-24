@@ -1,5 +1,5 @@
 /**
- * src/main.js — MESTRE DE ORQUESTRAÇÃO (RESTAURADO COMPLETO)
+ * src/main.js — MESTRE DE ORQUESTRAÇÃO (RESTAURADO COMPLETO + VAR PEDAGÓGICO)
  */
 
 import { G } from './engine/gameState.js';
@@ -75,6 +75,19 @@ async function processarResposta(alt, q) {
     const profEngine = new ProfileEngine();
     const analise = diagEngine.analisarAlternativa(alt);
     const hab = q.bncc || q.habilidade || "Geral";
+
+    // 🎥 INÍCIO DO GRAVADOR (VAR PEDAGÓGICO)
+    if (!G.logSessao) G.logSessao = [];
+    G.logSessao.push({
+        questao: q.display || q.texto || "Desafio Visual",
+        habilidade: hab,
+        respostaDada: alt.valor,
+        correto: analise.correto,
+        etiologia: analise.correto ? "N/A" : (analise.categoria || "Erro Genérico"),
+        latencia: latenciaSessaoMs,
+        tempo: new Date().toLocaleTimeString()
+    });
+    // 🎥 FIM DO GRAVADOR
 
     if (!G.historico[hab]) {
         G.historico[hab] = { acertos: 0, erros_conceito: 0, erros_calculo: 0, desc: "Habilidade Monitorada" };
@@ -174,6 +187,7 @@ function renderQ(q) {
 
 function iniciarBloco(id) {
     G.reiniciarParaNovoBloco(id);
+    G.logSessao = []; // 🎥 NOVA LINHA: Zera a fita de gravação a cada novo bloco
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
     $('game-screen')?.classList.remove('hidden');
     proximaQ();
@@ -184,8 +198,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("🚀 [SISTEMA] Motor LabTech operante.");
     
     try {
-        await AdaptiveSelector.carregarBancoDeQuestoes();
-        console.log(`✅ [SISTEMA] Cofre de questões carregado.`);
+        const banco = await AdaptiveSelector.carregarBancoDeQuestoes();
+        // CIRURGIA: Exibe a quantidade de questões carregadas do JSON
+        console.log(`✅ [SISTEMA] Cofre de questões carregado. Total: ${banco ? banco.length : 0} itens detectados no JSON.`);
     } catch (e) {
         console.error("❌ [SISTEMA CRÍTICO] Falha no cofre:", e);
     }
@@ -223,7 +238,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     [1,2,3,4,5,6,7].forEach(i => on(`btn-bloco-${i}`, () => iniciarBloco(i)));
 
-    // ATALHOS DO DOCENTE (Alt+P e Alt+J) TOTALMENTE RESTAURADOS E ALINHADOS
+    // ATALHOS DO DOCENTE (Alt+P, Alt+J e NOVO Alt+R)
     document.addEventListener('keydown', (e) => {
         
         // 📊 ALT + P (Painel Clínico)
@@ -232,7 +247,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             let mDoc = $('modal-docente-xai');
             if (!mDoc) {
                 mDoc = document.createElement('div'); mDoc.id = 'modal-docente-xai'; mDoc.className = 'modal';
-                // Correção do CSS do "X" (posição e padding)
                 mDoc.innerHTML = `
                 <div class="mc" style="max-width: 650px; border: 2px solid var(--choco-gold, #d4af37); background: #0a0a0a; position: relative; padding: 25px 20px;">
                     <button class="mx" style="position: absolute; top: 15px; right: 20px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer; z-index: 1000;" onclick="document.getElementById('modal-docente-xai').classList.remove('active')">✕</button>
@@ -243,14 +257,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             $('content-docente-xai').innerHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
             mDoc.classList.add('active');
 
-            // Conecta o botão de CSV gerado pelo HTML
             const btnExportXai = $('btn-export-xai-csv');
             if (btnExportXai) {
                 btnExportXai.onclick = () => LearningAnalytics.exportarCSV(G.nome, G.historico);
             }
         }
 
-        // 📖 ALT + J (Glossário de IA) - Totalmente Restaurado
+        // 📖 ALT + J (Glossário de IA)
         if (e.altKey && e.key.toLowerCase() === 'j') {
             let modalGlossario = $('modal-glossario-xai');
             if (!modalGlossario) {
@@ -284,6 +297,59 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.body.appendChild(modalGlossario);
             }
             modalGlossario.classList.add('active');
+        }
+
+        // 🎥 ALT + R (REPLAY / VAR PEDAGÓGICO)
+        if (e.altKey && e.key.toLowerCase() === 'r') {
+            if (!G.logSessao || G.logSessao.length === 0) {
+                alert("⚠️ Nenhuma ação gravada nesta sessão ainda.");
+                return;
+            }
+
+            let mVar = $('modal-var-pedagogico');
+            if (!mVar) {
+                mVar = document.createElement('div'); 
+                mVar.id = 'modal-var-pedagogico'; 
+                mVar.className = 'modal';
+                document.body.appendChild(mVar);
+            }
+
+            // Constrói a linha do tempo (Timeline)
+            let htmlTimeline = '';
+            G.logSessao.forEach((step, index) => {
+                const cor = step.correto ? '#00ff66' : '#ff3333';
+                const icone = step.correto ? '✅' : '⚠️';
+                const latenciaSegundos = (step.latencia / 1000).toFixed(1);
+                
+                let corTempo = '#ccc';
+                if (latenciaSegundos < 3.0 && !step.correto) corTempo = '#ffbb33'; // Chute
+                if (latenciaSegundos > 15.0) corTempo = '#00eaff'; // Muito esforço
+                
+                htmlTimeline += `
+                    <div style="border-left: 2px solid ${cor}; padding-left: 15px; margin-bottom: 15px; position: relative;">
+                        <div style="position: absolute; left: -10px; top: 0; background: #0a0a0a; font-size: 14px;">${icone}</div>
+                        <div style="font-size: 11px; color: #888;">Passo ${index + 1} | ${step.tempo} | Hab: ${step.habilidade}</div>
+                        <div style="font-size: 14px; color: #fff; margin: 4px 0;">Desafio: <span style="color:var(--choco-gold);">${step.questao}</span></div>
+                        <div style="font-size: 12px; color: #aaa;">
+                            Resposta: <b style="color: ${cor};">${step.respostaDada}</b> | 
+                            Tempo: <b style="color: ${corTempo};">${latenciaSegundos}s</b>
+                            ${!step.correto ? `<br><span style="color:var(--neon-red);">Causa RAIZ: ${step.etiologia}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            mVar.innerHTML = `
+            <div class="mc" style="max-width: 600px; border: 2px solid #00ff66; background: #0a0a0a; position: relative; padding: 25px 20px;">
+                <button class="mx" style="position: absolute; top: 15px; right: 20px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer; z-index: 1000;" onclick="document.getElementById('modal-var-pedagogico').classList.remove('active')">✕</button>
+                <h2 style="color: #00ff66; text-align: center; font-family: 'Orbitron', sans-serif; margin-top: 0;">🎥 REPLAY DA SESSÃO</h2>
+                <hr style="border: 1px solid #333; margin: 15px 0;">
+                <div style="max-height: 65vh; overflow-y: auto; padding-right: 15px; text-align: left; font-family: 'Nunito', sans-serif;">
+                    ${htmlTimeline}
+                </div>
+            </div>`;
+            
+            mVar.classList.add('active');
         }
     });
 
