@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ATALHOS DO DOCENTE (Alt+P, Alt+J e NOVO Alt+R)
     document.addEventListener('keydown', (e) => {
         
-        // 📊 ALT + P (Painel Clínico)
+       // 📊 ALT + P (Painel Clínico + Inference Validator Engine)
         if (e.altKey && e.key.toLowerCase() === 'p') {
             if (!G.perfilCognitivo) { alert("⚠️ Calibração pendente."); return; }
             let mDoc = $('modal-docente-xai');
@@ -249,18 +249,44 @@ document.addEventListener('DOMContentLoaded', async () => {
                 mDoc = document.createElement('div'); mDoc.id = 'modal-docente-xai'; mDoc.className = 'modal';
                 mDoc.innerHTML = `
                 <div class="mc" style="max-width: 650px; border: 2px solid var(--choco-gold, #d4af37); background: #0a0a0a; position: relative; padding: 25px 20px;">
-                    <button class="mx" style="position: absolute; top: 15px; right: 32px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer; z-index: 1000;" onclick="document.getElementById('modal-docente-xai').classList.remove('active')">✕</button>
+                    <button class="mx" style="position: absolute; top: 15px; right: 35px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer; z-index: 1000;" onclick="document.getElementById('modal-docente-xai').classList.remove('active')">✕</button>
                     <div id="content-docente-xai" style="max-height: 70vh; overflow-y: auto; padding-right: 15px; margin-top: 10px;"></div>
                 </div>`;
                 document.body.appendChild(mDoc);
             }
-            $('content-docente-xai').innerHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
-            mDoc.classList.add('active');
 
-            const btnExportXai = $('btn-export-xai-csv');
-            if (btnExportXai) {
-                btnExportXai.onclick = () => LearningAnalytics.exportarCSV(G.nome, G.historico);
-            }
+            // Função recursiva para atualizar o painel e religar os botões após o clique
+            const renderizarPainel = () => {
+                $('content-docente-xai').innerHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
+                
+                // 🧠 Lógica do Oráculo Humano (Professor)
+                const btnValidar = $('btn-ia-validar');
+                const btnRefutar = $('btn-ia-refutar');
+                
+                if (btnValidar) {
+                    btnValidar.onclick = () => {
+                        G.perfilCognitivo.validacaoHumana = 'VALIDADO';
+                        G.perfilCognitivo.confiancaDiagnostica = 99.9; // Crava a confiança!
+                        console.log("✅ [Inference Validator] O Professor validou a hipótese da ADA.");
+                        renderizarPainel();
+                    };
+                }
+                
+                if (btnRefutar) {
+                    btnRefutar.onclick = () => {
+                        G.perfilCognitivo.validacaoHumana = 'REFUTADO';
+                        G.perfilCognitivo.confiancaDiagnostica = 10.0; // Puna a rede neural
+                        console.log("❌ [Inference Validator] O Professor refutou a hipótese. ADA em recalibração.");
+                        renderizarPainel();
+                    };
+                }
+
+                const btnExportXai = $('btn-export-xai-csv');
+                if (btnExportXai) btnExportXai.onclick = () => LearningAnalytics.exportarCSV(G.nome, G.historico);
+            };
+
+            renderizarPainel();
+            mDoc.classList.add('active');
         }
 
         // 📖 ALT + J (Glossário de IA)
