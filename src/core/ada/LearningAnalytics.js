@@ -145,6 +145,22 @@ export class LearningAnalytics {
                 <div style="width: 100%; background: #222; height: 8px; border-radius: 4px;">
                     <div style="width: ${perfil.confiancaDiagnostica || 0}%; background: ${perfil.confiancaDiagnostica > 60 ? 'var(--neon-cyan, #00eaff)' : '#ffbb33'}; height: 100%; border-radius: 4px; box-shadow: 0 0 10px ${perfil.confiancaDiagnostica > 60 ? '#00eaff' : '#ffbb33'};"></div>
                 </div>
+                
+                ${ /* 🧠 INFERENCE VALIDATOR ENGINE (HUMAN-IN-THE-LOOP) */ ''}
+                ${perfil.validacaoHumana === 'VALIDADO' ? 
+                    `<div style="margin-top: 12px; padding: 8px; background: rgba(0, 255, 102, 0.1); border: 1px solid #00ff66; border-radius: 4px; text-align: center; color: #00ff66; font-size: 11px; font-weight: bold; letter-spacing: 1px;">
+                        ✅ HIPÓTESE CHANCELADA PELO PROFESSOR (CONFIANÇA TRAVADA EM 99%)
+                    </div>` 
+                : perfil.validacaoHumana === 'REFUTADO' ? 
+                    `<div style="margin-top: 12px; padding: 8px; background: rgba(255, 51, 51, 0.1); border: 1px solid #ff3333; border-radius: 4px; text-align: center; color: #ff3333; font-size: 11px; font-weight: bold; letter-spacing: 1px;">
+                        ❌ HIPÓTESE REFUTADA. ADA FORÇADA A RECALIBRAR (CONFIANÇA ZERADA)
+                    </div>`
+                :
+                    `<div style="margin-top: 12px; display: flex; gap: 10px;">
+                        <button id="btn-ia-validar" style="flex: 1; background: rgba(0, 255, 102, 0.1); border: 1px solid #00ff66; color: #00ff66; padding: 8px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; transition: 0.3s;">✅ VALIDAR HIPÓTESE</button>
+                        <button id="btn-ia-refutar" style="flex: 1; background: rgba(255, 51, 51, 0.1); border: 1px solid #ff3333; color: #ff3333; padding: 8px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; transition: 0.3s;">❌ REFUTAR HIPÓTESE</button>
+                    </div>`
+                }
             </div>
 
             <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
@@ -192,6 +208,8 @@ export class LearningAnalytics {
         <style>
             @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
             #btn-export-xai-csv:hover { background: var(--neon-cyan, #00eaff); color: black !important; }
+            #btn-ia-validar:hover { background: rgba(0, 255, 102, 0.3) !important; }
+            #btn-ia-refutar:hover { background: rgba(255, 51, 51, 0.3) !important; }
         </style>
         `; 
     }
