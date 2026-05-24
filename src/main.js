@@ -35,8 +35,9 @@ function atualizarDashboard() {
 }
 
 function mostrarSeletorBlocos() {
-    G.nome = $('nome-cientista')?.value.trim() || 'Cientista Anonymous';
-    G.turma = $('turma-cientista')?.value.trim() || '7ºA';
+   // 🛡️ CIRURGIA: Padronização forçada para MAIÚSCULAS para evitar duplicidade de perfis
+    G.nome = ($('nome-cientista')?.value.trim() || 'Cientista Anonymous').toUpperCase();
+    G.turma = ($('turma-cientista')?.value.trim() || '7ºA').toUpperCase();
     
     const cacheBNCC = localStorage.getItem(`labtech_h_${G.nome}_${G.turma}`);
     if (cacheBNCC) {
