@@ -1,5 +1,5 @@
 /**
- * src/main.js — MESTRE DE ORQUESTRAÇÃO (RESTAURADO COMPLETO + VAR PEDAGÓGICO)
+ * src/main.js — MESTRE DE ORQUESTRAÇÃO (RESTAURADO COMPLETO + VAR PEDAGÓGICO + VALIDATOR ENGINE)
  */
 
 import { G } from './engine/gameState.js';
@@ -199,7 +199,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     try {
         const banco = await AdaptiveSelector.carregarBancoDeQuestoes();
-        // CIRURGIA: Exibe a quantidade de questões carregadas do JSON
         console.log(`✅ [SISTEMA] Cofre de questões carregado. Total: ${banco ? banco.length : 0} itens detectados no JSON.`);
     } catch (e) {
         console.error("❌ [SISTEMA CRÍTICO] Falha no cofre:", e);
@@ -241,12 +240,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ATALHOS DO DOCENTE (Alt+P, Alt+J e NOVO Alt+R)
     document.addEventListener('keydown', (e) => {
         
-       // 📊 ALT + P (Painel Clínico + Inference Validator Engine)
+        // 📊 ALT + P (Painel Clínico + Inference Validator Engine)
         if (e.altKey && e.key.toLowerCase() === 'p') {
             if (!G.perfilCognitivo) { alert("⚠️ Calibração pendente."); return; }
             let mDoc = $('modal-docente-xai');
             if (!mDoc) {
                 mDoc = document.createElement('div'); mDoc.id = 'modal-docente-xai'; mDoc.className = 'modal';
+                // AJUSTE: right mudado de 20px para 35px para liberar a barra de rolagem
                 mDoc.innerHTML = `
                 <div class="mc" style="max-width: 650px; border: 2px solid var(--choco-gold, #d4af37); background: #0a0a0a; position: relative; padding: 25px 20px;">
                     <button class="mx" style="position: absolute; top: 15px; right: 35px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer; z-index: 1000;" onclick="document.getElementById('modal-docente-xai').classList.remove('active')">✕</button>
@@ -255,29 +255,29 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.body.appendChild(mDoc);
             }
 
-            // Função recursiva para atualizar o painel e religar os botões após o clique
+            // Função recursiva para atualizar o painel e religar os cliques após validação/refutação
             const renderizarPainel = () => {
                 $('content-docente-xai').innerHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
                 
-                // 🧠 Lógica do Oráculo Humano (Professor)
+                // 🧠 Conectando os gatilhos da Inference Validator Engine
                 const btnValidar = $('btn-ia-validar');
                 const btnRefutar = $('btn-ia-refutar');
                 
                 if (btnValidar) {
                     btnValidar.onclick = () => {
                         G.perfilCognitivo.validacaoHumana = 'VALIDADO';
-                        G.perfilCognitivo.confiancaDiagnostica = 99.9; // Crava a confiança!
-                        console.log("✅ [Inference Validator] O Professor validou a hipótese da ADA.");
-                        renderizarPainel();
+                        G.perfilCognitivo.confiancaDiagnostica = 99.9; // Crava a confiança da IA
+                        console.log("✅ [Inference Validator] O Professor chancelou a hipótese diagnóstica da ADA.");
+                        renderizarPainel(); // Recarrega o HTML interno para mostrar o selo verde
                     };
                 }
                 
                 if (btnRefutar) {
                     btnRefutar.onclick = () => {
                         G.perfilCognitivo.validacaoHumana = 'REFUTADO';
-                        G.perfilCognitivo.confiancaDiagnostica = 10.0; // Puna a rede neural
-                        console.log("❌ [Inference Validator] O Professor refutou a hipótese. ADA em recalibração.");
-                        renderizarPainel();
+                        G.perfilCognitivo.confiancaDiagnostica = 10.0; // Aplica punição estatística
+                        console.log("❌ [Inference Validator] O Professor refutou a hipótese. ADA forçada a reiniciar calibração.");
+                        renderizarPainel(); // Recarrega o HTML interno para mostrar o aviso vermelho
                     };
                 }
 
@@ -340,7 +340,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.body.appendChild(mVar);
             }
 
-            // Constrói a linha do tempo (Timeline)
             let htmlTimeline = '';
             G.logSessao.forEach((step, index) => {
                 const cor = step.correto ? '#00ff66' : '#ff3333';
@@ -348,8 +347,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const latenciaSegundos = (step.latencia / 1000).toFixed(1);
                 
                 let corTempo = '#ccc';
-                if (latenciaSegundos < 3.0 && !step.correto) corTempo = '#ffbb33'; // Chute
-                if (latenciaSegundos > 15.0) corTempo = '#00eaff'; // Muito esforço
+                if (latenciaSegundos < 3.0 && !step.correto) corTempo = '#ffbb33'; 
+                if (latenciaSegundos > 15.0) corTempo = '#00eaff'; 
                 
                 htmlTimeline += `
                     <div style="border-left: 2px solid ${cor}; padding-left: 15px; margin-bottom: 15px; position: relative;">
