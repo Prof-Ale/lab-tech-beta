@@ -34,8 +34,9 @@ function atualizarDashboard() {
     if (btnCsv) btnCsv.onclick = () => LearningAnalytics.exportarCSV(G.nome, G.historico);
 }
 
+// --- FUNÇÕES DE DASHBOARD E LOGIN ---
 function mostrarSeletorBlocos() {
-   // 🛡️ CIRURGIA: Padronização forçada para MAIÚSCULAS para evitar duplicidade de perfis
+    // 🛡️ CIRURGIA: Padronização forçada para MAIÚSCULAS para evitar duplicidade de perfis
     G.nome = ($('nome-cientista')?.value.trim() || 'Cientista Anonymous').toUpperCase();
     G.turma = ($('turma-cientista')?.value.trim() || '7ºA').toUpperCase();
     
