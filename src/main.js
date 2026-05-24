@@ -221,6 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     on('btn-dash', () => { atualizarDashboard(); abrirM('mdash'); });
     on('btn-reiniciar', () => { fecharM('go'); if (G.currentBlock) iniciarBloco(G.currentBlock); });
     
+   // --- O ESPELHO DO ALUNO (METACOGNIÇÃO EXPLÍCITA FIXA) ---
     on('btn-perfil', () => {
         if (G.perfilCognitivo) {
             const displayNivel = $('perfil-nivel-txt');
@@ -228,6 +229,44 @@ document.addEventListener('DOMContentLoaded', async () => {
             const xpCalculado = (G.acertos || 0) * 150; 
             if (displayNivel) displayNivel.textContent = G.perfilCognitivo.nivel || 1;
             if (displayXP) displayXP.textContent = `${xpCalculado} XP`;
+
+            // Injeta o painel de diagnóstico metacognitivo no modal do aluno
+            let painelMeta = $('perfil-metacognicao-fixa');
+            if (!painelMeta) {
+                const modalContent = document.querySelector('#mperfil .mc');
+                if (modalContent) {
+                    painelMeta = document.createElement('div');
+                    painelMeta.id = 'perfil-metacognicao-fixa';
+                    painelMeta.style.marginTop = '20px';
+                    painelMeta.style.padding = '15px';
+                    painelMeta.style.background = 'rgba(0, 234, 255, 0.05)';
+                    painelMeta.style.border = '1px dashed var(--neon-cyan, #00eaff)';
+                    painelMeta.style.borderRadius = '8px';
+                    modalContent.appendChild(painelMeta);
+                }
+            }
+
+            if (painelMeta) {
+                let textoEspelho = "";
+                const dom = G.perfilCognitivo.perfilDominante;
+                
+                if (dom === 'DEPENDENTE_CONCRETO') {
+                    textoEspelho = "Você resolve muito bem os problemas quando usa representações visuais. Sua precisão costuma cair quando o visual é retirado. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Fortalecer a abstração e tentar imaginar a figura na mente.";
+                } else if (dom === 'IMPULSIVO_ARITMETICO') {
+                    textoEspelho = "Sua agilidade de cálculo é excelente! Porém, você parece acelerar demais e acabar errando por impulso. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Respirar fundo por 3 segundos e reler a pergunta antes de confirmar.";
+                } else if (dom === 'PROCEDURAL_MECANICO') {
+                    textoEspelho = "Você tem uma ótima memória para regras e fórmulas matemáticas! O desafio agora é conectar essa regra com o problema real. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Focar em entender o 'porquê' da questão.";
+                } else if (dom === 'CONCEITUAL_TEORICO') {
+                    textoEspelho = "Excelente! Sua consistência mostra um domínio profundo da lógica matemática. Você consegue adaptar seu raciocínio. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Manter o foco e avançar para desafios mais abstratos.";
+                } else {
+                    textoEspelho = "Seu padrão cognitivo ainda está sendo mapeado. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Continue resolvendo os desafios com atenção para a ADA revelar sua radiografia.";
+                }
+
+                painelMeta.innerHTML = `
+                    <h3 style="color: var(--neon-cyan, #00eaff); margin-top:0; font-size:13px; font-family: 'Orbitron', sans-serif;"><i class="fas fa-brain"></i> ESPELHO COGNITIVO</h3>
+                    <p style="color: #ddd; font-size: 13px; line-height: 1.6; margin-bottom:0; font-family: 'Nunito', sans-serif;">${textoEspelho}</p>
+                `;
+            }
         }
         abrirM('mperfil');
     });
