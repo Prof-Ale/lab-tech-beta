@@ -1,47 +1,150 @@
-🧪 LABORATÓRIO TECH v15.0 — Módulo de Produção "The Universal Architecture"
-O LabTech evoluiu. De um protótipo de pesquisa para uma plataforma de inteligência artificial educacional robusta e escalável. O código foi totalmente refatorado sob o paradigma de Arquitetura Limpa (Clean Architecture), separando o cérebro cognitivo da renderização visual. O resultado é um ecossistema à prova de falhas, projetado para a sala de aula real.
+# 🧪 LABORATÓRIO TECH v15.0  
+## *The Universal Architecture*
 
-🧭 O Salto Evolutivo: Desenho Universal e Explicabilidade (XAI)
-Se as versões anteriores focavam em coletar dados de qualidade, a v15.0 foca em como o aluno e o professor interagem com esses dados. A plataforma agora é regida pelas diretrizes do DUA (Desenho Universal para Aprendizagem), oferecendo múltiplos meios de engajamento, representação visual e expressão sensorial para abraçar a neurodiversidade.
+---
 
-🧠 Arquitetura Científica e Novos Motores (Core ADA)
-1. Memória Longitudinal Criptografada (ProfileEngine.js)
-A ADA não sofre mais de amnésia. O sistema agora possui persistência de longo prazo no HD do navegador (Local Storage).
+# 🧪 O Que é o LabTech?
 
-Anti-Cheating: Os perfis cognitivos, nível, XP e histórico BNCC são ofuscados e codificados em Base64 para evitar adulteração.
+O **Laboratório Tech (LabTech)** é uma plataforma adaptativa de aprendizagem matemática baseada em Inteligência Artificial Pedagógica, Teoria Histórico Cultural e Learning Analytics Explicável (XAI).
 
-Continuidade: O aluno pode fechar o navegador e voltar na semana seguinte; a ADA lembrará exatamente onde estão suas lacunas e seus bloqueios estruturais.
+Mais do que um jogo educacional, o LabTech funciona como:
 
-2. Motor de Sonificação Inclusiva (AdaptiveAudioEngine.js)
-O sistema agora atende alunos com baixa visão ou perfis impulsivos através de Feedback Neuro-Auditivo gerado em tempo real pela Web Audio API.
+- ambiente adaptativo de aprendizagem;
+- sistema tutor inteligente;
+- motor de recomposição matemática;
+- plataforma de mediação conceitual;
+- instrumento de diagnóstico pedagógico;
+- laboratório computacional de formação conceitual matemática.
 
-Sem arquivos MP3 pesados: Os sons são sintetizadores de frequência matemática puros.
+A plataforma foi desenvolvida para acompanhar estudantes do **6º ano do Ensino Fundamental à 1ª série do Ensino Médio**, respeitando:
+- diferenças cognitivas;
+- ritmos de aprendizagem;
+- neurodiversidade;
+- estilos de representação;
+- e trajetórias individuais de desenvolvimento.
 
-Cinestesia Harmônica: Movimentos vetoriais no canvas geram frequências que sobem ou descem de tom; acertos geram tríades maiores; erros geram dissonâncias sutis de alerta.
+---
 
-3. Motor Gráfico Dinâmico e Blindado (CanvasRenderer.js)
-O palco visual do aluno atingiu maturidade técnica extrema. O canvas agora possui um Viewport Matemático que autoajusta a escala da tela.
+# 🎯 Missão Pedagógica
 
-Triage Semiótica Automática: O sistema decide sozinho se a questão exige uma Reta Numérica (isomorfismo de deslocamento), uma Barra de Frações, ou se é uma equação de Álgebra Literal (desativando desenhos irrelevantes).
+O LabTech foi criado para responder a uma pergunta central:
 
-Failsafe Anti-Travamento: Blindagem matemática contra erros de NaN e um sistema estrito de Promises assíncronas que garante que o jogo nunca trave, mesmo que a renderização falhe.
+> “O aluno realmente compreendeu o conceito matemático ou apenas aprendeu a repetir um procedimento?”
 
-👨‍🏫 A Caixa Preta Aberta: Painel Docente XAI (Explainable AI)
-A tecnologia não pode ser uma caixa preta para o professor. A v15 introduz ferramentas ocultas de auditoria clínica acionadas por atalhos de teclado:
+A ADA (Assistente Diagnóstica Adaptativa) não analisa apenas:
+- acertos;
+- erros;
+- pontuação;
+- velocidade.
 
-📊 Alt + P (Radiografia Cognitiva): Abre um HUD cibernético que revela o perfil dominante do estudante na sessão (ex: Procedural Mecânico ou Dependente Concreto), calculando a Deriva Pedagógica e exibindo o mapa exato da etiologia dos erros (A raiz do problema).
+Ela busca inferir:
+- estabilidade conceitual;
+- misconceptions matemáticas;
+- pseudoconceitos;
+- dependência de scaffold;
+- perfil cognitivo;
+- capacidade de transferência;
+- progressão do pensamento empírico para o pensamento teórico.
 
-📖 Alt + J (Bula / Glossário da ADA): Um painel de consulta rápida explicando os conceitos de Vigotski e Galperin que a Inteligência Artificial usa para tomar decisões de intervenção (Scaffolding).
+---
 
-🛠️ Estrutura Modular (Módulos Injetados)
-O ecossistema agora é dividido em pastas lógicas e escaláveis:
+# 🧠 Fundamentação Científica
 
-📁 /core/ada: Motores de Inferência, Telemetria, Seleção Adaptativa e Áudio.
+O ecossistema foi construído a partir da integração entre:
 
-📁 /engine: Controle de Estado de Jogo (GameState) e Debug.
+## 📚 Teoria Histórico Cultural
+Baseado principalmente em:
 
-📁 /ui: Renderizadores Gráficos e Gerenciadores de Interface (DOM).
+- Lev Vigotski
+- Vasili Davýdov
+- Piotr Galperin
+- Nina Talízina
+- Alexei Leontiev
+- Daniil Elkonin
 
-📄 main.js: O Maestro que orquestra o pipeline assíncrono e une a UI ao Cérebro.
+---
 
-"A verdadeira educação inclusiva não força o estudante a se adaptar ao sistema; ela calibra a tecnologia para reconhecer, acolher e potencializar a singularidade de cada mente." — LabTech v15.0 • Desenvolvido por Prof. Alê Chocolate
+## 🔬 Conceitos Centrais Aplicados
+
+### Zona de Desenvolvimento Proximal (ZDP)
+A ADA ajusta intervenções e suporte conforme o potencial de aprendizagem do estudante.
+
+---
+
+### Formação de Conceitos Científicos
+O sistema diferencia:
+- memorização mecânica;
+- automatização;
+- e internalização conceitual real.
+
+---
+
+### Pseudoconceito
+O LabTech detecta situações em que:
+- o aluno acerta;
+- mas não transfere;
+- não generaliza;
+- ou colapsa diante de mudança semântica ou representacional.
+
+---
+
+### Formação das Ações Mentais (Galperin)
+A ADA considera diferentes níveis de internalização:
+- concreto;
+- visual;
+- verbal;
+- simbólico;
+- abstrato.
+
+---
+
+### Pensamento Empírico vs Teórico (Davýdov)
+O sistema busca desenvolver:
+- generalização;
+- abstração;
+- modelagem;
+- pensamento relacional.
+
+E não apenas:
+- repetição algorítmica.
+
+---
+
+# 🚀 O Grande Salto da v15.0
+
+A versão v15 marca a consolidação do LabTech como:
+
+> “Infraestrutura computacional de mediação cognitiva matemática.”
+
+O sistema foi completamente refatorado sob o paradigma de:
+
+# 🏗️ Clean Architecture
+
+Separando:
+- renderização;
+- motores cognitivos;
+- analytics;
+- interface;
+- persistência;
+- e inferência adaptativa.
+
+---
+
+# 🧩 Arquitetura do Ecossistema
+
+```txt
+Aluno
+ ↓
+Interação Matemática
+ ↓
+ADA Core
+ ↓
+Inferência Cognitiva
+ ↓
+Selector Adaptativo
+ ↓
+Intervenção Pedagógica
+ ↓
+XAI + Learning Analytics
+ ↓
+Professor
