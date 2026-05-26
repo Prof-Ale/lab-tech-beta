@@ -114,7 +114,7 @@ export class LearningAnalytics {
         `;
 
         // 4. Semáforo de Estabilidade e Fading
-        const estabilidad = perfil.estabilidadeConceitual || 'INDEFINIDA';
+        const estabilidade = perfil.estabilidadeConceitual || 'INDEFINIDA';
         let corEstabilidade = '#aaa';
         if (estabilidad === 'ALTA_ESTABILIZADA') corEstabilidade = '#00ff66';
         if (estabilidad === 'EM_CONSTRUCAO') corEstabilidade = '#ffbb33';
