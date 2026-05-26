@@ -1,5 +1,6 @@
 /**
  * src/main.js — MESTRE DE ORQUESTRAÇÃO (RESTAURADO COMPLETO + VAR PEDAGÓGICO + VALIDATOR ENGINE)
+ * AGORA COM: Sincronização dinâmica de Bloco Ativo para Prescrição Clínica MathLab (v1.5.0).
  */
 
 import { G } from './engine/gameState.js';
@@ -34,15 +35,13 @@ function atualizarDashboard() {
     if (btnCsv) btnCsv.onclick = () => LearningAnalytics.exportarCSV(G.nome, G.historico);
 }
 
-// --- FUNÇÕES DE DASHBOARD E LOGIN ---
 function mostrarSeletorBlocos() {
     let nomeRaw = $('nome-cientista')?.value.trim() || 'Cientista Anonymous';
     let turmaRaw = $('turma-cientista')?.value.trim() || '7ºA';
 
-    // 🛡️ CIRURGIA DE UX: Converte para "Title Case" (Primeira maiúscula, resto minúscula).
-    // Ex: "ALÊ" ou "alê" viram "Alê". Isso evita que a voz soletre siglas e unifica o perfil!
+    // 🛡️ CIRURGIA DE UX: Converte para "Title Case"
     G.nome = nomeRaw.charAt(0).toUpperCase() + nomeRaw.slice(1).toLowerCase();
-    G.turma = turmaRaw.toUpperCase(); // Turmas costumam ser siglas (7ºA), então fica maiúsculo
+    G.turma = turmaRaw.toUpperCase(); 
     
     const cacheBNCC = localStorage.getItem(`labtech_h_${G.nome}_${G.turma}`);
     if (cacheBNCC) {
@@ -112,11 +111,19 @@ async function processarResposta(alt, q) {
 
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
 
+    // 🛡️ CIRURGIA MÁGICA DE TELEMETRIA: Carimba o bloco ativo no perfil antes de alimentar a ADA
+    if (G.perfilCognitivo) {
+        G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
+    }
+
     const payloadTelemetria = { latenciaMs: latenciaSessaoMs, totalAjustesPreConfirmacao: 1, alternativaSelecionadaId: alt.id };
     const updateResultado = profEngine.processarEventoTelemetria(`${G.nome}_${G.turma}`, payloadTelemetria, q);
     
     G.perfilCognitivo = updateResultado.perfilCompleto; 
     G.adaState.comandoInterface = updateResultado.sugestaoAcaoADA.comandoMacro;
+
+    // Garantia de que a chave do bloco permanece ativa após o processamento interno da ADA
+    G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
 
     // 🧠 INJEÇÃO DO FEEDBACK METACOGNITIVO (BLINDADA)
     try {
@@ -133,13 +140,13 @@ async function processarResposta(alt, q) {
     const feedbackTexto = analise.correto ? q.passo : (q.dica || analise.descricao);
     uiManager.narrarContexto(feedbackTexto, analise.correto);
 
-    // 🚀 LIBERAÇÃO GARANTIDA DA INTERFACE (O Botão Próximo nunca mais trava)
+    // 🚀 LIBERAÇÃO GARANTIDA DA INTERFACE
     const fbContainer = $('fb');
     if (fbContainer) { 
         fbContainer.textContent = feedbackTexto; 
         fbContainer.style.display = 'block'; 
     }
-    $('btn-prox')?.classList.remove('hidden'); // Botão revelado antes da animação!
+    $('btn-prox')?.classList.remove('hidden'); 
 
     // 🎨 RENDERIZAÇÃO GRÁFICA (BLINDADA)
     try {
@@ -157,7 +164,6 @@ async function processarResposta(alt, q) {
 
     if (G.vida <= 0) setTimeout(() => uiManager.exibirGameOver(), 800);
 }
-
 
 // --- FUNÇÕES DE NAVEGAÇÃO E SETUP ---
 function proximaQ() {
@@ -192,7 +198,7 @@ function renderQ(q) {
 
 function iniciarBloco(id) {
     G.reiniciarParaNovoBloco(id);
-    G.logSessao = []; // 🎥 NOVA LINHA: Zera a fita de gravação a cada novo bloco
+    G.logSessao = []; 
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
     $('game-screen')?.classList.remove('hidden');
     proximaQ();
@@ -216,7 +222,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     on('btn-musica', uiManager.toggleMusica);
     on('btn-voz', uiManager.toggleVoz);
     
-    // RESTAURADO: Botões do HUD do Estudante
     on('btn-cred', () => abrirM('mcred'));
     on('btn-dash', () => { atualizarDashboard(); abrirM('mdash'); });
     on('btn-reiniciar', () => { fecharM('go'); if (G.currentBlock) iniciarBloco(G.currentBlock); });
@@ -230,7 +235,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (displayNivel) displayNivel.textContent = G.perfilCognitivo.nivel || 1;
             if (displayXP) displayXP.textContent = `${xpCalculado} XP`;
 
-            // Injeta o painel de diagnóstico metacognitivo no modal do aluno
             let painelMeta = $('perfil-metacognicao-fixa');
             if (!painelMeta) {
                 const modalContent = document.querySelector('#mperfil .mc');
@@ -251,15 +255,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const dom = G.perfilCognitivo.perfilDominante;
                 
                 if (dom === 'DEPENDENTE_CONCRETO') {
-                    textoEspelho = "Você resolve muito bem os problemas quando usa representações visuais. Sua precisão costuma cair quando o visual é retirado. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Fortalecer a abstração e tentar imaginar a figura na mente.";
+                    textoEspelho = "Você resolve muito bem os problemas quando usa representações visuais. Sua precisão costuma cair quando o visual é retirado. <br><br><b style='font-family: monospace; color:#00eaff;'>🎯 Objetivo:</b> Fortalecer a abstração e tentar imaginar a figura na mente.";
                 } else if (dom === 'IMPULSIVO_ARITMETICO') {
-                    textoEspelho = "Sua agilidade de cálculo é excelente! Porém, você parece acelerar demais e acabar errando por impulso. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Respirar fundo por 3 segundos e reler a pergunta antes de confirmar.";
-                } else if (dom === 'PROCEDURAL_MECANICO') {
-                    textoEspelho = "Você tem uma ótima memória para regras e fórmulas matemáticas! O desafio agora é conectar essa regra com o problema real. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Focar em entender o 'porquê' da questão.";
-                } else if (dom === 'CONCEITUAL_TEORICO') {
-                    textoEspelho = "Excelente! Sua consistência mostra um domínio profundo da lógica matemática. Você consegue adaptar seu raciocínio. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Manter o foco e avançar para desafios mais abstratos.";
+                    textoEspelho = "Sua agilidade de cálculo é excelente! Porém, você parece acelerar demais e acabar errando por impulso. <br><br><b style='font-family: monospace; color:#00eaff;'>🎯 Objetivo:</b> Respirar fundo por 3 segundos e reler a pergunta antes de confirmar.";
+                } else if (dom === 'PROCEDURAL_MECÂNICO') {
+                    textoEspelho = "Você tem uma ótima memória para regras e fórmulas matemáticas! O desafio agora é conectar essa regra com o problem real. <br><br><b style='font-family: monospace; color:#00eaff;'>🎯 Objetivo:</b> Focar em entender o 'porquê' da questão.";
+                } else if (dom === 'CONCEITUAL_TEÓRICO') {
+                    textoEspelho = "Excelente! Sua consistência mostra um domínio profundo da lógica matemática. Você consegue adaptar seu raciocínio. <br><br><b style='font-family: monospace; color:#00eaff;'>🎯 Objetivo:</b> Manter o foco e avançar para desafios mais abstratos.";
                 } else {
-                    textoEspelho = "Seu padrão cognitivo ainda está sendo mapeado. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Continue resolvendo os desafios com atenção para a ADA revelar sua radiografia.";
+                    textoEspelho = "Seu padrão cognitivo ainda está sendo mapeado. <br><br><b style='font-family: monospace; color:#00eaff;'>🎯 Objetivo:</b> Continue resolvendo os desafios com atenção para a ADA revelar sua radiografia.";
                 }
 
                 painelMeta.innerHTML = `
@@ -287,10 +291,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 📊 ALT + P (Painel Clínico + Inference Validator Engine)
         if (e.altKey && e.key.toLowerCase() === 'p') {
             if (!G.perfilCognitivo) { alert("⚠️ Calibração pendente."); return; }
+            
+            // 🛡️ Garante o sincronismo do bloco também ao abrir o atalho pelo teclado
+            G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
+
             let mDoc = $('modal-docente-xai');
             if (!mDoc) {
                 mDoc = document.createElement('div'); mDoc.id = 'modal-docente-xai'; mDoc.className = 'modal';
-                // AJUSTE: right mudado de 20px para 35px para liberar a barra de rolagem
                 mDoc.innerHTML = `
                 <div class="mc" style="max-width: 650px; border: 2px solid var(--choco-gold, #d4af37); background: #0a0a0a; position: relative; padding: 25px 20px;">
                     <button class="mx" style="position: absolute; top: 15px; right: 35px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer; z-index: 1000;" onclick="document.getElementById('modal-docente-xai').classList.remove('active')">✕</button>
@@ -299,29 +306,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.body.appendChild(mDoc);
             }
 
-            // Função recursiva para atualizar o painel e religar os cliques após validação/refutação
             const renderizarPainel = () => {
                 $('content-docente-xai').innerHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
                 
-                // 🧠 Conectando os gatilhos da Inference Validator Engine
                 const btnValidar = $('btn-ia-validar');
                 const btnRefutar = $('btn-ia-refutar');
                 
                 if (btnValidar) {
                     btnValidar.onclick = () => {
                         G.perfilCognitivo.validacaoHumana = 'VALIDADO';
-                        G.perfilCognitivo.confiancaDiagnostica = 99.9; // Crava a confiança da IA
+                        G.perfilCognitivo.confiancaDiagnostica = 99.9; 
                         console.log("✅ [Inference Validator] O Professor chancelou a hipótese diagnóstica da ADA.");
-                        renderizarPainel(); // Recarrega o HTML interno para mostrar o selo verde
+                        renderizarPainel(); 
                     };
                 }
                 
                 if (btnRefutar) {
                     btnRefutar.onclick = () => {
                         G.perfilCognitivo.validacaoHumana = 'REFUTADO';
-                        G.perfilCognitivo.confiancaDiagnostica = 10.0; // Aplica punição estatística
+                        G.perfilCognitivo.confiancaDiagnostica = 10.0; 
                         console.log("❌ [Inference Validator] O Professor refutou a hipótese. ADA forçada a reiniciar calibração.");
-                        renderizarPainel(); // Recarrega o HTML interno para mostrar o aviso vermelho
+                        renderizarPainel(); 
                     };
                 }
 
@@ -350,17 +355,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <div style="max-height: 60vh; overflow-y: auto; padding-right: 15px; font-family: 'Nunito', sans-serif; color: #ddd; font-size: 13px; line-height: 1.6;">
                             <h3 style="color: var(--choco-gold, #d4af37); font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">1. OS QUATRO PERFIS COGNITIVOS</h3>
                             <ul style="padding-left: 15px; margin-bottom: 20px;">
-                                <li style="margin-bottom: 10px;"><b style="color:white;">CONCEITUAL TEÓRICO:</b> O aluno ideal. Compreende a regra profunda e aplica com segurança. A ADA não interfere.</li>
-                                <li style="margin-bottom: 10px;"><b style="color:white;">PROCEDURAL MECÂNICO:</b> O aluno "papagaio". Acerta porque decorou a regra prática, mas não entende o porquê. A ADA força modelos visuais para ele entender a lógica.</li>
-                                <li style="margin-bottom: 10px;"><b style="color:white;">DEPENDENTE CONCRETO:</b> O aluno que precisa "contar nos dedos". A ADA fornece materialização gráfica constante (frações em barra, retas).</li>
-                                <li style="margin-bottom: 10px;"><b style="color:white;">IMPULSIVO ARITMÉTICO:</b> Erra por pressa. A ADA aplica "Travamento Rítmico" (microintervenções e respiração).</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">CONCEITUAL TEÓRICO:</b> Compreende a regra profunda e aplica com segurança. A ADA não interfere.</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">PROCEDURAL MECÂNICO:</b> Acerta porque decorou a regra prática, mas não entende o porquê. A ADA força modelos visuais para ele entender a lógica.</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">DEPENDENTE CONCRETO:</b> Necessita de materialização gráfica constante (frações em barra, retas). Ancorado no MathLab.</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">IMPULSIVO ARITMÉTICO:</b> Erra por pressa e cliques velozes. A ADA aplica "Travamento Rítmico".</li>
                             </ul>
 
                             <h3 style="color: var(--neon-red, #ff3333); font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">2. ETIOLOGIA DO ERRO (A Raiz)</h3>
-                            <p style="margin-bottom: 20px;">A ADA audita o "porquê" do erro. Exemplos: <b>Viés Aritmético</b> (soma denominadores na pressa), <b>Inversão Topológica</b> ou <b>Etiqueta Estática</b>. A intervenção muda para cada raiz.</p>
+                            <p style="margin-bottom: 20px;">A ADA audita o "porquê" do erro (ex: Viés Aritmético, Inversão Topológica). A intervenção e o kit físico do MathLab mudam para cada raiz.</p>
 
                             <h3 style="color: #00ff66; font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">3. DERIVA PEDAGÓGICA (Risco)</h3>
-                            <p>É um radar de <b>0.0 a 1.0</b>. Se passar de <b>0.5</b>, o aluno está frustrado. A ADA retrocederá a dificuldade automaticamente (scaffolding regressivo).</p>
+                            <p>Radar de 0.0 a 1.0. Se passar de 0.5, o aluno está frustrado e em descompasso com a ZDP. A ADA retrocede a dificuldade.</p>
                         </div>
                     </div>
                 `;
