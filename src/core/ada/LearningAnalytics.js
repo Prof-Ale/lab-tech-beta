@@ -1,8 +1,8 @@
 /**
  * @fileoverview LearningAnalytics.js
  * @description Motor de Telemetria e Geração de Relatórios do LabTech.
- * AGORA COM: Painel Longitudinal de Galperin (Estabilidade, Transferência e Fading).
- * @version 4.0.0
+ * AGORA COM: Prescrição Pedagógica Automática integrada aos Módulos do MathLab (v1.5.0).
+ * @version 1.5.0
  * @package LabTech / Core ADA
  */
 
@@ -122,6 +122,103 @@ export class LearningAnalytics {
 
         const dependente = perfil.dependenciaScaffold ? '<span style="color:#ff3333; font-weight:bold; animation: blink 2s infinite;">SIM (Requer Fading)</span>' : '<span style="color:#00ff66;">NÃO (Autônomo)</span>';
 
+        // 🛡️ MOTOR DE PRESCRIÇÃO CLÍNICA DINÂMICA (MATHLAB v1.5.0)
+        const blocoAtual = perfil.blocoAtual || 1; 
+        const dom = perfil.perfilDominante || 'INDETERMINADO';
+        let prescricaoMathLabHtml = '';
+
+        if (blocoAtual === 7) {
+            // Lógica Exclusiva para os Desafios Olímpicos de Alta Performance (Sem material físico correspondente)
+            if (dom === 'SUCESSO' || dom === 'CONCEITUAL_TEORICO') {
+                prescricaoMathLabHtml = `
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(0, 255, 128, 0.08); border: 1px dashed #00ff80; border-radius: 6px;">
+                        <b style="color: #00ff80; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">🥇 DESAFIO OLÍMPICO ATIVO (ALTA PERFORMANCE):</b>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
+                            Estudante operando em ZDP Superior Semiótica. <b>Fading físico completo estabilizado.</b> Não utilize materiais concretos do MathLab neste estágio.
+                            <br><span style="color:#00ff80; font-weight:bold;">➔ Mediação Docente:</span> Atue como questionador socrático. Peça para o estudante explicar verbalmente a estratégia lógica aplicada.
+                        </p>
+                    </div>`;
+            } else {
+                prescricaoMathLabHtml = `
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(255, 165, 0, 0.08); border: 1px dashed #ffa500; border-radius: 6px;">
+                        <b style="color: #ffa500; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">⚠️ ALERTA DE FLUTUAÇÃO COGNITIVA (BLOCO 7):</b>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
+                            O estudante atingiu o teto olímpico, mas apresenta comportamento errático de tentativa e erro.
+                            <br><span style="color:#ffa500; font-weight:bold;">➔ Ação Corretiva:</span> Utilize o comando <b>[REFUTAR HIPÓTESE]</b> acima para forçar o recuo adaptativo imediato do software para o Bloco 6 (Geometria), reativando as estruturas de ancoragem.
+                        </p>
+                    </div>`;
+            }
+        } else {
+            // Mapeamento Estrito dos Módulos Físicos MathLab (Blocos de 1 a 6)
+            let moduloNome = "";
+            let materialFisico = "";
+            let habilidadeFoco = "";
+
+            switch(blocoAtual) {
+                case 1:
+                    moduloNome = "Módulo 1: Sistema Decimal, Adição e Subtração";
+                    materialFisico = "Ábaco de Fichas ou Grid de Clipagem (Unidade/Dezena/Centena)";
+                    habilidadeFoco = "EF06MA03";
+                    break;
+                case 2:
+                    moduloNome = "Módulo 2: Divisibilidade, Inteiros e Frações";
+                    materialFisico = "Barras Fracionárias de Chocolate ou Discos de Frações Circulares";
+                    habilidadeFoco = "EF07MA04";
+                    break;
+                case 3:
+                    moduloNome = "Módulo 3: Escalas, Perímetros, Áreas e Volumes";
+                    materialFisico = "Copo Graduado (Princípio de Arquimedes) ou Malha Quadriculada Escala 1:20";
+                    habilidadeFoco = "EF07MA20";
+                    break;
+                case 4:
+                    moduloNome = "Módulo 4: Álgebra, Equações e Inequações";
+                    materialFisico = "Fichas de Opostos Coloridas ou Balança Balanceada de Pratos";
+                    habilidadeFoco = "EF07MA15";
+                    break;
+                case 5:
+                    moduloNome = "Módulo 5: Estatística e Probabilidade";
+                    materialFisico = "Papéis de Ordenação Concreta de Mediana (Técnica de Descarte de Extremos)";
+                    habilidadeFoco = "EF07MA32";
+                    break;
+                case 6:
+                    moduloNome = "Módulo 6: Geometria e Teorema de Pitágoras";
+                    materialFisico = "Palitos de Rigidez Articulados ou Quadrados de Áreas Recortadas (3x3, 4x4, 5x5)";
+                    habilidadeFoco = "EF07MA21";
+                    break;
+            }
+
+            if (dom === 'DEPENDENTE_CONCRETO' || perfil.dependenciaScaffold) {
+                prescricaoMathLabHtml = `
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(212, 175, 55, 0.08); border: 1px dashed #d4af37; border-radius: 6px;">
+                        <b style="color: #d4af37; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">📋 PRESCRIÇÃO CLÍNICA MATHLAB — ANCORAGEM CONCRETA:</b>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
+                            Estudante retido na etapa materializada. Intervenção cirúrgica necessária via <b>Cantinho da Base (Aulas 1 a 10)</b>.
+                            <br><span style="color:#d4af37; font-weight:bold;">➔ Módulo Alvo:</span> ${moduloNome} (${habilidadeFoco})
+                            <br><span style="color:#d4af37; font-weight:bold;">➔ Kit Prescrito:</span> <span style="color:#fff; font-weight:bold;">${materialFisico}</span>
+                            <br><span style="color:#aaa; font-style:italic;">Remova o aluno da tela temporariamente. Aplique a manipulação física e execute o Fading Gradual antes de liberá-lo para a culminância digital (Aulas 11 e 12).</span>
+                        </p>
+                    </div>`;
+            } else if (dom === 'IMPULSIVO_ARITMETICO') {
+                prescricaoMathLabHtml = `
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(255, 51, 51, 0.08); border: 1px dashed #ff3333; border-radius: 6px;">
+                        <b style="color: #ff3333; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">📋 PRESCRIÇÃO CLÍNICA MATHLAB — TRAVAMENTO RÍTMICO:</b>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
+                            Alto índice de erro mecânico por latência de clique ultraveloz. O cérebro opera em automação cega.
+                            <br><span style="color:#ff3333; font-weight:bold;">➔ Protocolo de Ação:</span> Force a parada de cliques. Forneça a tabela de <i>Registro Físico de Estimativas</i> do MathLab. O aluno fica obrigado a justificar e desenhar o resultado no papel por 15 segundos antes de ser autorizado a clicar no sistema.
+                        </p>
+                    </div>`;
+            } else if (dom === 'PROCEDURAL_MECANICO') {
+                prescricaoMathLabHtml = `
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(0, 234, 255, 0.08); border: 1px dashed #00eaff; border-radius: 6px;">
+                        <b style="color: #00eaff; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">📋 PRESCRIÇÃO CLÍNICA MATHLAB — CHOQUE SEMIÓTICO:</b>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
+                            O estudante decorou o algoritmo/fórmula de cor, mas apresenta falhas estruturais ocultas ao mudar o enunciado.
+                            <br><span style="color:#00eaff; font-weight:bold;">➔ Intervenção:</span> Solicite o desmonte da fórmula usando o kit físico do <span style="color:#fff;">${moduloNome}</span>. Desafie-o com a pergunta: <i>'Se eu mudar a ordem física dos blocos, por que a conta matemática continua funcionando?'</i>. Transicione o mecanismo operacional para a consciência lógica.
+                        </p>
+                    </div>`;
+            }
+        }
+
         return `
         <div style="padding: 15px; color: white; text-align: left;">
             <h2 style="color: var(--choco-gold, #d4af37); text-align: center; font-family: 'Orbitron', sans-serif; margin-top: 0; letter-spacing: 2px;">RADIOGRAFIA DA I.A. (XAI)</h2>
@@ -133,7 +230,7 @@ export class LearningAnalytics {
                 </div>
                 <div style="text-align: right;">
                     <p style="margin:0; font-size: 11px; color: #888; letter-spacing: 1px;">DIAGNÓSTICO DOMINANTE</p>
-                    <p style="margin:0; font-weight: bold; font-size: 18px; color: var(--neon-cyan, #00eaff); text-transform: uppercase;">${perfil.perfilDominante.replace(/_/g, ' ')}</p>
+                    <p style="margin:0; font-weight: bold; font-size: 18px; color: var(--neon-cyan, #00eaff); text-transform: uppercase;">${dom.replace(/_/g, ' ')}</p>
                 </div>
             </div>
 
@@ -162,6 +259,8 @@ export class LearningAnalytics {
                     </div>`
                 }
             </div>
+
+            ${ /* INJEÇÃO DA PRESCRIÇÃO AUTOMÁTICA DO MATHLAB */ prescricaoMathLabHtml }
 
             <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
                 
