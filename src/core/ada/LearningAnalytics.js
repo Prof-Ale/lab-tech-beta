@@ -1,7 +1,7 @@
 /**
  * @fileoverview LearningAnalytics.js
  * @description Motor de Telemetria e Geração de Relatórios do LabTech.
- * AGORA COM: Prescrição Pedagógica Automática integrada aos Módulos do MathLab (v1.5.0).
+ * AGORA COM: Cirurgia de Tolerância Adaptativa e Integração Total ao MathLab (v1.5.0).
  * @version 1.5.0
  * @package LabTech / Core ADA
  */
@@ -11,7 +11,7 @@ export class LearningAnalytics {
     // --- 1. DASHBOARD DO ALUNO (BNCC) ---
     static gerarHtmlDashboardBNCC(historico) {
         if (!historico || Object.keys(historico).length === 0) {
-            return "<p style='text-align:center; opacity:0.5; padding:20px; font-family:monospace;'>Sem dados suficientes para análise.</p>";
+            return "<p style='text-align:center; opacity:0.5; padding:20px; font-family:monospace;'>Aguardando coleta de dados...</p>";
         }
         let htmlFinal = '';
         for (let hab in historico) {
@@ -122,13 +122,29 @@ export class LearningAnalytics {
 
         const dependente = perfil.dependenciaScaffold ? '<span style="color:#ff3333; font-weight:bold; animation: blink 2s infinite;">SIM (Requer Fading)</span>' : '<span style="color:#00ff66;">NÃO (Autônomo)</span>';
 
-        // 🛡️ MOTOR DE PRESCRIÇÃO CLÍNICA DINÂMICA (MATHLAB v1.5.0)
-        const blocoAtual = perfil.blocoAtual || 1; 
+        // 🛡️ MOTOR DE PRESCRIÇÃO CLÍNICA COM CIRURGIA DE TOLERÂNCIA ADAPTATIVA (MATHLAB v1.5.0)
+        const blocoOriginal = perfil.blocoAtual;
+        let blocoTratado = parseInt(blocoOriginal);
         const dom = perfil.perfilDominante || 'INDETERMINADO';
         let prescricaoMathLabHtml = '';
 
-        if (blocoAtual === 7) {
-            // Lógica Exclusiva para os Desafios Olímpicos de Alta Performance (Sem material físico correspondente)
+        // Se o bloco não for um número puro (ex: "Geral" ou indefinido), a IA cruza os dados do histórico e das chaves ativas
+        if (isNaN(blocoTratado)) {
+            const habilidadesAtivas = Object.keys(perfil.mapaEtiologiaErros || {});
+            const historicoChaves = Object.keys(perfil.scoreMatrizesPerfeitas || {});
+            const stringBusca = (habilidadesAtivas.join() + historicoChaves.join()).toUpperCase();
+
+            if (stringBusca.includes("EF06MA03")) blocoTratado = 1;
+            else if (stringBusca.includes("EF07MA04") || stringBusca.includes("FRAÇ")) blocoTratado = 2;
+            else if (stringBusca.includes("EF07MA20")) blocoTratado = 3;
+            else if (stringBusca.includes("EF07MA15")) blocoTratado = 4;
+            else if (stringBusca.includes("EF07MA32")) blocoTratado = 5;
+            else if (stringBusca.includes("EF07MA21")) blocoTratado = 6;
+            else blocoTratado = 2; // Fallback seguro (Frações) caso esteja em calibração inicial vazia
+        }
+
+        if (blocoTratado === 7) {
+            // Lógica Exclusiva para os Desafios Olímpicos de Alta Performance
             if (dom === 'SUCESSO' || dom === 'CONCEITUAL_TEORICO') {
                 prescricaoMathLabHtml = `
                     <div style="margin-top: 15px; padding: 12px; background: rgba(0, 255, 128, 0.08); border: 1px dashed #00ff80; border-radius: 6px;">
@@ -154,7 +170,7 @@ export class LearningAnalytics {
             let materialFisico = "";
             let habilidadeFoco = "";
 
-            switch(blocoAtual) {
+            switch(blocoTratado) {
                 case 1:
                     moduloNome = "Módulo 1: Sistema Decimal, Adição e Subtração";
                     materialFisico = "Ábaco de Fichas ou Grid de Clipagem (Unidade/Dezena/Centena)";
@@ -185,17 +201,22 @@ export class LearningAnalytics {
                     materialFisico = "Palitos de Rigidez Articulados ou Quadrados de Áreas Recortadas (3x3, 4x4, 5x5)";
                     habilidadeFoco = "EF07MA21";
                     break;
+                default:
+                    moduloNome = "Módulo 2: Divisibilidade, Inteiros e Frações";
+                    materialFisico = "Barras Fracionárias de Chocolate ou Discos de Frações Circulares";
+                    habilidadeFoco = "EF07MA04";
             }
 
-            if (dom === 'DEPENDENTE_CONCRETO' || perfil.dependenciaScaffold) {
+            // Exibe a prescrição ideal se houver retenção cognitiva ou erro sistemático ativo
+            if (dom === 'DEPENDENTE_CONCRETO' || perfil.dependenciaScaffold || dom === 'INDETERMINADO') {
                 prescricaoMathLabHtml = `
                     <div style="margin-top: 15px; padding: 12px; background: rgba(212, 175, 55, 0.08); border: 1px dashed #d4af37; border-radius: 6px;">
                         <b style="color: #d4af37; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">📋 PRESCRIÇÃO CLÍNICA MATHLAB — ANCORAGEM CONCRETA:</b>
                         <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
-                            Estudante retido na etapa materializada. Intervenção cirúrgica necessária via <b>Cantinho da Base (Aulas 1 a 10)</b>.
+                            Estudante retido na etapa materializada ou em calibração de entrada. Intervenção sugerida via <b>Cantinho da Base (Aulas 1 a 10)</b>.
                             <br><span style="color:#d4af37; font-weight:bold;">➔ Módulo Alvo:</span> ${moduloNome} (${habilidadeFoco})
                             <br><span style="color:#d4af37; font-weight:bold;">➔ Kit Prescrito:</span> <span style="color:#fff; font-weight:bold;">${materialFisico}</span>
-                            <br><span style="color:#aaa; font-style:italic;">Remova o aluno da tela temporariamente. Aplique a manipulação física e execute o Fading Gradual antes de liberá-lo para a culminância digital (Aulas 11 e 12).</span>
+                            <br><span style="color:#aaa; font-style:italic;">Remova o aluno da tela temporariamente. Aplique a manipulação física correspondente e execute o Fading Gradual antes de liberá-lo para a culminância digital (Aulas 11 e 12).</span>
                         </p>
                     </div>`;
             } else if (dom === 'IMPULSIVO_ARITMETICO') {
@@ -260,7 +281,7 @@ export class LearningAnalytics {
                 }
             </div>
 
-            ${ /* INJEÇÃO DA PRESCRIÇÃO AUTOMÁTICA DO MATHLAB */ prescricaoMathLabHtml }
+            ${ /* INJEÇÃO SEGURA DA PRESCRIÇÃO AUTOMÁTICA DO MATHLAB */ prescricaoMathLabHtml }
 
             <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
                 
@@ -279,37 +300,4 @@ export class LearningAnalytics {
                     </div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; border-top: 3px solid var(--choco-gold, #d4af37); box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-                    <h3 style="font-size: 13px; color: #fff; margin-top:0; border-bottom: 1px solid #333; padding-bottom: 8px;"><i class="fas fa-brain"></i> TENDÊNCIAS COGNITIVAS</h3>
-                    ${scoresHtml}
-                    <div style="margin-top: 15px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 4px; display:flex; justify-content:space-between;">
-                        <span style="font-size: 12px; color:#aaa;">Risco de Deriva:</span> 
-                        <b style="color: ${perfil.derivaPedagogicaGeral > 0.5 ? '#ff3333' : '#00ff66'}; font-size: 14px;">${perfil.derivaPedagogicaGeral}</b>
-                    </div>
-                </div>
-
-              <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; border-top: 3px solid var(--neon-red, #ff3333); box-shadow: 0 4px 6px rgba(0,0,0,0.3); grid-column: 1 / -1;">
-                    <h3 style="font-size: 13px; color: #fff; margin-top:0; border-bottom: 1px solid #333; padding-bottom: 8px;"><i class="fas fa-bug"></i> MAPA DE ETIOLOGIA (RAIZ DOS ERROS)</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 10px;">
-                        ${etiologiaHtml || '<p style="font-size:12px; color:#00ff66; margin:0; text-align:center; width:100%;">Nenhuma anomalia processada no histórico.</p>'}
-                    </div>
-                </div>
-
-            </div>
-
-            <div style="text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px dashed #333;">
-                <button id="btn-export-xai-csv" style="background: rgba(0, 234, 255, 0.1); border: 1px solid var(--neon-cyan, #00eaff); color: var(--neon-cyan, #00eaff); padding: 10px 25px; border-radius: 4px; font-family: 'Orbitron', sans-serif; cursor: pointer; transition: all 0.3s; font-size: 12px; letter-spacing: 1px;">
-                    ⬇️ EXPORTAR DADOS DA SESSÃO (CSV)
-                </button>
-            </div>
-            
-        </div>
-        <style>
-            @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-            #btn-export-xai-csv:hover { background: var(--neon-cyan, #00eaff); color: black !important; }
-            #btn-ia-validar:hover { background: rgba(0, 255, 102, 0.3) !important; }
-            #btn-ia-refutar:hover { background: rgba(255, 51, 51, 0.3) !important; }
-        </style>
-        `; 
-    }
-}
+                <div
