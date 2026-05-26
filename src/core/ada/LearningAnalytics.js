@@ -1,7 +1,7 @@
 /**
  * @fileoverview LearningAnalytics.js
  * @description Motor de Telemetria e Geração de Relatórios do LabTech.
- * AGORA COM: Cirurgia de Tolerância Adaptativa e Integração Total ao MathLab (v1.5.0).
+ * AGORA COM: Prescrição Cirúrgica Baseada em Estudos Dirigidos por Aula do MathLab (v1.5.0).
  * @version 1.5.0
  * @package LabTech / Core ADA
  */
@@ -114,11 +114,11 @@ export class LearningAnalytics {
         `;
 
         // 4. Semáforo de Estabilidade e Fading
-        const estabilidade = perfil.estabilidadeConceitual || 'INDEFINIDA';
+        const estabilidad = perfil.estabilidadeConceitual || 'INDEFINIDA';
         let corEstabilidade = '#aaa';
-        if (estabilidade === 'ALTA_ESTABILIZADA') corEstabilidade = '#00ff66';
-        if (estabilidade === 'EM_CONSTRUCAO') corEstabilidade = '#ffbb33';
-        if (estabilidade === 'BAIXA_RISCO_PSEUDOCONCEITO') corEstabilidade = '#ff3333';
+        if (estabilidad === 'ALTA_ESTABILIZADA') corEstabilidade = '#00ff66';
+        if (estabilidad === 'EM_CONSTRUCAO') corEstabilidade = '#ffbb33';
+        if (estabilidad === 'BAIXA_RISCO_PSEUDOCONCEITO') corEstabilidade = '#ff3333';
 
         const dependente = perfil.dependenciaScaffold ? '<span style="color:#ff3333; font-weight:bold; animation: blink 2s infinite;">SIM (Requer Fading)</span>' : '<span style="color:#00ff66;">NÃO (Autônomo)</span>';
 
@@ -128,7 +128,7 @@ export class LearningAnalytics {
         const dom = perfil.perfilDominante || 'INDETERMINADO';
         let prescricaoMathLabHtml = '';
 
-        // Se o bloco não for um número puro (ex: "Geral" ou indefinido), a IA cruza os dados do histórico e das chaves ativas
+        // Se o bloco não for um número puro (ex: "Geral" ou indefinido), a IA cruza os dados do histórico
         if (isNaN(blocoTratado)) {
             const habilidadesAtivas = Object.keys(perfil.mapaEtiologiaErros || {});
             const historicoChaves = Object.keys(perfil.scoreMatrizesPerfeitas || {});
@@ -140,7 +140,7 @@ export class LearningAnalytics {
             else if (stringBusca.includes("EF07MA15")) blocoTratado = 4;
             else if (stringBusca.includes("EF07MA32")) blocoTratado = 5;
             else if (stringBusca.includes("EF07MA21")) blocoTratado = 6;
-            else blocoTratado = 2; // Fallback seguro (Frações) caso esteja em calibração inicial vazia
+            else blocoTratado = 2; 
         }
 
         if (blocoTratado === 7) {
@@ -169,42 +169,96 @@ export class LearningAnalytics {
             let moduloNome = "";
             let materialFisico = "";
             let habilidadeFoco = "";
+            let aulaPrescritaText = "Aulas estruturais básicas de fundamentação manipulável.";
+
+            const erros = perfil.mapaEtiologiaErros || {};
 
             switch(blocoTratado) {
                 case 1:
                     moduloNome = "Módulo 1: Sistema Decimal, Adição e Subtração";
                     materialFisico = "Ábaco de Fichas ou Grid de Clipagem (Unidade/Dezena/Centena)";
                     habilidadeFoco = "EF06MA03";
+                    
+                    // Roteiro dirigido por aula do Módulo 1
+                    if (erros.AGRUPAMENTO_POSICIONAL > 0 || erros.VIER_ALGORITMICO > 0) {
+                        aulaPrescritaText = "Aula 02: O Sistema de Numeração Decimal e Ordens Posicionais";
+                    } else if (erros.TRANSPORTE_ZERO > 0 || erros.ESQUECIMENTO_VAI_UM > 0) {
+                        aulaPrescritaText = "Aula 04: Adição e Subtração com Reagrupamento Concreto";
+                    } else {
+                        aulaPrescritaText = "Aula 01: Construção Histórica e Contagem no Ábaco";
+                    }
                     break;
                 case 2:
                     moduloNome = "Módulo 2: Divisibilidade, Inteiros e Frações";
                     materialFisico = "Barras Fracionárias de Chocolate ou Discos de Frações Circulares";
                     habilidadeFoco = "EF07MA04";
+                    
+                    // Roteiro dirigido por aula do Módulo 2 (Frações)
+                    if (erros.INVERSAO_TOPOLOGICA > 0) {
+                        aulaPrescritaText = "Aula 05: Fração e Seus Significados (Numerador vs Denominador)";
+                    } else if (erros.ETIQUETA_ESTATICA > 0 || erros.PSEUDOCONCEITO_ESTATICO > 0) {
+                        aulaPrescritaText = "Aula 06: A Ideia de Parte-Todo (Manipulação dos Discos Fracionários)";
+                    } else if (erros.VIES_ARITMETICO > 0) {
+                        aulaPrescritaText = "Aula 08: Adição e Subtração de Frações com Bases Distintas";
+                    } else {
+                        aulaPrescritaText = "Aula 05 ou Aula 07: Identificação e Frações Equivalentes no Concreto";
+                    }
                     break;
                 case 3:
                     moduloNome = "Módulo 3: Escalas, Perímetros, Áreas e Volumes";
                     materialFisico = "Copo Graduado (Princípio de Arquimedes) ou Malha Quadriculada Escala 1:20";
                     habilidadeFoco = "EF07MA20";
+                    
+                    if (erros.CONFUSAO_DIMENSIONAL > 0) {
+                        aulaPrescritaText = "Aula 06: Perímetro e Área — Distinção Unidimensional vs Bidimensional";
+                    } else if (erros.FALHA_CONVERSAO_ESCALA > 0) {
+                        aulaPrescritaText = "Aula 03: Introdução ao Conceito de Ampliação e Redução na Malha";
+                    } else {
+                        aulaPrescritaText = "Aula 08: Volume do Bloco Retangular e Espaço Tridimensional";
+                    }
                     break;
                 case 4:
                     moduloNome = "Módulo 4: Álgebra, Equações e Inequações";
                     materialFisico = "Fichas de Opostos Coloridas ou Balança Balanceada de Pratos";
                     habilidadeFoco = "EF07MA15";
+                    
+                    if (erros.INVERSAO_OPERACIONAL > 0) {
+                        aulaPrescritaText = "Aula 04: O Princípio Aditivo da Igualdade na Balança";
+                    } else if (erros.DISTRIBUTIVA_CEGA > 0) {
+                        aulaPrescritaText = "Aula 06: Propriedade Distributiva com Fichas Agrupadas";
+                    } else {
+                        aulaPrescritaText = "Aula 02: Linguagem Algébrica e Expressões Equivalentes";
+                    }
                     break;
                 case 5:
                     moduloNome = "Módulo 5: Estatística e Probabilidade";
                     materialFisico = "Papéis de Ordenação Concreta de Mediana (Técnica de Descarte de Extremos)";
                     habilidadeFoco = "EF07MA32";
+                    
+                    if (erros.CONFUSAO_MEDIA_MEDIANA > 0) {
+                        aulaPrescritaText = "Aula 05: O Conceito de Mediana através do Rol Físico Humano";
+                    } else {
+                        aulaPrescritaText = "Aula 03: Leitura e Organização de Rol de Dados Coletados";
+                    }
                     break;
                 case 6:
                     moduloNome = "Módulo 6: Geometria e Teorema de Pitágoras";
                     materialFisico = "Palitos de Rigidez Articulados ou Quadrados de Áreas Recortadas (3x3, 4x4, 5x5)";
                     habilidadeFoco = "EF07MA21";
+                    
+                    if (erros.QUEBRA_DESIGUALDADE > 0) {
+                        aulaPrescritaText = "Aula 02: Condição de Existência de um Triângulo Manipulando Palitos";
+                    } else if (erros.SOMA_QUADRADOS_OMISSAO > 0) {
+                        aulaPrescritaText = "Aula 07: O Teorema de Pitágoras através do Mosaico de Áreas Físicas";
+                    } else {
+                        aulaPrescritaText = "Aula 05: Classificação de Triângulos e Rigidez Estrutural";
+                    }
                     break;
                 default:
                     moduloNome = "Módulo 2: Divisibilidade, Inteiros e Frações";
                     materialFisico = "Barras Fracionárias de Chocolate ou Discos de Frações Circulares";
                     habilidadeFoco = "EF07MA04";
+                    aulaPrescritaText = "Aula 05: Fração e Seus Significados";
             }
 
             // Exibe a prescrição ideal se houver retenção cognitiva ou erro sistemático ativo
@@ -213,10 +267,11 @@ export class LearningAnalytics {
                     <div style="margin-top: 15px; padding: 12px; background: rgba(212, 175, 55, 0.08); border: 1px dashed #d4af37; border-radius: 6px;">
                         <b style="color: #d4af37; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">📋 PRESCRIÇÃO CLÍNICA MATHLAB — ANCORAGEM CONCRETA:</b>
                         <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
-                            Estudante retido na etapa materializada ou em calibração de entrada. Intervenção sugerida via <b>Cantinho da Base (Aulas 1 a 10)</b>.
+                            Estudante retido na etapa materializada ou em calibração de entrada. Intervenção cirúrgica via <b>Cantinho da Base (Aulas 1 a 10)</b>.
                             <br><span style="color:#d4af37; font-weight:bold;">➔ Módulo Alvo:</span> ${moduloNome} (${habilidadeFoco})
                             <br><span style="color:#d4af37; font-weight:bold;">➔ Kit Prescrito:</span> <span style="color:#fff; font-weight:bold;">${materialFisico}</span>
-                            <br><span style="color:#aaa; font-style:italic;">Remova o aluno da tela temporariamente. Aplique a manipulação física correspondente e execute o Fading Gradual antes de liberá-lo para a culminância digital (Aulas 11 e 12).</span>
+                            <br><span style="color:#00ff66; font-weight:bold;">➔ Estudo Dirigido Prescrito:</span> <span style="color:#00ff66; font-weight:bold; font-family:monospace;">${aulaPrescritaText}</span>
+                            <br><span style="color:#aaa; font-style:italic; font-size:11px; display:block; margin-top:5px;">Ação Docente: Afaste o aluno do computador. Aplique as atividades da folha/caderno correspondente a esta aula usando as peças físicas antes de devolvê-lo para a culminância digital.</span>
                         </p>
                     </div>`;
             } else if (dom === 'IMPULSIVO_ARITMETICO') {
@@ -225,7 +280,7 @@ export class LearningAnalytics {
                         <b style="color: #ff3333; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">📋 PRESCRIÇÃO CLÍNICA MATHLAB — TRAVAMENTO RÍTMICO:</b>
                         <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
                             Alto índice de erro mecânico por latência de clique ultraveloz. O cérebro opera em automação cega.
-                            <br><span style="color:#ff3333; font-weight:bold;">➔ Protocolo de Ação:</span> Force a parada de cliques. Forneça a tabela de <i>Registro Físico de Estimativas</i> do MathLab. O aluno fica obrigado a justificar e desenhar o resultado no papel por 15 segundos antes de ser authorized a clicar no sistema.
+                            <br><span style="color:#ff3333; font-weight:bold;">➔ Roteiro de Apoio:</span> Ative a folha de <i>Registro de Estimativa Tática</i> do MathLab. O aluno fica forçado a desenhar a previsão do resultado no papel e segurar o lápis por 15 segundos antes de o professor liberar o clique no mouse.
                         </p>
                     </div>`;
             } else if (dom === 'PROCEDURAL_MECANICO') {
@@ -233,8 +288,8 @@ export class LearningAnalytics {
                     <div style="margin-top: 15px; padding: 12px; background: rgba(0, 234, 255, 0.08); border: 1px dashed #00eaff; border-radius: 6px;">
                         <b style="color: #00eaff; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">📋 PRESCRIÇÃO CLÍNICA MATHLAB — CHOQUE SEMIÓTICO:</b>
                         <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
-                            O estudante decorou o algoritmo/fórmula de cor, mas apresenta falhas estruturais ocultas ao mudar o enunciado.
-                            <br><span style="color:#00eaff; font-weight:bold;">➔ Intervenção:</span> Solicite o desmonte da fórmula usando o kit físico do <span style="color:#fff;">${moduloNome}</span>. Desafie-o com a pergunta: <i>'Se eu mudar a ordem física dos blocos, por que a conta matemática continua funcionando?'</i>. Transicione o mecanismo operacional para a consciência lógica.
+                            O estudante decorou o algoritmo de cor, mas apresenta falhas ao mudar a roupagem textual.
+                            <br><span style="color:#00eaff; font-weight:bold;">➔ Estudo Dirigido Prescrito:</span> Recue o aluno para as atividades práticas da <span style="color:#fff;">${aulaPrescritaText}</span>. Desafie-o a provar o motivo da regra matemática usando as peças concretas do kit.
                         </p>
                     </div>`;
             }
@@ -281,7 +336,7 @@ export class LearningAnalytics {
                 }
             </div>
 
-            ${ /* INJEÇÃO SEGURA DA PRESCRIÇÃO AUTOMÁTICA DO MATHLAB */ prescricaoMathLabHtml }
+            ${ /* INJEÇÃO CIRÚRGICA DA PRESCRIÇÃO DE ESTUDO DIRIGIDO POR AULA */ prescricaoMathLabHtml }
 
             <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
                 
