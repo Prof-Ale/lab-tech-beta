@@ -1,6 +1,6 @@
 /**
  * src/main.js — MESTRE DE ORQUESTRAÇÃO (RESTAURADO COMPLETO + VAR PEDAGÓGICO + VALIDATOR ENGINE)
- * AGORA COM: Sincronização dinâmica de Bloco Ativo para Prescrição Clínica MathLab (v1.5.0).
+ * AGORA COM: Validador Absoluto de Acertos e Prevenção de Phantom State da ADA.
  */
 
 import { G } from './engine/gameState.js';
@@ -77,7 +77,39 @@ async function processarResposta(alt, q) {
     const latenciaSessaoMs = Date.now() - G.tempoInicialQuestao;
     const diagEngine = new DiagnosticEngine();
     const profEngine = new ProfileEngine();
-    const analise = diagEngine.analisarAlternativa(alt);
+    
+    let analise = diagEngine.analisarAlternativa(alt);
+
+    // 🔥 CIRURGIA DE PRECISÃO: VALIDADOR ABSOLUTO DE ACERTOS (OVERRIDE DA ENGINE)
+    // Contorna limitações do DiagnosticEngine garantindo que o acerto seja detectado de qualquer forma
+    if (!analise.correto) {
+        const valAluno = String(alt.valor || '').trim().toLowerCase();
+        const valGabarito = String(q.res || q.gabarito || q.correctAnswer || '').trim().toLowerCase();
+        const idGabarito = String(q.res || '').trim().toUpperCase();
+        const idAlt = String(alt.id || alt.letra || '').trim().toUpperCase();
+
+        if (valAluno === valGabarito && valAluno !== '') {
+            analise.correto = true; // Match exato de texto
+        } else if (idAlt === idGabarito && idAlt !== '') {
+            analise.correto = true; // Match exato de ID/Letra (ex: "A" === "A")
+        } else if (alt.correta === true || alt.isCorrect === true) {
+            analise.correto = true; // Flag explícita no JSON
+        } else {
+            // Tolerância Matemática (Trata "10,5 cm" como igual a "10.5")
+            const numGab = parseFloat(valGabarito.replace(/[a-z]/g, '').replace(',', '.'));
+            const numAluno = parseFloat(valAluno.replace(/[a-z]/g, '').replace(',', '.'));
+            if (!isNaN(numGab) && !isNaN(numAluno) && numGab === numAluno) {
+                analise.correto = true;
+            }
+        }
+    }
+
+    // Se a força bruta corrigiu a falha, limpa o diagnóstico de erro
+    if (analise.correto) {
+        analise.categoria = null;
+        analise.descricao = "Correto";
+    }
+
     const hab = q.bncc || q.habilidade || "Geral";
 
     // 🎥 INÍCIO DO GRAVADOR (VAR PEDAGÓGICO)
@@ -101,6 +133,8 @@ async function processarResposta(alt, q) {
         G.acertos++; G.combo++;
         G.historico[hab].acertos++;
         AdaptiveAudioEngine.sonarSucesso();
+        // 🧹 PREVENÇÃO DE PHANTOM STATE: Força a ADA de erro a desaparecer da tela imediatamente
+        $('ada-command-post')?.classList.remove('active');
     } else {
         G.combo = 0; G.erros++;
         if (analise.categoria === 'conceito') G.historico[hab].erros_conceito++;
@@ -116,7 +150,7 @@ async function processarResposta(alt, q) {
         G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
     }
 
-    const payloadTelemetria = { latenciaMs: latenciaSessaoMs, totalAjustesPreConfirmacao: 1, alternativaSelecionadaId: alt.id };
+    const payloadTelemetria = { latenciaMs: latenciaSessaoMs, totalAjustesPreConfirmacao: 1, alternativaSelecionadaId: alt.id, foiCorreto: analise.correto };
     const updateResultado = profEngine.processarEventoTelemetria(`${G.nome}_${G.turma}`, payloadTelemetria, q);
     
     G.perfilCognitivo = updateResultado.perfilCompleto; 
@@ -137,14 +171,17 @@ async function processarResposta(alt, q) {
 
     // Feedback Visual e Atualização do HUD
     uiManager.updHUD();
-    const feedbackTexto = analise.correto ? q.passo : (q.dica || analise.descricao);
+    const feedbackTexto = analise.correto ? (q.passo || "Muito bem! Lógica irretocável.") : (q.dica || analise.descricao);
     uiManager.narrarContexto(feedbackTexto, analise.correto);
 
     // 🚀 LIBERAÇÃO GARANTIDA DA INTERFACE
     const fbContainer = $('fb');
     if (fbContainer) { 
         fbContainer.textContent = feedbackTexto; 
-        fbContainer.style.display = 'block'; 
+        fbContainer.style.display = 'block';
+        // Feedback visual imediato via borda/cor do container
+        fbContainer.style.borderColor = analise.correto ? '#00ff66' : '#ff3333';
+        fbContainer.style.color = analise.correto ? '#00ff66' : '#ffbb33';
     }
     $('btn-prox')?.classList.remove('hidden'); 
 
@@ -169,6 +206,8 @@ async function processarResposta(alt, q) {
 function proximaQ() {
     G.respondeu = false;
     $('fb').style.display = 'none';
+    $('ada-command-post')?.classList.remove('active'); // Prevenção de Phantom State na próxima tela
+
     const q = AdaptiveSelector.selecionarProximaQuestao(G.currentBlock, G.perfilCognitivo);
     if (!q) return;
     
