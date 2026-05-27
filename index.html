@@ -111,25 +111,51 @@
     </div>
   </div>
 
- <div id="mcred" class="modal">
-    <div class="mc" style="border: 2px solid var(--choco-gold); max-width: 460px;">
+  <div id="mcred" class="modal">
+    <div class="mc" style="border: 2px solid var(--choco-gold); max-width: 600px; padding: 25px;">
       <button class="mx">✕</button>
-      <h2 style="color: var(--choco-gold); font-family: var(--font-display); font-size: 18px; margin-bottom: 15px;">CRÉDITOS</h2>
       
-      <p style="font-size: 16px; margin-bottom: 15px;">
-        <strong>MathLab 2026</strong><br>
-        <span style="opacity: 0.8; font-size: 14px;">Autor: Prof. Alê Chocolate</span>
-      </p>
+      <h2 style="color: var(--choco-gold); font-family: var(--font-display); font-size: 22px; margin-bottom: 5px; text-transform: uppercase;">SOBRE O LABTECH</h2>
+      <p style="color: var(--neon-cyan); font-weight: bold; margin-bottom: 20px; font-size: 14px;">LabTech 1.5.0 — Research Build</p>
       
-      <div style="border-top: 1px solid rgba(212, 160, 23, 0.3); margin: 15px 0; padding-top: 15px; text-align: left; font-size: 13px; line-height: 1.5;">
-        <p style="margin-bottom: 12px; color: var(--choco-cream);">
-          🧠 <strong>Metodologia DUA:</strong> Este sistema foi projetado sob as diretrizes do <em>Desenho Universal para Aprendizagem</em>. A ADA calibra a experiência em tempo real, alternando entre representações visuais, suporte sonoro e desafios abstratos para garantir múltiplos meios de engajamento e expressão.
+      <div style="text-align: left; font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
+        <p style="margin-bottom: 8px; font-weight: bold;">Plataforma adaptativa de aprendizagem matemática fundamentada em:</p>
+        <ul style="list-style-type: disc; padding-left: 20px; color: #ddd;">
+          <li>Teoria Histórico-Cultural</li>
+          <li>Desenho Universal para Aprendizagem (DUA)</li>
+          <li>Learning Analytics</li>
+          <li>Inteligência Artificial Explicável (XAI)</li>
+        </ul>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; text-align: left; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1);">
+        <p style="font-size: 12px; color: #aaa; margin-bottom: 4px;">Desenvolvido por:</p>
+        <p style="font-weight: bold; font-size: 16px; color: #fff; margin-bottom: 2px;">Prof. Alessandro Barbosa dos Santos</p>
+        <p style="font-size: 13px; color: #aaa; font-style: italic;">(Prof. Alê Chocolate)</p>
+      </div>
+
+      <div style="text-align: left; font-size: 13px; line-height: 1.6; color: #ccc; margin-bottom: 20px;">
+        <p style="margin-bottom: 12px;">
+          O LabTech atua como um Sistema Tutor Inteligente voltado à recomposição de aprendizagem e à mediação conceitual matemática. A ADA (Assistente Diagnóstica Adaptativa) analisa padrões de interação, transferência representacional, estabilidade conceitual e etiologia dos erros para apoiar intervenções pedagógicas contextualizadas.
         </p>
-        
-        <p style="color: var(--neon-cyan); font-style: italic; font-size: 12px; border-left: 2px solid var(--neon-cyan); padding-left: 10px; margin-top: 15px; line-height: 1.4;">
-          "A verdadeira educação inclusiva não força o estudante a se adaptar ao sistema; ela calibra a tecnologia para reconhecer, acolher e potencializar a singularidade de cada mente."
+        <p style="margin-bottom: 12px;">
+          A plataforma não substitui a mediação humana. O professor permanece como agente central do processo educativo, validando ou reinterpretando as hipóteses inferenciais produzidas pela ADA.
+        </p>
+        <p>
+          O sistema foi projetado segundo os princípios do DUA, oferecendo múltiplas formas de representação, engajamento e expressão para acolher diferentes perfis cognitivos e trajetórias de aprendizagem.
         </p>
       </div>
+      
+      <div style="border-left: 3px solid var(--neon-cyan); padding-left: 15px; text-align: left; margin-bottom: 25px; background: rgba(0, 234, 255, 0.05); padding: 10px 15px;">
+        <p style="color: var(--neon-cyan); font-style: italic; font-size: 13px; line-height: 1.5;">
+          “A verdadeira educação inclusiva não força o estudante a se adaptar ao sistema; ela calibra a tecnologia para reconhecer, acolher e potencializar a singularidade de cada mente.”
+        </p>
+      </div>
+
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; font-size: 11px; color: #666; text-align: center;">
+        <p>&copy; <span id="labtech-year">2024</span> LabTech. Todos os Direitos Reservados.</p>
+      </div>
+
     </div>
   </div>
 
@@ -145,5 +171,14 @@
   <audio id="bgm" loop><source src="assets/snd/trilha.mp3" type="audio/mpeg"></audio>
   
   <script type="module" src="./src/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const yearSpan = document.getElementById('labtech-year');
+      if(yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+      }
+    });
+  </script>
 </body>
 </html>
