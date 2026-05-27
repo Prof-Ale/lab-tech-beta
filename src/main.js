@@ -81,23 +81,27 @@ async function processarResposta(alt, q) {
     let analise = diagEngine.analisarAlternativa(alt);
 
     // 🔥 CIRURGIA DE PRECISÃO: VALIDADOR ABSOLUTO DE ACERTOS (OVERRIDE DA ENGINE)
-    // Contorna limitações do DiagnosticEngine garantindo que o acerto seja detectado de qualquer forma
     if (!analise.correto) {
-        const valAluno = String(alt.valor || '').trim().toLowerCase();
+        const valAluno = String(alt.valor || alt.texto || '').trim().toLowerCase();
         const valGabarito = String(q.res || q.gabarito || q.correctAnswer || '').trim().toLowerCase();
         const idGabarito = String(q.res || '').trim().toUpperCase();
         const idAlt = String(alt.id || alt.letra || '').trim().toUpperCase();
 
-        if (valAluno === valGabarito && valAluno !== '') {
+        // 1. O MATCH PERFEITO: Lê diretamente a chave do seu JSON específico
+        if (alt.tipo === "acerto" || alt.tipo === "correto") {
+            analise.correto = true;
+        } 
+        // 2. Fallbacks secundários de Segurança
+        else if (valAluno === valGabarito && valAluno !== '') {
             analise.correto = true; // Match exato de texto
         } else if (idAlt === idGabarito && idAlt !== '') {
             analise.correto = true; // Match exato de ID/Letra (ex: "A" === "A")
         } else if (alt.correta === true || alt.isCorrect === true) {
-            analise.correto = true; // Flag explícita no JSON
+            analise.correto = true; // Flag genérica
         } else {
-            // Tolerância Matemática (Trata "10,5 cm" como igual a "10.5")
-            const numGab = parseFloat(valGabarito.replace(/[a-z]/g, '').replace(',', '.'));
-            const numAluno = parseFloat(valAluno.replace(/[a-z]/g, '').replace(',', '.'));
+            // Tolerância Matemática (Trata "R$ 10,50" como igual a "10.5")
+            const numGab = parseFloat(valGabarito.replace(/[a-zR$]/gi, '').replace(',', '.'));
+            const numAluno = parseFloat(valAluno.replace(/[a-zR$]/gi, '').replace(',', '.'));
             if (!isNaN(numGab) && !isNaN(numAluno) && numGab === numAluno) {
                 analise.correto = true;
             }
@@ -106,6 +110,7 @@ async function processarResposta(alt, q) {
 
     // Se a força bruta corrigiu a falha, limpa o diagnóstico de erro
     if (analise.correto) {
+        analise.correto = true; // Force boolean true
         analise.categoria = null;
         analise.descricao = "Correto";
     }
@@ -117,7 +122,7 @@ async function processarResposta(alt, q) {
     G.logSessao.push({
         questao: q.display || q.texto || "Desafio Visual",
         habilidade: hab,
-        respostaDada: alt.valor,
+        respostaDada: alt.valor || alt.texto || "N/A",
         correto: analise.correto,
         etiologia: analise.correto ? "N/A" : (analise.categoria || "Erro Genérico"),
         latencia: latenciaSessaoMs,
@@ -171,7 +176,7 @@ async function processarResposta(alt, q) {
 
     // Feedback Visual e Atualização do HUD
     uiManager.updHUD();
-    const feedbackTexto = analise.correto ? (q.passo || "Muito bem! Lógica irretocável.") : (q.dica || analise.descricao);
+    const feedbackTexto = analise.correto ? (q.passo || "Muito bem! Lógica irretocável.") : (q.dica || analise.descricao || "Analise novamente.");
     uiManager.narrarContexto(feedbackTexto, analise.correto);
 
     // 🚀 LIBERAÇÃO GARANTIDA DA INTERFACE
@@ -179,7 +184,6 @@ async function processarResposta(alt, q) {
     if (fbContainer) { 
         fbContainer.textContent = feedbackTexto; 
         fbContainer.style.display = 'block';
-        // Feedback visual imediato via borda/cor do container
         fbContainer.style.borderColor = analise.correto ? '#00ff66' : '#ff3333';
         fbContainer.style.color = analise.correto ? '#00ff66' : '#ffbb33';
     }
@@ -188,7 +192,7 @@ async function processarResposta(alt, q) {
     // 🎨 RENDERIZAÇÃO GRÁFICA (BLINDADA)
     try {
         const pontoA = parseFloat(String(q.a || q.inicio || q.valorInicial).replace(/[^\d.-]/g, '')) || 0;
-        const pontoB = parseFloat(String(alt.valor).replace(/[^\d.-]/g, '')) || 0;
+        const pontoB = parseFloat(String(alt.valor || alt.texto).replace(/[^\d.-]/g, '')) || 0;
         const deslocamento = pontoB - pontoA;
 
         const payloadAdaptive = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
@@ -219,7 +223,7 @@ function proximaQ() {
 }
 
 function renderQ(q) {
-    $('conta-display').textContent = q.display;
+    $('conta-display').textContent = q.display || q.texto || "Resolva o desafio:";
     $('grid-botoes').innerHTML = '';
     $('btn-prox')?.classList.add('hidden');
     
@@ -229,7 +233,8 @@ function renderQ(q) {
     q.alternativas.sort(() => Math.random() - 0.5).forEach(alt => {
         const b = document.createElement('button');
         b.className = 'ba';
-        b.textContent = alt.valor;
+        // Evolução: Previne botão vazio lendo chaves variadas do JSON
+        b.textContent = alt.valor || alt.texto || alt.label || "[Opção]";
         b.onclick = () => processarResposta(alt, q);
         $('grid-botoes').appendChild(b);
     });
