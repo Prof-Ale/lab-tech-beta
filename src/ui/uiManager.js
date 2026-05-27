@@ -2,7 +2,7 @@
  * @fileoverview uiManager.js
  * @description Controlador central de interface, manipulação de DOM, acessibilidade (DUA) e sincronia de avatares.
  * Adaptado para o pipeline assíncrono e imutável do ecossistema LabTech.
- * * @version 6.0.0
+ * @version 6.1.0
  * @package LabTech / UI Architecture
  */
 
@@ -157,16 +157,30 @@ export function tocarAv(tipo) {
 
 /**
  * Sincroniza e atualiza os elementos do HUD superior e barras de integridade do reator.
+ * Adicionado: Transições suaves baseadas nos setters de gameState.
  */
 export function updHUD() {
     const barVida = document.getElementById("fv");
     const barEnergia = document.getElementById("fen");
 
+    // Lida com a cor do núcleo baseada na integridade
     if (barVida) {
-        barVida.style.width = `${G.vida}%`;
-        if (G.vida < 30) barVida.style.backgroundColor = "var(--neon-red, #ff3333)";
-        else if (G.vida < 60) barVida.style.backgroundColor = "#ffbb33";
-        else barVida.style.backgroundColor = "var(--neon-cyan, #00eaff)";
+        // Usa o Getter blindado do gameState
+        const integridade = G.vida || 0; 
+        
+        barVida.style.width = `${integridade}%`;
+        
+        // Transições de Alerta Termal do Núcleo
+        if (integridade < 30) {
+            barVida.style.backgroundColor = "var(--neon-red, #ff3333)";
+            barVida.style.boxShadow = "0 0 10px rgba(255, 51, 51, 0.6)";
+        } else if (integridade < 60) {
+            barVida.style.backgroundColor = "#ffbb33";
+            barVida.style.boxShadow = "0 0 10px rgba(255, 187, 51, 0.4)";
+        } else {
+            barVida.style.backgroundColor = "var(--neon-cyan, #00eaff)";
+            barVida.style.boxShadow = "0 0 10px rgba(0, 234, 255, 0.4)";
+        }
     }
 
     if (barEnergia) barEnergia.style.width = `${G.energia || 100}%`;
@@ -174,7 +188,18 @@ export function updHUD() {
     const txtCombo = document.getElementById("tcb");
     const txtNivel = document.getElementById("tnv");
     
-    if (txtCombo) txtCombo.textContent = G.combo || 0;
+    if (txtCombo) {
+        txtCombo.textContent = G.combo || 0;
+        // Efeito visual de recompensa se o combo for alto
+        if (G.combo > 2) {
+            txtCombo.style.color = "var(--choco-gold, #d4af37)";
+            txtCombo.style.textShadow = "0 0 5px var(--choco-gold, #d4af37)";
+        } else {
+            txtCombo.style.color = "inherit";
+            txtCombo.style.textShadow = "none";
+        }
+    }
+    
     if (txtNivel) txtNivel.textContent = G.nivel || 1;
 }
 
@@ -225,6 +250,7 @@ export function exibirGameOver() {
 
     narrarContexto(`Alerta: Estabilidade do núcleo perdida. Taxa de sincronia calculada em ${taxaSincronia} por cento. Reinicie o terminal para calibração.`, false);
 }
+
 /**
  * Exibe um alerta metacognitivo na tela do aluno, 
  * promovendo a consciência sobre o próprio processo de aprendizagem.
