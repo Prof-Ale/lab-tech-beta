@@ -3,30 +3,26 @@
  * @description Motor de Sonificação Adaptativa e Acessibilidade Neuro-Auditiva (DUA).
  * Utiliza a Web Audio API pura para sintetizar frequências matemáticas em tempo real,
  * fornecendo feedback sonoro posicional e cinestésico dependendo da resposta.
- * @version 1.0.0
+ * EVOLUÇÃO: Singleton Arquitetural imune às políticas de bloqueio de Autoplay.
+ * @version 1.1.0
  * @package LabTech / Core ADA
  */
 
 import { G } from '../../engine/gameState.js';
 
 export class AdaptiveAudioEngine {
-    constructor() {
-        /**
-         * @private
-         * @type {AudioContext|null}
-         */
-        this._audioCtx = null;
-    }
+    
+    // Instância única global para prevenir Memory Leaks e bloqueios de Autoplay
+    static _audioCtx = null;
 
     /**
      * Garante a inicialização preguiçosa do Contexto de Áudio (Lazy Initialization).
-     * Previne o bloqueio nativo de segurança de reprodução automática dos navegadores (Autoplay Policy).
+     * Previne o bloqueio nativo de segurança de reprodução automática dos navegadores.
      * @private
      * @returns {AudioContext}
      */
-    _initContext() {
+    static _initContext() {
         if (!this._audioCtx) {
-            // Suporte cross-browser para o inicializador Web Audio
             const AudioContextClass = window.AudioContext || window.webkitAudioContext;
             this._audioCtx = new AudioContextClass();
         }
@@ -47,8 +43,7 @@ export class AdaptiveAudioEngine {
         if (G.musica === false) return; // Respeita a diretriz de silêncio do HUD
         
         try {
-            const engine = new AdaptiveAudioEngine();
-            const ctx = engine._initContext();
+            const ctx = this._initContext();
             const agora = ctx.currentTime;
 
             // Frequências da tríade maior de Dó (Do4, Mi4, Sol4, Do5) -> Ascensão semiótica
@@ -85,8 +80,7 @@ export class AdaptiveAudioEngine {
         if (G.musica === false) return;
 
         try {
-            const engine = new AdaptiveAudioEngine();
-            const ctx = engine._initContext();
+            const ctx = this._initContext();
             const agora = ctx.currentTime;
 
             // Frequências dissonantes (Trítono / Segunda Menor instável de aviso)
@@ -128,8 +122,7 @@ export class AdaptiveAudioEngine {
         if (G.musica === false || delta === 0) return;
 
         try {
-            const engine = new AdaptiveAudioEngine();
-            const ctx = engine._initContext();
+            const ctx = this._initContext();
             const agora = ctx.currentTime;
 
             const osc = ctx.createOscillator();
