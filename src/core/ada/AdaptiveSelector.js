@@ -2,8 +2,8 @@
  * @fileoverview AdaptiveSelector.js
  * @description Cérebro orquestrador da ADA. Seleciona a próxima tarefa, 
  * define a representação visual (DUA) e injeta scaffolds na ZDP do estudante.
- * AGORA COM: Choque Semiótico e Mecanismo Anti-Overfitting (Expansão Progressiva de ZDP).
- * @version 5.3.0
+ * AGORA COM: Choque Semiótico, Mecanismo Anti-Overfitting e Limpeza de Estado Transiente.
+ * @version 5.4.0
  * @package LabTech / Core ADA
  */
 
@@ -63,6 +63,12 @@ export class AdaptiveSelector {
         // Garante a existência da memória do aluno
         if (!perfilCognitivo) perfilCognitivo = {};
         if (!perfilCognitivo.historicoQuestoesRespondidas) perfilCognitivo.historicoQuestoesRespondidas = [];
+
+        // 🔥 EVOLUÇÃO CIRÚRGICA: Limpa o estado de erro da ADA para a nova rodada (Evita contaminação de UI)
+        if (perfilCognitivo.estadoADA) {
+            perfilCognitivo.estadoADA.mensagem = null;
+            perfilCognitivo.estadoADA.exibir = false;
+        }
 
         // 1. Filtra as questões do bloco atual
         let questoesDoBloco = bancoGlobal.filter(q => String(q.bloco) === String(blockId));
@@ -125,6 +131,7 @@ export class AdaptiveSelector {
         const repPadrao = questao.representacao || 'visual';
         
         return {
+            ...questao, // 🔥 CIRURGIA CORRETIVA: Spread Operator que garante o envio do gabarito (res), display e alternativas!
             taskId: questao.id || 'default',
             interfaceModifiers: {
                 modoRepresentacao: this.determinarRepresentacaoInterface(perfilCompleto, gameState?.combo || 0, repPadrao)
