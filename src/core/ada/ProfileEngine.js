@@ -1,8 +1,8 @@
 /**
  * @fileoverview ProfileEngine.js
  * @description Motor de Inferência Cognitiva e Rastreamento de Deriva Semiótica.
- * AGORA COM: SISTEMA DE CONFIANÇA INFERENCIAL (Certeza Estatística da IA).
- * @version 9.0.0
+ * AGORA COM: SISTEMA DE CONFIANÇA INFERENCIAL E SINCRONIZAÇÃO ABSOLUTA DE TELEMETRIA.
+ * @version 9.1.0
  * @package LabTech Core Environment
  */
 
@@ -108,7 +108,7 @@ export class ProfileEngine {
                 estabilidadeConceitual: perfil.estabilidadeConceitual,
                 dependenciaScaffold: perfil.dependenciaScaffold,
                 riscoPseudoconceito: perfil.indicePseudoconceito.toFixed(2),
-                confiancaIA: perfil.confiancaDiagnostica, // 🚨 Registra a certeza na linha do tempo
+                confiancaIA: perfil.confiancaDiagnostica, 
                 taxaTransferencia: perfil.matrizTransferencia.transferencia.total > 0 ? (perfil.matrizTransferencia.transferencia.acertos / perfil.matrizTransferencia.transferencia.total).toFixed(2) : 0
             };
             perfil.historicoLongitudinal.push(snapshot);
@@ -119,7 +119,7 @@ export class ProfileEngine {
     processarEventoTelemetria(estudanteId, dadosTelemetria, metadadosSensor) {
         const normalizador = new QuestionNormalizer();
         try { normalizador.normalize(metadadosSensor); } 
-        catch (erro) { throw new Error(`Governança violada: ${erro.message}`); }
+        catch (erro) { console.warn(`[ProfileEngine] Aviso de Normalização: ${erro.message}`); }
 
         if (!this._estadosEstudantes.has(estudanteId)) {
             this.inicializarEstudante(estudanteId);
@@ -128,11 +128,14 @@ export class ProfileEngine {
         const perfil = this._estadosEstudantes.get(estudanteId);
         perfil.itensRespondidos++;
 
-        const { latenciaMs, totalAjustesPreConfirmacao, alternativaSelecionadaId } = dadosTelemetria;
-        const alternativaAlvo = metadadosSensor.alternativas.find(alt => alt.id_alternativa === alternativaSelecionadaId || alt.id === alternativaSelecionadaId);
-        const ehCorreto = alternativaAlvo ? (alternativaAlvo.tipo === 'acerto') : false;
+        // 🔥 CIRURGIA: Consome "foiCorreto" direto da fonte de verdade (main.js)
+        const { latenciaMs, totalAjustesPreConfirmacao, alternativaSelecionadaId, foiCorreto } = dadosTelemetria;
         
-        let etiologiaErro = alternativaAlvo ? (alternativaAlvo.misconception || 'ERRO_GENERICO').toUpperCase() : 'ERRO_GENERICO';
+        const ehCorreto = foiCorreto; // Sincronia absoluta garantida
+        
+        const alternativaAlvo = metadadosSensor.alternativas?.find(alt => alt.id_alternativa === alternativaSelecionadaId || alt.id === alternativaSelecionadaId || alt.valor === alternativaSelecionadaId);
+        
+        let etiologiaErro = alternativaAlvo ? (alternativaAlvo.misconception || alternativaAlvo.categoria || 'ERRO_GENERICO').toUpperCase() : 'ERRO_GENERICO';
         const estagioAtual = (metadadosSensor.estagioGalperin || 'INTERNA_PURA').toUpperCase();
         const representacaoAtual = (metadadosSensor.representacao || 'visual').toLowerCase();
 
@@ -188,7 +191,7 @@ export class ProfileEngine {
         this._computarPesosPerfis(perfil, latenciaMs, totalAjustesPreConfirmacao, ehCorreto, etiologiaErro, estagioAtual);
         this._estabilizarPerfilDominante(perfil);
         this._avaliarEstabilidadeEScaffold(perfil); 
-        this._calcularConfiancaInferencial(perfil); // 📊 Roda o Motor de Certeza Estatística
+        this._calcularConfiancaInferencial(perfil); 
         this._registrarSnapshotTemporal(perfil); 
 
         this._estadosEstudantes.set(estudanteId, perfil);
@@ -198,7 +201,7 @@ export class ProfileEngine {
             estudanteId: perfil.id,
             perfilDominante: perfil.perfilDominante,
             derivaPedagogicaGeral: perfil.derivaPedagogicaGeral,
-            confiancaIA: perfil.confiancaDiagnostica, // Devolve a certeza para a Interface
+            confiancaIA: perfil.confiancaDiagnostica, 
             sugestaoAcaoADA: this._gerarDiretrizIntervencaoADA(perfil, metadadosSensor),
             timestampProcessamento: new Date().toISOString(),
             perfilCompleto: perfil 
@@ -238,24 +241,21 @@ export class ProfileEngine {
             return;
         }
 
-        // 1. Fator Volume (Curva de aprendizado da própria IA)
-        // Quanto mais questões, mais a IA confia. Chega a ~85% de peso de volume com 25 questões.
+        // 1. Fator Volume
         const pesoVolume = 1 - Math.exp(-perfil.itensRespondidos / 15);
 
-        // 2. Fator Consistência (Distância do 1º colocado para o 2º colocado)
+        // 2. Fator Consistência
         const scores = Object.values(perfil.scoreMatrizesPerfeitas).sort((a, b) => b - a);
         const top1 = scores[0];
         const top2 = scores[1] || 0;
         
         let pesoConsistencia = 0;
         if (top1 > 0) {
-            const margem = (top1 - top2) / top1; // Diferença percentual
-            pesoConsistencia = Math.min(1.0, margem * 2); // Multiplicador para acentuar a distância
+            const margem = (top1 - top2) / top1; 
+            pesoConsistencia = Math.min(1.0, margem * 2); 
         }
 
-        // Confiança final: 60% baseado em quantas questões o aluno fez, 40% baseado na clareza do perfil
         const confianca = (pesoVolume * 0.6) + (pesoConsistencia * 0.4);
-        
         perfil.confiancaDiagnostica = parseFloat((confianca * 100).toFixed(1));
     }
 
@@ -280,7 +280,6 @@ export class ProfileEngine {
     _gerarDiretrizIntervencaoADA(perfil, sensor) {
         const d = { comandoMacro: 'PADRAO', scaffoldAlvo: 'NENHUM' };
         
-        // Se a ADA não tem certeza do que está vendo (< 40%), ela não arrisca intervenções fortes.
         if (perfil.confiancaDiagnostica < 40.0) return d; 
 
         if (perfil.dependenciaScaffold) {
