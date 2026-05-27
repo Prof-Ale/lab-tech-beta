@@ -1,8 +1,8 @@
 /**
  * @fileoverview LearningAnalytics.js
  * @description Motor de Telemetria e Geração de Relatórios do LabTech.
- * AGORA COM: Prescrição Cirúrgica Baseada em Estudos Dirigidos por Aula do MathLab (v1.5.0).
- * @version 1.5.0
+ * AGORA COM: Prescrição Cirúrgica Baseada em Estudos Dirigidos por Aula do MathLab (v1.5.0) com Camadas DUA.
+ * @version 1.5.1
  * @package LabTech / Core ADA
  */
 
@@ -117,14 +117,13 @@ export class LearningAnalytics {
         const estabilidade = perfil.estabilidadeConceitual || 'INDEFINIDA';
         let corEstabilidade = '#aaa';
         
-        // CORREÇÃO: estabilidade ao invés de estabilidad
         if (estabilidade === 'ALTA_ESTABILIZADA') corEstabilidade = '#00ff66';
         if (estabilidade === 'EM_CONSTRUCAO') corEstabilidade = '#ffbb33';
         if (estabilidade === 'BAIXA_RISCO_PSEUDOCONCEITO') corEstabilidade = '#ff3333';
 
         const dependente = perfil.dependenciaScaffold ? '<span style="color:#ff3333; font-weight:bold; animation: blink 2s infinite;">SIM (Requer Fading)</span>' : '<span style="color:#00ff66;">NÃO (Autônomo)</span>';
         
-        // 🛡️ MOTOR DE PRESCRIÇÃO CLÍNICA COM CIRURGIA DE TOLERÂNCIA ADAPTATIVA (MATHLAB v1.5.0)
+        // 🛡️ MOTOR DE PRESCRIÇÃO CLÍNICA COM CIRURGIA DE TOLERÂNCIA ADAPTATIVA E DUA
         const blocoOriginal = perfil.blocoAtual;
         let blocoTratado = parseInt(blocoOriginal);
         const dom = perfil.perfilDominante || 'INDETERMINADO';
@@ -181,7 +180,6 @@ export class LearningAnalytics {
                     materialFisico = "Ábaco de Fichas ou Grid de Clipagem (Unidade/Dezena/Centena)";
                     habilidadeFoco = "EF06MA03";
                     
-                    // Roteiro dirigido por aula do Módulo 1
                     if (erros.AGRUPAMENTO_POSICIONAL > 0 || erros.VIER_ALGORITMICO > 0) {
                         aulaPrescritaText = "Aula 02: O Sistema de Numeração Decimal e Ordens Posicionais";
                     } else if (erros.TRANSPORTE_ZERO > 0 || erros.ESQUECIMENTO_VAI_UM > 0) {
@@ -195,7 +193,6 @@ export class LearningAnalytics {
                     materialFisico = "Barras Fracionárias de Chocolate ou Discos de Frações Circulares";
                     habilidadeFoco = "EF07MA04";
                     
-                    // Roteiro dirigido por aula do Módulo 2 (Frações)
                     if (erros.INVERSAO_TOPOLOGICA > 0) {
                         aulaPrescritaText = "Aula 05: Fração e Seus Significados (Numerador vs Denominador)";
                     } else if (erros.ETIQUETA_ESTATICA > 0 || erros.PSEUDOCONCEITO_ESTATICO > 0) {
@@ -263,38 +260,52 @@ export class LearningAnalytics {
                     aulaPrescritaText = "Aula 05: Fração e Seus Significados";
             }
 
-            // Exibe a prescrição ideal se houver retenção cognitiva ou erro sistemático ativo
-            if (dom === 'DEPENDENTE_CONCRETO' || perfil.dependenciaScaffold || dom === 'INDETERMINADO') {
-                prescricaoMathLabHtml = `
+            // --- CORREÇÃO: PRESCRIÇÃO COMPOSTA (CAMADA ESTRUTURAL + CAMADA COMPORTAMENTAL) ---
+            
+            // 1. CAMADA FÍSICA: Prescreve o material estrutural básico independentemente da anomalia de conduta
+            let prescricaoFisica = '';
+            if (blocoTratado >= 1 && blocoTratado <= 6) {
+                prescricaoFisica = `
                     <div style="margin-top: 15px; padding: 12px; background: rgba(212, 175, 55, 0.08); border: 1px dashed #d4af37; border-radius: 6px;">
                         <b style="color: #d4af37; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">📋 PRESCRIÇÃO CLÍNICA MATHLAB — ANCORAGEM CONCRETA:</b>
                         <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
-                            Estudante retido na etapa materializada ou em calibração de entrada. Intervenção cirúrgica via <b>Cantinho da Base (Aulas 1 a 10)</b>.
-                            <br><span style="color:#d4af37; font-weight:bold;">➔ Módulo Alvo:</span> ${moduloNome} (${habilidadeFoco})
+                            <span style="color:#d4af37; font-weight:bold;">➔ Módulo Alvo:</span> ${moduloNome} (${habilidadeFoco})
                             <br><span style="color:#d4af37; font-weight:bold;">➔ Kit Prescrito:</span> <span style="color:#fff; font-weight:bold;">${materialFisico}</span>
-                            <br><span style="color:#00ff66; font-weight:bold;">➔ Estudo Dirigido Prescrito:</span> <span style="color:#00ff66; font-weight:bold; font-family:monospace;">${aulaPrescritaText}</span>
-                            <br><span style="color:#aaa; font-style:italic; font-size:11px; display:block; margin-top:5px;">Ação Docente: Afaste o aluno do computador. Aplique as atividades da folha/caderno correspondente a esta aula usando as peças físicas antes de devolvê-lo para a culminância digital.</span>
-                        </p>
-                    </div>`;
-            } else if (dom === 'IMPULSIVO_ARITMETICO') {
-                prescricaoMathLabHtml = `
-                    <div style="margin-top: 15px; padding: 12px; background: rgba(255, 51, 51, 0.08); border: 1px dashed #ff3333; border-radius: 6px;">
-                        <b style="color: #ff3333; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">📋 PRESCRIÇÃO CLÍNICA MATHLAB — TRAVAMENTO RÍTMICO:</b>
-                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
-                            Alto índice de erro mecânico por latência de clique ultraveloz. O cérebro opera em automação cega.
-                            <br><span style="color:#ff3333; font-weight:bold;">➔ Roteiro de Apoio:</span> Ative a folha de <i>Registro de Estimativa Tática</i> do MathLab. O aluno fica forçado a desenhar a previsão do resultado no papel e segurar o lápis por 15 segundos antes de o professor liberar o clique no mouse.
-                        </p>
-                    </div>`;
-            } else if (dom === 'PROCEDURAL_MECANICO') {
-                prescricaoMathLabHtml = `
-                    <div style="margin-top: 15px; padding: 12px; background: rgba(0, 234, 255, 0.08); border: 1px dashed #00eaff; border-radius: 6px;">
-                        <b style="color: #00eaff; font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing:1px;">📋 PRESCRIÇÃO CLÍNICA MATHLAB — CHOQUE SEMIÓTICO:</b>
-                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd; line-height: 1.4;">
-                            O estudante decorou o algoritmo de cor, mas apresenta falhas ao mudar a roupagem textual.
-                            <br><span style="color:#00eaff; font-weight:bold;">➔ Estudo Dirigido Prescrito:</span> Recue o aluno para as atividades práticas da <span style="color:#fff;">${aulaPrescritaText}</span>. Desafie-o a provar o motivo da regra matemática usando as peças concretas do kit.
+                            <br><span style="color:#00ff66; font-weight:bold;">➔ Estudo Dirigido:</span> <span style="color:#00ff66; font-weight:bold; font-family:monospace;">${aulaPrescritaText}</span>
                         </p>
                     </div>`;
             }
+
+            // 2. CAMADA COMPORTAMENTAL: Adiciona Modificadores de Conduta ou Cognição (Sem sobrescrever a física)
+            let prescricaoComportamental = '';
+            if (dom === 'DEPENDENTE_CONCRETO' || perfil.dependenciaScaffold || dom === 'INDETERMINADO') {
+                prescricaoComportamental = `
+                    <div style="margin-top: 8px; padding: 12px; background: rgba(255, 187, 51, 0.08); border: 1px dashed #ffbb33; border-radius: 6px;">
+                        <b style="color: #ffbb33; font-size: 11px;">⚠️ ALERTA DE RETENÇÃO CONCRETA</b>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd;">
+                            Estudante retido na etapa materializada. Afaste-o do computador e aplique as atividades da folha correspondente ao kit antes de devolvê-lo ao digital.
+                        </p>
+                    </div>`;
+            } else if (dom === 'IMPULSIVO_ARITMETICO') {
+                prescricaoComportamental = `
+                    <div style="margin-top: 8px; padding: 12px; background: rgba(255, 51, 51, 0.08); border: 1px dashed #ff3333; border-radius: 6px;">
+                        <b style="color: #ff3333; font-size: 11px;">⚠️ MODIFICADOR DE CONDUTA: TRAVAMENTO RÍTMICO</b>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd;">
+                            Alto índice de automação cega (Vygotsky). Exija que o aluno desenhe a estimativa tática no papel antes de usar o material físico ou clicar.
+                        </p>
+                    </div>`;
+            } else if (dom === 'PROCEDURAL_MECANICO') {
+                 prescricaoComportamental = `
+                    <div style="margin-top: 8px; padding: 12px; background: rgba(0, 234, 255, 0.08); border: 1px dashed #00eaff; border-radius: 6px;">
+                        <b style="color: #00eaff; font-size: 11px;">⚠️ MODIFICADOR COGNITIVO: CHOQUE SEMIÓTICO</b>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #ddd;">
+                            O aluno decorou a regra algorítmica. Desafie-o a provar o <b>porquê</b> da regra utilizando as peças concretas de ${materialFisico.split(' ou ')[0]}.
+                        </p>
+                    </div>`;
+            }
+
+            // Junta as camadas de prescrição DUA
+            prescricaoMathLabHtml = prescricaoFisica + prescricaoComportamental;
         }
 
         return `
