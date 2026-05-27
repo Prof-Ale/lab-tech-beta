@@ -3,7 +3,8 @@
  * @description Motor de Biópsia Cognitiva e Diagnóstico Pedagógico do LabTech.
  * Recebe o clique do aluno e classifica a natureza matemática do erro antes
  * de enviar os dados para o rastreamento longitudinal (ProfileEngine).
- * @version 3.0.0
+ * AGORA COM: Mapeamento de Clusters Taxonômicos e Fallbacks de Mediação.
+ * @version 3.1.0
  * @package LabTech / Core ADA
  */
 
@@ -24,14 +25,15 @@ export class DiagnosticEngine {
             conceito: "Precisamos voltar à base. O conceito por trás dessa operação ainda não está claro.",
             procedimento: "Você entendeu a ideia, mas o 'passo a passo' falhou. Vamos revisar o método?",
             calculo: "Atenção aos detalhes! Foi apenas um pequeno deslize na conta final.",
-            interpretacao: "O desafio aqui é traduzir o problema para a matemática. Vamos ler de novo?"
+            interpretacao: "O desafio aqui é traduzir o problema para a matemática. Vamos ler de novo?",
+            estrategia: "Sua lógica foi interessante, mas existe um caminho mais seguro para resolver isso."
         };
     }
 
     /**
      * Analisa atomicamente a alternativa selecionada atuando como um sensor cognitivo.
      * Compatível com o formato legado e o novo JSON do QuestionNormalizer.
-     * * @param {Object} alternativa - Dados estruturados da alternativa clicada.
+     * @param {Object} alternativa - Dados estruturados da alternativa clicada.
      * @returns {Object} Laudo diagnóstico atômico da resposta.
      */
     analisarAlternativa(alternativa) {
@@ -41,27 +43,58 @@ export class DiagnosticEngine {
                 correto: false, 
                 categoria: 'ERRO_GENERICO', 
                 descricao: 'Falha na leitura do sensor.',
-                peso: 1
+                peso: 1,
+                clusterTaxonomico: 'N/A'
             };
         }
 
-        // Validação de sucesso (Suporta padrão antigo 'correto: true' e novo 'tipo: acerto')
-        if (alternativa.tipo === 'acerto' || alternativa.correto === true) {
+        // Validação de sucesso alinhada com a blindagem do QuestionNormalizer
+        const isAcerto = alternativa.tipo === 'acerto' || alternativa.tipo === 'correto' || alternativa.correta === true || alternativa.correto === true;
+
+        if (isAcerto) {
             return { 
                 correto: true,
                 categoria: alternativa.categoria || 'SUCESSO_TEORICO',
-                descricao: alternativa.diagnostico_cognitivo || 'Conceito aplicado com sucesso.',
-                peso: 0
+                descricao: alternativa.diagnostico_cognitivo || alternativa.descricao || 'Conceito aplicado com sucesso.',
+                peso: 0,
+                clusterTaxonomico: 'N/A'
             };
         }
 
-        // Se for erro, constrói a biópsia detalhada da etiologia
+        // --- BIÓPSIA DE ETIOLOGIA DE ERRO ---
+        const categoriaErro = alternativa.categoria || 'calculo';
+        const erroId = alternativa.misconception || alternativa.erro || alternativa.id_alternativa || 'erro_generico';   
+        
+        // Se a alternativa não trouxer um feedback específico, a IA busca no dicionário de intervenções padrão
+        const categoriaChave = categoriaErro.toLowerCase();
+        const fallbackDescricao = this.INTERVENCOES[categoriaChave] || 'Analise a lógica novamente com atenção aos detalhes.';
+        const descricaoDiagnostica = alternativa.diagnostico_cognitivo || alternativa.descricao || fallbackDescricao;
+
         return {
             correto: false,
-            categoria: alternativa.categoria || 'calculo', 
-            erroId: alternativa.erro || alternativa.id_alternativa || 'erro_generico',   
-            descricao: alternativa.diagnostico_cognitivo || alternativa.descricao || 'Análise técnica em andamento.',
-            peso: alternativa.peso_gravidade !== undefined ? alternativa.peso_gravidade : (alternativa.peso || 1)
+            categoria: categoriaErro, 
+            erroId: erroId,   
+            descricao: descricaoDiagnostica,
+            peso: alternativa.peso_gravidade !== undefined ? alternativa.peso_gravidade : (alternativa.peso || 1),
+            clusterTaxonomico: this._resolverCluster(erroId)
         };
+    }
+
+    /**
+     * Varre a taxonomia matemática para identificar a qual família o erro pertence.
+     * @param {string} etiologiaId - ID único do erro (ex: fracao_soma_denominadores)
+     * @private
+     */
+    _resolverCluster(etiologiaId) {
+        if (!etiologiaId) return "OUTROS";
+        
+        const idNormalizado = String(etiologiaId).toLowerCase();
+        
+        for (const [clusterName, listaErros] of Object.entries(this.CLUSTERS)) {
+            if (listaErros.some(erro => idNormalizado.includes(erro.toLowerCase()))) {
+                return clusterName;
+            }
+        }
+        return "OUTROS";
     }
 }
