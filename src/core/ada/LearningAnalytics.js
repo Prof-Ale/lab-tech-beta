@@ -113,15 +113,17 @@ export class LearningAnalytics {
             </div>
         `;
 
-        // 4. Semáforo de Estabilidade e Fading
+       // 4. Semáforo de Estabilidade e Fading
         const estabilidade = perfil.estabilidadeConceitual || 'INDEFINIDA';
         let corEstabilidade = '#aaa';
-        if (estabilidad === 'ALTA_ESTABILIZADA') corEstabilidade = '#00ff66';
-        if (estabilidad === 'EM_CONSTRUCAO') corEstabilidade = '#ffbb33';
-        if (estabilidad === 'BAIXA_RISCO_PSEUDOCONCEITO') corEstabilidade = '#ff3333';
+        
+        // CORREÇÃO: estabilidade ao invés de estabilidad
+        if (estabilidade === 'ALTA_ESTABILIZADA') corEstabilidade = '#00ff66';
+        if (estabilidade === 'EM_CONSTRUCAO') corEstabilidade = '#ffbb33';
+        if (estabilidade === 'BAIXA_RISCO_PSEUDOCONCEITO') corEstabilidade = '#ff3333';
 
         const dependente = perfil.dependenciaScaffold ? '<span style="color:#ff3333; font-weight:bold; animation: blink 2s infinite;">SIM (Requer Fading)</span>' : '<span style="color:#00ff66;">NÃO (Autônomo)</span>';
-
+        
         // 🛡️ MOTOR DE PRESCRIÇÃO CLÍNICA COM CIRURGIA DE TOLERÂNCIA ADAPTATIVA (MATHLAB v1.5.0)
         const blocoOriginal = perfil.blocoAtual;
         let blocoTratado = parseInt(blocoOriginal);
