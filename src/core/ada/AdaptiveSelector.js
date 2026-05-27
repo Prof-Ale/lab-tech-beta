@@ -2,8 +2,8 @@
  * @fileoverview AdaptiveSelector.js
  * @description Cérebro orquestrador da ADA. Seleciona a próxima tarefa, 
  * define a representação visual (DUA) e injeta scaffolds na ZDP do estudante.
- * AGORA COM: Choque Semiótico para Detecção de Pseudoconceito.
- * @version 5.2.0
+ * AGORA COM: Choque Semiótico e Mecanismo Anti-Overfitting (Expansão Progressiva de ZDP).
+ * @version 5.3.0
  * @package LabTech / Core ADA
  */
 
@@ -50,6 +50,7 @@ export class AdaptiveSelector {
 
     /**
      * Busca a próxima questão ideal no banco baseada na ZDP do aluno.
+     * 🧠 INJEÇÃO: Mecanismo de Fallback Progressivo e Memória de Sessão.
      */
     static selecionarProximaQuestao(blockId, perfilCognitivo) {
         const bancoGlobal = window.catalogoGlobalDeQuestoes || [];
@@ -59,29 +60,56 @@ export class AdaptiveSelector {
             return { id: 'MOCK', display: 'Banco não carregado.', alternativas: [{valor: 'A'}], res: 'A' };
         }
 
-        // Filtra as questões do bloco atual
-        let questoesValidas = bancoGlobal.filter(q => String(q.bloco) === String(blockId));
-        
-        // Se o bloco estiver vazio, usa o banco inteiro para não travar o jogo
-        if (questoesValidas.length === 0) {
-            questoesValidas = bancoGlobal;
+        // Garante a existência da memória do aluno
+        if (!perfilCognitivo) perfilCognitivo = {};
+        if (!perfilCognitivo.historicoQuestoesRespondidas) perfilCognitivo.historicoQuestoesRespondidas = [];
+
+        // 1. Filtra as questões do bloco atual
+        let questoesDoBloco = bancoGlobal.filter(q => String(q.bloco) === String(blockId));
+        if (questoesDoBloco.length === 0) {
+            console.warn(`[ADA] Bloco ${blockId} vazio no banco. Liberando cofre global.`);
+            questoesDoBloco = bancoGlobal;
         }
 
-        // Trava anti-repetição
-        const idUltimaQuestao = window.__LABTECH_DEBUG__?.qId;
-        let poolSorteio = questoesValidas.filter(q => String(q.id) !== String(idUltimaQuestao));
+        // 2. Remove questões já respondidas (Trava Anti-Repetição Longa)
+        let questoesIneditas = questoesDoBloco.filter(q => !perfilCognitivo.historicoQuestoesRespondidas.includes(q.id));
 
-        // Se esgotaram as questões exclusivas, reseta o pool
+        // Se esgotou todas as inéditas do bloco, limpa O HISTÓRICO DESTE BLOCO para reciclagem
+        if (questoesIneditas.length === 0) {
+            console.warn("⚠️ [ADA] Banco do bloco esgotado. Reciclando questões com nova mediação.");
+            const idsDoBloco = questoesDoBloco.map(q => q.id);
+            perfilCognitivo.historicoQuestoesRespondidas = perfilCognitivo.historicoQuestoesRespondidas.filter(id => !idsDoBloco.includes(id));
+            questoesIneditas = questoesDoBloco; // Reinicia a pool
+        }
+
+        // Prepara os parâmetros da ZDP Atual
+        const repAlvo = perfilCognitivo.representacaoDominante || 'visual';
+        const difAlvo = perfilCognitivo.nivelDificuldadeZDP || 1; // Assumindo nível padrão 1 se indefinido
+
+        // 3. MATRIZ DE BUSCA (Expansão Progressiva)
+        // Tentativa A: Match Perfeito (Mesma Representação + Mesma Dificuldade)
+        let poolSorteio = questoesIneditas.filter(q => q.representacao === repAlvo && q.dificuldade === difAlvo);
+
+        // Tentativa B (Fallback 1): Flexibilidade Semiótica (Ignora representação, foca na dificuldade)
         if (poolSorteio.length === 0) {
-            poolSorteio = questoesValidas;
+            poolSorteio = questoesIneditas.filter(q => q.dificuldade === difAlvo);
         }
 
-        // Sorteia a próxima
+        // Tentativa C (Fallback 2): Expansão Completa (Libera qualquer questão inédita do bloco)
+        if (poolSorteio.length === 0) {
+            poolSorteio = questoesIneditas;
+        }
+
+        // Sorteia a próxima questão da pool resultante
         const proxima = poolSorteio[Math.floor(Math.random() * poolSorteio.length)];
         
-        // Atualiza o X-Ray
+        // Grava no cérebro do aluno para não repetir
+        perfilCognitivo.historicoQuestoesRespondidas.push(proxima.id);
+
+        // Atualiza o painel radiográfico (X-Ray)
         if (window.__LABTECH_DEBUG__) {
             window.__LABTECH_DEBUG__.qId = proxima.id;
+            window.__LABTECH_DEBUG__.poolAtual = poolSorteio.length;
         }
 
         return proxima;
