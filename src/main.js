@@ -1,17 +1,15 @@
 /**
- * src/main.js — MESTRE DE ORQUESTRAÇÃO (RESTAURADO COMPLETO + VAR PEDAGÓGICO + VALIDATOR ENGINE)
- * AGORA COM: Validador Absoluto de Acertos e Prevenção de Phantom State da ADA.
+ * src/main.js — MESTRE DE ORQUESTRAÇÃO (RESTAURADO COMPLETO + VAR PEDAGÓGICO)
+ * CIRURGIA DE BLINDAGEM: Validador Absoluto Determinístico (Imune a falsos erros da IA).
  */
 
 import { G } from './engine/gameState.js';
 import { initDebugMode } from './engine/debugMode.js';
 import { QuestionNormalizer } from './core/ada/QuestionNormalizer.js';
-import { DiagnosticEngine } from './core/ada/DiagnosticEngine.js';
 import { ProfileEngine } from './core/ada/ProfileEngine.js';
 import { AdaptiveSelector } from './core/ada/AdaptiveSelector.js';
 import { LearningAnalytics } from './core/ada/LearningAnalytics.js';
 import { AdaptiveAudioEngine } from './core/ada/AdaptiveAudioEngine.js';
-import { MetacognitionEngine } from './core/ada/MetacognitionEngine.js';
 import { CanvasRenderer } from './ui/canvasRenderer.js';
 import * as uiManager from './ui/uiManager.js';
 
@@ -39,7 +37,6 @@ function mostrarSeletorBlocos() {
     let nomeRaw = $('nome-cientista')?.value.trim() || 'Cientista Anonymous';
     let turmaRaw = $('turma-cientista')?.value.trim() || '7ºA';
 
-    // 🛡️ CIRURGIA DE UX: Converte para "Title Case"
     G.nome = nomeRaw.charAt(0).toUpperCase() + nomeRaw.slice(1).toLowerCase();
     G.turma = turmaRaw.toUpperCase(); 
     
@@ -69,138 +66,110 @@ function mostrarSeletorBlocos() {
     uiManager.narrarContexto(msgBoasVindas, true);
 }
 
-// --- FUNÇÃO PROCESSAR RESPOSTA ---
+// --- FUNÇÃO PROCESSAR RESPOSTA (TOTALMENTE BLINDADA) ---
 async function processarResposta(alt, q) {
     if (G.respondeu) return;
     G.respondeu = true;
 
     const latenciaSessaoMs = Date.now() - G.tempoInicialQuestao;
-    const diagEngine = new DiagnosticEngine();
-    const profEngine = new ProfileEngine();
     
-    let analise = diagEngine.analisarAlternativa(alt);
+    // 🛡️ 1. CORTA-FOGO ABSOLUTO: Lê o JSON direto, pulando a DiagnosticEngine
+    const isAcertoJSON = (alt.tipo === "acerto" || alt.tipo === "correto" || alt.correta === true);
+    
+    const valAluno = String(alt.valor || alt.texto || '').trim().toLowerCase();
+    const valGab = String(q.res || q.gabarito || '').trim().toLowerCase();
+    const isAcertoTexto = (valAluno === valGab && valAluno !== '');
 
-    // 🔥 CIRURGIA DE PRECISÃO: VALIDADOR ABSOLUTO DE ACERTOS (OVERRIDE DA ENGINE)
-    if (!analise.correto) {
-        const valAluno = String(alt.valor || alt.texto || '').trim().toLowerCase();
-        const valGabarito = String(q.res || q.gabarito || q.correctAnswer || '').trim().toLowerCase();
-        const idGabarito = String(q.res || '').trim().toUpperCase();
-        const idAlt = String(alt.id || alt.letra || '').trim().toUpperCase();
+    const isCorretoFinal = isAcertoJSON || isAcertoTexto;
 
-        // 1. O MATCH PERFEITO: Lê diretamente a chave do seu JSON específico
-        if (alt.tipo === "acerto" || alt.tipo === "correto") {
-            analise.correto = true;
-        } 
-        // 2. Fallbacks secundários de Segurança
-        else if (valAluno === valGabarito && valAluno !== '') {
-            analise.correto = true; // Match exato de texto
-        } else if (idAlt === idGabarito && idAlt !== '') {
-            analise.correto = true; // Match exato de ID/Letra (ex: "A" === "A")
-        } else if (alt.correta === true || alt.isCorrect === true) {
-            analise.correto = true; // Flag genérica
-        } else {
-            // Tolerância Matemática (Trata "R$ 10,50" como igual a "10.5")
-            const numGab = parseFloat(valGabarito.replace(/[a-zR$]/gi, '').replace(',', '.'));
-            const numAluno = parseFloat(valAluno.replace(/[a-zR$]/gi, '').replace(',', '.'));
-            if (!isNaN(numGab) && !isNaN(numAluno) && numGab === numAluno) {
-                analise.correto = true;
-            }
-        }
-    }
-
-    // Se a força bruta corrigiu a falha, limpa o diagnóstico de erro
-    if (analise.correto) {
-        analise.correto = true; // Force boolean true
-        analise.categoria = null;
-        analise.descricao = "Correto";
-    }
+    let analise = {
+        correto: isCorretoFinal,
+        categoria: isCorretoFinal ? null : (alt.categoria || 'conceito'),
+        descricao: isCorretoFinal ? "Correto" : (alt.descricao || "Observe a lógica com mais atenção e tente novamente.")
+    };
 
     const hab = q.bncc || q.habilidade || "Geral";
 
-    // 🎥 INÍCIO DO GRAVADOR (VAR PEDAGÓGICO)
+    // 🎥 2. INÍCIO DO GRAVADOR (VAR PEDAGÓGICO)
     if (!G.logSessao) G.logSessao = [];
     G.logSessao.push({
         questao: q.display || q.texto || "Desafio Visual",
         habilidade: hab,
         respostaDada: alt.valor || alt.texto || "N/A",
         correto: analise.correto,
-        etiologia: analise.correto ? "N/A" : (analise.categoria || "Erro Genérico"),
+        etiologia: analise.correto ? "N/A" : analise.categoria,
         latencia: latenciaSessaoMs,
         tempo: new Date().toLocaleTimeString()
     });
-    // 🎥 FIM DO GRAVADOR
 
     if (!G.historico[hab]) {
         G.historico[hab] = { acertos: 0, erros_conceito: 0, erros_calculo: 0, desc: "Habilidade Monitorada" };
     }
 
+    // 🛑 3. DESTRUIDOR DO FANTASMA DA ADA 🛑
+    // Remove as classes 'active' de todos os painéis da ADA à força para evitar sobreposição visual
+    ['ada-command-post', 'modal-var-pedagogico', 'modal-docente-xai', 'mperfil'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+    });
+
+    // 4. ATRIBUIÇÃO DE PONTOS
     if (analise.correto) {
         G.acertos++; G.combo++;
         G.historico[hab].acertos++;
-        AdaptiveAudioEngine.sonarSucesso();
-        // 🧹 PREVENÇÃO DE PHANTOM STATE: Força a ADA de erro a desaparecer da tela imediatamente
-        $('ada-command-post')?.classList.remove('active');
+        if (typeof AdaptiveAudioEngine !== 'undefined') AdaptiveAudioEngine.sonarSucesso();
     } else {
         G.combo = 0; G.erros++;
         if (analise.categoria === 'conceito') G.historico[hab].erros_conceito++;
         else G.historico[hab].erros_calculo++;
-        G.vida = Math.max(0, G.vida - (10 + (analise.peso || 1) * 5));
-        AdaptiveAudioEngine.sonarAnomalia();
+        G.vida = Math.max(0, G.vida - (10 + (alt.peso || 1) * 5));
+        if (typeof AdaptiveAudioEngine !== 'undefined') AdaptiveAudioEngine.sonarAnomalia();
     }
 
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
 
-    // 🛡️ CIRURGIA MÁGICA DE TELEMETRIA: Carimba o bloco ativo no perfil antes de alimentar a ADA
-    if (G.perfilCognitivo) {
-        G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
-    }
-
-    const payloadTelemetria = { latenciaMs: latenciaSessaoMs, totalAjustesPreConfirmacao: 1, alternativaSelecionadaId: alt.id, foiCorreto: analise.correto };
-    const updateResultado = profEngine.processarEventoTelemetria(`${G.nome}_${G.turma}`, payloadTelemetria, q);
-    
-    G.perfilCognitivo = updateResultado.perfilCompleto; 
-    G.adaState.comandoInterface = updateResultado.sugestaoAcaoADA.comandoMacro;
-
-    // Garantia de que a chave do bloco permanece ativa após o processamento interno da ADA
-    G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
-
-    // 🧠 INJEÇÃO DO FEEDBACK METACOGNITIVO (BLINDADA)
+    // 5. INJEÇÃO NA ADA (Apenas para Analytics de Fundo, sem alterar a UI agora)
     try {
-        const feedbackMeta = MetacognitionEngine.gerarFeedback(G.perfilCognitivo);
-        if (feedbackMeta) {
-            uiManager.mostrarAvisoMetacognitivo(feedbackMeta);
-        }
+        const profEngine = new ProfileEngine();
+        if (G.perfilCognitivo) G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
+        
+        const payloadTelemetria = { latenciaMs: latenciaSessaoMs, alternativaSelecionadaId: alt.id || alt.valor, foiCorreto: analise.correto };
+        const updateResultado = profEngine.processarEventoTelemetria(`${G.nome}_${G.turma}`, payloadTelemetria, q);
+        
+        G.perfilCognitivo = updateResultado.perfilCompleto; 
+        if (G.perfilCognitivo) G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
     } catch (err) {
-        console.warn("⚠️ [Metacognição] Motor isolado por falha técnica. O jogo continuará.", err);
+        console.warn("⚠️ [ProfileEngine] Telemetria falhou, mas jogo continua:", err);
     }
 
-    // Feedback Visual e Atualização do HUD
+    // 6. RENDERIZAÇÃO DO FEEDBACK VISUAL NATIVO
     uiManager.updHUD();
-    const feedbackTexto = analise.correto ? (q.passo || "Muito bem! Lógica irretocável.") : (q.dica || analise.descricao || "Analise novamente.");
-    uiManager.narrarContexto(feedbackTexto, analise.correto);
+    const feedbackTexto = analise.correto ? (q.passo || "Isso mesmo! Excelente raciocínio lógico.") : (alt.descricao || q.dica || "Incorreto. Tente observar os detalhes.");
+    
+    try {
+        if (uiManager.narrarContexto) uiManager.narrarContexto(feedbackTexto, analise.correto);
+    } catch(e) {}
 
-    // 🚀 LIBERAÇÃO GARANTIDA DA INTERFACE
     const fbContainer = $('fb');
     if (fbContainer) { 
         fbContainer.textContent = feedbackTexto; 
         fbContainer.style.display = 'block';
-        fbContainer.style.borderColor = analise.correto ? '#00ff66' : '#ff3333';
+        // Cores hardcoded forçando o feedback positivo (Verde) e negativo (Vermelho)
+        fbContainer.style.background = analise.correto ? 'rgba(0, 255, 102, 0.1)' : 'rgba(255, 51, 51, 0.1)';
+        fbContainer.style.border = `1px solid ${analise.correto ? '#00ff66' : '#ff3333'}`;
         fbContainer.style.color = analise.correto ? '#00ff66' : '#ffbb33';
     }
+    
     $('btn-prox')?.classList.remove('hidden'); 
 
-    // 🎨 RENDERIZAÇÃO GRÁFICA (BLINDADA)
+    // 7. ANIMAÇÃO VETORIAL
     try {
         const pontoA = parseFloat(String(q.a || q.inicio || q.valorInicial).replace(/[^\d.-]/g, '')) || 0;
         const pontoB = parseFloat(String(alt.valor || alt.texto).replace(/[^\d.-]/g, '')) || 0;
-        const deslocamento = pontoB - pontoA;
-
-        const payloadAdaptive = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
-        if (renderizadorGrafico) {
-            await renderizadorGrafico.animarArcos(q, deslocamento, payloadAdaptive.interfaceModifiers.modoRepresentacao);
-        }
+        const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
+        if (renderizadorGrafico) await renderizadorGrafico.animarArcos(q, pontoB - pontoA, pAdaptivo.interfaceModifiers.modoRepresentacao);
     } catch (err) {
-        console.warn("⚠️ [Renderização] Falha na animação vetorial, mas o jogo não vai travar:", err);
+        console.warn("⚠️ Animação falhou, ignorando erro visual.");
     }
 
     if (G.vida <= 0) setTimeout(() => uiManager.exibirGameOver(), 800);
@@ -209,14 +178,22 @@ async function processarResposta(alt, q) {
 // --- FUNÇÕES DE NAVEGAÇÃO E SETUP ---
 function proximaQ() {
     G.respondeu = false;
-    $('fb').style.display = 'none';
-    $('ada-command-post')?.classList.remove('active'); // Prevenção de Phantom State na próxima tela
+    
+    const fb = $('fb');
+    if (fb) fb.style.display = 'none';
+    
+    // Varredura de segurança contra o fantasma da ADA
+    ['ada-command-post', 'modal-docente-xai', 'mperfil'].forEach(id => {
+        const el = $(id);
+        if (el) el.classList.remove('active');
+    });
 
     const q = AdaptiveSelector.selecionarProximaQuestao(G.currentBlock, G.perfilCognitivo);
     if (!q) return;
     
-    const alerta = AdaptiveSelector.gerarMicroIntervencao(q, G.perfilCognitivo);
-    if (alerta) uiManager.narrarContexto(alerta, false);
+    // 🛡️ SILENCIADO: Isso causava a ADA de "MicroIntervenção" aparecer do nada, confundindo o aluno
+    // const alerta = AdaptiveSelector.gerarMicroIntervencao(q, G.perfilCognitivo);
+    // if (alerta) uiManager.narrarContexto(alerta, false);
     
     G.tempoInicialQuestao = Date.now();
     renderQ(q);
@@ -233,7 +210,6 @@ function renderQ(q) {
     q.alternativas.sort(() => Math.random() - 0.5).forEach(alt => {
         const b = document.createElement('button');
         b.className = 'ba';
-        // Evolução: Previne botão vazio lendo chaves variadas do JSON
         b.textContent = alt.valor || alt.texto || alt.label || "[Opção]";
         b.onclick = () => processarResposta(alt, q);
         $('grid-botoes').appendChild(b);
@@ -254,7 +230,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     try {
         const banco = await AdaptiveSelector.carregarBancoDeQuestoes();
-        console.log(`✅ [SISTEMA] Cofre de questões carregado. Total: ${banco ? banco.length : 0} itens detectados no JSON.`);
+        console.log(`✅ [SISTEMA] Cofre de questões carregado. Total: ${banco ? banco.length : 0} itens.`);
     } catch (e) {
         console.error("❌ [SISTEMA CRÍTICO] Falha no cofre:", e);
     }
@@ -270,7 +246,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     on('btn-dash', () => { atualizarDashboard(); abrirM('mdash'); });
     on('btn-reiniciar', () => { fecharM('go'); if (G.currentBlock) iniciarBloco(G.currentBlock); });
     
-   // --- O ESPELHO DO ALUNO (METACOGNIÇÃO EXPLÍCITA FIXA) ---
+   // --- O ESPELHO DO ALUNO ---
     on('btn-perfil', () => {
         if (G.perfilCognitivo) {
             const displayNivel = $('perfil-nivel-txt');
@@ -332,11 +308,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ATALHOS DO DOCENTE (Alt+P, Alt+J e NOVO Alt+R)
     document.addEventListener('keydown', (e) => {
         
-        // 📊 ALT + P (Painel Clínico + Inference Validator Engine)
+        // 📊 ALT + P
         if (e.altKey && e.key.toLowerCase() === 'p') {
             if (!G.perfilCognitivo) { alert("⚠️ Calibração pendente."); return; }
-            
-            // 🛡️ Garante o sincronismo do bloco também ao abrir o atalho pelo teclado
             G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
 
             let mDoc = $('modal-docente-xai');
@@ -352,28 +326,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const renderizarPainel = () => {
                 $('content-docente-xai').innerHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
-                
                 const btnValidar = $('btn-ia-validar');
                 const btnRefutar = $('btn-ia-refutar');
-                
                 if (btnValidar) {
                     btnValidar.onclick = () => {
                         G.perfilCognitivo.validacaoHumana = 'VALIDADO';
                         G.perfilCognitivo.confiancaDiagnostica = 99.9; 
-                        console.log("✅ [Inference Validator] O Professor chancelou a hipótese diagnóstica da ADA.");
                         renderizarPainel(); 
                     };
                 }
-                
                 if (btnRefutar) {
                     btnRefutar.onclick = () => {
                         G.perfilCognitivo.validacaoHumana = 'REFUTADO';
                         G.perfilCognitivo.confiancaDiagnostica = 10.0; 
-                        console.log("❌ [Inference Validator] O Professor refutou a hipótese. ADA forçada a reiniciar calibração.");
                         renderizarPainel(); 
                     };
                 }
-
                 const btnExportXai = $('btn-export-xai-csv');
                 if (btnExportXai) btnExportXai.onclick = () => LearningAnalytics.exportarCSV(G.nome, G.historico);
             };
@@ -382,7 +350,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             mDoc.classList.add('active');
         }
 
-        // 📖 ALT + J (Glossário de IA)
+        // 📖 ALT + J
         if (e.altKey && e.key.toLowerCase() === 'j') {
             let modalGlossario = $('modal-glossario-xai');
             if (!modalGlossario) {
@@ -392,24 +360,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 modalGlossario.innerHTML = `
                     <div class="mc" style="max-width: 650px; border: 2px solid var(--neon-cyan, #00eaff); background: #0a0a0a; text-align: left; padding: 25px; position: relative;">
                         <button class="mx" style="position: absolute; top: 15px; right: 20px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer;" onclick="document.getElementById('modal-glossario-xai').classList.remove('active')">✕</button>
-                        
                         <h2 style="color: var(--neon-cyan, #00eaff); text-align: center; font-family: 'Orbitron', sans-serif; margin-top: 0;">📖 GLOSSÁRIO DA I.A. (XAI)</h2>
                         <hr style="border: 1px solid #333; margin: 15px 0;">
-                        
                         <div style="max-height: 60vh; overflow-y: auto; padding-right: 15px; font-family: 'Nunito', sans-serif; color: #ddd; font-size: 13px; line-height: 1.6;">
                             <h3 style="color: var(--choco-gold, #d4af37); font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">1. OS QUATRO PERFIS COGNITIVOS</h3>
                             <ul style="padding-left: 15px; margin-bottom: 20px;">
-                                <li style="margin-bottom: 10px;"><b style="color:white;">CONCEITUAL TEÓRICO:</b> Compreende a regra profunda e aplica com segurança. A ADA não interfere.</li>
-                                <li style="margin-bottom: 10px;"><b style="color:white;">PROCEDURAL MECÂNICO:</b> Acerta porque decorou a regra prática, mas não entende o porquê. A ADA força modelos visuais para ele entender a lógica.</li>
-                                <li style="margin-bottom: 10px;"><b style="color:white;">DEPENDENTE CONCRETO:</b> Necessita de materialização gráfica constante (frações em barra, retas). Ancorado no MathLab.</li>
-                                <li style="margin-bottom: 10px;"><b style="color:white;">IMPULSIVO ARITMÉTICO:</b> Erra por pressa e cliques velozes. A ADA aplica "Travamento Rítmico".</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">CONCEITUAL TEÓRICO:</b> Compreende a regra profunda e aplica com segurança.</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">PROCEDURAL MECÂNICO:</b> Acerta porque decorou a regra prática, mas não entende o porquê.</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">DEPENDENTE CONCRETO:</b> Necessita de materialização gráfica constante.</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">IMPULSIVO ARITMÉTICO:</b> Erra por pressa e cliques velozes.</li>
                             </ul>
-
-                            <h3 style="color: var(--neon-red, #ff3333); font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">2. ETIOLOGIA DO ERRO (A Raiz)</h3>
-                            <p style="margin-bottom: 20px;">A ADA audita o "porquê" do erro (ex: Viés Aritmético, Inversão Topológica). A intervenção e o kit físico do MathLab mudam para cada raiz.</p>
-
-                            <h3 style="color: #00ff66; font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">3. DERIVA PEDAGÓGICA (Risco)</h3>
-                            <p>Radar de 0.0 a 1.0. Se passar de 0.5, o aluno está frustrado e em descompasso com a ZDP. A ADA retrocede a dificuldade.</p>
                         </div>
                     </div>
                 `;
@@ -418,7 +378,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             modalGlossario.classList.add('active');
         }
 
-        // 🎥 ALT + R (REPLAY / VAR PEDAGÓGICO)
+        // 🎥 ALT + R
         if (e.altKey && e.key.toLowerCase() === 'r') {
             if (!G.logSessao || G.logSessao.length === 0) {
                 alert("⚠️ Nenhuma ação gravada nesta sessão ainda.");
@@ -466,7 +426,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     ${htmlTimeline}
                 </div>
             </div>`;
-            
             mVar.classList.add('active');
         }
     });
