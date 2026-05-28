@@ -1,7 +1,7 @@
 /**
  * @fileoverview QuestionNormalizer.js
  * @description Camada de Governança (Governance Layer) do LabTech.
- * ADAPTADO PARA O BANCO DE 511 QUESTÕES (Mapeamento de Legados Dinâmico).
+ * ADAPTADO PARA O BANCO DE QUESTÕES (Mapeamento de Legados Dinâmico).
  * @version 2.2.0
  * @package LabTech / Core ADA
  */
