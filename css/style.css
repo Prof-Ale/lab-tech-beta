@@ -1,12 +1,13 @@
 /* ============================================================
-   LABORATÓRIO TECH — CSS v1.2.7 "BUILD FINALS"
-   Merge correto: base original v1.2.6 + correções mobile v12.7
+   LABORATÓRIO TECH — CSS v1.2.8 "BUILD FINALS"
+   Merge completo e higienizado: v1.2.6 + v12.7 + v1.2.8
    Correções aplicadas:
    - Animação de entrada para modais (fadeIn)
    - Blindagem anti-jump no avatar ADA
    - padding-bottom na screen em mobile para não cobrir botões
    - Avatar reduzido em mobile (160x90px)
    - Tipografia DUA e transição da barra de vida
+   - Expurgo total de estilos inline do HTML
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:ital,wght@0,400;0,700;0,900;1,400&display=swap');
@@ -123,6 +124,11 @@ html, body {
 }
 .bc2:hover { background: var(--choco-gold); color: var(--choco-dark); }
 
+/* Botão específico do bloco olímpico com borda gold customizada */
+.b7-olimpiada {
+    border: 2px solid var(--choco-gold) !important;
+}
+
 /* ============================================================
    3. GAMEPLAY (ANTI-RESIZE & HUD)
    ============================================================ */
@@ -156,7 +162,6 @@ html, body {
     background: rgba(212, 160, 23, 0.1); border-left: 4px solid var(--choco-gold);
     color: var(--choco-cream); font-size: 14px; line-height: 1.4;
     display: none;
-    /* NOVO v12.7: tipografia DUA */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -165,7 +170,6 @@ html, body {
     font-size: 24px; font-weight: 800; text-align: center;
     padding: 20px; background: rgba(14,14,32,0.9);
     border-radius: 20px; border: 2px solid var(--neon-cyan); margin-bottom: 15px;
-    /* NOVO v12.7: tipografia DUA */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -176,7 +180,6 @@ html, body {
     border: 2.5px solid var(--neon-cyan); color: var(--neon-cyan);
     font-family: var(--font-display); font-size: 22px; font-weight: 900;
     cursor: pointer; transition: 0.2s;
-    /* NOVO v12.7: tipografia DUA */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -191,7 +194,6 @@ html, body {
     cursor: pointer; box-shadow: 0 6px 0 #8a6d10; display: block;
 }
 
-/* NOVO v12.7: transição suave na barra de vida */
 #fv {
     transition: width 0.5s ease-in-out, background-color 0.3s ease;
 }
@@ -218,7 +220,6 @@ html, body {
     color: #fff; cursor: pointer; font-size: 20px;
 }
 
-/* NOVO v12.7: animação de entrada suave para modais */
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.95); }
     to   { opacity: 1; transform: scale(1); }
@@ -247,7 +248,7 @@ html, body {
 }
 
 /* ============================================================
-   5. AVATAR ADA — BLINDAGEM ANTI-JUMP (v12.7)
+   5. AVATAR ADA — BLINDAGEM ANTI-JUMP
    ============================================================ */
 #ada-command-post {
     position: fixed;
@@ -257,7 +258,6 @@ html, body {
     height: 180px;
     z-index: 50;
     pointer-events: none;
-    /* NOVO v12.7: transição suave */
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -281,7 +281,6 @@ html, body {
 
 .avh { opacity: 0 !important; }
 
-/* PAINEL DE DEBUG */
 #labtech-debug-panel {
     scrollbar-width: thin;
     scrollbar-color: var(--neon-cyan) var(--bg-dark);
@@ -289,22 +288,14 @@ html, body {
 
 /* ============================================================
    6. RESPONSIVO MOBILE
-   Correção definitiva: avatar não cobre os botões de resposta.
-   Solução dupla:
-   a) Avatar reduzido para 160x90px (proporção 16:9 mantida)
-   b) padding-bottom na screen reserva espaço para o avatar fixo
    ============================================================ */
 @media (max-width: 600px) {
-
-    /* a) Grade de blocos em coluna única */
     .blocks-grid { grid-template-columns: 1fr; }
 
-    /* b) Reserva espaço no scroll para o avatar não cobrir conteúdo */
     .screen {
         padding-bottom: 110px;
     }
 
-    /* c) Avatar reduzido mantendo proporção 16:9 */
     #ada-command-post {
         width: 160px;
         height: 90px;
@@ -312,20 +303,20 @@ html, body {
         right: 5px;
     }
 
-    /* d) Fonte menor nos botões de resposta para caber melhor */
     .ba {
         font-size: 16px;
         padding: 18px 8px;
     }
 
-    /* e) Display da questão menor para ganhar espaço vertical */
     #conta-display {
         font-size: 18px;
         padding: 15px;
     }
+} /* 🔥 FIXAÇÃO CRÍTICA: A diretiva mobile fecha EXATAMENTE AQUI! */
+
 /* ============================================================
-   LABORATÓRIO TECH — EXTENSÃO DE ACESSIBILIDADE E HIGIENIZAÇÃO (v1.2.8)
-   Mapeamento de classes estruturais removidas do HTML inline
+   7. EXTENSÃO DE ACESSIBILIDADE E HIGIENIZAÇÃO (GLOBAL)
+   Garante funcionamento e responsividade vertical em todas as telas
    ============================================================ */
 
 /* Utilitários Globais de Cores Baseadas no :root */
@@ -342,11 +333,11 @@ html, body {
 
 /* Configuração Avançada do Modal Sobre (Acessibilidade DUA) */
 .mc-about {
-    border: 2px solid var(--choco-gold);
-    max-width: 600px;
+    border: 2px solid var(--choco-gold) !important;
+    max-width: 600px !important;
     padding: 25px;
-    max-height: 85vh; /* 🛡️ Trava de segurança para evitar transbordo vertical em viewports baixas */
-    overflow-y: auto; /* Habilita barra de rolagem interna se necessário */
+    max-height: 85vh; /* 🛡️ Trava contra corte de texto em viewports baixas */
+    overflow-y: auto; /* Habilita barra de rolagem interna */
     scrollbar-width: thin;
     scrollbar-color: var(--choco-gold) var(--bg-dark);
 }
@@ -372,9 +363,7 @@ html, body {
 
 .about-footer { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; font-size: 11px; color: #666; text-align: center; }
 
-/* Modificadores de Botão de Fim de Jogo */
+/* Modificadores de Botões do Modal GameOver */
 .btn-reconnect { margin-top: 20px; }
 .btn-back-menu { margin-top: 10px; cursor: pointer; border: none; background: none; color: white; }
-.btn-back-menu:hover { background: none; color: var(--choco-gold); 
-                     }
-}
+.btn-back-menu:hover { background: none; color: var(--choco-gold); }
