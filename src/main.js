@@ -241,6 +241,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     on('btn-prox', proximaQ);
     on('btn-musica', uiManager.toggleMusica);
     on('btn-voz', uiManager.toggleVoz);
+
+// --- UNIFICAÇÃO DE EVENTOS E POLICIAMENTO DE ANO (BOAS PRÁTICAS) ---
+
+// Substitui o onclick embutido do HTML de forma segura e padronizada
+on('btn-alterar-usuario', () => {
+    location.reload();
+});
+
+// Garante que o ano seja atualizado de dentro do ciclo principal do JS sem scripts avulsos
+const yearSpan = document.getElementById('labtech-year');
+if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+}
     
     on('btn-cred', () => abrirM('mcred'));
     on('btn-dash', () => { atualizarDashboard(); abrirM('mdash'); });
