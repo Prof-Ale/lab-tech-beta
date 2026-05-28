@@ -150,9 +150,14 @@ html, body {
 .mini-btn span { color: var(--choco-gold); min-width: 25px; display: inline-block; text-align: center; }
 
 #canvas-game {
-    width: 100%; height: 150px; background: #000;
-    border-radius: 15px; margin-bottom: 10px;
+    width: 100%; 
+    min-height: 240px; /* 🔥 A MÁGICA ACONTECE AQUI: Saiu 150px, entrou 240px */
+    background: #000;
+    border-radius: 15px; 
+    margin-bottom: 15px;
     border: 1px solid rgba(212, 160, 23, 0.2);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8); /* Dá profundidade ao "quadro negro" */
+    touch-action: none; /* Previne que o aluno role a tela sem querer ao tocar no canvas mobile */
 }
 
 /* ANTI-RESIZE: Container de Feedback com altura fixa */
