@@ -2,7 +2,7 @@
  * @fileoverview CanvasRenderer.js
  * @description Motor Gráfico Modular do LabTech (DUA).
  * Rastreia e renderiza Isomorfismos Matemáticos na Reta Numérica e Frações.
- * VERSÃO 3.6.0: Micro-Arcos Unitários Encadeados, Vetorização Dinâmica e Seta na Reta.
+ * VERSÃO 3.7.0: Correção de Contraste, Sincronia de Escala e Numerais Visíveis.
  * @package LabTech / UI
  */
 
@@ -19,7 +19,8 @@ export class CanvasRenderer {
             this.ctx = null; return;
         }
         this.ctx = this.canvas.getContext('2d');
-        this.cores = { gold: '#d4af37', cyan: '#00eaff', subt: '#cccccc', danger: '#ff3333' };
+        // Paleta base do DUA
+        this.cores = { gold: '#d4af37', cyan: '#00eaff', subt: '#cccccc', danger: '#ff3333', axis: '#888888' };
         this.isAnimating = false; // Cadeado de estado
     }
 
@@ -49,10 +50,6 @@ export class CanvasRenderer {
         }
     }
 
-    /**
-     * 🛡️ BLINDAGEM MATEMÁTICA: Mapeia valor para X prevenindo NaN e Infinity.
-     * @private
-     */
     _mapX(value, minVal, maxVal, widthPadding) {
         if (isNaN(value) || isNaN(minVal) || isNaN(maxVal)) return this.W / 2;
         const range = maxVal - minVal;
@@ -62,25 +59,17 @@ export class CanvasRenderer {
         return widthPadding + (pct * usableWidth);
     }
 
-    // =========================================================================
-    // ─── MÉTODOS DE DESENHO ESTÁTICO (renderCv) ───
-    // =========================================================================
-
     renderCv(questao, offset, representacao) {
         this._autoresize();
         if (!this.ctx || !questao) return;
         this._limpar();
 
-        // 🧠 TRIAGE INTELIGENTE
         let rep = representacao;
         const strA = String(questao.a ?? questao.valorInicial ?? 0);
         
-        // 1. Álgebra Literal
         if (String(questao.bloco) === '4' || strA.match(/[a-zA-Z]/)) {
             rep = 'algebra';
-        } 
-        // 2. Fração vs Reta Numérica
-        else if (rep === 'visual' || rep === undefined) {
+        } else if (rep === 'visual' || rep === undefined) {
             const isFracao = questao.b !== undefined || String(questao.display).includes('/');
             if (!isFracao) {
                 rep = 'reta';
@@ -101,38 +90,38 @@ export class CanvasRenderer {
         }
     }
 
-    _desenharRetaNumerica(q, modo) {
+    // Aceita min/max customizados para manter a mesma escala da animação
+    _desenharRetaNumerica(q, modo, customMin = null, customMax = null) {
         const Y_RET = this.H * 0.7;
         const PADDING_W = 60;
 
-        let valMin = 0;
         const strA = String(q.a ?? q.valorInicial ?? 0);
-        if (String(q.display).includes('-') || strA.includes('-')) valMin = -10;
-
         const valA_Math = parseFloat(strA.replace(/[^\d.-]/g, '')) || 0;
         const valRes_Math = parseFloat(String(q.res).replace(/[^\d.-]/g, '')) || 0;
         const valAlt_Math = parseFloat(String(q.alternativas?.[0]?.valor).replace(/[^\d.-]/g, '')) || 0;
         
-        const valMax = Math.max(10, valA_Math, valRes_Math, valAlt_Math);
+        // Sincroniza a escala visual com os limites informados
+        let valMin = customMin !== null ? customMin : ((String(q.display).includes('-') || strA.includes('-')) ? -10 : 0);
+        const valMax = customMax !== null ? customMax : Math.max(10, valA_Math, valRes_Math, valAlt_Math);
         
-        // Linha Base do Eixo X
+        // Linha Base do Eixo X (Agora platinada e visível)
         this.ctx.beginPath(); 
-        this.ctx.strokeStyle = '#222'; 
-        this.ctx.lineWidth = 4;
+        this.ctx.strokeStyle = this.cores.axis; 
+        this.ctx.lineWidth = 3;
         this.ctx.moveTo(PADDING_W, Y_RET); 
         this.ctx.lineTo(this.W - PADDING_W, Y_RET); 
         this.ctx.stroke();
 
-        // 🏹 SUPORTE DUA: Flecha fixa na ponta da reta (Indica sentido positivo infinito)
+        // 🏹 SUPORTE DUA: Flecha fixa na ponta da reta (Visível)
         const fimRetaX = this.W - PADDING_W;
         this.ctx.beginPath();
-        this.ctx.fillStyle = '#222';
+        this.ctx.fillStyle = this.cores.axis;
         this.ctx.moveTo(fimRetaX, Y_RET);
-        this.ctx.lineTo(fimRetaX - 10, Y_RET - 6);
-        this.ctx.lineTo(fimRetaX - 10, Y_RET + 6);
+        this.ctx.lineTo(fimRetaX - 12, Y_RET - 7);
+        this.ctx.lineTo(fimRetaX - 12, Y_RET + 7);
         this.ctx.fill();
 
-        // Linha de Preenchimento Inicial (Ouro)
+        // Ponto A Inicial
         if (valA_Math !== 0) {
             this.ctx.beginPath(); 
             this.ctx.strokeStyle = this.cores.gold; 
@@ -152,21 +141,28 @@ export class CanvasRenderer {
     }
 
     _desenharTicksReta(min, max, padding, y) {
-        this.ctx.fillStyle = '#444'; 
-        this.ctx.font = '12px monospace'; 
+        this.ctx.fillStyle = this.cores.subt; 
+        this.ctx.font = '13px Orbitron'; 
         this.ctx.textAlign = 'center';
+        
         const range = max - min;
-        let step = 1; if (range > 20) step = 5; if (range > 100) step = 10;
+        let step = 1; 
+        if (range > 15) step = 5; 
+        if (range > 50) step = 10;
+        if (range > 100) step = 20;
 
         for (let i = min; i <= max; i += step) {
             const x = this._mapX(i, min, max, padding);
             if (!isFinite(x)) continue;
             
-            this.ctx.fillRect(x, y - 5, 1, 10);
+            // Traço marcador (Tick)
+            this.ctx.fillStyle = this.cores.axis;
+            this.ctx.fillRect(x - 1, y - 6, 2, 12);
+            
+            // Texto do Número
             if (i === 0 || i === min || i === max || i % step === 0) {
                 this.ctx.fillStyle = this.cores.subt; 
                 this.ctx.fillText(i, x, y + 25); 
-                this.ctx.fillStyle = '#444';
             }
         }
     }
@@ -176,10 +172,10 @@ export class CanvasRenderer {
         if (!isFinite(x) || isNaN(x)) return;
 
         this.ctx.beginPath();
-        this.ctx.fillStyle = '#111'; 
+        this.ctx.fillStyle = '#000'; 
         this.ctx.strokeStyle = cor; 
         this.ctx.lineWidth = 3;
-        this.ctx.arc(x, y, 8, 0, Math.PI * 2);
+        this.ctx.arc(x, y, 7, 0, Math.PI * 2);
         this.ctx.fill(); 
         this.ctx.stroke();
 
@@ -229,7 +225,7 @@ export class CanvasRenderer {
     }
 
     // =========================================================================
-    // ─── MÉTODOS DE ANIMAÇÃO DINÂMICA (MICRO-ARCOS PASSO A PASSO) ───
+    // ─── MÉTODOS DE ANIMAÇÃO DINÂMICA (MICRO-ARCOS E RETA SINCRONIZADA) ───
     // =========================================================================
 
     async animarArcos(questao, deslocamento, representacao) {
@@ -248,18 +244,20 @@ export class CanvasRenderer {
 
         this.isAnimating = true;
 
-        let valMin = 0; if (String(questao.display).includes('-') || strA.includes('-')) valMin = -10;
         const valA_Math = parseFloat(strA.replace(/[^\d.-]/g, '')) || 0;
         const valRes_Math = parseFloat(String(questao.res).replace(/[^\d.-]/g, '')) || 0;
         const valAlt_Math = parseFloat(String(questao.alternativas?.[0]?.valor).replace(/[^\d.-]/g, '')) || 0;
         const deslocFloat = parseFloat(String(deslocamento).replace(/[^\d.-]/g, '')) || 0;
         const valDest_Math = valA_Math + deslocFloat;
 
+        // Limites consolidados para manter a mesma escala entre estático e animação
+        let valMin = (String(questao.display).includes('-') || strA.includes('-')) ? -10 : 0;
+        if (valDest_Math < valMin) valMin = valDest_Math - 2;
         const valMax = Math.max(10, valA_Math, valRes_Math, valAlt_Math, valDest_Math);
+        
         const PADDING_W = 60;
         const Y_RET = this.H * 0.7;
 
-        // Estruturação dos passos com base no deslocamento escalar da questão
         const passos = Math.abs(deslocFloat);
         const direcao = deslocFloat >= 0 ? 1 : -1;
         const corVetor = deslocFloat >= 0 ? this.cores.cyan : this.cores.danger;
@@ -269,13 +267,11 @@ export class CanvasRenderer {
             return Promise.resolve();
         }
 
-        // Sub-rotina de renderização atômica (Isomorfismo de passo unitário)
         const animarPassoUnitario = (valorAtual, valorProximo) => {
             return new Promise((resolvePasso) => {
                 const startTime = performance.now();
-                const DURACAO_PASSO = 220; // Ritmo veloz e responsivo por bloco de rampa
+                const DURACAO_PASSO = 220; 
 
-                // Sincronia Auditiva Cinestésica a cada gatilho unitário
                 if (typeof AdaptiveAudioEngine !== 'undefined') {
                     AdaptiveAudioEngine.sonarDeslocamento(direcao);
                 }
@@ -284,7 +280,7 @@ export class CanvasRenderer {
                 const endX = this._mapX(valorProximo, valMin, valMax, PADDING_W);
                 const distPx = Math.abs(endX - startX);
                 
-                const arcH = Math.max(22, distPx * 0.85);
+                const arcH = Math.max(20, distPx * 0.85);
                 const cpX = (startX + endX) / 2;
                 const cpY = Y_RET - arcH;
 
@@ -294,9 +290,9 @@ export class CanvasRenderer {
                     const pEase = p * (2 - p);
 
                     this._limpar();
-                    this._desenharRetaNumerica(questao, rep);
+                    // Passa a escala customizada (valMin e valMax) para a reta de fundo não pular
+                    this._desenharRetaNumerica(questao, rep, valMin, valMax);
 
-                    // Mantém fixo o marcador de origem do vetor principal
                     this._desenharPonto(valA_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
                     
                     this.ctx.beginPath(); 
@@ -315,7 +311,6 @@ export class CanvasRenderer {
                     }
                     this.ctx.stroke();
 
-                    // Vetorização Direcional Atômica (Seta do micro-arco em movimento)
                     if (pEase > 0.1) {
                         const angle = Math.atan2(lastY - cpY, lastX - cpX);
                         this.ctx.beginPath();
@@ -336,14 +331,12 @@ export class CanvasRenderer {
             });
         };
 
-        // Laço assíncrono sequencial imutável (Formação por Etapas)
         for (let i = 0; i < passos; i++) {
             const pontoAtual = valA_Math + (i * direcao);
             const pontoProximo = pontoAtual + direcao;
             await animarPassoUnitario(pontoAtual, pontoProximo);
         }
 
-        // Consolidação estrutural do ponto de destino final (B)
         this._desenharPonto(valDest_Math, valMin, valMax, PADDING_W, Y_RET, corVetor, 'B');
         this.isAnimating = false;
         return Promise.resolve();
