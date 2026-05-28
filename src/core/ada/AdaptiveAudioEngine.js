@@ -1,10 +1,7 @@
 /**
  * @fileoverview AdaptiveAudioEngine.js
  * @description Motor de Sonificação Adaptativa e Acessibilidade Neuro-Auditiva (DUA).
- * Utiliza a Web Audio API pura para sintetizar frequências matemáticas em tempo real,
- * fornecendo feedback sonoro posicional e cinestésico dependendo da resposta.
- * EVOLUÇÃO: Singleton Arquitetural imune às políticas de bloqueio de Autoplay.
- * @version 1.1.0
+ * @version 1.2.0
  * @package LabTech / Core ADA
  */
 
@@ -12,142 +9,108 @@ import { G } from '../../engine/gameState.js';
 
 export class AdaptiveAudioEngine {
     
-    // Instância única global para prevenir Memory Leaks e bloqueios de Autoplay
     static _audioCtx = null;
 
     /**
-     * Garante a inicialização preguiçosa do Contexto de Áudio (Lazy Initialization).
-     * Previne o bloqueio nativo de segurança de reprodução automática dos navegadores.
+     * Inicialização lazy para contornar políticas de Autoplay.
      * @private
-     * @returns {AudioContext}
      */
     static _initContext() {
         if (!this._audioCtx) {
             const AudioContextClass = window.AudioContext || window.webkitAudioContext;
             this._audioCtx = new AudioContextClass();
         }
-        
-        // Se o contexto foi suspenso por falta de interação, força o resume
-        if (this._audioCtx.state === 'suspended') {
-            this._audioCtx.resume();
-        }
-        
+        if (this._audioCtx.state === 'suspended') this._audioCtx.resume();
         return this._audioCtx;
     }
 
     /**
-     * Dispara um feedback harmônico consonante (Sucesso/Avanço Cognitivo).
-     * Gera um arpejo ascendente senoidal perfeito.
+     * Helper privado para síntese de notas puras.
+     * @private
      */
-    static sonarSucesso() {
-        if (G.musica === false) return; // Respeita a diretriz de silêncio do HUD
+    static _tocarNota(freq, tipo, tempo, duracao, volume = 0.15) {
+        const ctx = this._initContext();
+        const osc = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+
+        osc.type = tipo;
+        osc.frequency.setValueAtTime(freq, tempo);
         
-        try {
-            const ctx = this._initContext();
-            const agora = ctx.currentTime;
+        gainNode.gain.setValueAtTime(volume, tempo);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, tempo + duracao);
 
-            // Frequências da tríade maior de Dó (Do4, Mi4, Sol4, Do5) -> Ascensão semiótica
-            const notas = [261.63, 329.63, 392.00, 523.25];
-            const duracaoNota = 0.12;
+        osc.connect(gainNode);
+        gainNode.connect(ctx.destination);
 
-            notas.forEach((freq, index) => {
-                const osc = ctx.createOscillator();
-                const gainNode = ctx.createGain();
-
-                osc.type = 'sine'; // Onda pura para sensação clínica e limpa
-                osc.frequency.setValueAtTime(freq, agora + (index * duracaoNota));
-
-                // Envelope de Ganho (Fade-out para evitar estalos harmônicos)
-                gainNode.gain.setValueAtTime(0.15, agora + (index * duracaoNota));
-                gainNode.gain.exponentialRampToValueAtTime(0.0001, agora + (index * duracaoNota) + duracaoNota);
-
-                osc.connect(gainNode);
-                gainNode.connect(ctx.destination);
-
-                osc.start(agora + (index * duracaoNota));
-                osc.stop(agora + (index * duracaoNota) + duracaoNota);
-            });
-        } catch (e) {
-            console.warn("[AdaptiveAudioEngine] Subsistema de som ocupado ou bloqueado:", e);
-        }
+        osc.start(tempo);
+        osc.stop(tempo + duracao);
     }
 
     /**
-     * Dispara um feedback de desvio/anomalia (Erro de Percurso).
-     * Sonifica um intervalo dissonante de segunda menor descendente com onda dente-de-serra (Aviso técnico).
+     * Feedback quando o arco "aterra" no destino (Snap visual).
      */
-    static sonarAnomalia() {
+    static sonarSnap() {
         if (G.musica === false) return;
+        try {
+            const ctx = this._initContext();
+            this._tocarNota(880.00, 'sine', ctx.currentTime, 0.1, 0.2);
+        } catch (e) { console.warn("[ADA] Snap falhou:", e); }
+    }
 
+    /**
+     * Feedback de sucesso final na conclusão da operação.
+     */
+    static sonarConclusao() {
+        if (G.musica === false) return;
         try {
             const ctx = this._initContext();
             const agora = ctx.currentTime;
+            // Arpejo de vitória (Dó -> Sol)
+            this._tocarNota(523.25, 'triangle', agora, 0.15);
+            this._tocarNota(783.99, 'triangle', agora + 0.15, 0.3);
+        } catch (e) { console.warn("[ADA] Sucesso falhou:", e); }
+    }
 
-            // Frequências dissonantes (Trítono / Segunda Menor instável de aviso)
-            const freqInicial = 150.00; // Frequência grave de alerta
-            const freqFinal = 141.42;   // Queda descendente de tensão
+    static sonarSucesso() {
+        if (G.musica === false) return;
+        try {
+            const ctx = this._initContext();
+            const agora = ctx.currentTime;
+            const notas = [261.63, 329.63, 392.00, 523.25];
+            notas.forEach((freq, i) => this._tocarNota(freq, 'sine', agora + (i * 0.12), 0.12));
+        } catch (e) { console.warn("[ADA] Sucesso falhou:", e); }
+    }
 
+    static sonarAnomalia() {
+        if (G.musica === false) return;
+        try {
+            const ctx = this._initContext();
+            const agora = ctx.currentTime;
             const osc = ctx.createOscillator();
-            const gainNode = ctx.createGain();
-
-            osc.type = 'sawtooth'; // Onda dente-de-serra sutil para textura de aviso
-            osc.frequency.setValueAtTime(freqInicial, agora);
-            // Efeito de rampa contínua (Glissando descendente)
-            osc.frequency.linearRampToValueAtTime(freqFinal, agora + 0.35);
-
-            // Filtro passa-baixas para deixar o som de erro cibernético sutil e não agressivo
+            const gain = ctx.createGain();
             const filtro = ctx.createBiquadFilter();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, agora);
+            osc.frequency.linearRampToValueAtTime(141, agora + 0.35);
             filtro.type = 'lowpass';
             filtro.frequency.setValueAtTime(400, agora);
 
-            gainNode.gain.setValueAtTime(0.12, agora);
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, agora + 0.4);
+            gain.gain.setValueAtTime(0.12, agora);
+            gain.gain.exponentialRampToValueAtTime(0.001, agora + 0.4);
 
-            osc.connect(filtro);
-            filtro.connect(gainNode);
-            gainNode.connect(ctx.destination);
-
-            osc.start(agora);
-            osc.stop(agora + 0.4);
-        } catch (e) {
-            console.warn("[AdaptiveAudioEngine] Abortada a síntese de áudio de desvio:", e);
-        }
+            osc.connect(filtro); filtro.connect(gain); gain.connect(ctx.destination);
+            osc.start(agora); osc.stop(agora + 0.4);
+        } catch (e) { console.warn("[ADA] Anomalia falhou:", e); }
     }
 
-    /**
-     * Sonifica o deslocamento vetorial cinestésico do Canvas (Deslocamento na Reta ou Arcos).
-     * @param {number} delta - Valor do deslocamento (pontoB - pontoA).
-     */
     static sonarDeslocamento(delta) {
         if (G.musica === false || delta === 0) return;
-
         try {
             const ctx = this._initContext();
             const agora = ctx.currentTime;
-
-            const osc = ctx.createOscillator();
-            const gainNode = ctx.createGain();
-
-            osc.type = 'triangle'; // Onda triangular (Suave e encorpada)
-            
-            // Frequência base balanceada (Lá 220Hz)
-            const freqBase = 220;
-            // O som sobe se o deslocamento for positivo, e desce se for negativo
-            const freqDestino = freqBase + (delta * 15);
-
-            osc.frequency.setValueAtTime(freqBase, agora);
-            osc.frequency.exponentialRampToValueAtTime(Math.max(60, Math.min(freqDestino, 1200)), agora + 0.5);
-
-            gainNode.gain.setValueAtTime(0.1, agora);
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, agora + 0.5);
-
-            osc.connect(gainNode);
-            gainNode.connect(ctx.destination);
-
-            osc.start(agora);
-            osc.stop(agora + 0.5);
-        } catch (e) {
-            // Silêncio defensivo se o hardware de som falhar
-        }
+            const freq = Math.max(60, Math.min(220 + (delta * 15), 1200));
+            this._tocarNota(freq, 'triangle', agora, 0.5, 0.1);
+        } catch (e) { }
     }
 }
