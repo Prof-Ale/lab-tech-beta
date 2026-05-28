@@ -1,6 +1,6 @@
 /**
- * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v1.5.3 - ESTÁVEL)
- * CIRURGIA: Removida duplicação de funções e corrigida ordem de inicialização.
+ * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.2 - ESTÁVEL)
+ * CIRURGIA: Removida duplicação de funções e organizada ordem de execução.
  */
 
 import { G } from './engine/gameState.js';
@@ -12,7 +12,7 @@ import { AdaptiveAudioEngine } from './core/ada/AdaptiveAudioEngine.js';
 import { CanvasRenderer } from './ui/canvasRenderer.js';
 import * as uiManager from './ui/uiManager.js';
 
-// --- HELPERS ---
+// --- HELPERS E BINDINGS ---
 const $ = (id) => document.getElementById(id);
 const on = (id, fn) => { const el = $(id); if (el) el.onclick = fn; };
 const abrirM = (id) => $(id)?.classList.add('active');
@@ -20,14 +20,26 @@ const fecharM = (id) => $(id)?.classList.remove('active');
 
 let renderizadorGrafico = null;
 
-// --- REATIVIDADE ---
+// --- REATIVIDADE: UI QUE ESCUTA O ESTADO ---
 window.addEventListener('vida-alterada', (e) => {
     const barra = $('fv');
     if (barra) barra.style.width = `${e.detail.valor}%`;
 });
 
-// --- FUNÇÕES DE NAVEGAÇÃO E LÓGICA (DEFINIDAS ANTES DO DOMCONTENTLOADED) ---
+// --- FUNÇÕES DE DASHBOARD ---
+function atualizarDashboard() {
+    const content = $('dash-content');
+    if (!content) return;
+    if (!G.historico || Object.keys(G.historico).length === 0) {
+        content.innerHTML = "<p style='text-align:center; opacity:0.5; padding:20px; font-family:monospace;'>Aguardando coleta de dados...</p>";
+        return;
+    }
+    content.innerHTML = LearningAnalytics.gerarHtmlDashboardBNCC(G.historico);
+    const btnCsv = $('btn-export-csv');
+    if (btnCsv) btnCsv.onclick = () => LearningAnalytics.exportarCSV(G.nome, G.historico);
+}
 
+// --- FUNÇÕES DE NAVEGAÇÃO E LÓGICA ---
 function mostrarSeletorBlocos() {
     let nomeRaw = $('nome-cientista')?.value.trim() || 'Cientista Anonymous';
     let turmaRaw = $('turma-cientista')?.value.trim() || '7ºA';
@@ -68,6 +80,7 @@ async function processarResposta(alt, q) {
     const latenciaSessaoMs = Date.now() - G.tempoInicialQuestao;
     const isAcerto = (alt.tipo === "acerto" || alt.correta === true || String(alt.valor) === String(q.res));
 
+    // 1. LÓGICA DE PONTOS E ÁUDIO
     if (isAcerto) {
         G.acertos++; G.combo++;
         AdaptiveAudioEngine.sonarSucesso();
@@ -77,9 +90,11 @@ async function processarResposta(alt, q) {
         AdaptiveAudioEngine.sonarAnomalia();
     }
 
+    // 2. TELEMETRIA
     G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : 'CONCEITO', latenciaSessaoMs);
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
 
+    // 3. FEEDBACK VISUAL
     uiManager.updHUD();
     const fb = $('fb');
     if (fb) {
@@ -90,6 +105,7 @@ async function processarResposta(alt, q) {
     }
     $('btn-prox')?.classList.remove('hidden');
 
+    // 4. ANIMAÇÃO E SOM DE CONCLUSÃO
     try {
         const pontoA = parseFloat(String(q.a || 0).replace(/[^\d.-]/g, ''));
         const pontoB = parseFloat(String(alt.valor || 0).replace(/[^\d.-]/g, ''));
@@ -118,8 +134,10 @@ function proximaQ() {
     const fb = $('fb');
     if (fb) fb.style.display = 'none';
     document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+    
     const q = AdaptiveSelector.selecionarProximaQuestao(G.currentBlock, G.perfilCognitivo);
     if (!q) return;
+    
     G.tempoInicialQuestao = Date.now();
     renderQ(q);
 }
@@ -128,6 +146,7 @@ function renderQ(q) {
     $('conta-display').textContent = q.display || "Resolva:";
     $('grid-botoes').innerHTML = '';
     $('btn-prox')?.classList.add('hidden');
+    
     const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
     renderizadorGrafico?.renderCv(q, null, pAdaptivo.interfaceModifiers.modoRepresentacao);
 
@@ -142,10 +161,9 @@ function renderQ(q) {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("🚀 [SISTEMA v15.3.1] Motor LabTech operante.");
+    console.log("🚀 [SISTEMA v15.3.2] Motor LabTech operante.");
     initDebugMode();
     
-    // Bindings de botões
     on('btn-acessar', mostrarSeletorBlocos);
     on('btn-prox', proximaQ);
     on('btn-musica', uiManager.toggleMusica);
@@ -154,11 +172,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     const yearSpan = $('labtech-year');
     if (yearSpan) yearSpan.textContent = new Date().getFullYear();
-
-        
-    on('btn-cred', () => abrirM('mcred'));
-    on('btn-dash', () => { atualizarDashboard(); abrirM('mdash'); });
-    on('btn-reiniciar', () => { fecharM('go'); if (G.currentBlock) iniciarBloco(G.currentBlock); });
+    
+    on('btn-cred', () => abrirM('mcred'));
+    on('btn-dash', () => { atualizarDashboard(); abrirM('mdash'); });
+    on('btn-reiniciar', () => { fecharM('go'); if (G.currentBlock) iniciarBloco(G.currentBlock); });
+   
     
    // --- O ESPELHO DO ALUNO ---
     on('btn-perfil', () => {
