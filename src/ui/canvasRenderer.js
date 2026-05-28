@@ -164,7 +164,7 @@ export class CanvasRenderer {
     }
 
     _desenharRetaNumerica(q, modo, customMin = null, customMax = null) {
-        const Y_RET = this.H * 0.58;
+        const Y_RET = this.H * 0.48;
         const PADDING_W = Math.max(50, this.W * 0.12);
 
         const strA = String(q.a ?? q.valorInicial ?? 0);
