@@ -1,67 +1,326 @@
 /* ============================================================
-   LABORATÓRIO TECH — CSS v12.7 "BUILD FINALS"
-   - Adicionada animação de entrada para Modais
-   - Blindagem contra Layout Shift no Avatar ADA
+   LABORATÓRIO TECH — CSS v1.2.7 "BUILD FINALS"
+   Merge correto: base original v1.2.6 + correções mobile v12.7
+   Correções aplicadas:
+   - Animação de entrada para modais (fadeIn)
+   - Blindagem anti-jump no avatar ADA
+   - padding-bottom na screen em mobile para não cobrir botões
+   - Avatar reduzido em mobile (160x90px)
+   - Tipografia DUA e transição da barra de vida
    ============================================================ */
 
-/* ... (Mantenha o seu :root e Reset iguais) ... */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:ital,wght@0,400;0,700;0,900;1,400&display=swap');
 
-/* ANIMAÇÃO DE ENTRADA SUAVE PARA MODAIS */
-@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-
-.modal.active { 
-    display: flex !important; 
-    animation: fadeIn 0.3s ease-out forwards; 
+:root {
+    --choco-dark:    #2b1608;
+    --choco-gold:    #d4a017;
+    --choco-cream:   #f5e6c8;
+    --neon-cyan:     #00eaff;
+    --neon-green:    #00ff88;
+    --neon-red:      #ff4444;
+    --bg-dark:       #060610;
+    --font-display: 'Orbitron', sans-serif;
+    --font-body:    'Nunito', sans-serif;
 }
 
-/* BLINDAGEM DO AVATAR ADA (Anti-Jump) */
-#ada-command-post { 
-    position: fixed; 
-    bottom: 20px; 
-    right: 20px; 
-    width: 320px; 
-    height: 180px; 
-    z-index: 50; 
+/* RESET E BASE */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: var(--bg-dark); color: #f0f0f0;
+    font-family: var(--font-body);
+}
+
+/* ESTRUTURA DE TELAS */
+.screen {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 20px; z-index: 10;
+    overflow-y: auto; background: var(--bg-dark);
+}
+.hidden { display: none !important; pointer-events: none; }
+
+/* ============================================================
+   1. SPLASH SCREEN (BLINDADA)
+   ============================================================ */
+.splash-inner { width: 100%; max-width: 480px; text-align: center; margin: auto; }
+.splash-logo {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 10vw, 42px);
+    color: var(--choco-gold);
+    text-shadow: 0 0 25px var(--choco-gold);
+}
+.splash-av {
+    width: 280px;
+    height: 157px;
+    margin: 20px auto;
+}
+.av-box {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    border: 4px solid var(--choco-gold);
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 0 30px var(--neon-cyan);
+}
+.ada-avatar-asset { width: 100%; height: 100%; object-fit: cover; }
+
+.input-group { width: 100%; display: flex; flex-direction: column; gap: 15px; }
+.input-group input {
+    width: 100%; padding: 22px;
+    border-radius: 15px; border: 2px solid var(--choco-gold);
+    background: rgba(0,0,0,0.9); color: var(--neon-cyan);
+    font-size: 20px; text-align: center; font-family: var(--font-body);
+    font-weight: 700; transition: 0.3s;
+}
+.input-group input:focus {
+    outline: none;
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 20px var(--neon-cyan);
+}
+
+.btn-start {
+    background: var(--choco-gold); padding: 22px; border: none; border-radius: 15px;
+    font-family: var(--font-display); font-weight: 900; width: 100%;
+    color: var(--choco-dark); cursor: pointer; transition: 0.2s;
+    font-size: 18px; text-transform: uppercase; margin-top: 10px;
+    box-shadow: 0 6px 0 #8a6d10;
+}
+
+/* ============================================================
+   2. SELETOR DE BLOCOS
+   ============================================================ */
+.selector-inner { width: 100%; max-width: 600px; text-align: center; margin: auto; }
+.section-title {
+    font-family: var(--font-display);
+    color: var(--neon-cyan);
+    margin-bottom: 25px;
+    font-size: 20px;
+}
+.blocks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
+
+.block-card {
+    padding: 30px 10px; background: rgba(14,14,32,0.9);
+    border: 2px solid var(--choco-gold); border-radius: 18px;
+    display: flex; flex-direction: column; align-items: center;
+    color: #fff; cursor: pointer; transition: 0.3s;
+}
+.block-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 20px var(--neon-cyan);
+}
+.block-icon { font-size: 32px; margin-bottom: 10px; }
+.block-name { font-family: var(--font-display); font-size: 12px; font-weight: 700; }
+
+.bc2 {
+    display: inline-block; margin-top: 20px; padding: 12px 24px;
+    background: rgba(0,0,0,0.6); border: 1.5px solid var(--choco-gold);
+    color: var(--choco-gold); border-radius: 10px;
+    font-family: var(--font-display); font-size: 11px; font-weight: 900;
+    text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s;
+}
+.bc2:hover { background: var(--choco-gold); color: var(--choco-dark); }
+
+/* ============================================================
+   3. GAMEPLAY (ANTI-RESIZE & HUD)
+   ============================================================ */
+.gw { width: 100%; max-width: 580px; margin: auto; }
+.game-header {
+    width: 100%; display: flex;
+    justify-content: space-between; align-items: center;
+    margin-bottom: 20px;
+}
+
+.game-controls { display: flex; gap: 8px; }
+.mini-btn {
+    background: rgba(0,0,0,0.8); border: 1px solid var(--choco-gold);
+    color: #fff; padding: 8px 12px; border-radius: 8px;
+    cursor: pointer; font-family: var(--font-display); font-size: 10px;
+    font-weight: 700; display: flex; align-items: center; gap: 6px;
+    text-transform: uppercase;
+}
+.mini-btn span { color: var(--choco-gold); min-width: 25px; display: inline-block; text-align: center; }
+
+#canvas-game {
+    width: 100%; height: 150px; background: #000;
+    border-radius: 15px; margin-bottom: 10px;
+    border: 1px solid rgba(212, 160, 23, 0.2);
+}
+
+/* ANTI-RESIZE: Container de Feedback com altura fixa */
+.fb-box {
+    width: 100%; min-height: 70px;
+    margin: 10px 0; padding: 12px 15px; border-radius: 12px;
+    background: rgba(212, 160, 23, 0.1); border-left: 4px solid var(--choco-gold);
+    color: var(--choco-cream); font-size: 14px; line-height: 1.4;
+    display: none;
+    /* NOVO v12.7: tipografia DUA */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#conta-display {
+    font-size: 24px; font-weight: 800; text-align: center;
+    padding: 20px; background: rgba(14,14,32,0.9);
+    border-radius: 20px; border: 2px solid var(--neon-cyan); margin-bottom: 15px;
+    /* NOVO v12.7: tipografia DUA */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.ag { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+.ba {
+    padding: 22px 10px; border-radius: 16px; background: #000;
+    border: 2.5px solid var(--neon-cyan); color: var(--neon-cyan);
+    font-family: var(--font-display); font-size: 22px; font-weight: 900;
+    cursor: pointer; transition: 0.2s;
+    /* NOVO v12.7: tipografia DUA */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.ba.ok { background: var(--neon-green) !important; color: #000 !important; }
+.ba.no { background: var(--neon-red) !important; color: #fff !important; }
+
+.btn-next {
+    width: 100%; max-width: 380px; padding: 20px; margin: 20px auto 0;
+    background: var(--choco-gold); color: var(--choco-dark);
+    border: none; border-radius: 15px; font-family: var(--font-display);
+    font-weight: 900; font-size: 18px; text-transform: uppercase;
+    cursor: pointer; box-shadow: 0 6px 0 #8a6d10; display: block;
+}
+
+/* NOVO v12.7: transição suave na barra de vida */
+#fv {
+    transition: width 0.5s ease-in-out, background-color 0.3s ease;
+}
+
+/* ============================================================
+   4. DASHBOARD & MODAIS
+   ============================================================ */
+.dash-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 4px solid var(--choco-gold);
+    padding: 12px 15px; border-radius: 8px;
+    margin-bottom: 10px; text-align: left;
+    transition: 0.3s;
+}
+.dash-card:hover { background: rgba(212, 160, 23, 0.15); }
+
+.side-controls {
+    position: fixed; top: 20px; right: 20px;
+    display: flex; gap: 10px; z-index: 1000;
+}
+.btn-round {
+    width: 50px; height: 50px; border-radius: 15px;
+    background: #000; border: 2px solid var(--choco-gold);
+    color: #fff; cursor: pointer; font-size: 20px;
+}
+
+/* NOVO v12.7: animação de entrada suave para modais */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.95); z-index: 10000;
+    display: none !important;
+    align-items: center; justify-content: center; padding: 20px;
+}
+.modal.active {
+    display: flex !important;
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.mc {
+    background: var(--bg-dark); border: 2px solid var(--choco-gold);
+    border-radius: 25px; padding: 30px; position: relative;
+    width: 100%; max-width: 450px; text-align: center;
+}
+.mx {
+    position: absolute; top: 15px; right: 20px;
+    background: none; border: none; color: var(--neon-red);
+    font-size: 32px; cursor: pointer;
+}
+
+/* ============================================================
+   5. AVATAR ADA — BLINDAGEM ANTI-JUMP (v12.7)
+   ============================================================ */
+#ada-command-post {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    height: 180px;
+    z-index: 50;
     pointer-events: none;
+    /* NOVO v12.7: transição suave */
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.ada-box { 
-    width: 100%; 
-    height: 100%; 
+.ada-box {
+    width: 100%;
+    height: 100%;
     border-radius: 16px;
-    border: 2px solid var(--neon-cyan); 
-    overflow: hidden; 
-    position: relative; 
+    border: 2px solid var(--neon-cyan);
+    overflow: hidden;
+    position: relative;
     background: #000;
     box-shadow: 0 0 20px rgba(0, 234, 255, 0.2);
 }
 
-/* CORREÇÃO DE ASPECT RATIO PARA MOBILE */
-@media (max-width: 600px) { 
-    .blocks-grid { grid-template-columns: 1fr; } 
-    
-    #ada-command-post { 
-        width: 160px; /* Reduzido para não tapar botões de resposta em mobile */
-        height: 90px;
-        bottom: 5px;
-        right: 5px;
-    } 
+.ada-asset {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-/* ESTILO DO PAINEL DE DEBUG (X-RAY) */
+.avh { opacity: 0 !important; }
+
+/* PAINEL DE DEBUG */
 #labtech-debug-panel {
     scrollbar-width: thin;
     scrollbar-color: var(--neon-cyan) var(--bg-dark);
 }
 
-/* HUD BARRA DE VIDA (Refinamento da transição) */
-#fv {
-    transition: width 0.5s ease-in-out, background-color 0.3s ease;
-}
+/* ============================================================
+   6. RESPONSIVO MOBILE
+   Correção definitiva: avatar não cobre os botões de resposta.
+   Solução dupla:
+   a) Avatar reduzido para 160x90px (proporção 16:9 mantida)
+   b) padding-bottom na screen reserva espaço para o avatar fixo
+   ============================================================ */
+@media (max-width: 600px) {
 
-/* TIPOGRAFIA DUA: Garantindo legibilidade em todos os estados */
-.fb-box, #conta-display, .ba {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* a) Grade de blocos em coluna única */
+    .blocks-grid { grid-template-columns: 1fr; }
+
+    /* b) Reserva espaço no scroll para o avatar não cobrir conteúdo */
+    .screen {
+        padding-bottom: 110px;
+    }
+
+    /* c) Avatar reduzido mantendo proporção 16:9 */
+    #ada-command-post {
+        width: 160px;
+        height: 90px;
+        bottom: 5px;
+        right: 5px;
+    }
+
+    /* d) Fonte menor nos botões de resposta para caber melhor */
+    .ba {
+        font-size: 16px;
+        padding: 18px 8px;
+    }
+
+    /* e) Display da questão menor para ganhar espaço vertical */
+    #conta-display {
+        font-size: 18px;
+        padding: 15px;
+    }
 }
