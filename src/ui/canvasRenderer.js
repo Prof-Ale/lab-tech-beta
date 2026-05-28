@@ -2,7 +2,7 @@
  * @fileoverview CanvasRenderer.js
  * @description Motor Gráfico Modular do LabTech (DUA).
  * Rastreia e renderiza Isomorfismos Matemáticos na Reta Numérica e Frações.
- * VERSÃO 4.2.0: Espaçamento Corrigido, Microticks e Divisão como Segmentação.
+ * VERSÃO 4.2.1: Bugfix Crítico - Números Restaurados, Anti-Clipping e Range Expandido.
  * @package LabTech / UI
  */
 
@@ -25,7 +25,7 @@ export class CanvasRenderer {
             subt: '#f2f2f2',
             danger: '#ff3333',
             axis: '#cfcfcf',
-            axisSoft: '#4a4a4a', // Escurecido levemente para os microticks não poluírem
+            axisSoft: '#4a4a4a', 
             bgGrid: 'rgba(255,255,255,0.02)'
         };
         this.isAnimating = false;
@@ -48,7 +48,6 @@ export class CanvasRenderer {
             this.ctx.setTransform(1, 0, 0, 1, 0, 0);
             this.ctx.scale(this.dpi, this.dpi);
             
-            // Suavização Anti-serrilhado (Anti-aliasing visual)
             this.ctx.imageSmoothingEnabled = true;
             this.ctx.imageSmoothingQuality = 'high';
         }
@@ -114,9 +113,6 @@ export class CanvasRenderer {
         return { min, max };
     }
 
-    // =========================================================================
-    // ─── MOTOR DE INFERÊNCIA SEMÂNTICA (Detecção de Operação) ───
-    // =========================================================================
     _detectarTipoOperacao(q) {
         const texto = String(q.display || '').toLowerCase();
 
@@ -164,8 +160,8 @@ export class CanvasRenderer {
     }
 
     _desenharRetaNumerica(q, modo, customMin = null, customMax = null) {
-        // CIRURGIA: Elevação do eixo para dar respiro aos números embaixo
-        const Y_RET = this.H * 0.45; 
+        // DEFESA ANTI-CLIPPING: Levanta o eixo se o CSS do Canvas estiver estreito demais
+        const Y_RET = this.H < 200 ? this.H * 0.35 : this.H * 0.45; 
         const PADDING_W = Math.max(50, this.W * 0.12);
 
         const strA = String(q.a ?? q.valorInicial ?? 0);
@@ -175,16 +171,13 @@ export class CanvasRenderer {
         const valMin = escala.min;
         const valMax = escala.max;
 
-        // EIXO PRINCIPAL
         this.ctx.beginPath();
         this.ctx.strokeStyle = this.cores.axis;
         this.ctx.lineWidth = 3;
-
         this.ctx.moveTo(PADDING_W, Y_RET);
         this.ctx.lineTo(this.W - PADDING_W, Y_RET);
         this.ctx.stroke();
 
-        // SETA DIREITA
         const fimRetaX = this.W - PADDING_W;
         this.ctx.beginPath();
         this.ctx.fillStyle = this.cores.axis;
@@ -193,39 +186,34 @@ export class CanvasRenderer {
         this.ctx.lineTo(fimRetaX - 12, Y_RET + 7);
         this.ctx.fill();
 
-        // SEGMENTO INICIAL
         if (valA_Math !== 0) {
             this.ctx.beginPath();
             this.ctx.strokeStyle = this.cores.gold;
             this.ctx.lineWidth = (modo === 'reta' ? 4 : 2);
-
             const x0 = this._mapX(0, valMin, valMax, PADDING_W);
             const xA = this._mapX(valA_Math, valMin, valMax, PADDING_W);
-
             this.ctx.moveTo(x0, Y_RET);
             this.ctx.lineTo(xA, Y_RET);
             this.ctx.stroke();
         }
 
-        if (modo === 'reta') {
-            this._desenharTicksReta(valMin, valMax, PADDING_W, Y_RET);
-        }
-
+        // CORREÇÃO CRÍTICA 1: Ticks SEMPRE desenhados, mesmo em 'abstrato'
+        this._desenharTicksReta(valMin, valMax, PADDING_W, Y_RET);
         this._desenharPonto(valA_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
     }
 
     _desenharTicksReta(min, max, padding, y) {
         this.ctx.textAlign = 'center';
-        this.ctx.textBaseline = 'middle'; // CIRURGIA: Alinhamento melhor para os números
+        this.ctx.textBaseline = 'middle'; 
 
         const range = max - min;
         let step = 1;
 
-        if (range > 20) step = 2;
-        if (range > 40) step = 5;
-        if (range > 80) step = 10;
+        // CORREÇÃO CRÍTICA 2: Aumentado de 20 para 26 para manter exibição em operações como (15-6)
+        if (range > 26) step = 2;
+        if (range > 50) step = 5;
+        if (range > 100) step = 10;
 
-        // CIRURGIA: MICROTICKS SECUNDÁRIOS PARA PERCEPÇÃO ESPACIAL
         if (step > 1) {
             this.ctx.beginPath();
             this.ctx.strokeStyle = this.cores.axisSoft;
@@ -250,7 +238,6 @@ export class CanvasRenderer {
             const isZero = (i === 0);
             const isMult5 = (i % 5 === 0);
 
-            // TICK HIERÁRQUICO
             this.ctx.beginPath();
             this.ctx.strokeStyle = isZero ? this.cores.gold : (isMult5 ? this.cores.axis : this.cores.axisSoft);
             this.ctx.lineWidth = isZero ? 3 : (isMult5 ? 2 : 1.5);
@@ -260,8 +247,7 @@ export class CanvasRenderer {
             this.ctx.lineTo(x, y + tickLen);
             this.ctx.stroke();
 
-            // LABELS HUMANIZADOS E TOTALMENTE VISÍVEIS
-            const mostrarLabel = range <= 15 || isZero || isMult5 || step >= 5;
+            const mostrarLabel = range <= 26 || isZero || isMult5 || step >= 5;
 
             if (mostrarLabel) {
                 this.ctx.font = isZero ? 'bold 15px Nunito' : 'bold 13px Nunito';
@@ -275,7 +261,6 @@ export class CanvasRenderer {
                     this.ctx.shadowBlur = 0; 
                 }
                 
-                // CIRURGIA: Descida calculada para o número + texto alinhado ao meio
                 this.ctx.fillText(String(i), x, y + 24);
                 this.ctx.shadowBlur = 0; 
             }
@@ -304,7 +289,6 @@ export class CanvasRenderer {
         this.ctx.fillStyle = cor; 
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'alphabetic';
-        // Afastamento do label A/B para cima, para não colidir com o eixo e o ponto
         this.ctx.fillText(label, x, y - 18);
     }
 
@@ -371,9 +355,8 @@ export class CanvasRenderer {
         let valDest_Math = valA_Math + deslocFloat;
 
         const PADDING_W = Math.max(50, this.W * 0.12);
-        const Y_RET = this.H * 0.45;
+        const Y_RET = this.H < 200 ? this.H * 0.35 : this.H * 0.45;
 
-        // ANÁLISE DE OPERAÇÃO PARA ANIMAÇÃO SEMÂNTICA
         const operacao = this._detectarTipoOperacao(questao);
         let direcao = deslocFloat >= 0 ? 1 : -1;
         let tamanhoSalto = Math.abs(deslocFloat);
@@ -392,18 +375,17 @@ export class CanvasRenderer {
                 }
             }
         } else if (operacao === 'divisao') {
-            // CIRURGIA: Divisão como segmentação reversa
             const texto = String(questao.display || '');
             const numeros = texto.match(/\d+/g);
             if (numeros && numeros.length >= 2) {
-                const n1 = parseInt(numeros[0]); // Dividendo
-                const n2 = parseInt(numeros[1]); // Divisor
+                const n1 = parseInt(numeros[0]); 
+                const n2 = parseInt(numeros[1]); 
                 if (n1 > 0 && n2 > 0 && n1 % n2 === 0) {
                     qtdSaltos = n1 / n2;
                     tamanhoSalto = n2;
-                    startAncora = n1; // A âncora começa do total (Dividendo)
-                    direcao = -1; // Volta em direção ao zero
-                    valDest_Math = 0; // O destino real da visualização da operação é 0
+                    startAncora = n1; 
+                    direcao = -1; 
+                    valDest_Math = 0; 
                 }
             }
         }
@@ -413,7 +395,6 @@ export class CanvasRenderer {
             return Promise.resolve();
         }
 
-        // A escala baseia-se na verdadeira amplitude do raciocínio
         const escala = this._calcularEscalaPedagogica(
             questao,
             Math.min(startAncora, valDest_Math) - 2,
@@ -424,7 +405,6 @@ export class CanvasRenderer {
         const valMax = escala.max;
         const corVetor = direcao >= 0 ? this.cores.cyan : this.cores.danger;
 
-        // Trilha Permanente
         const arcosCompletos = [];
 
         const animarPassoUnitario = (valorAtual, valorProximo, isUltimoSalto) => {
@@ -452,9 +432,6 @@ export class CanvasRenderer {
                     this._limpar();
                     this._desenharRetaNumerica(questao, rep, valMin, valMax);
 
-                    // ==========================================
-                    // DESENHAR RASTRO PERMANENTE 
-                    // ==========================================
                     for (let arco of arcosCompletos) {
                         this.ctx.beginPath();
                         this.ctx.strokeStyle = arco.corVetor;
@@ -486,9 +463,6 @@ export class CanvasRenderer {
                         this.ctx.fill();
                     }
 
-                    // ==========================================
-                    // ANIMAÇÃO DO PASSO ATUAL 
-                    // ==========================================
                     const globalStartX = this._mapX(startAncora, valMin, valMax, PADDING_W);
                     let currentProgressX = startX + ((endX - startX) * pEase);
                     
@@ -561,7 +535,6 @@ export class CanvasRenderer {
             await animarPassoUnitario(pontoAtual, pontoProximo, isUltimo);
         }
 
-        // Desenha Ponto Final com a Label 'B'
         this._desenharPonto(valDest_Math, valMin, valMax, PADDING_W, Y_RET, corVetor, 'B');
         this.isAnimating = false;
         return Promise.resolve();
