@@ -360,7 +360,7 @@ export class CanvasRenderer {
         const valMax = escala.max;
         
         const PADDING_W = Math.max(50, this.W * 0.12);
-        const Y_RET = this.H * 0.58;
+        const Y_RET = this.H * 0.48;
 
         // ANÁLISE DE OPERAÇÃO PARA ANIMAÇÃO SEMÂNTICA
         const operacao = this._detectarTipoOperacao(questao);
