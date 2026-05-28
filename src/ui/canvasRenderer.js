@@ -2,7 +2,7 @@
  * @fileoverview CanvasRenderer.js
  * @description Motor Gráfico Modular do LabTech (DUA).
  * Rastreia e renderiza Isomorfismos Matemáticos na Reta Numérica e Frações.
- * VERSÃO 4.0.0: Inteligência Semântica, Ticks Hierárquicos e Física Pedagógica.
+ * VERSÃO 4.1.0: Labels Corrigidos, Rastro Permanente e Divisão Semântica.
  * @package LabTech / UI
  */
 
@@ -192,7 +192,7 @@ export class CanvasRenderer {
         this.ctx.lineTo(fimRetaX - 12, Y_RET + 7);
         this.ctx.fill();
 
-        // SEGMENTO INICIAL (Mais elegante: espessura 4 ao invés de 6)
+        // SEGMENTO INICIAL
         if (valA_Math !== 0) {
             this.ctx.beginPath();
             this.ctx.strokeStyle = this.cores.gold;
@@ -232,7 +232,7 @@ export class CanvasRenderer {
             const isZero = (i === 0);
             const isMult5 = (i % 5 === 0);
 
-            // TICK HIERÁRQUICO (Forte para 0 e múltiplos de 5, suave para o resto)
+            // TICK HIERÁRQUICO
             this.ctx.beginPath();
             this.ctx.strokeStyle = isZero ? this.cores.gold : (isMult5 ? this.cores.axis : this.cores.axisSoft);
             this.ctx.lineWidth = isZero ? 3 : (isMult5 ? 2 : 1);
@@ -242,8 +242,10 @@ export class CanvasRenderer {
             this.ctx.lineTo(x, y + tickLen);
             this.ctx.stroke();
 
-            // LABELS HUMANIZADOS (Nunito)
-            if (isZero || isMult5 || step >= 5) {
+            // LABELS HUMANIZADOS E TOTALMENTE VISÍVEIS
+            const mostrarLabel = range <= 15 || isZero || isMult5 || step >= 5;
+
+            if (mostrarLabel) {
                 this.ctx.font = isZero ? 'bold 15px Nunito' : 'bold 13px Nunito';
                 
                 if (isZero) {
@@ -251,7 +253,7 @@ export class CanvasRenderer {
                     this.ctx.shadowColor = this.cores.gold;
                     this.ctx.fillStyle = this.cores.gold;
                 } else {
-                    this.ctx.fillStyle = this.cores.subt;
+                    this.ctx.fillStyle = '#ffffff'; // Correção Crítica 2: Branco de alto contraste
                     this.ctx.shadowBlur = 0; 
                 }
                 
@@ -271,7 +273,6 @@ export class CanvasRenderer {
         this.ctx.lineWidth = 3;
         this.ctx.arc(x, y, 7, 0, Math.PI * 2);
 
-        // GLOW COGNITIVO REDUZIDO (Sensação pedagógica, menos "gamer")
         this.ctx.shadowBlur = 6;
         this.ctx.shadowColor = cor;
 
@@ -280,7 +281,6 @@ export class CanvasRenderer {
 
         this.ctx.shadowBlur = 0; 
 
-        // FONTE HUMANIZADA
         this.ctx.font = 'bold 13px Nunito'; 
         this.ctx.fillStyle = cor; 
         this.ctx.textAlign = 'center';
@@ -379,6 +379,18 @@ export class CanvasRenderer {
                     tamanhoSalto = n2;
                 }
             }
+        } else if (operacao === 'divisao') {
+            const texto = String(questao.display || '');
+            const numeros = texto.match(/\d+/g);
+            if (numeros && numeros.length >= 2) {
+                const n1 = parseInt(numeros[0]); // Dividendo
+                const n2 = parseInt(numeros[1]); // Divisor
+                if (n1 > 0 && n2 > 0 && n1 % n2 === 0) {
+                    qtdSaltos = n1 / n2;
+                    tamanhoSalto = n2;
+                    direcao = 1; // Salto progressivo agrupado para divisão semântica
+                }
+            }
         }
 
         if (qtdSaltos === 0 || isNaN(qtdSaltos) || tamanhoSalto === 0) {
@@ -388,7 +400,10 @@ export class CanvasRenderer {
 
         const corVetor = deslocFloat >= 0 ? this.cores.cyan : this.cores.danger;
 
-        const animarPassoUnitario = (valorAtual, valorProximo) => {
+        // Array para manter os rastros de toda a operação (Trilha Permanente)
+        const arcosCompletos = [];
+
+        const animarPassoUnitario = (valorAtual, valorProximo, isUltimoSalto) => {
             return new Promise((resolvePasso) => {
                 const startTime = performance.now();
                 const DURACAO_PASSO = 220; 
@@ -401,7 +416,6 @@ export class CanvasRenderer {
                 const endX = this._mapX(valorProximo, valMin, valMax, PADDING_W);
                 const distPx = Math.abs(endX - startX);
                 
-                // ARCO FÍSICO PEDAGÓGICO (Mais achatado/natural, menos balístico)
                 const arcH = Math.max(18, distPx * 0.55); 
                 const cpX = (startX + endX) / 2;
                 const cpY = Y_RET - arcH;
@@ -414,11 +428,52 @@ export class CanvasRenderer {
                     this._limpar();
                     this._desenharRetaNumerica(questao, rep, valMin, valMax);
 
-                    // EFEITOS DE RASTRO E PULSO
+                    // ==========================================
+                    // DESENHAR RASTRO PERMANENTE DOS SALTOS ANTERIORES
+                    // ==========================================
+                    for (let arco of arcosCompletos) {
+                        // Linha percorrida fixa
+                        this.ctx.beginPath();
+                        this.ctx.strokeStyle = arco.corVetor;
+                        this.ctx.lineWidth = 4;
+                        this.ctx.shadowBlur = 4;
+                        this.ctx.shadowColor = arco.corVetor;
+                        this.ctx.moveTo(arco.sX, Y_RET);
+                        this.ctx.lineTo(arco.eX, Y_RET);
+                        this.ctx.stroke();
+                        this.ctx.shadowBlur = 0;
+
+                        // Ticks iluminados permanentes
+                        this.ctx.fillStyle = arco.corVetor;
+                        this.ctx.fillRect(arco.sX - 2, Y_RET - 8, 4, 16);
+                        this.ctx.fillRect(arco.eX - 2, Y_RET - 8, 4, 16);
+
+                        // Arco concluído
+                        this.ctx.beginPath(); 
+                        this.ctx.lineWidth = 3; 
+                        this.ctx.strokeStyle = arco.corVetor; 
+                        this.ctx.moveTo(arco.sX, Y_RET);
+                        this.ctx.quadraticCurveTo(arco.cX, arco.cY, arco.eX, Y_RET);
+                        this.ctx.stroke();
+
+                        // Seta concluída
+                        const angle = Math.atan2(Y_RET - arco.cY, arco.eX - arco.cX);
+                        this.ctx.beginPath();
+                        this.ctx.fillStyle = arco.corVetor;
+                        this.ctx.moveTo(arco.eX, Y_RET);
+                        this.ctx.lineTo(arco.eX - 10 * Math.cos(angle - Math.PI / 6), Y_RET - 10 * Math.sin(angle - Math.PI / 6));
+                        this.ctx.lineTo(arco.eX - 10 * Math.cos(angle + Math.PI / 6), Y_RET - 10 * Math.sin(angle + Math.PI / 6));
+                        this.ctx.fill();
+                    }
+
+                    // ==========================================
+                    // ANIMAÇÃO DO PASSO ATUAL (BRILHO TEMPORÁRIO)
+                    // ==========================================
                     const globalStartX = this._mapX(valA_Math, valMin, valMax, PADDING_W);
-                    let currentProgressX = Math.pow(1-pEase, 2) * startX + 2 * (1-pEase) * pEase * cpX + Math.pow(pEase, 2) * endX;
                     
-                    // Brilho na linha de avanço
+                    // Progressão Linear Matemática Consertada
+                    let currentProgressX = startX + ((endX - startX) * pEase);
+                    
                     this.ctx.beginPath();
                     this.ctx.strokeStyle = corVetor;
                     this.ctx.lineWidth = 4;
@@ -428,12 +483,14 @@ export class CanvasRenderer {
                     this.ctx.lineTo(currentProgressX, Y_RET);
                     this.ctx.stroke();
 
-                    // Acende o tick atual fixo
+                    // Acende o tick atual
                     this.ctx.fillStyle = corVetor;
                     this.ctx.fillRect(startX - 2, Y_RET - 8, 4, 16);
 
-                    // Pulso orgânico no destino
-                    const pulse = 12 + (Math.sin(p * Math.PI) * 6);
+                    // Pulso no destino (Tick Especial de Chegada)
+                    let pulse = 12 + (Math.sin(p * Math.PI) * 6);
+                    if (isUltimoSalto && p === 1) pulse = 18; // Snap final (cresce e ilumina no final absoluto)
+
                     this.ctx.globalAlpha = 0.4 + (0.6 * pEase);
                     this.ctx.fillRect(endX - 2, Y_RET - (pulse/2), 4, pulse);
                     
@@ -442,7 +499,6 @@ export class CanvasRenderer {
 
                     this._desenharPonto(valA_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
                     
-                    // Desenho da curva
                     this.ctx.beginPath(); 
                     this.ctx.lineWidth = 3; 
                     this.ctx.strokeStyle = corVetor; 
@@ -459,7 +515,7 @@ export class CanvasRenderer {
                     }
                     this.ctx.stroke();
 
-                    // Seta dinâmica apontando a direção da progressão
+                    // Seta dinâmica do vetor
                     if (pEase > 0.1) {
                         const angle = Math.atan2(lastY - cpY, lastX - cpX);
                         this.ctx.beginPath();
@@ -473,6 +529,10 @@ export class CanvasRenderer {
                     if (p < 1) {
                         requestAnimationFrame(tickAnim);
                     } else {
+                        // Consolida o arco na trilha permanente
+                        arcosCompletos.push({
+                            sX: startX, eX: endX, cX: cpX, cY: cpY, corVetor
+                        });
                         resolvePasso();
                     }
                 };
@@ -483,9 +543,11 @@ export class CanvasRenderer {
         for (let i = 0; i < qtdSaltos; i++) {
             const pontoAtual = valA_Math + (i * tamanhoSalto * direcao);
             const pontoProximo = pontoAtual + (tamanhoSalto * direcao);
-            await animarPassoUnitario(pontoAtual, pontoProximo);
+            const isUltimo = i === (qtdSaltos - 1);
+            await animarPassoUnitario(pontoAtual, pontoProximo, isUltimo);
         }
 
+        // Desenha Ponto Final (B)
         this._desenharPonto(valDest_Math, valMin, valMax, PADDING_W, Y_RET, corVetor, 'B');
         this.isAnimating = false;
         return Promise.resolve();
