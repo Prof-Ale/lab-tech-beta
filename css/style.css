@@ -323,4 +323,58 @@ html, body {
         font-size: 18px;
         padding: 15px;
     }
+/* ============================================================
+   LABORATÓRIO TECH — EXTENSÃO DE ACESSIBILIDADE E HIGIENIZAÇÃO (v1.2.8)
+   Mapeamento de classes estruturais removidas do HTML inline
+   ============================================================ */
+
+/* Utilitários Globais de Cores Baseadas no :root */
+.theme-gold { color: var(--choco-gold) !important; }
+.theme-cyan { color: var(--neon-cyan) !important; }
+.theme-red { color: var(--neon-red) !important; }
+.theme-green { color: var(--neon-green) !important; }
+.bold { font-weight: bold; }
+
+/* Correções de Layout de Modais com travas verticais (Anti-Transbordo) */
+.mc-perfil { border: 2px solid var(--neon-cyan); }
+.perfil-stats-container { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin: 15px 0; text-align: left; }
+.dash-scroll-area { max-height: 300px; overflow-y: auto; margin: 15px 0; }
+
+/* Configuração Avançada do Modal Sobre (Acessibilidade DUA) */
+.mc-about {
+    border: 2px solid var(--choco-gold);
+    max-width: 600px;
+    padding: 25px;
+    max-height: 85vh; /* 🛡️ Trava de segurança para evitar transbordo vertical em viewports baixas */
+    overflow-y: auto; /* Habilita barra de rolagem interna se necessário */
+    scrollbar-width: thin;
+    scrollbar-color: var(--choco-gold) var(--bg-dark);
+}
+
+.about-title { color: var(--choco-gold); font-family: var(--font-display); font-size: 22px; margin-bottom: 5px; text-transform: uppercase; }
+.about-subtitle { color: var(--neon-cyan); font-weight: bold; margin-bottom: 20px; font-size: 14px; }
+
+.about-foundations { text-align: left; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+.foundations-lead { margin-bottom: 8px; font-weight: bold; }
+.foundations-list { list-style-type: disc; padding-left: 20px; color: #ddd; }
+
+.about-author-card { background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; text-align: left; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+.author-label { font-size: 12px; color: #aaa; margin-bottom: 4px; }
+.author-name { font-weight: bold; font-size: 16px; color: #fff; margin-bottom: 2px; }
+.author-nick { font-size: 13px; color: #aaa; font-style: italic; }
+
+.about-description { text-align: left; font-size: 13px; line-height: 1.6; color: #ccc; margin-bottom: 20px; }
+.about-description p { margin-bottom: 12px; }
+.about-description p:last-child { margin-bottom: 0; }
+
+.about-quote-box { border-left: 3px solid var(--neon-cyan); padding: 10px 15px; text-align: left; margin-bottom: 25px; background: rgba(0, 234, 255, 0.05); }
+.about-quote { color: var(--neon-cyan); font-style: italic; font-size: 13px; line-height: 1.5; }
+
+.about-footer { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; font-size: 11px; color: #666; text-align: center; }
+
+/* Modificadores de Botão de Fim de Jogo */
+.btn-reconnect { margin-top: 20px; }
+.btn-back-menu { margin-top: 10px; cursor: pointer; border: none; background: none; color: white; }
+.btn-back-menu:hover { background: none; color: var(--choco-gold); 
+                     }
 }
