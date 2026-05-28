@@ -27,7 +27,7 @@ window.addEventListener('vida-alterada', (e) => {
     if (barra) barra.style.width = `${e.detail.valor}%`;
 });
 
-// --- FUNÇÃO MOSTRAR SELETOR DE BLOCOS (A FUNÇÃO QUE FALTAVA) ---
+// --- FUNÇÃO MOSTRAR SELETOR DE BLOCOS  ---
 function mostrarSeletorBlocos() {
     let nomeRaw = $('nome-cientista')?.value.trim() || 'Cientista Anonymous';
     let turmaRaw = $('turma-cientista')?.value.trim() || '7ºA';
