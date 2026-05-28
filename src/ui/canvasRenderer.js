@@ -1,344 +1,339 @@
 /**
- * @fileoverview CanvasRenderer.js
- * @description Motor Gráfico Modular do LabTech (DUA).
- * Rastreia e renderiza Isomorfismos Matemáticos na Reta Numérica e Frações.
- * VERSÃO 3.7.0: Correção de Contraste, Sincronia de Escala e Numerais Visíveis.
- * @package LabTech / UI
+ * @fileoverview uiManager.js
+ * @description Controlador central de interface, manipulação de DOM, acessibilidade (DUA) e sincronia de avatares.
+ * Adaptado para o pipeline assíncrono e imutável do ecossistema LabTech.
+ * @version 6.1.0
+ * @package LabTech / UI Architecture
  */
 
-import { AdaptiveAudioEngine } from '../core/ada/AdaptiveAudioEngine.js';
+import { G } from '../engine/gameState.js';
 
-export class CanvasRenderer {
-    /**
-     * @param {string} canvasId - O ID do elemento <canvas> no DOM.
-     */
-    constructor(canvasId) {
-        this.canvas = document.getElementById(canvasId);
-        if (!this.canvas) {
-            console.warn(`[CanvasRenderer] Canvas '${canvasId}' não localizado.`);
-            this.ctx = null; return;
-        }
-        this.ctx = this.canvas.getContext('2d');
-        // Paleta base do DUA
-        this.cores = { gold: '#d4af37', cyan: '#00eaff', subt: '#cccccc', danger: '#ff3333', axis: '#888888' };
-        this.isAnimating = false; // Cadeado de estado
-    }
+/**
+ * Recupera com segurança o elemento de áudio de fundo de forma preguiçosa (Lazy Loading).
+ * Evita falhas de inicialização caso o script carregue antes do DOM estar pronto.
+ * @private
+ * @returns {HTMLAudioElement|null}
+ */
+const _getBgmElement = () => document.getElementById("bgm");
 
-    _autoresize() {
-        if (!this.canvas) return;
-        const rect = this.canvas.getBoundingClientRect();
-        this.W = rect.width;
-        this.H = rect.height;
-        this.dpi = window.devicePixelRatio || 1;
+// Inicialização segura de vozes para o motor de acessibilidade/TTS
+if (typeof window !== 'undefined' && window.speechSynthesis) {
+    const carregarVozes = () => { window.speechSynthesis.getVoices(); };
+    window.speechSynthesis.onvoiceschanged = carregarVozes;
+    carregarVozes();
+}
 
-        const targetW = Math.round(this.W * this.dpi);
-        const targetH = Math.round(this.H * this.dpi);
-
-        if (this.canvas.width !== targetW || this.canvas.height !== targetH) {
-            this.canvas.width = targetW;
-            this.canvas.height = targetH;
-            this.ctx.setTransform(this.dpi, 0, 0, this.dpi, 0, 0);
-        }
-    }
-
-    _limpar() {
-        if (this.ctx) {
-            this.ctx.save();
-            this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.ctx.restore();
-        }
-    }
-
-    _mapX(value, minVal, maxVal, widthPadding) {
-        if (isNaN(value) || isNaN(minVal) || isNaN(maxVal)) return this.W / 2;
-        const range = maxVal - minVal;
-        const usableWidth = this.W - (widthPadding * 2);
-        if (range === 0 || usableWidth <= 0) return this.W / 2;
-        const pct = (value - minVal) / range;
-        return widthPadding + (pct * usableWidth);
-    }
-
-    renderCv(questao, offset, representacao) {
-        this._autoresize();
-        if (!this.ctx || !questao) return;
-        this._limpar();
-
-        let rep = representacao;
-        const strA = String(questao.a ?? questao.valorInicial ?? 0);
-        
-        if (String(questao.bloco) === '4' || strA.match(/[a-zA-Z]/)) {
-            rep = 'algebra';
-        } else if (rep === 'visual' || rep === undefined) {
-            const isFracao = questao.b !== undefined || String(questao.display).includes('/');
-            if (!isFracao) {
-                rep = 'reta';
-            }
-        }
-
+/**
+ * Executa a síntese de voz (TTS) da ADA de forma assíncrona com cancelamento de sobreposição.
+ * @param {string} texto - Mensagem instrucional ou feedback semiótico.
+ * @param {boolean} isCorrect - Determina o comportamento expressivo do avatar associado.
+ * @returns {Promise<void>}
+ */
+export function narrarContexto(texto, isCorrect = true) {
+    return new Promise((resolve) => {
         try {
-            if (rep === 'reta' || rep === 'abstrato') {
-                this._desenharRetaNumerica(questao, rep);
-            } else if (rep === 'visual') {
-                this._desenharFraçãoBarra(questao);
-            } else {
-                this._desenharFallback(questao);
+            if (!window.speechSynthesis || G.voz === false) {
+                resolve();
+                return;
             }
-        } catch(e) {
-            console.error("[CanvasRenderer] Erro contornado:", e);
-            this._desenharFallback(questao);
-        }
-    }
 
-    // Aceita min/max customizados para manter a mesma escala da animação
-    _desenharRetaNumerica(q, modo, customMin = null, customMax = null) {
-        const Y_RET = this.H * 0.7;
-        const PADDING_W = 60;
+            // Cancela qualquer fala residual imediatamente para manter o fluxo rítmico veloz
+            window.speechSynthesis.cancel();
 
-        const strA = String(q.a ?? q.valorInicial ?? 0);
-        const valA_Math = parseFloat(strA.replace(/[^\d.-]/g, '')) || 0;
-        const valRes_Math = parseFloat(String(q.res).replace(/[^\d.-]/g, '')) || 0;
-        const valAlt_Math = parseFloat(String(q.alternativas?.[0]?.valor).replace(/[^\d.-]/g, '')) || 0;
-        
-        // Sincroniza a escala visual com os limites informados
-        let valMin = customMin !== null ? customMin : ((String(q.display).includes('-') || strA.includes('-')) ? -10 : 0);
-        const valMax = customMax !== null ? customMax : Math.max(10, valA_Math, valRes_Math, valAlt_Math);
-        
-        // Linha Base do Eixo X (Agora platinada e visível)
-        this.ctx.beginPath(); 
-        this.ctx.strokeStyle = this.cores.axis; 
-        this.ctx.lineWidth = 3;
-        this.ctx.moveTo(PADDING_W, Y_RET); 
-        this.ctx.lineTo(this.W - PADDING_W, Y_RET); 
-        this.ctx.stroke();
-
-        // 🏹 SUPORTE DUA: Flecha fixa na ponta da reta (Visível)
-        const fimRetaX = this.W - PADDING_W;
-        this.ctx.beginPath();
-        this.ctx.fillStyle = this.cores.axis;
-        this.ctx.moveTo(fimRetaX, Y_RET);
-        this.ctx.lineTo(fimRetaX - 12, Y_RET - 7);
-        this.ctx.lineTo(fimRetaX - 12, Y_RET + 7);
-        this.ctx.fill();
-
-        // Ponto A Inicial
-        if (valA_Math !== 0) {
-            this.ctx.beginPath(); 
-            this.ctx.strokeStyle = this.cores.gold; 
-            this.ctx.lineWidth = (modo === 'reta' ? 6 : 2);
-            const x0 = this._mapX(0, valMin, valMax, PADDING_W);
-            const xA = this._mapX(valA_Math, valMin, valMax, PADDING_W);
-            this.ctx.moveTo(x0, Y_RET); 
-            this.ctx.lineTo(xA, Y_RET); 
-            this.ctx.stroke();
-        }
-
-        if (modo === 'reta') {
-            this._desenharTicksReta(valMin, valMax, PADDING_W, Y_RET);
-        }
-
-        this._desenharPonto(valA_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
-    }
-
-    _desenharTicksReta(min, max, padding, y) {
-        this.ctx.fillStyle = this.cores.subt; 
-        this.ctx.font = '13px Orbitron'; 
-        this.ctx.textAlign = 'center';
-        
-        const range = max - min;
-        let step = 1; 
-        if (range > 15) step = 5; 
-        if (range > 50) step = 10;
-        if (range > 100) step = 20;
-
-        for (let i = min; i <= max; i += step) {
-            const x = this._mapX(i, min, max, padding);
-            if (!isFinite(x)) continue;
+            const textoLimpo = texto.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ');
+            const utterance = new SpeechSynthesisUtterance(textoLimpo);
             
-            // Traço marcador (Tick)
-            this.ctx.fillStyle = this.cores.axis;
-            this.ctx.fillRect(x - 1, y - 6, 2, 12);
+            window.adaUtterance = utterance; // Previne coleta de lixo (Garbage Collection) do engine
+
+            utterance.lang = "pt-BR";
+            utterance.volume = 1;
+            utterance.rate = 1.15; // Velocidade otimizada para engajamento dinâmico
+
+            const vozes = window.speechSynthesis.getVoices();
+            let vozBR = vozes.find(v => v.lang.includes('pt') && (
+                v.name.includes('Maria') || 
+                v.name.includes('Luciana') || 
+                v.name.includes('Francisca') || 
+                v.name.includes('Vitória') ||
+                v.name.includes('Google') ||
+                v.name.includes('Female') ||
+                v.name.includes('Feminino')
+            ));
+
+            if (!vozBR) vozBR = vozes.find(v => v.lang.includes('pt'));
+            if (vozBR) utterance.voice = vozBR;
+
+            utterance.onstart = () => { 
+                const bgm = _getBgmElement();
+                if (bgm && G.musica) bgm.volume = 0.01; // Ducking automático de áudio
+                tocarAv(isCorrect ? "ok" : "no");
+            };
             
-            // Texto do Número
-            if (i === 0 || i === min || i === max || i % step === 0) {
-                this.ctx.fillStyle = this.cores.subt; 
-                this.ctx.fillText(i, x, y + 25); 
-            }
-        }
-    }
-
-    _desenharPonto(val, min, max, padding, y, cor, label) {
-        const x = this._mapX(val, min, max, padding);
-        if (!isFinite(x) || isNaN(x)) return;
-
-        this.ctx.beginPath();
-        this.ctx.fillStyle = '#000'; 
-        this.ctx.strokeStyle = cor; 
-        this.ctx.lineWidth = 3;
-        this.ctx.arc(x, y, 7, 0, Math.PI * 2);
-        this.ctx.fill(); 
-        this.ctx.stroke();
-
-        this.ctx.font = 'bold 12px Orbitron'; 
-        this.ctx.fillStyle = cor; 
-        this.ctx.textAlign = 'center';
-        this.ctx.fillText(label, x, y - 13);
-    }
-
-    _desenharFraçãoBarra(q) {
-        const barW = this.W * 0.8; const barH = 50;
-        const x = (this.W - barW) / 2; const y = (this.H - barH) / 2;
-        const num = parseFloat(String(q.a ?? q.valorInicial ?? 0).replace(/[^\d.-]/g, '')) || 0;
-        const den = parseFloat(String(q.b ?? q.fim ?? 1).replace(/[^\d.-]/g, '')) || 1;
-
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)'; 
-        this.ctx.fillRect(x, y, barW, barH);
-        
-        const ratio = Math.max(0, Math.min(1, num / Math.max(1, den)));
-        
-        this.ctx.fillStyle = this.cores.gold; 
-        this.ctx.fillRect(x, y, barW * ratio, barH);
-        this.ctx.strokeStyle = this.cores.cyan; 
-        this.ctx.lineWidth = 2; 
-        this.ctx.strokeRect(x, y, barW, barH);
-
-        this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.8)';
-        this.ctx.lineWidth = 3;
-        for (let i = 1; i < den; i++) {
-            this.ctx.beginPath(); 
-            this.ctx.moveTo(x + (i * barW/den), y); 
-            this.ctx.lineTo(x + (i * barW/den), y + barH); 
-            this.ctx.stroke();
-        }
-
-        this.ctx.font = 'bold 18px Orbitron'; 
-        this.ctx.fillStyle = this.cores.gold; 
-        this.ctx.textAlign = 'center';
-        this.ctx.fillText(`${num} / ${den}`, this.W / 2, y - 20);
-    }
-
-    _desenharFallback(q) {
-        this.ctx.fillStyle = this.cores.subt; 
-        this.ctx.textAlign = 'center'; 
-        this.ctx.font = '14px Nunito';
-        this.ctx.fillText("[ Representação Abstrata Requerida ]", this.W/2, this.H/2);
-    }
-
-    // =========================================================================
-    // ─── MÉTODOS DE ANIMAÇÃO DINÂMICA (MICRO-ARCOS E RETA SINCRONIZADA) ───
-    // =========================================================================
-
-    async animarArcos(questao, deslocamento, representacao) {
-        this._autoresize();
-        if (!this.ctx || this.isAnimating) return Promise.resolve();
-
-        let rep = representacao;
-        const strA = String(questao.a ?? questao.valorInicial ?? 0);
-        if (String(questao.bloco) === '4' || strA.match(/[a-zA-Z]/)) rep = 'algebra';
-        else if (rep === 'visual' || rep === undefined) {
-            const isFracao = questao.b !== undefined || String(questao.display).includes('/');
-            if (!isFracao) rep = 'reta';
-        }
-
-        if (rep === 'visual' || rep === 'algebra') return Promise.resolve();
-
-        this.isAnimating = true;
-
-        const valA_Math = parseFloat(strA.replace(/[^\d.-]/g, '')) || 0;
-        const valRes_Math = parseFloat(String(questao.res).replace(/[^\d.-]/g, '')) || 0;
-        const valAlt_Math = parseFloat(String(questao.alternativas?.[0]?.valor).replace(/[^\d.-]/g, '')) || 0;
-        const deslocFloat = parseFloat(String(deslocamento).replace(/[^\d.-]/g, '')) || 0;
-        const valDest_Math = valA_Math + deslocFloat;
-
-        // Limites consolidados para manter a mesma escala entre estático e animação
-        let valMin = (String(questao.display).includes('-') || strA.includes('-')) ? -10 : 0;
-        if (valDest_Math < valMin) valMin = valDest_Math - 2;
-        const valMax = Math.max(10, valA_Math, valRes_Math, valAlt_Math, valDest_Math);
-        
-        const PADDING_W = 60;
-        const Y_RET = this.H * 0.7;
-
-        const passos = Math.abs(deslocFloat);
-        const direcao = deslocFloat >= 0 ? 1 : -1;
-        const corVetor = deslocFloat >= 0 ? this.cores.cyan : this.cores.danger;
-
-        if (passos === 0 || isNaN(passos)) {
-            this.isAnimating = false;
-            return Promise.resolve();
-        }
-
-        const animarPassoUnitario = (valorAtual, valorProximo) => {
-            return new Promise((resolvePasso) => {
-                const startTime = performance.now();
-                const DURACAO_PASSO = 220; 
-
-                if (typeof AdaptiveAudioEngine !== 'undefined') {
-                    AdaptiveAudioEngine.sonarDeslocamento(direcao);
+            utterance.onend = () => { 
+                const bgm = _getBgmElement();
+                if (bgm && G.musica) bgm.volume = 0.07; 
+                resolve(); 
+            };
+            
+            utterance.onerror = (err) => { 
+                // Só avisa no console se for um erro real, ignora interrupções intencionais de Overlap
+                if (err.error !== 'interrupted' && err.error !== 'canceled') {
+                    console.warn("[uiManager] Falha no motor de voz:", err.error); 
                 }
+                resolve(); 
+            };
 
-                const startX = this._mapX(valorAtual, valMin, valMax, PADDING_W);
-                const endX = this._mapX(valorProximo, valMin, valMax, PADDING_W);
-                const distPx = Math.abs(endX - startX);
-                
-                const arcH = Math.max(20, distPx * 0.85);
-                const cpX = (startX + endX) / 2;
-                const cpY = Y_RET - arcH;
+            window.speechSynthesis.speak(utterance);
 
-                const tickAnim = (now) => {
-                    const elapsed = now - startTime;
-                    const p = Math.min(1, elapsed / DURACAO_PASSO);
-                    const pEase = p * (2 - p);
+        } catch (e) {
+            console.error("[uiManager] Falha catastrófica no subsistema de voz:", e);
+            resolve();
+        }
+    });
+}
 
-                    this._limpar();
-                    // Passa a escala customizada (valMin e valMax) para a reta de fundo não pular
-                    this._desenharRetaNumerica(questao, rep, valMin, valMax);
+/**
+ * Alterna o estado da trilha sonora de fundo e atualiza os indicadores visuais.
+ */
+export function toggleMusica() {
+    G.musica = !G.musica;
+    const btnTexto = document.getElementById("tsom");
+    if (btnTexto) btnTexto.textContent = G.musica ? "ON" : "OFF";
 
-                    this._desenharPonto(valA_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
-                    
-                    this.ctx.beginPath(); 
-                    this.ctx.lineWidth = 3; 
-                    this.ctx.strokeStyle = corVetor; 
-                    this.ctx.moveTo(startX, Y_RET);
+    const bgm = _getBgmElement();
+    if (!bgm) return;
 
-                    let lastX = startX;
-                    let lastY = Y_RET;
+    if (G.musica) {
+        bgm.volume = 0.07;
+        bgm.play().catch(() => console.log("[uiManager] Áudio retido aguardando gatilho de clique inicial."));
+    } else {
+        bgm.pause();
+    }
+}
 
-                    for (let i = 0.01; i <= pEase; i += 0.01) {
-                        const t = i;
-                        lastX = Math.pow(1-t, 2) * startX + 2 * (1-t) * t * cpX + Math.pow(t, 2) * endX;
-                        lastY = Math.pow(1-t, 2) * Y_RET + 2 * (1-t) * t * cpY + Math.pow(t, 2) * Y_RET;
-                        if(isFinite(lastX) && isFinite(lastY)) this.ctx.lineTo(lastX, lastY);
-                    }
-                    this.ctx.stroke();
+/**
+ * Alterna as permissões de narração ativa respeitando as diretrizes DUA.
+ */
+export function toggleVoz() {
+    G.voz = !G.voz;
+    const btnTexto = document.getElementById("tvoz");
+    if (btnTexto) btnTexto.textContent = G.voz ? "ON" : "OFF";
 
-                    if (pEase > 0.1) {
-                        const angle = Math.atan2(lastY - cpY, lastX - cpX);
-                        this.ctx.beginPath();
-                        this.ctx.fillStyle = corVetor;
-                        this.ctx.moveTo(lastX, lastY);
-                        this.ctx.lineTo(lastX - 10 * Math.cos(angle - Math.PI / 6), lastY - 10 * Math.sin(angle - Math.PI / 6));
-                        this.ctx.lineTo(lastX - 10 * Math.cos(angle + Math.PI / 6), lastY - 10 * Math.sin(angle + Math.PI / 6));
-                        this.ctx.fill();
-                    }
+    if (!G.voz && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+    }
+}
 
-                    if (p < 1) {
-                        requestAnimationFrame(tickAnim);
-                    } else {
-                        resolvePasso();
-                    }
-                };
-                requestAnimationFrame(tickAnim);
-            });
-        };
+/**
+ * Sincroniza e alterna a exibição de quadros de vídeo ou estáticos do avatar da ADA.
+ * @param {string} tipo - 'ok' (Sucesso) ou 'no' (Desvio/Intervenção).
+ */
+export function tocarAv(tipo) {
+    const imgAvatar = document.getElementById("av-img");
+    const videoAlvo = document.getElementById(tipo === "ok" ? "vid-ok" : "vid-no");
+    const videoOposto = document.getElementById(tipo === "ok" ? "vid-no" : "vid-ok");
 
-        for (let i = 0; i < passos; i++) {
-            const pontoAtual = valA_Math + (i * direcao);
-            const pontoProximo = pontoAtual + direcao;
-            await animarPassoUnitario(pontoAtual, pontoProximo);
+    if (!imgAvatar || !videoAlvo) return;
+
+    const reestabelecerAvatarEstatico = () => {
+        videoAlvo.classList.add("avh");
+        imgAvatar.classList.remove("avh");
+    };
+
+    // Ocultação estrita de camadas concorrentes para evitar Overlap fantasma
+    if (videoOposto) videoOposto.classList.add("avh");
+    imgAvatar.classList.add("avh");
+    
+    videoAlvo.classList.remove("avh");
+    videoAlvo.currentTime = 0;
+
+    videoAlvo.play()
+        .then(() => { videoAlvo.onended = reestabelecerAvatarEstatico; })
+        .catch(err => {
+            console.warn("[uiManager] Play de vídeo restrito pelo navegador:", err);
+            reestabelecerAvatarEstatico();
+        });
+}
+
+/**
+ * Sincroniza e atualiza os elementos do HUD superior e barras de integridade do reator.
+ * Adicionado: Transições suaves baseadas nos setters de gameState.
+ */
+export function updHUD() {
+    const barVida = document.getElementById("fv");
+    const barEnergia = document.getElementById("fen");
+
+    // Lida com a cor do núcleo baseada na integridade
+    if (barVida) {
+        // Usa o Getter blindado do gameState
+        const integridade = G.vida || 0; 
+        
+        barVida.style.width = `${integridade}%`;
+        
+        // Transições de Alerta Termal do Núcleo
+        if (integridade < 30) {
+            barVida.style.backgroundColor = "var(--neon-red, #ff3333)";
+            barVida.style.boxShadow = "0 0 10px rgba(255, 51, 51, 0.6)";
+        } else if (integridade < 60) {
+            barVida.style.backgroundColor = "#ffbb33";
+            barVida.style.boxShadow = "0 0 10px rgba(255, 187, 51, 0.4)";
+        } else {
+            barVida.style.backgroundColor = "var(--neon-cyan, #00eaff)";
+            barVida.style.boxShadow = "0 0 10px rgba(0, 234, 255, 0.4)";
+        }
+    }
+
+    if (barEnergia) barEnergia.style.width = `${G.energia || 100}%`;
+
+    const txtCombo = document.getElementById("tcb");
+    const txtNivel = document.getElementById("tnv");
+    
+    if (txtCombo) {
+        txtCombo.textContent = G.combo || 0;
+        // Efeito visual de recompensa se o combo for alto
+        if (G.combo > 2) {
+            txtCombo.style.color = "var(--choco-gold, #d4af37)";
+            txtCombo.style.textShadow = "0 0 5px var(--choco-gold, #d4af37)";
+        } else {
+            txtCombo.style.color = "inherit";
+            txtCombo.style.textShadow = "none";
+        }
+    }
+    
+    if (txtNivel) txtNivel.textContent = G.nivel || 1;
+}
+
+/**
+ * Abre janelas modais injetando classes de animação CSS e aciona builders dependentes.
+ * @param {string} id - ID do container modal no DOM.
+ */
+export function abrirM(id) {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+    modal.classList.add("show", "active");
+    
+    // Delegação: se abrir o painel de telemetria, renderiza o dashboard estatístico
+    if (id === 'mdash') gerarDashboard();
+}
+
+/**
+ * Fecha a janela modal especificada.
+ * @param {string} id - ID do container modal no DOM.
+ */
+export function fecharM(id) {
+    const modal = document.getElementById(id);
+    if (modal) modal.classList.remove("show", "active");
+}
+
+/**
+ * Dispara a tela de encerramento da sessão por colapso do reator cognitivo.
+ */
+export function exibirGameOver() {
+    const totalQuestoes = (G.acertos || 0) + (G.erros || 0);
+    const taxaSincronia = totalQuestoes > 0 ? Math.round((G.acertos / totalQuestoes) * 100) : 0;
+
+    const modalGameOver = document.getElementById("go");
+    const containerStatus = document.getElementById("go-st");
+
+    if (containerStatus) {
+        containerStatus.innerHTML = `
+            <strong>Acertos Consolidados:</strong> ${G.acertos || 0} <br>
+            <strong>Anomalias de Percurso:</strong> ${G.erros || 0} <br>
+            <strong>Taxa de Sincronia Lógica:</strong> ${taxaSincronia}%
+        `;
+    }
+
+    if (modalGameOver) {
+        modalGameOver.classList.add("show", "active");
+        modalGameOver.style.zIndex = "10000";
+    }
+
+    narrarContexto(`Alerta: Estabilidade do núcleo perdida. Taxa de sincronia calculada em ${taxaSincronia} por cento. Reinicie o terminal para calibração.`, false);
+}
+
+/**
+ * Exibe um alerta metacognitivo na tela do aluno, 
+ * promovendo a consciência sobre o próprio processo de aprendizagem.
+ * @param {string} mensagem - Insight gerado pelo MetacognitionEngine
+ */
+export function mostrarAvisoMetacognitivo(mensagem) {
+    // Verifica se já existe um aviso ativo para não sobrepor (Overlap control)
+    if (document.getElementById('meta-alert')) return;
+
+    const alertDiv = document.createElement('div');
+    alertDiv.id = 'meta-alert';
+    alertDiv.style.cssText = `
+        position: fixed; top: 20%; left: 50%; transform: translateX(-50%);
+        width: 80%; max-width: 500px;
+        background: rgba(0, 0, 0, 0.9);
+        border: 2px solid var(--neon-cyan, #00eaff);
+        color: white; padding: 20px; border-radius: 10px;
+        z-index: 99999; text-align: center; font-family: 'Orbitron', sans-serif;
+        box-shadow: 0 0 20px rgba(0, 234, 255, 0.5);
+    `;
+
+    alertDiv.innerHTML = `
+        <h3 style="color: var(--neon-cyan, #00eaff); margin-top:0; font-size: 14px;">🧠 INSIGHT COGNITIVO</h3>
+        <p style="font-family: 'Nunito', sans-serif; font-size: 14px; line-height: 1.5; color: #eee;">${mensagem}</p>
+        <button id="btn-meta-close" style="
+            background: transparent; border: 1px solid white; color: white;
+            padding: 5px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px;
+        ">Entendido</button>
+    `;
+
+    document.body.appendChild(alertDiv);
+
+    // Auto-remove após 8 segundos ou ao clicar
+    const fechar = () => { if(document.body.contains(alertDiv)) document.body.removeChild(alertDiv); };
+    document.getElementById('btn-meta-close').onclick = fechar;
+    setTimeout(fechar, 8000);
+}
+
+/**
+ * Alimenta e constrói o painel de telemetria curricular da BNCC para o painel do estudante.
+ * Nota: Painel docente especializado (Alt+P) é gerido isoladamente via DiagnosticEngine/LearningAnalytics.
+ */
+export function gerarDashboard() {
+    const containerDash = document.getElementById("dash-content");
+    if (!containerDash) return;
+
+    containerDash.innerHTML = "";
+    let possuiRegistros = false;
+    const historico = G.historico || {};
+
+    for (let habilidadeKey in historico) {
+        const metricaHab = historico[habilidadeKey];
+        const totalItens = (metricaHab.acertos || 0) + (metricaHab.erros_conceito || 0) + (metricaHab.erros_calculo || 0);
+        
+        if (totalItens === 0) continue;
+        possuiRegistros = true;
+
+        const precisaoPercentual = Math.round((metricaHab.acertos / totalItens) * 100);
+        let feedbackLayout = "";
+
+        if (metricaHab.erros_conceito > metricaHab.acertos) {
+            feedbackLayout = `<div class="alerta-sinal" style="color: var(--neon-red, #ff3333); margin-top:5px; font-weight:bold; font-size:11px;">⚠️ Bloqueio Conceitual: Demanda intervenção estrutural de base na ZDP.</div>`;
+        } else if (metricaHab.erros_calculo > 0) {
+            feedbackLayout = `<div class="alerta-calc" style="color: #ffbb33; margin-top:5px; font-weight:bold; font-size:11px;">📐 Desvio Operacional: Inconsistência de atenção aritmética/sintaxe.</div>`;
+        } else {
+            feedbackLayout = `<div class="alerta-ok" style="color: var(--neon-green, #00ff66); margin-top:5px; font-weight:bold; font-size:11px;">✅ Estrutura Cognitiva Estabilizada.</div>`;
         }
 
-        this._desenharPonto(valDest_Math, valMin, valMax, PADDING_W, Y_RET, corVetor, 'B');
-        this.isAnimating = false;
-        return Promise.resolve();
+        containerDash.innerHTML += `
+            <div class="dash-card" style="background: rgba(255,255,255,0.02); border-left: 3px solid var(--choco-gold); padding: 10px; margin-bottom: 10px; border-radius: 4px;">
+                <div class="dash-card-header" style="display:flex; justify-content:space-between; margin-bottom: 4px;">
+                    <span class="hab-code" style="color:var(--choco-gold); font-weight:bold; font-family: monospace;">${habilidadeKey}</span>
+                    <span class="hab-pct" style="color:var(--neon-cyan); font-weight:bold;">${precisaoPercentual}%</span>
+                </div>
+                <p class="hab-desc" style="font-size:11px; opacity:0.7; margin:4px 0;">${metricaHab.desc || "Mapeamento Curricular Ativo"}</p>
+                <div class="dash-bar" style="width:100%; height:6px; background:#111; border-radius:3px; overflow:hidden; margin-top: 6px;">
+                    <div class="dash-fill-ok" style="width:${precisaoPercentual}%; height:100%; background:var(--neon-green, #00ff66); transition: width 0.4s ease;"></div>
+                </div>
+                ${feedbackLayout}
+            </div>`;
+    }
+
+    if (!possuiRegistros) {
+        containerDash.innerHTML = "<p style='text-align:center; opacity:0.4; padding:30px; font-size:12px; font-family:monospace;'>Aguardando telemetria estável de campo para consolidação de relatórios...</p>";
     }
 }
