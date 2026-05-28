@@ -1,8 +1,8 @@
 /**
  * @fileoverview QuestionNormalizer.js
  * @description Camada de Governança (Governance Layer) do LabTech.
- * BLINDAGEM EVOLUÍDA: Sincronização de Chaves Legadas, Fallbacks Textuais e Mapeamento de Etiologia.
- * @version 2.1.0
+ * ADAPTADO PARA O BANCO DE 511 QUESTÕES (Mapeamento de Legados Dinâmico).
+ * @version 2.2.0
  * @package LabTech / Core ADA
  */
 
@@ -11,7 +11,7 @@ export class QuestionNormalizer {
 
     /**
      * Valida e normaliza o payload estrutural de uma questão matemática adaptativa.
-     * Mapeia atributos legados para o novo padrão exigido pelo ProfileEngine.
+     * Traduz o esquema do banco de 511 itens para as chaves nativas do motor.
      * @param {Object} rawQuestion - O JSON bruto da questão.
      * @returns {Object} JSON higienizado e padronizado.
      */
@@ -20,53 +20,71 @@ export class QuestionNormalizer {
             throw new Error("[Governance Error] Payload do Sensor Cognitivo está nulo ou indefinido.");
         }
 
-        const requiredFields = ['id', 'alternativas'];
-        
-        requiredFields.forEach(field => {
-            if (!rawQuestion[field]) {
-                throw new Error(`[Governance Error] Campo crítico ausente no Sensor Cognitivo ID ${rawQuestion.id || 'Desconhecido'}: ${field}`);
-            }
-        });
+        // Validação de segurança básica
+        if (!rawQuestion.id || !rawQuestion.alternativas) {
+            throw new Error(`[Governance Error] Estrutura corrompida no item ID: ${rawQuestion.id || 'Desconhecido'}`);
+        }
 
-        // Garantia expandida: varre todos os padrões possíveis de acerto oriundos do banco
-        const hasCorrect = rawQuestion.alternativas.some(alt => 
-            alt.tipo === 'acerto' || alt.tipo === 'correto' || alt.correta === true || alt.correto === true
-        );
+        // Mapeamento dinâmico de blocos/aulas
+        const blocoCalculado = rawQuestion.bloco || rawQuestion.aula || 1;
+
+        // Tradução semiótica do suporte visual do banco antigo para o CanvasRenderer
+        let representacaoSuportada = 'abstrato';
+        const supVisual = String(rawQuestion.suporteVisual || rawQuestion.representacao || '').toUpperCase();
         
-        if (!hasCorrect) {
-            console.warn(`[Governance Warning] A questão ${rawQuestion.id} não possui uma alternativa do tipo 'acerto'.`);
+        if (supVisual.includes('RETA') || supVisual.includes('LINEAL')) {
+            representacaoSuportada = 'reta';
+        } else if (supVisual.includes('BARRA') || supVisual.includes('FRA') || supVisual.includes('SIMBOLICO')) {
+            // VIEWPORT_SIMBOLICO ou itens de dinheiro/frações acionam o renderizador visual
+            representacaoSuportada = 'visual'; 
+        }
+
+        // Tradução dos estágios de Galperin com base nos tipos do banco
+        let estagioCalculado = 'INTERNA_PURA';
+        const tipoPedago = String(rawQuestion.tipoPedagogico || '').toUpperCase();
+        if (tipoPedago === 'RECOMPOSICAO' || representacaoSuportada === 'visual') {
+            estagioCalculado = 'MATERIALIZADA'; // Foco em manipulação de objetos/dinheiro
         }
 
         return {
             id: String(rawQuestion.id),
-            bncc: String(rawQuestion.bncc || rawQuestion.habilidade || 'GERAL'),
-            misconception_principal: String(rawQuestion.misconception_principal || 'NAO_MAPEADA'),
+            bloco: Number(blocoCalculado),
+            bncc: String(rawQuestion.bncc || 'GERAL'),
+            bncc_desc: String(rawQuestion.bncc_desc || 'Mapeamento Curricular Ativo'),
+            tipo: String(rawQuestion.tipo || 'aritmetica'),
+            dificuldade: Number(rawQuestion.dificuldade || 1),
             
-            display: rawQuestion.display?.text || rawQuestion.display || rawQuestion.texto || "Desafio sem enunciado explícito.",
-            representacao: rawQuestion.representacao || 'visual',
-            estagioGalperin: rawQuestion.estagioGalperin || 'INTERNA_PURA',
+            // Enunciado unificado
+            display: rawQuestion.display || rawQuestion.texto || "Desafio sem enunciado explícito.",
+            passo: rawQuestion.passo || "Excelente raciocínio lógico.",
+            dica: rawQuestion.dica || "Analise os detalhes com atenção.",
+            
+            representacao: representacaoSuportada,
+            estagioGalperin: estagioCalculado,
 
+            // Padronização e Blindagem Absoluta de Alternativas
             alternativas: rawQuestion.alternativas.map(alt => {
-                // Alinhamento absoluto com a validação do main.js
                 const isAcerto = alt.tipo === 'acerto' || alt.tipo === 'correto' || alt.correta === true || alt.correto === true;
                 
                 return {
-                    id_alternativa: String(alt.id_alternativa || alt.id || Math.random().toString(36).substring(2, 7)),
+                    id_alternativa: String(alt.id || Math.random().toString(36).substring(2, 7)),
+                    // Suporta tanto o seu formato "valor" quanto o formato "texto" do main
                     valor: String(alt.valor || alt.texto || alt.label || ""),
                     tipo: isAcerto ? 'acerto' : 'erro',
                     
-                    // Transforma 'etiologia' e 'erro' antigas em 'categoria' e 'misconception' nova
-                    categoria: alt.categoria || alt.etiologia || alt.erro || (isAcerto ? 'SUCESSO_TEORICO' : 'ERRO_GENERICO'),
-                    misconception: alt.erro || alt.misconception || alt.categoria || (isAcerto ? 'N/A' : 'ERRO_GENERICO'),
+                    // Fallbacks inteligentes de categorização de erro
+                    categoria: alt.categoria || (isAcerto ? 'SUCESSO_TEORICO' : 'calculo'),
+                    misconception: alt.erro || alt.misconception || (isAcerto ? 'N/A' : 'ERRO_GENERICO'),
                     
-                    diagnostico_cognitivo: alt.descricao || alt.diagnostico_cognitivo || 'Sem diagnóstico mapeado.',
+                    // Alimenta o DiagnosticEngine com as descrições ricas que você já escreveu
+                    diagnostico_cognitivo: alt.descricao || alt.diagnostico_cognitivo || (isAcerto ? 'Conceito aplicado com sucesso.' : 'Análise técnica em andamento.'),
                     peso_gravidade: Number(alt.peso || alt.peso_gravidade || (isAcerto ? 0 : 1))
                 };
             }),
             
             scaffolds_adaptativos: rawQuestion.scaffolds_adaptativos || {
-                VISUAL_SCHEMATIC: null,
-                VERBALIZATION: null,
+                VISUAL_SCHEMATIC: rawQuestion.dica || null,
+                VERBALIZATION: rawQuestion.passo || null,
                 ABSTRACT_SYMBOLIC: null
             },
             
