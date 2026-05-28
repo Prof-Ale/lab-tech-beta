@@ -215,7 +215,7 @@ export class CanvasRenderer {
 
     _desenharTicksReta(min, max, padding, y) {
         this.ctx.textAlign = 'center';
-        this.ctx.textBaseline = 'top';
+        this.ctx.textBaseline = 'middle';
 
         const range = max - min;
         let step = 1;
