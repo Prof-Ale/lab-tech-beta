@@ -2,7 +2,7 @@
  * @fileoverview CanvasRenderer.js
  * @description Motor Gráfico Modular do LabTech (DUA).
  * Rastreia e renderiza Isomorfismos Matemáticos na Reta Numérica e Frações.
- * VERSÃO 3.9.0: Glow Cognitivo, Anti-aliasing, Escala Relaxada e Rastro Semântico.
+ * VERSÃO 4.0.0: Inteligência Semântica, Ticks Hierárquicos e Física Pedagógica.
  * @package LabTech / UI
  */
 
@@ -19,7 +19,6 @@ export class CanvasRenderer {
             this.ctx = null; return;
         }
         this.ctx = this.canvas.getContext('2d');
-        // CIRURGIA 1: Grid mais sutil
         this.cores = {
             gold: '#d4af37',
             cyan: '#00eaff',
@@ -46,9 +45,10 @@ export class CanvasRenderer {
             this.canvas.width = targetW;
             this.canvas.height = targetH;
             
-            // CIRURGIA 5 E 2: Melhoria de DPI e Anti-Serrilhado
             this.ctx.setTransform(1, 0, 0, 1, 0, 0);
             this.ctx.scale(this.dpi, this.dpi);
+            
+            // Suavização Anti-serrilhado (Anti-aliasing visual)
             this.ctx.imageSmoothingEnabled = true;
             this.ctx.imageSmoothingQuality = 'high';
         }
@@ -72,7 +72,6 @@ export class CanvasRenderer {
         return widthPadding + (pct * usableWidth);
     }
 
-    // CIRURGIA 4: Range menos oscilante
     _calcularEscalaPedagogica(q, customMin = null, customMax = null) {
         const parseNumero = (v) => {
             const n = parseFloat(String(v ?? 0).replace(/[^\d.-]/g, ''));
@@ -115,6 +114,24 @@ export class CanvasRenderer {
         return { min, max };
     }
 
+    // =========================================================================
+    // ─── MOTOR DE INFERÊNCIA SEMÂNTICA (Detecção de Operação) ───
+    // =========================================================================
+    _detectarTipoOperacao(q) {
+        const texto = String(q.display || '').toLowerCase();
+
+        if (texto.includes('x') || texto.includes('*') || texto.includes('vezes') || texto.includes('cada')) {
+            return 'multiplicacao';
+        }
+        if (texto.includes('÷') || texto.includes('/') || texto.includes('divid') || texto.includes('metade')) {
+            return 'divisao';
+        }
+        if (texto.includes('-') || texto.includes('menos') || texto.includes('subtra')) {
+            return 'subtracao';
+        }
+        return 'soma';
+    }
+
     renderCv(questao, offset, representacao) {
         this._autoresize();
         if (!this.ctx || !questao) return;
@@ -154,11 +171,8 @@ export class CanvasRenderer {
         const valA_Math = parseFloat(strA.replace(/[^\d.-]/g, '')) || 0;
 
         const escala = this._calcularEscalaPedagogica(q, customMin, customMax);
-
         const valMin = escala.min;
         const valMax = escala.max;
-
-
 
         // EIXO PRINCIPAL
         this.ctx.beginPath();
@@ -169,21 +183,20 @@ export class CanvasRenderer {
         this.ctx.lineTo(this.W - PADDING_W, Y_RET);
         this.ctx.stroke();
 
-        // SETA
+        // SETA DIREITA
         const fimRetaX = this.W - PADDING_W;
         this.ctx.beginPath();
         this.ctx.fillStyle = this.cores.axis;
-
         this.ctx.moveTo(fimRetaX, Y_RET);
         this.ctx.lineTo(fimRetaX - 12, Y_RET - 7);
         this.ctx.lineTo(fimRetaX - 12, Y_RET + 7);
         this.ctx.fill();
 
-        // SEGMENTO INICIAL
+        // SEGMENTO INICIAL (Mais elegante: espessura 4 ao invés de 6)
         if (valA_Math !== 0) {
             this.ctx.beginPath();
             this.ctx.strokeStyle = this.cores.gold;
-            this.ctx.lineWidth = (modo === 'reta' ? 6 : 2);
+            this.ctx.lineWidth = (modo === 'reta' ? 4 : 2);
 
             const x0 = this._mapX(0, valMin, valMax, PADDING_W);
             const xA = this._mapX(valA_Math, valMin, valMax, PADDING_W);
@@ -197,15 +210,7 @@ export class CanvasRenderer {
             this._desenharTicksReta(valMin, valMax, PADDING_W, Y_RET);
         }
 
-        this._desenharPonto(
-            valA_Math,
-            valMin,
-            valMax,
-            PADDING_W,
-            Y_RET,
-            this.cores.gold,
-            'A'
-        );
+        this._desenharPonto(valA_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
     }
 
     _desenharTicksReta(min, max, padding, y) {
@@ -224,22 +229,35 @@ export class CanvasRenderer {
 
             if (!isFinite(x)) continue;
 
-            // TICK
-            this.ctx.beginPath();
-            this.ctx.strokeStyle = (i === 0) ? this.cores.gold : this.cores.axis;
-            this.ctx.lineWidth = (i === 0) ? 3 : 2;
+            const isZero = (i === 0);
+            const isMult5 = (i % 5 === 0);
 
-            this.ctx.moveTo(x, y - ((i === 0) ? 10 : 8));
-            this.ctx.lineTo(x, y + ((i === 0) ? 10 : 8));
+            // TICK HIERÁRQUICO (Forte para 0 e múltiplos de 5, suave para o resto)
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = isZero ? this.cores.gold : (isMult5 ? this.cores.axis : this.cores.axisSoft);
+            this.ctx.lineWidth = isZero ? 3 : (isMult5 ? 2 : 1);
+
+            const tickLen = isZero ? 10 : (isMult5 ? 8 : 5);
+            this.ctx.moveTo(x, y - tickLen);
+            this.ctx.lineTo(x, y + tickLen);
             this.ctx.stroke();
 
-            // LABEL
-            this.ctx.font = (i === 0) ? 'bold 16px Nunito' : 'bold 14px Nunito';
-            this.ctx.shadowBlur = (i === 0) ? 4 : 2;
-            this.ctx.shadowColor = (i === 0) ? this.cores.gold : '#000';
-            this.ctx.fillStyle = (i === 0) ? this.cores.gold : this.cores.subt;
-            this.ctx.fillText(String(i), x, y + 14);
-            this.ctx.shadowBlur = 0; // Reset obrigatório após o uso do shadowBlur
+            // LABELS HUMANIZADOS (Nunito)
+            if (isZero || isMult5 || step >= 5) {
+                this.ctx.font = isZero ? 'bold 15px Nunito' : 'bold 13px Nunito';
+                
+                if (isZero) {
+                    this.ctx.shadowBlur = 4;
+                    this.ctx.shadowColor = this.cores.gold;
+                    this.ctx.fillStyle = this.cores.gold;
+                } else {
+                    this.ctx.fillStyle = this.cores.subt;
+                    this.ctx.shadowBlur = 0; 
+                }
+                
+                this.ctx.fillText(String(i), x, y + 14);
+                this.ctx.shadowBlur = 0; 
+            }
         }
     }
 
@@ -253,20 +271,21 @@ export class CanvasRenderer {
         this.ctx.lineWidth = 3;
         this.ctx.arc(x, y, 7, 0, Math.PI * 2);
 
-        // CIRURGIA 3: Glow Cognitivo no Ponto
-        this.ctx.shadowBlur = 10;
+        // GLOW COGNITIVO REDUZIDO (Sensação pedagógica, menos "gamer")
+        this.ctx.shadowBlur = 6;
         this.ctx.shadowColor = cor;
 
         this.ctx.fill(); 
         this.ctx.stroke();
 
-        this.ctx.shadowBlur = 0; // Reset obrigatório
+        this.ctx.shadowBlur = 0; 
 
-        this.ctx.font = 'bold 12px Orbitron'; 
+        // FONTE HUMANIZADA
+        this.ctx.font = 'bold 13px Nunito'; 
         this.ctx.fillStyle = cor; 
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'alphabetic';
-        this.ctx.fillText(label, x, y - 13);
+        this.ctx.fillText(label, x, y - 15);
     }
 
     _desenharFraçãoBarra(q) {
@@ -295,7 +314,7 @@ export class CanvasRenderer {
             this.ctx.stroke();
         }
 
-        this.ctx.font = 'bold 18px Orbitron'; 
+        this.ctx.font = 'bold 18px Nunito'; 
         this.ctx.fillStyle = this.cores.gold; 
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'alphabetic';
@@ -331,7 +350,6 @@ export class CanvasRenderer {
         const deslocFloat = parseFloat(String(deslocamento).replace(/[^\d.-]/g, '')) || 0;
         const valDest_Math = valA_Math + deslocFloat;
 
-        // CIRURGIA 6: Ajuste crítico da escala na animação
         const escala = this._calcularEscalaPedagogica(
             questao,
             null,
@@ -344,14 +362,31 @@ export class CanvasRenderer {
         const PADDING_W = Math.max(50, this.W * 0.12);
         const Y_RET = this.H * 0.58;
 
-        const passos = Math.abs(deslocFloat);
-        const direcao = deslocFloat >= 0 ? 1 : -1;
-        const corVetor = deslocFloat >= 0 ? this.cores.cyan : this.cores.danger;
+        // ANÁLISE DE OPERAÇÃO PARA ANIMAÇÃO SEMÂNTICA
+        const operacao = this._detectarTipoOperacao(questao);
+        let direcao = deslocFloat >= 0 ? 1 : -1;
+        let tamanhoSalto = Math.abs(deslocFloat);
+        let qtdSaltos = 1;
 
-        if (passos === 0 || isNaN(passos)) {
+        if (operacao === 'multiplicacao') {
+            const texto = String(questao.display || '');
+            const numeros = texto.match(/\d+/g);
+            if (numeros && numeros.length >= 2) {
+                const n1 = parseInt(numeros[0]);
+                const n2 = parseInt(numeros[1]);
+                if (n1 * n2 === Math.abs(deslocFloat)) {
+                    qtdSaltos = n1;
+                    tamanhoSalto = n2;
+                }
+            }
+        }
+
+        if (qtdSaltos === 0 || isNaN(qtdSaltos) || tamanhoSalto === 0) {
             this.isAnimating = false;
             return Promise.resolve();
         }
+
+        const corVetor = deslocFloat >= 0 ? this.cores.cyan : this.cores.danger;
 
         const animarPassoUnitario = (valorAtual, valorProximo) => {
             return new Promise((resolvePasso) => {
@@ -366,7 +401,8 @@ export class CanvasRenderer {
                 const endX = this._mapX(valorProximo, valMin, valMax, PADDING_W);
                 const distPx = Math.abs(endX - startX);
                 
-                const arcH = Math.max(20, distPx * 0.85);
+                // ARCO FÍSICO PEDAGÓGICO (Mais achatado/natural, menos balístico)
+                const arcH = Math.max(18, distPx * 0.55); 
                 const cpX = (startX + endX) / 2;
                 const cpY = Y_RET - arcH;
 
@@ -378,38 +414,35 @@ export class CanvasRenderer {
                     this._limpar();
                     this._desenharRetaNumerica(questao, rep, valMin, valMax);
 
-                    // CIRURGIA 5: Rastro Semântico e Brilho Cognitivo 
+                    // EFEITOS DE RASTRO E PULSO
                     const globalStartX = this._mapX(valA_Math, valMin, valMax, PADDING_W);
-                    
-                    // 1. Acende a linha percorrida (Eixo)
                     let currentProgressX = Math.pow(1-pEase, 2) * startX + 2 * (1-pEase) * pEase * cpX + Math.pow(pEase, 2) * endX;
                     
+                    // Brilho na linha de avanço
                     this.ctx.beginPath();
                     this.ctx.strokeStyle = corVetor;
                     this.ctx.lineWidth = 4;
-                    this.ctx.shadowBlur = 12;
+                    this.ctx.shadowBlur = 8;
                     this.ctx.shadowColor = corVetor;
                     this.ctx.moveTo(globalStartX, Y_RET);
                     this.ctx.lineTo(currentProgressX, Y_RET);
                     this.ctx.stroke();
 
-                    // 2. Acende o tick atual fixo
+                    // Acende o tick atual fixo
                     this.ctx.fillStyle = corVetor;
                     this.ctx.fillRect(startX - 2, Y_RET - 8, 4, 16);
 
-                    // 3. Tick de destino ganha vida (pulsa)
+                    // Pulso orgânico no destino
                     const pulse = 12 + (Math.sin(p * Math.PI) * 6);
                     this.ctx.globalAlpha = 0.4 + (0.6 * pEase);
                     this.ctx.fillRect(endX - 2, Y_RET - (pulse/2), 4, pulse);
                     
-                    // Reset do Contexto
                     this.ctx.globalAlpha = 1.0;
                     this.ctx.shadowBlur = 0;
 
-                    // Redesenha ponto A por cima
                     this._desenharPonto(valA_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
                     
-                    // Desenha o arco
+                    // Desenho da curva
                     this.ctx.beginPath(); 
                     this.ctx.lineWidth = 3; 
                     this.ctx.strokeStyle = corVetor; 
@@ -426,7 +459,7 @@ export class CanvasRenderer {
                     }
                     this.ctx.stroke();
 
-                    // Seta dinâmica do vetor no arco
+                    // Seta dinâmica apontando a direção da progressão
                     if (pEase > 0.1) {
                         const angle = Math.atan2(lastY - cpY, lastX - cpX);
                         this.ctx.beginPath();
@@ -447,9 +480,9 @@ export class CanvasRenderer {
             });
         };
 
-        for (let i = 0; i < passos; i++) {
-            const pontoAtual = valA_Math + (i * direcao);
-            const pontoProximo = pontoAtual + direcao;
+        for (let i = 0; i < qtdSaltos; i++) {
+            const pontoAtual = valA_Math + (i * tamanhoSalto * direcao);
+            const pontoProximo = pontoAtual + (tamanhoSalto * direcao);
             await animarPassoUnitario(pontoAtual, pontoProximo);
         }
 
