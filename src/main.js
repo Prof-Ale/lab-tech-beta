@@ -27,6 +27,49 @@ window.addEventListener('vida-alterada', (e) => {
     if (barra) barra.style.width = `${e.detail.valor}%`;
 });
 
+// --- FUNÇÃO MOSTRAR SELETOR DE BLOCOS (A FUNÇÃO QUE FALTAVA) ---
+function mostrarSeletorBlocos() {
+    let nomeRaw = $('nome-cientista')?.value.trim() || 'Cientista Anonymous';
+    let turmaRaw = $('turma-cientista')?.value.trim() || '7ºA';
+
+    G.nome = nomeRaw.charAt(0).toUpperCase() + nomeRaw.slice(1).toLowerCase();
+    G.turma = turmaRaw.toUpperCase(); 
+    
+    // Recupera cache se existir
+    const cacheBNCC = localStorage.getItem(`labtech_h_${G.nome}_${G.turma}`);
+    if (cacheBNCC) {
+        try { G.historico = JSON.parse(decodeURIComponent(atob(cacheBNCC))); } 
+        catch (e) { G.historico = {}; }
+    } else {
+        G.historico = {};
+    }
+
+    const instProfile = new ProfileEngine();
+    G.perfilCognitivo = instProfile.inicializarEstudante(`${G.nome}_${G.turma}`);
+
+    // Inicializa o renderizador se ainda não estiver criado
+    if (!renderizadorGrafico) {
+        renderizadorGrafico = new CanvasRenderer('canvas-game'); 
+    }
+
+    // Navegação de telas
+    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+    $('block-selector')?.classList.remove('hidden');
+    $('ada-command-post')?.classList.add('active'); 
+
+    const msgBoasVindas = G.perfilCognitivo.itensRespondidos === 0
+        ? `Olá, ${G.nome}. Detectei que esta é sua primeira calibração no LabTech. Vamos iniciar o mapeamento.`
+        : `Bem-vindo de volta, ${G.nome}. Seu perfil foi restaurado.`;
+    
+    if (uiManager.narrarContexto) {
+        uiManager.narrarContexto(msgBoasVindas, true);
+    }
+}
+
+// --- FUNÇÃO PROCESSAR RESPOSTA (JÁ EXISTENTE NO SEU ARQUIVO) ---
+async function processarResposta(alt, q) {
+    // ... restante do seu código
+
 // --- FUNÇÃO PROCESSAR RESPOSTA (REFATORADA E SONIFICADA) ---
 async function processarResposta(alt, q) {
     if (G.respondeu) return;
