@@ -1,5 +1,5 @@
 /**
- * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.2 - ESTÁVEL)
+ * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.3 - ESTÁVEL)
  * CIRURGIA: Removida duplicação de funções e organizada ordem de execução.
  */
 
@@ -161,9 +161,20 @@ function renderQ(q) {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("🚀 [SISTEMA v15.3.2] Motor LabTech operante.");
+    console.log("🚀 [SISTEMA v1.5.3] Motor LabTech operante.");
+    
+    // 🛡️ 
+    try {
+        const banco = await AdaptiveSelector.carregarBancoDeQuestoes();
+        console.log(`✅ [SISTEMA] Cofre de questões carregado. Total: ${banco ? banco.length : 0} itens.`);
+    } catch (e) {
+        console.error("❌ [SISTEMA CRÍTICO] Falha ao carregar questoes.JSON:", e);
+        alert("Erro ao carregar o banco de questões. Verifique o caminho do arquivo JSON.");
+    }
+
     initDebugMode();
     
+    // Bindings de botões
     on('btn-acessar', mostrarSeletorBlocos);
     on('btn-prox', proximaQ);
     on('btn-musica', uiManager.toggleMusica);
@@ -176,6 +187,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     on('btn-cred', () => abrirM('mcred'));
     on('btn-dash', () => { atualizarDashboard(); abrirM('mdash'); });
     on('btn-reiniciar', () => { fecharM('go'); if (G.currentBlock) iniciarBloco(G.currentBlock); });
+    
    
     
    // --- O ESPELHO DO ALUNO ---
