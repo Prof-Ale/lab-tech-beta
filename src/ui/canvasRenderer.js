@@ -2,7 +2,7 @@
  * @fileoverview CanvasRenderer.js
  * @description Motor Gráfico Modular do LabTech (DUA).
  * Rastreia e renderiza Isomorfismos Matemáticos na Reta Numérica e Frações.
- * VERSÃO 4.1.0: Labels Corrigidos, Rastro Permanente e Divisão Semântica.
+ * VERSÃO 4.2.0: Espaçamento Corrigido, Microticks e Divisão como Segmentação.
  * @package LabTech / UI
  */
 
@@ -25,7 +25,7 @@ export class CanvasRenderer {
             subt: '#f2f2f2',
             danger: '#ff3333',
             axis: '#cfcfcf',
-            axisSoft: '#7a7a7a',
+            axisSoft: '#4a4a4a', // Escurecido levemente para os microticks não poluírem
             bgGrid: 'rgba(255,255,255,0.02)'
         };
         this.isAnimating = false;
@@ -164,7 +164,8 @@ export class CanvasRenderer {
     }
 
     _desenharRetaNumerica(q, modo, customMin = null, customMax = null) {
-        const Y_RET = this.H * 0.48;
+        // CIRURGIA: Elevação do eixo para dar respiro aos números embaixo
+        const Y_RET = this.H * 0.45; 
         const PADDING_W = Math.max(50, this.W * 0.12);
 
         const strA = String(q.a ?? q.valorInicial ?? 0);
@@ -215,7 +216,7 @@ export class CanvasRenderer {
 
     _desenharTicksReta(min, max, padding, y) {
         this.ctx.textAlign = 'center';
-        this.ctx.textBaseline = 'middle';
+        this.ctx.textBaseline = 'middle'; // CIRURGIA: Alinhamento melhor para os números
 
         const range = max - min;
         let step = 1;
@@ -223,6 +224,23 @@ export class CanvasRenderer {
         if (range > 20) step = 2;
         if (range > 40) step = 5;
         if (range > 80) step = 10;
+
+        // CIRURGIA: MICROTICKS SECUNDÁRIOS PARA PERCEPÇÃO ESPACIAL
+        if (step > 1) {
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = this.cores.axisSoft;
+            this.ctx.lineWidth = 1;
+            for (let i = min; i <= max; i++) {
+                if (i % step !== 0) {
+                    const x = this._mapX(i, min, max, padding);
+                    if (isFinite(x)) {
+                        this.ctx.moveTo(x, y - 3);
+                        this.ctx.lineTo(x, y + 3);
+                    }
+                }
+            }
+            this.ctx.stroke();
+        }
 
         for (let i = min; i <= max; i += step) {
             const x = this._mapX(i, min, max, padding);
@@ -235,7 +253,7 @@ export class CanvasRenderer {
             // TICK HIERÁRQUICO
             this.ctx.beginPath();
             this.ctx.strokeStyle = isZero ? this.cores.gold : (isMult5 ? this.cores.axis : this.cores.axisSoft);
-            this.ctx.lineWidth = isZero ? 3 : (isMult5 ? 2 : 1);
+            this.ctx.lineWidth = isZero ? 3 : (isMult5 ? 2 : 1.5);
 
             const tickLen = isZero ? 10 : (isMult5 ? 8 : 5);
             this.ctx.moveTo(x, y - tickLen);
@@ -253,11 +271,12 @@ export class CanvasRenderer {
                     this.ctx.shadowColor = this.cores.gold;
                     this.ctx.fillStyle = this.cores.gold;
                 } else {
-                    this.ctx.fillStyle = '#ffffff'; // Correção Crítica 2: Branco de alto contraste
+                    this.ctx.fillStyle = '#ffffff'; 
                     this.ctx.shadowBlur = 0; 
                 }
                 
-                this.ctx.fillText(String(i), x, y + 14);
+                // CIRURGIA: Descida calculada para o número + texto alinhado ao meio
+                this.ctx.fillText(String(i), x, y + 24);
                 this.ctx.shadowBlur = 0; 
             }
         }
@@ -285,7 +304,8 @@ export class CanvasRenderer {
         this.ctx.fillStyle = cor; 
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'alphabetic';
-        this.ctx.fillText(label, x, y - 15);
+        // Afastamento do label A/B para cima, para não colidir com o eixo e o ponto
+        this.ctx.fillText(label, x, y - 18);
     }
 
     _desenharFraçãoBarra(q) {
@@ -348,25 +368,17 @@ export class CanvasRenderer {
         const valA_Math = parseFloat(strA.replace(/[^\d.-]/g, '')) || 0;
         const valRes_Math = parseFloat(String(questao.res).replace(/[^\d.-]/g, '')) || 0;
         const deslocFloat = parseFloat(String(deslocamento).replace(/[^\d.-]/g, '')) || 0;
-        const valDest_Math = valA_Math + deslocFloat;
+        let valDest_Math = valA_Math + deslocFloat;
 
-        const escala = this._calcularEscalaPedagogica(
-            questao,
-            null,
-            Math.max(valDest_Math + 2, valRes_Math + 2)
-        );
-
-        const valMin = escala.min;
-        const valMax = escala.max;
-        
         const PADDING_W = Math.max(50, this.W * 0.12);
-        const Y_RET = this.H * 0.48;
+        const Y_RET = this.H * 0.45;
 
         // ANÁLISE DE OPERAÇÃO PARA ANIMAÇÃO SEMÂNTICA
         const operacao = this._detectarTipoOperacao(questao);
         let direcao = deslocFloat >= 0 ? 1 : -1;
         let tamanhoSalto = Math.abs(deslocFloat);
         let qtdSaltos = 1;
+        let startAncora = valA_Math;
 
         if (operacao === 'multiplicacao') {
             const texto = String(questao.display || '');
@@ -380,6 +392,7 @@ export class CanvasRenderer {
                 }
             }
         } else if (operacao === 'divisao') {
+            // CIRURGIA: Divisão como segmentação reversa
             const texto = String(questao.display || '');
             const numeros = texto.match(/\d+/g);
             if (numeros && numeros.length >= 2) {
@@ -388,7 +401,9 @@ export class CanvasRenderer {
                 if (n1 > 0 && n2 > 0 && n1 % n2 === 0) {
                     qtdSaltos = n1 / n2;
                     tamanhoSalto = n2;
-                    direcao = 1; // Salto progressivo agrupado para divisão semântica
+                    startAncora = n1; // A âncora começa do total (Dividendo)
+                    direcao = -1; // Volta em direção ao zero
+                    valDest_Math = 0; // O destino real da visualização da operação é 0
                 }
             }
         }
@@ -398,9 +413,18 @@ export class CanvasRenderer {
             return Promise.resolve();
         }
 
-        const corVetor = deslocFloat >= 0 ? this.cores.cyan : this.cores.danger;
+        // A escala baseia-se na verdadeira amplitude do raciocínio
+        const escala = this._calcularEscalaPedagogica(
+            questao,
+            Math.min(startAncora, valDest_Math) - 2,
+            Math.max(startAncora, valDest_Math) + 2
+        );
 
-        // Array para manter os rastros de toda a operação (Trilha Permanente)
+        const valMin = escala.min;
+        const valMax = escala.max;
+        const corVetor = direcao >= 0 ? this.cores.cyan : this.cores.danger;
+
+        // Trilha Permanente
         const arcosCompletos = [];
 
         const animarPassoUnitario = (valorAtual, valorProximo, isUltimoSalto) => {
@@ -429,10 +453,9 @@ export class CanvasRenderer {
                     this._desenharRetaNumerica(questao, rep, valMin, valMax);
 
                     // ==========================================
-                    // DESENHAR RASTRO PERMANENTE DOS SALTOS ANTERIORES
+                    // DESENHAR RASTRO PERMANENTE 
                     // ==========================================
                     for (let arco of arcosCompletos) {
-                        // Linha percorrida fixa
                         this.ctx.beginPath();
                         this.ctx.strokeStyle = arco.corVetor;
                         this.ctx.lineWidth = 4;
@@ -443,12 +466,10 @@ export class CanvasRenderer {
                         this.ctx.stroke();
                         this.ctx.shadowBlur = 0;
 
-                        // Ticks iluminados permanentes
                         this.ctx.fillStyle = arco.corVetor;
                         this.ctx.fillRect(arco.sX - 2, Y_RET - 8, 4, 16);
                         this.ctx.fillRect(arco.eX - 2, Y_RET - 8, 4, 16);
 
-                        // Arco concluído
                         this.ctx.beginPath(); 
                         this.ctx.lineWidth = 3; 
                         this.ctx.strokeStyle = arco.corVetor; 
@@ -456,7 +477,6 @@ export class CanvasRenderer {
                         this.ctx.quadraticCurveTo(arco.cX, arco.cY, arco.eX, Y_RET);
                         this.ctx.stroke();
 
-                        // Seta concluída
                         const angle = Math.atan2(Y_RET - arco.cY, arco.eX - arco.cX);
                         this.ctx.beginPath();
                         this.ctx.fillStyle = arco.corVetor;
@@ -467,11 +487,9 @@ export class CanvasRenderer {
                     }
 
                     // ==========================================
-                    // ANIMAÇÃO DO PASSO ATUAL (BRILHO TEMPORÁRIO)
+                    // ANIMAÇÃO DO PASSO ATUAL 
                     // ==========================================
-                    const globalStartX = this._mapX(valA_Math, valMin, valMax, PADDING_W);
-                    
-                    // Progressão Linear Matemática Consertada
+                    const globalStartX = this._mapX(startAncora, valMin, valMax, PADDING_W);
                     let currentProgressX = startX + ((endX - startX) * pEase);
                     
                     this.ctx.beginPath();
@@ -483,13 +501,11 @@ export class CanvasRenderer {
                     this.ctx.lineTo(currentProgressX, Y_RET);
                     this.ctx.stroke();
 
-                    // Acende o tick atual
                     this.ctx.fillStyle = corVetor;
                     this.ctx.fillRect(startX - 2, Y_RET - 8, 4, 16);
 
-                    // Pulso no destino (Tick Especial de Chegada)
                     let pulse = 12 + (Math.sin(p * Math.PI) * 6);
-                    if (isUltimoSalto && p === 1) pulse = 18; // Snap final (cresce e ilumina no final absoluto)
+                    if (isUltimoSalto && p === 1) pulse = 18; 
 
                     this.ctx.globalAlpha = 0.4 + (0.6 * pEase);
                     this.ctx.fillRect(endX - 2, Y_RET - (pulse/2), 4, pulse);
@@ -497,7 +513,7 @@ export class CanvasRenderer {
                     this.ctx.globalAlpha = 1.0;
                     this.ctx.shadowBlur = 0;
 
-                    this._desenharPonto(valA_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
+                    this._desenharPonto(startAncora, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
                     
                     this.ctx.beginPath(); 
                     this.ctx.lineWidth = 3; 
@@ -515,7 +531,6 @@ export class CanvasRenderer {
                     }
                     this.ctx.stroke();
 
-                    // Seta dinâmica do vetor
                     if (pEase > 0.1) {
                         const angle = Math.atan2(lastY - cpY, lastX - cpX);
                         this.ctx.beginPath();
@@ -529,7 +544,6 @@ export class CanvasRenderer {
                     if (p < 1) {
                         requestAnimationFrame(tickAnim);
                     } else {
-                        // Consolida o arco na trilha permanente
                         arcosCompletos.push({
                             sX: startX, eX: endX, cX: cpX, cY: cpY, corVetor
                         });
@@ -541,13 +555,13 @@ export class CanvasRenderer {
         };
 
         for (let i = 0; i < qtdSaltos; i++) {
-            const pontoAtual = valA_Math + (i * tamanhoSalto * direcao);
+            const pontoAtual = startAncora + (i * tamanhoSalto * direcao);
             const pontoProximo = pontoAtual + (tamanhoSalto * direcao);
             const isUltimo = i === (qtdSaltos - 1);
             await animarPassoUnitario(pontoAtual, pontoProximo, isUltimo);
         }
 
-        // Desenha Ponto Final (B)
+        // Desenha Ponto Final com a Label 'B'
         this._desenharPonto(valDest_Math, valMin, valMax, PADDING_W, Y_RET, corVetor, 'B');
         this.isAnimating = false;
         return Promise.resolve();
