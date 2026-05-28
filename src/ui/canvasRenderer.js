@@ -148,7 +148,7 @@ export class CanvasRenderer {
 
     _desenharRetaNumerica(q, modo, customMin = null, customMax = null) {
         const Y_RET = this.H * 0.58;
-        const PADDING_W = 60;
+        const PADDING_W = Math.max(50, this.W * 0.12);
 
         const strA = String(q.a ?? q.valorInicial ?? 0);
         const valA_Math = parseFloat(strA.replace(/[^\d.-]/g, '')) || 0;
@@ -158,17 +158,7 @@ export class CanvasRenderer {
         const valMin = escala.min;
         const valMax = escala.max;
 
-        // GRID SUAVE
-        this.ctx.strokeStyle = this.cores.bgGrid;
-        this.ctx.lineWidth = 1;
 
-        for (let i = valMin; i <= valMax; i++) {
-            const gx = this._mapX(i, valMin, valMax, PADDING_W);
-            this.ctx.beginPath();
-            this.ctx.moveTo(gx, Y_RET - 35);
-            this.ctx.lineTo(gx, Y_RET + 35);
-            this.ctx.stroke();
-        }
 
         // EIXO PRINCIPAL
         this.ctx.beginPath();
@@ -236,17 +226,20 @@ export class CanvasRenderer {
 
             // TICK
             this.ctx.beginPath();
-            this.ctx.strokeStyle = this.cores.axis;
-            this.ctx.lineWidth = 2;
+            this.ctx.strokeStyle = (i === 0) ? this.cores.gold : this.cores.axis;
+            this.ctx.lineWidth = (i === 0) ? 3 : 2;
 
-            this.ctx.moveTo(x, y - 8);
-            this.ctx.lineTo(x, y + 8);
+            this.ctx.moveTo(x, y - ((i === 0) ? 10 : 8));
+            this.ctx.lineTo(x, y + ((i === 0) ? 10 : 8));
             this.ctx.stroke();
 
             // LABEL
-            this.ctx.font = 'bold 13px Arial';
-            this.ctx.fillStyle = this.cores.subt;
+            this.ctx.font = (i === 0) ? 'bold 16px Nunito' : 'bold 14px Nunito';
+            this.ctx.shadowBlur = (i === 0) ? 4 : 2;
+            this.ctx.shadowColor = (i === 0) ? this.cores.gold : '#000';
+            this.ctx.fillStyle = (i === 0) ? this.cores.gold : this.cores.subt;
             this.ctx.fillText(String(i), x, y + 14);
+            this.ctx.shadowBlur = 0; // Reset obrigatório após o uso do shadowBlur
         }
     }
 
@@ -348,7 +341,7 @@ export class CanvasRenderer {
         const valMin = escala.min;
         const valMax = escala.max;
         
-        const PADDING_W = 60;
+        const PADDING_W = Math.max(50, this.W * 0.12);
         const Y_RET = this.H * 0.58;
 
         const passos = Math.abs(deslocFloat);
