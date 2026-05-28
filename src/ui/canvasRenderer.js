@@ -2,7 +2,7 @@
  * @fileoverview CanvasRenderer.js
  * @description Motor Gráfico Modular do LabTech (DUA).
  * Rastreia e renderiza Isomorfismos Matemáticos na Reta Numérica e Frações.
- * VERSÃO 3.8.0: Cirurgia Controlada (Escala Pedagógica, DPI, Contraste).
+ * VERSÃO 3.9.0: Glow Cognitivo, Anti-aliasing, Escala Relaxada e Rastro Semântico.
  * @package LabTech / UI
  */
 
@@ -19,6 +19,7 @@ export class CanvasRenderer {
             this.ctx = null; return;
         }
         this.ctx = this.canvas.getContext('2d');
+        // CIRURGIA 1: Grid mais sutil
         this.cores = {
             gold: '#d4af37',
             cyan: '#00eaff',
@@ -26,9 +27,9 @@ export class CanvasRenderer {
             danger: '#ff3333',
             axis: '#cfcfcf',
             axisSoft: '#7a7a7a',
-            bgGrid: 'rgba(255,255,255,0.04)'
+            bgGrid: 'rgba(255,255,255,0.02)'
         };
-        this.isAnimating = false; // Cadeado de estado
+        this.isAnimating = false;
     }
 
     _autoresize() {
@@ -44,8 +45,12 @@ export class CanvasRenderer {
         if (this.canvas.width !== targetW || this.canvas.height !== targetH) {
             this.canvas.width = targetW;
             this.canvas.height = targetH;
+            
+            // CIRURGIA 5 E 2: Melhoria de DPI e Anti-Serrilhado
             this.ctx.setTransform(1, 0, 0, 1, 0, 0);
             this.ctx.scale(this.dpi, this.dpi);
+            this.ctx.imageSmoothingEnabled = true;
+            this.ctx.imageSmoothingQuality = 'high';
         }
     }
 
@@ -67,6 +72,7 @@ export class CanvasRenderer {
         return widthPadding + (pct * usableWidth);
     }
 
+    // CIRURGIA 4: Range menos oscilante
     _calcularEscalaPedagogica(q, customMin = null, customMax = null) {
         const parseNumero = (v) => {
             const n = parseFloat(String(v ?? 0).replace(/[^\d.-]/g, ''));
@@ -102,8 +108,8 @@ export class CanvasRenderer {
             max += 2;
         }
 
-        if ((max - min) < 8) {
-            max += 4;
+        if ((max - min) < 12) {
+            max += 6;
         }
 
         return { min, max };
@@ -253,13 +259,20 @@ export class CanvasRenderer {
         this.ctx.strokeStyle = cor; 
         this.ctx.lineWidth = 3;
         this.ctx.arc(x, y, 7, 0, Math.PI * 2);
+
+        // CIRURGIA 3: Glow Cognitivo no Ponto
+        this.ctx.shadowBlur = 10;
+        this.ctx.shadowColor = cor;
+
         this.ctx.fill(); 
         this.ctx.stroke();
+
+        this.ctx.shadowBlur = 0; // Reset obrigatório
 
         this.ctx.font = 'bold 12px Orbitron'; 
         this.ctx.fillStyle = cor; 
         this.ctx.textAlign = 'center';
-        this.ctx.textBaseline = 'alphabetic'; // Reseta baseline para o rótulo
+        this.ctx.textBaseline = 'alphabetic';
         this.ctx.fillText(label, x, y - 13);
     }
 
@@ -325,6 +338,7 @@ export class CanvasRenderer {
         const deslocFloat = parseFloat(String(deslocamento).replace(/[^\d.-]/g, '')) || 0;
         const valDest_Math = valA_Math + deslocFloat;
 
+        // CIRURGIA 6: Ajuste crítico da escala na animação
         const escala = this._calcularEscalaPedagogica(
             questao,
             null,
@@ -371,8 +385,38 @@ export class CanvasRenderer {
                     this._limpar();
                     this._desenharRetaNumerica(questao, rep, valMin, valMax);
 
+                    // CIRURGIA 5: Rastro Semântico e Brilho Cognitivo 
+                    const globalStartX = this._mapX(valA_Math, valMin, valMax, PADDING_W);
+                    
+                    // 1. Acende a linha percorrida (Eixo)
+                    let currentProgressX = Math.pow(1-pEase, 2) * startX + 2 * (1-pEase) * pEase * cpX + Math.pow(pEase, 2) * endX;
+                    
+                    this.ctx.beginPath();
+                    this.ctx.strokeStyle = corVetor;
+                    this.ctx.lineWidth = 4;
+                    this.ctx.shadowBlur = 12;
+                    this.ctx.shadowColor = corVetor;
+                    this.ctx.moveTo(globalStartX, Y_RET);
+                    this.ctx.lineTo(currentProgressX, Y_RET);
+                    this.ctx.stroke();
+
+                    // 2. Acende o tick atual fixo
+                    this.ctx.fillStyle = corVetor;
+                    this.ctx.fillRect(startX - 2, Y_RET - 8, 4, 16);
+
+                    // 3. Tick de destino ganha vida (pulsa)
+                    const pulse = 12 + (Math.sin(p * Math.PI) * 6);
+                    this.ctx.globalAlpha = 0.4 + (0.6 * pEase);
+                    this.ctx.fillRect(endX - 2, Y_RET - (pulse/2), 4, pulse);
+                    
+                    // Reset do Contexto
+                    this.ctx.globalAlpha = 1.0;
+                    this.ctx.shadowBlur = 0;
+
+                    // Redesenha ponto A por cima
                     this._desenharPonto(valA_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
                     
+                    // Desenha o arco
                     this.ctx.beginPath(); 
                     this.ctx.lineWidth = 3; 
                     this.ctx.strokeStyle = corVetor; 
@@ -389,6 +433,7 @@ export class CanvasRenderer {
                     }
                     this.ctx.stroke();
 
+                    // Seta dinâmica do vetor no arco
                     if (pEase > 0.1) {
                         const angle = Math.atan2(lastY - cpY, lastX - cpX);
                         this.ctx.beginPath();
