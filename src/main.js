@@ -377,4 +377,4 @@ if (yearSpan) {
 
     console.log("🛠️ [SISTEMA] Interfaces vinculadas. Pronto para a calibração.");
 });
-}
+
