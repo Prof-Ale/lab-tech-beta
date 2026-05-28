@@ -2,7 +2,7 @@
  * @fileoverview CanvasRenderer.js
  * @description Motor Gráfico Modular do LabTech (DUA).
  * Rastreia e renderiza Isomorfismos Matemáticos na Reta Numérica e Frações.
- * EVOLUÇÃO V3.5.0: Vetorização Direcional (Setas) e Sincronia Multissensorial (Áudio).
+ * VERSÃO 3.6.0: Micro-Arcos Unitários Encadeados, Vetorização Dinâmica e Seta na Reta.
  * @package LabTech / UI
  */
 
@@ -115,16 +115,33 @@ export class CanvasRenderer {
         
         const valMax = Math.max(10, valA_Math, valRes_Math, valAlt_Math);
         
-        // Linha Base
-        this.ctx.beginPath(); this.ctx.strokeStyle = '#222'; this.ctx.lineWidth = 4;
-        this.ctx.moveTo(PADDING_W, Y_RET); this.ctx.lineTo(this.W - PADDING_W, Y_RET); this.ctx.stroke();
+        // Linha Base do Eixo X
+        this.ctx.beginPath(); 
+        this.ctx.strokeStyle = '#222'; 
+        this.ctx.lineWidth = 4;
+        this.ctx.moveTo(PADDING_W, Y_RET); 
+        this.ctx.lineTo(this.W - PADDING_W, Y_RET); 
+        this.ctx.stroke();
+
+        // 🏹 SUPORTE DUA: Flecha fixa na ponta da reta (Indica sentido positivo infinito)
+        const fimRetaX = this.W - PADDING_W;
+        this.ctx.beginPath();
+        this.ctx.fillStyle = '#222';
+        this.ctx.moveTo(fimRetaX, Y_RET);
+        this.ctx.lineTo(fimRetaX - 10, Y_RET - 6);
+        this.ctx.lineTo(fimRetaX - 10, Y_RET + 6);
+        this.ctx.fill();
 
         // Linha de Preenchimento Inicial (Ouro)
         if (valA_Math !== 0) {
-            this.ctx.beginPath(); this.ctx.strokeStyle = this.cores.gold; this.ctx.lineWidth = (modo === 'reta' ? 6 : 2);
+            this.ctx.beginPath(); 
+            this.ctx.strokeStyle = this.cores.gold; 
+            this.ctx.lineWidth = (modo === 'reta' ? 6 : 2);
             const x0 = this._mapX(0, valMin, valMax, PADDING_W);
             const xA = this._mapX(valA_Math, valMin, valMax, PADDING_W);
-            this.ctx.moveTo(x0, Y_RET); this.ctx.lineTo(xA, Y_RET); this.ctx.stroke();
+            this.ctx.moveTo(x0, Y_RET); 
+            this.ctx.lineTo(xA, Y_RET); 
+            this.ctx.stroke();
         }
 
         if (modo === 'reta') {
@@ -135,7 +152,9 @@ export class CanvasRenderer {
     }
 
     _desenharTicksReta(min, max, padding, y) {
-        this.ctx.fillStyle = '#444'; this.ctx.font = '12px monospace'; this.ctx.textAlign = 'center';
+        this.ctx.fillStyle = '#444'; 
+        this.ctx.font = '12px monospace'; 
+        this.ctx.textAlign = 'center';
         const range = max - min;
         let step = 1; if (range > 20) step = 5; if (range > 100) step = 10;
 
@@ -145,7 +164,9 @@ export class CanvasRenderer {
             
             this.ctx.fillRect(x, y - 5, 1, 10);
             if (i === 0 || i === min || i === max || i % step === 0) {
-                this.ctx.fillStyle = this.cores.subt; this.ctx.fillText(i, x, y + 25); this.ctx.fillStyle = '#444';
+                this.ctx.fillStyle = this.cores.subt; 
+                this.ctx.fillText(i, x, y + 25); 
+                this.ctx.fillStyle = '#444';
             }
         }
     }
@@ -155,9 +176,12 @@ export class CanvasRenderer {
         if (!isFinite(x) || isNaN(x)) return;
 
         this.ctx.beginPath();
-        this.ctx.fillStyle = '#111'; this.ctx.strokeStyle = cor; this.ctx.lineWidth = 3;
+        this.ctx.fillStyle = '#111'; 
+        this.ctx.strokeStyle = cor; 
+        this.ctx.lineWidth = 3;
         this.ctx.arc(x, y, 8, 0, Math.PI * 2);
-        this.ctx.fill(); this.ctx.stroke();
+        this.ctx.fill(); 
+        this.ctx.stroke();
 
         this.ctx.font = 'bold 12px Orbitron'; 
         this.ctx.fillStyle = cor; 
@@ -171,34 +195,41 @@ export class CanvasRenderer {
         const num = parseFloat(String(q.a ?? q.valorInicial ?? 0).replace(/[^\d.-]/g, '')) || 0;
         const den = parseFloat(String(q.b ?? q.fim ?? 1).replace(/[^\d.-]/g, '')) || 1;
 
-        // Fundo da barra
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)'; this.ctx.fillRect(x, y, barW, barH);
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)'; 
+        this.ctx.fillRect(x, y, barW, barH);
         
         const ratio = Math.max(0, Math.min(1, num / Math.max(1, den)));
         
-        // Preenchimento da fração
-        this.ctx.fillStyle = this.cores.gold; this.ctx.fillRect(x, y, barW * ratio, barH);
-        this.ctx.strokeStyle = this.cores.cyan; this.ctx.lineWidth = 2; this.ctx.strokeRect(x, y, barW, barH);
+        this.ctx.fillStyle = this.cores.gold; 
+        this.ctx.fillRect(x, y, barW * ratio, barH);
+        this.ctx.strokeStyle = this.cores.cyan; 
+        this.ctx.lineWidth = 2; 
+        this.ctx.strokeRect(x, y, barW, barH);
 
-        // Divisórias do Denominador
         this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.8)';
         this.ctx.lineWidth = 3;
         for (let i = 1; i < den; i++) {
-            this.ctx.beginPath(); this.ctx.moveTo(x + (i * barW/den), y); this.ctx.lineTo(x + (i * barW/den), y + barH); this.ctx.stroke();
+            this.ctx.beginPath(); 
+            this.ctx.moveTo(x + (i * barW/den), y); 
+            this.ctx.lineTo(x + (i * barW/den), y + barH); 
+            this.ctx.stroke();
         }
 
-        // Texto explicativo em cima
-        this.ctx.font = 'bold 18px Orbitron'; this.ctx.fillStyle = this.cores.gold; this.ctx.textAlign = 'center';
+        this.ctx.font = 'bold 18px Orbitron'; 
+        this.ctx.fillStyle = this.cores.gold; 
+        this.ctx.textAlign = 'center';
         this.ctx.fillText(`${num} / ${den}`, this.W / 2, y - 20);
     }
 
     _desenharFallback(q) {
-        this.ctx.fillStyle = this.cores.subt; this.ctx.textAlign = 'center'; this.ctx.font = '14px Nunito';
+        this.ctx.fillStyle = this.cores.subt; 
+        this.ctx.textAlign = 'center'; 
+        this.ctx.font = '14px Nunito';
         this.ctx.fillText("[ Representação Abstrata Requerida ]", this.W/2, this.H/2);
     }
 
     // =========================================================================
-    // ─── MÉTODOS DE ANIMAÇÃO DINÂMICA (animarArcos) ───
+    // ─── MÉTODOS DE ANIMAÇÃO DINÂMICA (MICRO-ARCOS PASSO A PASSO) ───
     // =========================================================================
 
     async animarArcos(questao, deslocamento, representacao) {
@@ -216,12 +247,6 @@ export class CanvasRenderer {
         if (rep === 'visual' || rep === 'algebra') return Promise.resolve();
 
         this.isAnimating = true;
-        const startTime = performance.now();
-
-        // 🎵 Dispara o som cinestésico do vetor exatamente no início do desenho
-        if (typeof AdaptiveAudioEngine !== 'undefined') {
-            AdaptiveAudioEngine.sonarDeslocamento(parseFloat(deslocamento));
-        }
 
         let valMin = 0; if (String(questao.display).includes('-') || strA.includes('-')) valMin = -10;
         const valA_Math = parseFloat(strA.replace(/[^\d.-]/g, '')) || 0;
@@ -234,34 +259,51 @@ export class CanvasRenderer {
         const PADDING_W = 60;
         const Y_RET = this.H * 0.7;
 
-        const startX = this._mapX(valA_Math, valMin, valMax, PADDING_W);
-        const endX = this._mapX(valDest_Math, valMin, valMax, PADDING_W);
-
-        if (!isFinite(startX) || !isFinite(endX)) { this.isAnimating = false; return Promise.resolve(); }
-
-        const distPx = Math.abs(endX - startX);
-        const arcH = Math.min(this.H * 0.6, Math.max(30, distPx * 0.8));
-        const cpX = (startX + endX) / 2;
-        const cpY = Y_RET - arcH;
-
-        // Determina a cor do vetor (Avanço = Ciano, Recuo = Vermelho/Alerta)
+        // Estruturação dos passos com base no deslocamento escalar da questão
+        const passos = Math.abs(deslocFloat);
+        const direcao = deslocFloat >= 0 ? 1 : -1;
         const corVetor = deslocFloat >= 0 ? this.cores.cyan : this.cores.danger;
 
-        return new Promise((resolve) => {
-            const DURACAO = 600;
+        if (passos === 0 || isNaN(passos)) {
+            this.isAnimating = false;
+            return Promise.resolve();
+        }
 
-            const anim = (now) => {
-                const elapsed = now - startTime;
-                const p = Math.min(1, elapsed / DURACAO);
-                const pEase = p * (2 - p);
+        // Sub-rotina de renderização atômica (Isomorfismo de passo unitário)
+        const animarPassoUnitario = (valorAtual, valorProximo) => {
+            return new Promise((resolvePasso) => {
+                const startTime = performance.now();
+                const DURACAO_PASSO = 220; // Ritmo veloz e responsivo por bloco de rampa
 
-                try {
+                // Sincronia Auditiva Cinestésica a cada gatilho unitário
+                if (typeof AdaptiveAudioEngine !== 'undefined') {
+                    AdaptiveAudioEngine.sonarDeslocamento(direcao);
+                }
+
+                const startX = this._mapX(valorAtual, valMin, valMax, PADDING_W);
+                const endX = this._mapX(valorProximo, valMin, valMax, PADDING_W);
+                const distPx = Math.abs(endX - startX);
+                
+                const arcH = Math.max(22, distPx * 0.85);
+                const cpX = (startX + endX) / 2;
+                const cpY = Y_RET - arcH;
+
+                const tickAnim = (now) => {
+                    const elapsed = now - startTime;
+                    const p = Math.min(1, elapsed / DURACAO_PASSO);
+                    const pEase = p * (2 - p);
+
                     this._limpar();
                     this._desenharRetaNumerica(questao, rep);
 
-                    // Desenho da curva do salto
-                    this.ctx.beginPath(); this.ctx.lineWidth = 3; this.ctx.strokeStyle = corVetor; this.ctx.moveTo(startX, Y_RET);
+                    // Mantém fixo o marcador de origem do vetor principal
+                    this._desenharPonto(valA_Math, valMin, valMax, PADDING_W, Y_RET, this.cores.gold, 'A');
                     
+                    this.ctx.beginPath(); 
+                    this.ctx.lineWidth = 3; 
+                    this.ctx.strokeStyle = corVetor; 
+                    this.ctx.moveTo(startX, Y_RET);
+
                     let lastX = startX;
                     let lastY = Y_RET;
 
@@ -273,30 +315,37 @@ export class CanvasRenderer {
                     }
                     this.ctx.stroke();
 
-                    // Desenha a seta direcional (Vetor) na ponta da curva
+                    // Vetorização Direcional Atômica (Seta do micro-arco em movimento)
                     if (pEase > 0.1) {
                         const angle = Math.atan2(lastY - cpY, lastX - cpX);
                         this.ctx.beginPath();
                         this.ctx.fillStyle = corVetor;
                         this.ctx.moveTo(lastX, lastY);
-                        this.ctx.lineTo(lastX - 12 * Math.cos(angle - Math.PI / 6), lastY - 12 * Math.sin(angle - Math.PI / 6));
-                        this.ctx.lineTo(lastX - 12 * Math.cos(angle + Math.PI / 6), lastY - 12 * Math.sin(angle + Math.PI / 6));
+                        this.ctx.lineTo(lastX - 10 * Math.cos(angle - Math.PI / 6), lastY - 10 * Math.sin(angle - Math.PI / 6));
+                        this.ctx.lineTo(lastX - 10 * Math.cos(angle + Math.PI / 6), lastY - 10 * Math.sin(angle + Math.PI / 6));
                         this.ctx.fill();
                     }
 
-                } catch (e) {
-                    console.error(e);
-                }
+                    if (p < 1) {
+                        requestAnimationFrame(tickAnim);
+                    } else {
+                        resolvePasso();
+                    }
+                };
+                requestAnimationFrame(tickAnim);
+            });
+        };
 
-                if (p < 1) {
-                    requestAnimationFrame(anim);
-                } else {
-                    this._desenharPonto(valDest_Math, valMin, valMax, PADDING_W, Y_RET, corVetor, 'B');
-                    this.isAnimating = false; 
-                    resolve(); 
-                }
-            };
-            requestAnimationFrame(anim);
-        });
+        // Laço assíncrono sequencial imutável (Formação por Etapas)
+        for (let i = 0; i < passos; i++) {
+            const pontoAtual = valA_Math + (i * direcao);
+            const pontoProximo = pontoAtual + direcao;
+            await animarPassoUnitario(pontoAtual, pontoProximo);
+        }
+
+        // Consolidação estrutural do ponto de destino final (B)
+        this._desenharPonto(valDest_Math, valMin, valMax, PADDING_W, Y_RET, corVetor, 'B');
+        this.isAnimating = false;
+        return Promise.resolve();
     }
 }
