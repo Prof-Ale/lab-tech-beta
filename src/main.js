@@ -4,14 +4,14 @@
  */
 
 import { G } from './engine/gameState.js';
-import { initDebugMode } from './src/engine/debugMode.js';
-import { ProfileEngine } from './src/core/ada/ProfileEngine.js';
-import { MetaCognition } from './src/core/ada/MetaCognitionEngine.js'; // Módulo integrado
-import { AdaptiveSelector } from './src/core/ada/AdaptiveSelector.js';
-import { LearningAnalytics } from './src/core/ada/LearningAnalytics.js';
-import { AdaptiveAudioEngine } from './src/core/ada/AdaptiveAudioEngine.js';
-import { CanvasRenderer } from './src/ui/canvasRenderer.js';
-import * as uiManager from './src/ui/uiManager.js';
+import { initDebugMode } from './engine/debugMode.js';
+import { ProfileEngine } from './core/ada/ProfileEngine.js';
+import { MetaCognition } from './core/ada/MetaCognitionEngine.js'; // Módulo integrado
+import { AdaptiveSelector } from './core/ada/AdaptiveSelector.js';
+import { LearningAnalytics } from './core/ada/LearningAnalytics.js';
+import { AdaptiveAudioEngine } from './core/ada/AdaptiveAudioEngine.js';
+import { CanvasRenderer } from './ui/canvasRenderer.js';
+import * as uiManager from './ui/uiManager.js';
 
 // --- HELPERS E BINDINGS ---
 const $ = (id) => document.getElementById(id);
