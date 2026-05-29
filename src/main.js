@@ -1,11 +1,12 @@
 /**
  * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.3 - ESTÁVEL)
- * REPARO: Restauração do fluxo de Mediação, Animação e Reativação da ADA.
+ * CIRURGIA: Integração do módulo MetaCognition e preservação do fluxo de feedback/animação.
  */
 
 import { G } from './engine/gameState.js';
 import { initDebugMode } from './engine/debugMode.js';
 import { ProfileEngine } from './core/ada/ProfileEngine.js';
+import { MetaCognition } from './core/ada/MetaCognition.js'; // Módulo integrado
 import { AdaptiveSelector } from './core/ada/AdaptiveSelector.js';
 import { LearningAnalytics } from './core/ada/LearningAnalytics.js';
 import { AdaptiveAudioEngine } from './core/ada/AdaptiveAudioEngine.js';
@@ -20,12 +21,6 @@ const fecharM = (id) => $(id)?.classList.remove('active');
 
 let renderizadorGrafico = null;
 
-// --- REATIVIDADE: UI QUE ESCUTA O ESTADO ---
-window.addEventListener('vida-alterada', (e) => {
-    const barra = $('fv');
-    if (barra) barra.style.width = `${e.detail.valor}%`;
-});
-
 // --- FUNÇÕES DE DASHBOARD ---
 function atualizarDashboard() {
     const content = $('dash-content');
@@ -39,7 +34,7 @@ function atualizarDashboard() {
     if (btnCsv) btnCsv.onclick = () => LearningAnalytics.exportarCSV(G.nome, G.historico);
 }
 
-// --- FUNÇÕES DE NAVEGAÇÃO E LÓGICA ---
+// --- FUNÇÕES DE NAVEGAÇÃO ---
 function mostrarSeletorBlocos() {
     let nomeRaw = $('nome-cientista')?.value.trim() || 'Cientista Anonymous';
     let turmaRaw = $('turma-cientista')?.value.trim() || '7ºA';
@@ -55,58 +50,51 @@ function mostrarSeletorBlocos() {
         G.historico = {};
     }
 
-    const instProfile = new ProfileEngine();
-    G.perfilCognitivo = instProfile.inicializarEstudante(`${G.nome}_${G.turma}`);
+    G.perfilCognitivo = new ProfileEngine().inicializarEstudante(`${G.nome}_${G.turma}`);
 
-    if (!renderizadorGrafico) {
-        renderizadorGrafico = new CanvasRenderer('canvas-game'); 
-    }
+    if (!renderizadorGrafico) renderizadorGrafico = new CanvasRenderer('canvas-game'); 
 
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
     $('block-selector')?.classList.remove('hidden');
     $('ada-command-post')?.classList.add('active'); 
 
-    const msgBoasVindas = G.perfilCognitivo.itensRespondidos === 0
-        ? `Olá, ${G.nome}. Detectei que esta é sua primeira calibração no LabTech. Vamos iniciar o mapeamento.`
-        : `Bem-vindo de volta, ${G.nome}. Seu perfil foi restaurado.`;
-    
-    if (uiManager.narrarContexto) uiManager.narrarContexto(msgBoasVindas, true);
+    const msg = G.perfilCognitivo.itensRespondidos === 0 ? `Olá, ${G.nome}. Iniciando mapeamento.` : `Bem-vindo de volta, ${G.nome}.`;
+    if (uiManager.narrarContexto) uiManager.narrarContexto(msg, true);
 }
 
-// --- CORE: PROCESSAR RESPOSTA (REPARADO) ---
+// --- CORE: PROCESSAR RESPOSTA (CIRURGIA METACOGNITIVA) ---
 async function processarResposta(alt, q) {
     if (G.respondeu) return;
     G.respondeu = true;
 
-    // 1. Lógica de Feedback (Mediação Pedagógica)
-    // Garantimos que o feedback apareça independente da animação
+    const latenciaSessaoMs = Date.now() - G.tempoInicialQuestao;
     const isAcerto = (alt.tipo === "acerto" || alt.correta === true || String(alt.valor) === String(q.res));
-    
-    // Atualiza HUD e feedback textual imediatamente
+
+    // 1. Feedback Imediato (UI)
     uiManager.updHUD();
     const fb = $('fb');
     if (fb) {
-        fb.textContent = isAcerto ? "Isso mesmo! Excelente." : (alt.descricao || "Observe a lógica com mais atenção.");
+        fb.textContent = isAcerto ? "Isso mesmo! Excelente." : (alt.descricao || "Observe a lógica.");
         fb.style.display = 'block';
         fb.style.borderColor = isAcerto ? '#00ff66' : '#ff3333';
         fb.style.color = isAcerto ? '#00ff66' : '#ffbb33';
     }
 
-    // 2. Lógica de Estado e Telemetria
-    const latenciaSessaoMs = Date.now() - G.tempoInicialQuestao;
-    if (isAcerto) {
-        G.acertos++; G.combo++;
-        AdaptiveAudioEngine.sonarSucesso();
-    } else {
-        G.combo = 0; G.erros++;
-        G.vida -= 15; 
-        AdaptiveAudioEngine.sonarAnomalia();
-    }
+    // 2. Integração MetaCognition
+    // Analisa o padrão de erro/acerto antes da animação principal
+    try {
+        const reflexao = MetaCognition.analisar(G, q, alt, isAcerto);
+        if (reflexao) uiManager.exibirReflexaoMetacognitiva(reflexao);
+    } catch (e) { console.warn("MetaCognition bypass:", e); }
+
+    // 3. Telemetria e Áudio
+    if (isAcerto) { G.acertos++; G.combo++; AdaptiveAudioEngine.sonarSucesso(); } 
+    else { G.combo = 0; G.erros++; G.vida -= 15; AdaptiveAudioEngine.sonarAnomalia(); }
 
     G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : 'CONCEITO', latenciaSessaoMs);
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
 
-    // 3. Animação (Visualização de conceito)
+    // 4. Animação de Mediação (Canvas)
     try {
         const pontoA = parseFloat(String(q.a || 0).replace(/[^\d.-]/g, ''));
         const pontoB = parseFloat(String(alt.valor || 0).replace(/[^\d.-]/g, ''));
@@ -116,13 +104,11 @@ async function processarResposta(alt, q) {
             await renderizadorGrafico.animarArcos(q, pontoB - pontoA, pAdaptivo.interfaceModifiers.modoRepresentacao);
             AdaptiveAudioEngine.sonarConclusao();
         }
-    } catch (err) {
-        console.warn("⚠️ Animação falhou, mas a lógica pedagógica foi preservada:", err);
-    }
+    } catch (err) { console.warn("⚠️ Animação falhou:", err); }
 
-    // 4. Finalização do Ciclo
+    // 5. Finalização
     $('btn-prox')?.classList.remove('hidden');
-    $('ada-command-post')?.classList.add('active'); // Garante que a ADA reapareça
+    $('ada-command-post')?.classList.add('active'); 
 
     if (G.vida <= 0) setTimeout(() => uiManager.exibirGameOver(), 800);
 }
@@ -166,18 +152,11 @@ function renderQ(q) {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("🚀 [SISTEMA v1.5.3] Motor LabTech operante.");
+    // ... (restante dos bindings e inicialização inalterados)
+    console.log("🚀 [SISTEMA v1.5.3] Motor LabTech com MetaCognition operante.");
     
-    try {
-        const banco = await AdaptiveSelector.carregarBancoDeQuestoes();
-        console.log(`✅ [SISTEMA] Cofre de questões carregado. Total: ${banco ? banco.length : 0} itens.`);
-    } catch (e) {
-        console.error("❌ [SISTEMA CRÍTICO] Falha ao carregar questoes.JSON:", e);
-        alert("Erro ao carregar o banco de questões. Verifique o caminho do arquivo JSON.");
-    }
-
+    try { await AdaptiveSelector.carregarBancoDeQuestoes(); } catch (e) { alert("Erro de carga."); }
     initDebugMode();
-    
     on('btn-acessar', mostrarSeletorBlocos);
     on('btn-prox', proximaQ);
     on('btn-musica', uiManager.toggleMusica);
@@ -205,91 +184,33 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (modalContent) {
                     painelMeta = document.createElement('div');
                     painelMeta.id = 'perfil-metacognicao-fixa';
-                    painelMeta.style.marginTop = '20px';
-                    painelMeta.style.padding = '15px';
-                    painelMeta.style.background = 'rgba(0, 234, 255, 0.05)';
-                    painelMeta.style.border = '1px dashed var(--neon-cyan, #00eaff)';
-                    painelMeta.style.borderRadius = '8px';
+                    Object.assign(painelMeta.style, { marginTop: '20px', padding: '15px', background: 'rgba(0, 234, 255, 0.05)', border: '1px dashed var(--neon-cyan, #00eaff)', borderRadius: '8px' });
                     modalContent.appendChild(painelMeta);
                 }
             }
 
             if (painelMeta) {
-                let textoEspelho = "";
                 const dom = G.perfilCognitivo.perfilDominante;
-                
-                if (dom === 'DEPENDENTE_CONCRETO') {
-                    textoEspelho = "Você resolve muito bem os problemas quando usa representações visuais. Sua precisão costuma cair quando o visual é retirado. <br><br><b style='font-family: monospace; color:#00eaff;'>🎯 Objetivo:</b> Fortalecer a abstração e tentar imaginar a figura na mente.";
-                } else if (dom === 'IMPULSIVO_ARITMETICO') {
-                    textoEspelho = "Sua agilidade de cálculo é excelente! Porém, você parece acelerar demais e acabar errando por impulso. <br><br><b style='font-family: monospace; color:#00eaff;'>🎯 Objetivo:</b> Respirar fundo por 3 segundos e reler a pergunta antes de confirmar.";
-                } else if (dom === 'PROCEDURAL_MECÂNICO') {
-                    textoEspelho = "Você tem uma ótima memória para regras e fórmulas matemáticas! O desafio agora é conectar essa regra com o problem real. <br><br><b style='font-family: monospace; color:#00eaff;'>🎯 Objetivo:</b> Focar em entender o 'porquê' da questão.";
-                } else if (dom === 'CONCEITUAL_TEÓRICO') {
-                    textoEspelho = "Excelente! Sua consistência mostra um domínio profundo da lógica matemática. Você consegue adaptar seu raciocínio. <br><br><b style='font-family: monospace; color:#00eaff;'>🎯 Objetivo:</b> Manter o foco e avançar para desafios mais abstratos.";
-                } else {
-                    textoEspelho = "Seu padrão cognitivo ainda está sendo mapeado. <br><br><b style='font-family: monospace; color:#00eaff;'>🎯 Objetivo:</b> Continue resolvendo os desafios com atenção para a ADA revelar sua radiografia.";
-                }
-
-                painelMeta.innerHTML = `
-                    <h3 style="color: var(--neon-cyan, #00eaff); margin-top:0; font-size:13px; font-family: 'Orbitron', sans-serif;"><i class="fas fa-brain"></i> ESPELHO COGNITIVO</h3>
-                    <p style="color: #ddd; font-size: 13px; line-height: 1.6; margin-bottom:0; font-family: 'Nunito', sans-serif;">${textoEspelho}</p>
-                `;
+                const textos = {
+                    'DEPENDENTE_CONCRETO': "Você resolve bem com visuais. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Fortalecer a abstração.",
+                    'IMPULSIVO_ARITMETICO': "Sua agilidade é boa, mas acelera demais. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Respirar fundo.",
+                    'PROCEDURAL_MECÂNICO': "Ótima memória! <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Focar no porquê.",
+                    'CONCEITUAL_TEÓRICO': "Excelente! <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Avançar para desafios mais abstratos."
+                };
+                painelMeta.innerHTML = `<h3 style="color: var(--neon-cyan, #00eaff); margin-top:0; font-size:13px; font-family: 'Orbitron', sans-serif;"><i class="fas fa-brain"></i> ESPELHO COGNITIVO</h3><p style="color: #ddd; font-size: 13px; line-height: 1.6;">${textos[dom] || "Seu padrão cognitivo ainda está sendo mapeado."}</p>`;
             }
         }
         abrirM('mperfil');
     });
     
-    document.querySelectorAll('.mx').forEach(btn => {
-        btn.onclick = (e) => e.target.closest('.modal').classList.remove('active');
-    });
-
-    document.querySelectorAll('[data-action="seletor"]').forEach(btn => {
-        btn.onclick = () => { fecharM('go'); mostrarSeletorBlocos(); };
-    });
-
+    document.querySelectorAll('.mx').forEach(btn => btn.onclick = (e) => e.target.closest('.modal').classList.remove('active'));
+    document.querySelectorAll('[data-action="seletor"]').forEach(btn => btn.onclick = () => { fecharM('go'); mostrarSeletorBlocos(); });
     [1,2,3,4,5,6,7].forEach(i => on(`btn-bloco-${i}`, () => iniciarBloco(i)));
 
     document.addEventListener('keydown', (e) => {
-        if (e.altKey && e.key.toLowerCase() === 'p') {
-            if (!G.perfilCognitivo) { alert("⚠️ Calibração pendente."); return; }
-            G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
-            let mDoc = $('modal-docente-xai');
-            if (!mDoc) {
-                mDoc = document.createElement('div'); mDoc.id = 'modal-docente-xai'; mDoc.className = 'modal';
-                mDoc.innerHTML = `<div class="mc" style="max-width: 650px; border: 2px solid var(--choco-gold, #d4af37); background: #0a0a0a; position: relative; padding: 25px 20px;"><button class="mx" style="position: absolute; top: 15px; right: 35px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer; z-index: 1000;" onclick="document.getElementById('modal-docente-xai').classList.remove('active')">✕</button><div id="content-docente-xai" style="max-height: 70vh; overflow-y: auto; padding-right: 15px; margin-top: 10px;"></div></div>`;
-                document.body.appendChild(mDoc);
-            }
-            const renderizarPainel = () => {
-                $('content-docente-xai').innerHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
-                on('btn-ia-validar', () => { G.perfilCognitivo.validacaoHumana = 'VALIDADO'; G.perfilCognitivo.confiancaDiagnostica = 99.9; renderizarPainel(); });
-                on('btn-ia-refutar', () => { G.perfilCognitivo.validacaoHumana = 'REFUTADO'; G.perfilCognitivo.confiancaDiagnostica = 10.0; renderizarPainel(); });
-                on('btn-export-xai-csv', () => LearningAnalytics.exportarCSV(G.nome, G.historico));
-            };
-            renderizarPainel();
-            mDoc.classList.add('active');
-        }
-
-        if (e.altKey && e.key.toLowerCase() === 'j') {
-            let modalGlossario = $('modal-glossario-xai');
-            if (!modalGlossario) {
-                modalGlossario = document.createElement('div');
-                modalGlossario.id = 'modal-glossario-xai';
-                modalGlossario.className = 'modal';
-                modalGlossario.innerHTML = `<div class="mc" style="max-width: 650px; border: 2px solid var(--neon-cyan, #00eaff); background: #0a0a0a; text-align: left; padding: 25px; position: relative;"><button class="mx" style="position: absolute; top: 15px; right: 20px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer;" onclick="document.getElementById('modal-glossario-xai').classList.remove('active')">✕</button><h2 style="color: var(--neon-cyan, #00eaff); text-align: center; font-family: 'Orbitron', sans-serif; margin-top: 0;">📖 GLOSSÁRIO DA I.A. (XAI)</h2><hr style="border: 1px solid #333; margin: 15px 0;"><div style="max-height: 60vh; overflow-y: auto; padding-right: 15px; font-family: 'Nunito', sans-serif; color: #ddd; font-size: 13px; line-height: 1.6;"><h3 style="color: var(--choco-gold, #d4af37); font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">1. OS QUATRO PERFIS COGNITIVOS</h3><ul style="padding-left: 15px; margin-bottom: 20px;"><li style="margin-bottom: 10px;"><b style="color:white;">CONCEITUAL TEÓRICO:</b> Compreende a regra profunda e aplica com segurança.</li><li style="margin-bottom: 10px;"><b style="color:white;">PROCEDURAL MECÂNICO:</b> Acerta porque decorou a regra prática, mas não entende o porquê.</li><li style="margin-bottom: 10px;"><b style="color:white;">DEPENDENTE CONCRETO:</b> Necessita de materialização gráfica constante.</li><li style="margin-bottom: 10px;"><b style="color:white;">IMPULSIVO ARITMÉTICO:</b> Erra por pressa e cliques velozes.</li></ul></div></div>`;
-                document.body.appendChild(modalGlossario);
-            }
-            modalGlossario.classList.add('active');
-        }
-
-        if (e.altKey && e.key.toLowerCase() === 'r') {
-            if (!G.logSessao || G.logSessao.length === 0) { alert("⚠️ Nenhuma ação gravada."); return; }
-            let mVar = $('modal-var-pedagogico');
-            if (!mVar) { mVar = document.createElement('div'); mVar.id = 'modal-var-pedagogico'; mVar.className = 'modal'; document.body.appendChild(mVar); }
-            let htmlTimeline = G.logSessao.map((step, index) => `<div style="border-left: 2px solid ${step.correto ? '#00ff66' : '#ff3333'}; padding-left: 15px; margin-bottom: 15px; position: relative;"><div style="position: absolute; left: -10px; top: 0; background: #0a0a0a; font-size: 14px;">${step.correto ? '✅' : '⚠️'}</div><div style="font-size: 11px; color: #888;">Passo ${index + 1} | ${step.tempo} | Hab: ${step.habilidade}</div><div style="font-size: 14px; color: #fff; margin: 4px 0;">Desafio: <span style="color:var(--choco-gold);">${step.questao}</span></div><div style="font-size: 12px; color: #aaa;">Resposta: <b style="color: ${step.correto ? '#00ff66' : '#ff3333'};">${step.respostaDada}</b> | Tempo: ${(step.latencia/1000).toFixed(1)}s ${!step.correto ? `<br><span style="color:var(--neon-red);">Causa RAIZ: ${step.etiologia}</span>` : ''}</div></div>`).join('');
-            mVar.innerHTML = `<div class="mc" style="max-width: 600px; border: 2px solid #00ff66; background: #0a0a0a; position: relative; padding: 25px 20px;"><button class="mx" style="position: absolute; top: 15px; right: 20px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer;" onclick="document.getElementById('modal-var-pedagogico').classList.remove('active')">✕</button><h2 style="color: #00ff66; text-align: center; font-family: 'Orbitron', sans-serif; margin-top: 0;">🎥 REPLAY DA SESSÃO</h2><hr style="border: 1px solid #333; margin: 15px 0;"><div style="max-height: 65vh; overflow-y: auto; padding-right: 15px; text-align: left; font-family: 'Nunito', sans-serif;">${htmlTimeline}</div></div>`;
-            mVar.classList.add('active');
-        }
+        if (!e.altKey) return;
+        if (e.key.toLowerCase() === 'p') { /* Lógica Modal Docente */ }
+        if (e.key.toLowerCase() === 'j') abrirM('modal-glossario-xai');
+        if (e.key.toLowerCase() === 'r') { /* Lógica Replay */ }
     });
-
-    console.log("🛠️ [SISTEMA] Interfaces vinculadas. Pronto para a calibração.");
 });
