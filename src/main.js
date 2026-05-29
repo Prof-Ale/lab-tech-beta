@@ -1,12 +1,12 @@
 /**
  * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.3 - ESTÁVEL)
- * CIRURGIA: Integração do módulo MetaCognition e preservação do fluxo de feedback/animação.
+ * CIRURGIA: Integração do módulo MetacognitionEngine e restauração do fluxo de feedback/ADA/animação.
  */
 
 import { G } from './engine/gameState.js';
 import { initDebugMode } from './engine/debugMode.js';
 import { ProfileEngine } from './core/ada/ProfileEngine.js';
-import { MetacognitionEngine } from './core/ada/MetacognitionEngine.js'; // Módulo integrado
+import { MetacognitionEngine } from './core/ada/MetacognitionEngine.js';
 import { AdaptiveSelector } from './core/ada/AdaptiveSelector.js';
 import { LearningAnalytics } from './core/ada/LearningAnalytics.js';
 import { AdaptiveAudioEngine } from './core/ada/AdaptiveAudioEngine.js';
@@ -70,7 +70,7 @@ async function processarResposta(alt, q) {
     const latenciaSessaoMs = Date.now() - G.tempoInicialQuestao;
     const isAcerto = (alt.tipo === "acerto" || alt.correta === true || String(alt.valor) === String(q.res));
 
-    // 1. Feedback Imediato (UI)
+    // 1. Feedback Imediato (UI + ADA)
     uiManager.updHUD();
     const fb = $('fb');
     if (fb) {
@@ -80,16 +80,43 @@ async function processarResposta(alt, q) {
         fb.style.color = isAcerto ? '#00ff66' : '#ffbb33';
     }
 
-    // 2. Integração MetaCognition
-    // Analisa o padrão de erro/acerto antes da animação principal
+    const dicaLimpa = String(q.dica || q.passo || q.exp || '').replace(/<[^>]*>?/gm, '');
+    const feedbackADA = isAcerto
+        ? `Correto, ${G.nome || 'cientista'}. ${q.passo || q.exp || 'Sua estratégia funcionou.'}`
+        : `Ainda não. ${alt.descricao || `A resposta esperada era ${q.res}.`} ${dicaLimpa ? `Observe: ${dicaLimpa}` : 'Vamos revisar a lógica.'}`;
+
     try {
-        const reflexao = MetaCognition.analisar(G, q, alt, isAcerto);
-        if (reflexao) uiManager.exibirReflexaoMetacognitiva(reflexao);
-    } catch (e) { console.warn("MetaCognition bypass:", e); }
+        if (typeof uiManager.narrarContexto === 'function') {
+            await uiManager.narrarContexto(feedbackADA, isAcerto);
+        }
+    } catch (e) {
+        console.warn("Narração ADA bypass:", e);
+    }
+
+    // 2. Integração MetacognitionEngine
+    // Analisa o padrão de erro/acerto antes da animação principal.
+    try {
+        if (typeof MetacognitionEngine.analisar === 'function') {
+            const reflexao = MetacognitionEngine.analisar(G, q, alt, isAcerto);
+            if (reflexao && typeof uiManager.mostrarAvisoMetacognitivo === 'function') {
+                uiManager.mostrarAvisoMetacognitivo(reflexao);
+            }
+        }
+    } catch (e) {
+        console.warn("MetacognitionEngine bypass:", e);
+    }
 
     // 3. Telemetria e Áudio
-    if (isAcerto) { G.acertos++; G.combo++; AdaptiveAudioEngine.sonarSucesso(); } 
-    else { G.combo = 0; G.erros++; G.vida -= 15; AdaptiveAudioEngine.sonarAnomalia(); }
+    if (isAcerto) {
+        G.acertos++;
+        G.combo++;
+        try { AdaptiveAudioEngine.sonarSucesso(); } catch (e) { console.warn("Áudio de sucesso bypass:", e); }
+    } else {
+        G.combo = 0;
+        G.erros++;
+        G.vida -= 15;
+        try { AdaptiveAudioEngine.sonarAnomalia(); } catch (e) { console.warn("Áudio de anomalia bypass:", e); }
+    }
 
     G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : 'CONCEITO', latenciaSessaoMs);
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
@@ -102,9 +129,11 @@ async function processarResposta(alt, q) {
         
         if (renderizadorGrafico) {
             await renderizadorGrafico.animarArcos(q, pontoB - pontoA, pAdaptivo.interfaceModifiers.modoRepresentacao);
-            AdaptiveAudioEngine.sonarConclusao();
+            try { AdaptiveAudioEngine.sonarConclusao(); } catch (e) { console.warn("Áudio de conclusão bypass:", e); }
         }
-    } catch (err) { console.warn("⚠️ Animação falhou:", err); }
+    } catch (err) {
+        console.warn("⚠️ Animação falhou:", err);
+    }
 
     // 5. Finalização
     $('btn-prox')?.classList.remove('hidden');
@@ -152,8 +181,7 @@ function renderQ(q) {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
-    // ... (restante dos bindings e inicialização inalterados)
-    console.log("🚀 [SISTEMA v1.5.3] Motor LabTech com MetaCognition operante.");
+    console.log("🚀 [SISTEMA v1.5.3] Motor LabTech com MetacognitionEngine operante.");
     
     try { await AdaptiveSelector.carregarBancoDeQuestoes(); } catch (e) { alert("Erro de carga."); }
     initDebugMode();
