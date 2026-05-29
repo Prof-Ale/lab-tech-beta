@@ -6,7 +6,7 @@
 import { G } from './engine/gameState.js';
 import { initDebugMode } from './engine/debugMode.js';
 import { ProfileEngine } from './core/ada/ProfileEngine.js';
-import { MetaCognition } from './core/ada/MetaCognitionEngine.js'; // Módulo integrado
+import { MetaCognition } from './core/ada/MetacognitionEngine.js'; // Módulo integrado
 import { AdaptiveSelector } from './core/ada/AdaptiveSelector.js';
 import { LearningAnalytics } from './core/ada/LearningAnalytics.js';
 import { AdaptiveAudioEngine } from './core/ada/AdaptiveAudioEngine.js';
