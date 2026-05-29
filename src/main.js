@@ -1,6 +1,6 @@
 /**
- * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v1.5.3 - BLINDADO)
- * CIRURGIA: Resiliência de arrays, TTS Assíncrono, Correção de Áudio, Restauração de Atalhos XAI e integração correta da MetacognitionEngine.
+ * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.5 - RELEASE CANDIDATE)
+ * CIRURGIA: Feedback formativo, parser matemático para Canvas, injeção de logs e blindagens de UI.
  */
 
 import { G } from './engine/gameState.js';
@@ -60,24 +60,24 @@ function mostrarSeletorBlocos() {
 
     const msg = G.perfilCognitivo.itensRespondidos === 0 ? `Olá, ${G.nome}. Iniciando mapeamento.` : `Bem-vindo de volta, ${G.nome}.`;
     if (uiManager.narrarContexto) {
-        // PROBLEMA 5 RESOLVIDO: Não bloqueia a thread
         uiManager.narrarContexto(msg, true).catch(e => console.warn("TTS Bypass:", e));
     }
 }
 
-// --- CORE: PROCESSAR RESPOSTA (BLINDADO) ---
+// --- CORE: PROCESSAR RESPOSTA (BLINDADO & FORMATIVO) ---
 async function processarResposta(alt, q) {
     if (G.respondeu) return;
     G.respondeu = true;
 
     const latenciaSessaoMs = Date.now() - G.tempoInicialQuestao;
     const isAcerto = (alt.tipo === "acerto" || alt.correta === true || String(alt.valor) === String(q.res));
+    const etiologiaErro = alt.tipoErro || alt.tipo_erro || 'CONCEITO'; 
 
-    // 1. Feedback Imediato (UI + ADA)
+    // 1. Feedback Imediato (UI + ADA) Focado no Aluno
     uiManager.updHUD();
     const fb = $('fb');
     if (fb) {
-        fb.textContent = isAcerto ? "Isso mesmo! Excelente." : (alt.descricao || "Observe a lógica.");
+        fb.textContent = isAcerto ? "Isso mesmo! Excelente." : (alt.descricao || "Observe a lógica com mais atenção.");
         fb.style.display = 'block';
         fb.style.borderColor = isAcerto ? '#00ff66' : '#ff3333';
         fb.style.color = isAcerto ? '#00ff66' : '#ffbb33';
@@ -85,53 +85,76 @@ async function processarResposta(alt, q) {
 
     const dicaLimpa = String(q.dica || q.passo || q.exp || '').replace(/<[^>]*>?/gm, '');
     const feedbackADA = isAcerto
-        ? `Correto, ${G.nome || 'cientista'}. ${q.passo || q.exp || 'Sua estratégia funcionou.'}`
-        : `Ainda não. ${alt.descricao || `A resposta esperada era ${q.res}.`} ${dicaLimpa ? `Observe: ${dicaLimpa}` : 'Vamos revisar a lógica.'}`;
+        ? `Muito bem, ${G.nome || 'cientista'}! ${q.passo || q.exp || 'Sua linha de raciocínio está correta.'}`
+        : `Calma, ${G.nome || 'cientista'}. ${alt.descricao || 'Essa estratégia não funcionou agora.'} ${dicaLimpa ? `Pense nisto: ${dicaLimpa}` : 'Respire fundo e tente observar a imagem ou os dados antes de continuar.'}`;
 
-    // PROBLEMA 5 RESOLVIDO: TTS Assíncrono sem await
     if (typeof uiManager.narrarContexto === 'function') {
         uiManager.narrarContexto(feedbackADA, isAcerto).catch(e => console.warn("Narração ADA bypass:", e));
     }
 
-    // 2. Integração MetacognitionEngine (Assinatura Nova)
+    // 2. Integração MetacognitionEngine (Segura)
     try {
         if (typeof MetacognitionEngine.gerarFeedback === 'function') {
             const reflexao = MetacognitionEngine.gerarFeedback(G.perfilCognitivo);
-            if (reflexao && typeof uiManager.exibirReflexaoMetacognitiva === 'function') {
-                uiManager.exibirReflexaoMetacognitiva(reflexao);
+            if (reflexao) {
+                if (typeof uiManager.mostrarAvisoMetacognitivo === 'function') {
+                    uiManager.mostrarAvisoMetacognitivo(reflexao);
+                } else if (typeof uiManager.exibirReflexaoMetacognitiva === 'function') {
+                    uiManager.exibirReflexaoMetacognitiva(reflexao);
+                }
             }
         }
     } catch (e) {
         console.warn("MetacognitionEngine bypass:", e);
     }
 
-    // 3. Telemetria e Áudio
+    // 3. Telemetria, Áudio e Log de Sessão (Replay)
     if (isAcerto) {
         G.acertos++; G.combo++;
         try { AdaptiveAudioEngine.sonarSucesso(); } catch (e) {}
     } else {
-        G.combo = 0; G.erros++; G.vida -= 15;
+        G.combo = 0; G.erros++; 
+        G.vida = Math.max(0, G.vida - 15); // PROTEÇÃO DE VIDA NEGATIVA
         try { AdaptiveAudioEngine.sonarAnomalia(); } catch (e) {}
     }
 
-    G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : 'CONCEITO', latenciaSessaoMs);
+    G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : etiologiaErro, latenciaSessaoMs);
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
 
-    // 4. Animação de Mediação (Canvas)
+    // Preenchendo G.logSessao para garantir que ALT+R funcione
+    if (!G.logSessao) G.logSessao = [];
+    G.logSessao.push({
+        tempo: new Date().toLocaleTimeString(),
+        habilidade: q.bncc || "Geral",
+        questao: q.display || "Questão visual",
+        respostaDada: alt.valor || alt.texto || "N/A",
+        correto: isAcerto,
+        latencia: latenciaSessaoMs,
+        etiologia: isAcerto ? 'NULO' : etiologiaErro
+    });
+
+    // 4. Animação de Mediação (Canvas) c/ Parser Matemático Seguro
     try {
-        // PROBLEMA 1 RESOLVIDO: Blindagem do pAdaptivo e modoRepresentacao
         const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]) || {};
         const modoRepresentacao = pAdaptivo.interfaceModifiers?.modoRepresentacao || 'PADRAO';
 
-        // PROBLEMA 3 RESOLVIDO: Extração segura do Ponto A (Tenta q.a, se não achar, tenta extrair 1º número do display)
-        const matchA = q.display ? String(q.display).match(/(\d+)/) : null;
-        const fallbackA = matchA ? matchA[0] : 0;
-        const pontoA = parseFloat(String(q.a !== undefined ? q.a : fallbackA).replace(/[^\d.-]/g, ''));
-        const pontoB = parseFloat(String(alt.valor || 0).replace(/[^\d.-]/g, ''));
+        // Parser universal (Lida com frações, decimais com vírgula e negativos)
+        const extrairNumero = (val) => {
+            if (val === undefined || val === null) return 0;
+            if (typeof val === 'number') return val;
+            const str = String(val).replace(',', '.');
+            if (str.includes('/')) {
+                const [num, den] = str.split('/');
+                return parseFloat(num) / (parseFloat(den) || 1);
+            }
+            return parseFloat(str.replace(/[^\d.-]/g, '')) || 0;
+        };
+
+        const pontoA = extrairNumero(q.a !== undefined ? q.a : 0);
+        const pontoB = extrairNumero(alt.valor);
         
         if (renderizadorGrafico) {
             await renderizadorGrafico.animarArcos(q, pontoB - pontoA, modoRepresentacao);
-            // PROBLEMA 4 RESOLVIDO: Removido sonarConclusao() para evitar sobreposição de áudio
         }
     } catch (err) {
         console.warn("⚠️ Animação falhou:", err);
@@ -169,12 +192,10 @@ function renderQ(q) {
     $('grid-botoes').innerHTML = '';
     $('btn-prox')?.classList.add('hidden');
     
-    // PROBLEMA 1 RESOLVIDO: Blindagem para renderCv
     const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]) || {};
     const modoRepresentacao = pAdaptivo.interfaceModifiers?.modoRepresentacao || 'PADRAO';
     renderizadorGrafico?.renderCv(q, null, modoRepresentacao);
 
-    // PROBLEMA 2 RESOLVIDO: Blindagem de Array
     const alternativas = Array.isArray(q.alternativas) ? [...q.alternativas] : [];
     
     alternativas.sort(() => Math.random() - 0.5).forEach(alt => {
@@ -188,7 +209,7 @@ function renderQ(q) {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("🚀 [SISTEMA v1.5.4] Motor LabTech Blindado Operante.");
+    console.log("🚀 [SISTEMA v1.5.5] Motor LabTech Release Candidate Operante.");
     
     try { await AdaptiveSelector.carregarBancoDeQuestoes(); } catch (e) { alert("Erro de carga."); }
     initDebugMode();
@@ -201,7 +222,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     const yearSpan = $('labtech-year');
     if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     
-    on('btn-cred', () => abrirM('mcred'));
+    // FORÇANDO ESTILO CYBERPUNK NO MODAL SOBRE
+    on('btn-cred', () => {
+        const m = $('mcred');
+        if (m) {
+            const mc = m.querySelector('.mc');
+            if (mc) {
+                mc.style.border = '2px solid var(--neon-cyan, #00eaff)';
+                mc.style.background = '#0a0a0a';
+                mc.style.color = '#ddd';
+                mc.style.boxShadow = '0 0 15px rgba(0, 234, 255, 0.2)';
+            }
+        }
+        abrirM('mcred');
+    });
+
     on('btn-dash', () => { atualizarDashboard(); abrirM('mdash'); });
     on('btn-reiniciar', () => { fecharM('go'); if (G.currentBlock) iniciarBloco(G.currentBlock); });
     
@@ -265,7 +300,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const renderizarPainel = () => {
-                $('content-docente-xai').innerHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
+                // FALLBACK SEGURO PARA A FUNÇÃO DO LEARNING ANALYTICS
+                const html = typeof LearningAnalytics.gerarPainelDocenteHTML === 'function' 
+                    ? LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo) 
+                    : (typeof LearningAnalytics.gerarPainelDocente === 'function' ? LearningAnalytics.gerarPainelDocente(G.perfilCognitivo) : "<p style='color:red;'>Painel indisponível.</p>");
+                
+                $('content-docente-xai').innerHTML = html;
                 const btnValidar = $('btn-ia-validar');
                 const btnRefutar = $('btn-ia-refutar');
                 if (btnValidar) btnValidar.onclick = () => { G.perfilCognitivo.validacaoHumana = 'VALIDADO'; G.perfilCognitivo.confiancaDiagnostica = 99.9; renderizarPainel(); };
