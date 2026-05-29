@@ -1,6 +1,6 @@
 /**
- * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.3 - ESTÁVEL)
- * CIRURGIA: Integração do módulo MetacognitionEngine e restauração do fluxo de feedback/ADA/animação.
+ * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.4 - BLINDADO)
+ * CIRURGIA: Resiliência de arrays, TTS Assíncrono, Correção de Áudio, Restauração de Atalhos XAI e integração correta da MetacognitionEngine.
  */
 
 import { G } from './engine/gameState.js';
@@ -59,10 +59,13 @@ function mostrarSeletorBlocos() {
     $('ada-command-post')?.classList.add('active'); 
 
     const msg = G.perfilCognitivo.itensRespondidos === 0 ? `Olá, ${G.nome}. Iniciando mapeamento.` : `Bem-vindo de volta, ${G.nome}.`;
-    if (uiManager.narrarContexto) uiManager.narrarContexto(msg, true);
+    if (uiManager.narrarContexto) {
+        // PROBLEMA 5 RESOLVIDO: Não bloqueia a thread
+        uiManager.narrarContexto(msg, true).catch(e => console.warn("TTS Bypass:", e));
+    }
 }
 
-// --- CORE: PROCESSAR RESPOSTA (CIRURGIA METACOGNITIVA) ---
+// --- CORE: PROCESSAR RESPOSTA (BLINDADO) ---
 async function processarResposta(alt, q) {
     if (G.respondeu) return;
     G.respondeu = true;
@@ -85,21 +88,17 @@ async function processarResposta(alt, q) {
         ? `Correto, ${G.nome || 'cientista'}. ${q.passo || q.exp || 'Sua estratégia funcionou.'}`
         : `Ainda não. ${alt.descricao || `A resposta esperada era ${q.res}.`} ${dicaLimpa ? `Observe: ${dicaLimpa}` : 'Vamos revisar a lógica.'}`;
 
-    try {
-        if (typeof uiManager.narrarContexto === 'function') {
-            await uiManager.narrarContexto(feedbackADA, isAcerto);
-        }
-    } catch (e) {
-        console.warn("Narração ADA bypass:", e);
+    // PROBLEMA 5 RESOLVIDO: TTS Assíncrono sem await
+    if (typeof uiManager.narrarContexto === 'function') {
+        uiManager.narrarContexto(feedbackADA, isAcerto).catch(e => console.warn("Narração ADA bypass:", e));
     }
 
-    // 2. Integração MetacognitionEngine
-    // Analisa o padrão de erro/acerto antes da animação principal.
+    // 2. Integração MetacognitionEngine (Assinatura Nova)
     try {
-        if (typeof MetacognitionEngine.analisar === 'function') {
-            const reflexao = MetacognitionEngine.analisar(G, q, alt, isAcerto);
-            if (reflexao && typeof uiManager.mostrarAvisoMetacognitivo === 'function') {
-                uiManager.mostrarAvisoMetacognitivo(reflexao);
+        if (typeof MetacognitionEngine.gerarFeedback === 'function') {
+            const reflexao = MetacognitionEngine.gerarFeedback(G.perfilCognitivo);
+            if (reflexao && typeof uiManager.exibirReflexaoMetacognitiva === 'function') {
+                uiManager.exibirReflexaoMetacognitiva(reflexao);
             }
         }
     } catch (e) {
@@ -108,14 +107,11 @@ async function processarResposta(alt, q) {
 
     // 3. Telemetria e Áudio
     if (isAcerto) {
-        G.acertos++;
-        G.combo++;
-        try { AdaptiveAudioEngine.sonarSucesso(); } catch (e) { console.warn("Áudio de sucesso bypass:", e); }
+        G.acertos++; G.combo++;
+        try { AdaptiveAudioEngine.sonarSucesso(); } catch (e) {}
     } else {
-        G.combo = 0;
-        G.erros++;
-        G.vida -= 15;
-        try { AdaptiveAudioEngine.sonarAnomalia(); } catch (e) { console.warn("Áudio de anomalia bypass:", e); }
+        G.combo = 0; G.erros++; G.vida -= 15;
+        try { AdaptiveAudioEngine.sonarAnomalia(); } catch (e) {}
     }
 
     G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : 'CONCEITO', latenciaSessaoMs);
@@ -123,13 +119,19 @@ async function processarResposta(alt, q) {
 
     // 4. Animação de Mediação (Canvas)
     try {
-        const pontoA = parseFloat(String(q.a || 0).replace(/[^\d.-]/g, ''));
+        // PROBLEMA 1 RESOLVIDO: Blindagem do pAdaptivo e modoRepresentacao
+        const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]) || {};
+        const modoRepresentacao = pAdaptivo.interfaceModifiers?.modoRepresentacao || 'PADRAO';
+
+        // PROBLEMA 3 RESOLVIDO: Extração segura do Ponto A (Tenta q.a, se não achar, tenta extrair 1º número do display)
+        const matchA = q.display ? String(q.display).match(/(\d+)/) : null;
+        const fallbackA = matchA ? matchA[0] : 0;
+        const pontoA = parseFloat(String(q.a !== undefined ? q.a : fallbackA).replace(/[^\d.-]/g, ''));
         const pontoB = parseFloat(String(alt.valor || 0).replace(/[^\d.-]/g, ''));
-        const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
         
         if (renderizadorGrafico) {
-            await renderizadorGrafico.animarArcos(q, pontoB - pontoA, pAdaptivo.interfaceModifiers.modoRepresentacao);
-            try { AdaptiveAudioEngine.sonarConclusao(); } catch (e) { console.warn("Áudio de conclusão bypass:", e); }
+            await renderizadorGrafico.animarArcos(q, pontoB - pontoA, modoRepresentacao);
+            // PROBLEMA 4 RESOLVIDO: Removido sonarConclusao() para evitar sobreposição de áudio
         }
     } catch (err) {
         console.warn("⚠️ Animação falhou:", err);
@@ -167,10 +169,15 @@ function renderQ(q) {
     $('grid-botoes').innerHTML = '';
     $('btn-prox')?.classList.add('hidden');
     
-    const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]);
-    renderizadorGrafico?.renderCv(q, null, pAdaptivo.interfaceModifiers.modoRepresentacao);
+    // PROBLEMA 1 RESOLVIDO: Blindagem para renderCv
+    const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]) || {};
+    const modoRepresentacao = pAdaptivo.interfaceModifiers?.modoRepresentacao || 'PADRAO';
+    renderizadorGrafico?.renderCv(q, null, modoRepresentacao);
 
-    q.alternativas.sort(() => Math.random() - 0.5).forEach(alt => {
+    // PROBLEMA 2 RESOLVIDO: Blindagem de Array
+    const alternativas = Array.isArray(q.alternativas) ? [...q.alternativas] : [];
+    
+    alternativas.sort(() => Math.random() - 0.5).forEach(alt => {
         const b = document.createElement('button');
         b.className = 'ba';
         b.textContent = alt.texto || alt.valor;
@@ -181,7 +188,7 @@ function renderQ(q) {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("🚀 [SISTEMA v1.5.3] Motor LabTech com MetacognitionEngine operante.");
+    console.log("🚀 [SISTEMA v1.5.4] Motor LabTech Blindado Operante.");
     
     try { await AdaptiveSelector.carregarBancoDeQuestoes(); } catch (e) { alert("Erro de carga."); }
     initDebugMode();
@@ -235,10 +242,118 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('[data-action="seletor"]').forEach(btn => btn.onclick = () => { fecharM('go'); mostrarSeletorBlocos(); });
     [1,2,3,4,5,6,7].forEach(i => on(`btn-bloco-${i}`, () => iniciarBloco(i)));
 
+    // ==========================================
+    // RESTAURAÇÃO DOS ATALHOS XAI E DOCENTE
+    // ==========================================
     document.addEventListener('keydown', (e) => {
         if (!e.altKey) return;
-        if (e.key.toLowerCase() === 'p') { /* Lógica Modal Docente */ }
-        if (e.key.toLowerCase() === 'j') abrirM('modal-glossario-xai');
-        if (e.key.toLowerCase() === 'r') { /* Lógica Replay */ }
+        
+        // 📊 ALT + P (Painel Docente)
+        if (e.key.toLowerCase() === 'p') {
+            if (!G.perfilCognitivo) { alert("⚠️ Calibração pendente."); return; }
+            G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
+
+            let mDoc = $('modal-docente-xai');
+            if (!mDoc) {
+                mDoc = document.createElement('div'); mDoc.id = 'modal-docente-xai'; mDoc.className = 'modal';
+                mDoc.innerHTML = `
+                <div class="mc" style="max-width: 650px; border: 2px solid var(--choco-gold, #d4af37); background: #0a0a0a; position: relative; padding: 25px 20px;">
+                    <button class="mx" style="position: absolute; top: 15px; right: 35px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer; z-index: 1000;" onclick="document.getElementById('modal-docente-xai').classList.remove('active')">✕</button>
+                    <div id="content-docente-xai" style="max-height: 70vh; overflow-y: auto; padding-right: 15px; margin-top: 10px;"></div>
+                </div>`;
+                document.body.appendChild(mDoc);
+            }
+
+            const renderizarPainel = () => {
+                $('content-docente-xai').innerHTML = LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo);
+                const btnValidar = $('btn-ia-validar');
+                const btnRefutar = $('btn-ia-refutar');
+                if (btnValidar) btnValidar.onclick = () => { G.perfilCognitivo.validacaoHumana = 'VALIDADO'; G.perfilCognitivo.confiancaDiagnostica = 99.9; renderizarPainel(); };
+                if (btnRefutar) btnRefutar.onclick = () => { G.perfilCognitivo.validacaoHumana = 'REFUTADO'; G.perfilCognitivo.confiancaDiagnostica = 10.0; renderizarPainel(); };
+                const btnExportXai = $('btn-export-xai-csv');
+                if (btnExportXai) btnExportXai.onclick = () => LearningAnalytics.exportarCSV(G.nome, G.historico);
+            };
+
+            renderizarPainel();
+            mDoc.classList.add('active');
+        }
+
+        // 📖 ALT + J (Glossário XAI)
+        if (e.key.toLowerCase() === 'j') {
+            let modalGlossario = $('modal-glossario-xai');
+            if (!modalGlossario) {
+                modalGlossario = document.createElement('div');
+                modalGlossario.id = 'modal-glossario-xai';
+                modalGlossario.className = 'modal';
+                modalGlossario.innerHTML = `
+                    <div class="mc" style="max-width: 650px; border: 2px solid var(--neon-cyan, #00eaff); background: #0a0a0a; text-align: left; padding: 25px; position: relative;">
+                        <button class="mx" style="position: absolute; top: 15px; right: 20px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer;" onclick="document.getElementById('modal-glossario-xai').classList.remove('active')">✕</button>
+                        <h2 style="color: var(--neon-cyan, #00eaff); text-align: center; font-family: 'Orbitron', sans-serif; margin-top: 0;">📖 GLOSSÁRIO DA I.A. (XAI)</h2>
+                        <hr style="border: 1px solid #333; margin: 15px 0;">
+                        <div style="max-height: 60vh; overflow-y: auto; padding-right: 15px; font-family: 'Nunito', sans-serif; color: #ddd; font-size: 13px; line-height: 1.6;">
+                            <h3 style="color: var(--choco-gold, #d4af37); font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">1. OS QUATRO PERFIS COGNITIVOS</h3>
+                            <ul style="padding-left: 15px; margin-bottom: 20px;">
+                                <li style="margin-bottom: 10px;"><b style="color:white;">CONCEITUAL TEÓRICO:</b> Compreende a regra profunda e aplica com segurança.</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">PROCEDURAL MECÂNICO:</b> Acerta porque decorou a regra prática, mas não entende o porquê.</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">DEPENDENTE CONCRETO:</b> Necessita de materialização gráfica constante.</li>
+                                <li style="margin-bottom: 10px;"><b style="color:white;">IMPULSIVO ARITMÉTICO:</b> Erra por pressa e cliques velozes.</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modalGlossario);
+            }
+            modalGlossario.classList.add('active');
+        }
+
+        // 🎥 ALT + R (Replay Pedagógico)
+        if (e.key.toLowerCase() === 'r') {
+            if (!G.logSessao || G.logSessao.length === 0) {
+                alert("⚠️ Nenhuma ação gravada nesta sessão ainda.");
+                return;
+            }
+
+            let mVar = $('modal-var-pedagogico');
+            if (!mVar) {
+                mVar = document.createElement('div'); 
+                mVar.id = 'modal-var-pedagogico'; 
+                mVar.className = 'modal';
+                document.body.appendChild(mVar);
+            }
+
+            let htmlTimeline = '';
+            G.logSessao.forEach((step, index) => {
+                const cor = step.correto ? '#00ff66' : '#ff3333';
+                const icone = step.correto ? '✅' : '⚠️';
+                const latenciaSegundos = (step.latencia / 1000).toFixed(1);
+                
+                let corTempo = '#ccc';
+                if (latenciaSegundos < 3.0 && !step.correto) corTempo = '#ffbb33'; 
+                if (latenciaSegundos > 15.0) corTempo = '#00eaff'; 
+                
+                htmlTimeline += `
+                    <div style="border-left: 2px solid ${cor}; padding-left: 15px; margin-bottom: 15px; position: relative;">
+                        <div style="position: absolute; left: -10px; top: 0; background: #0a0a0a; font-size: 14px;">${icone}</div>
+                        <div style="font-size: 11px; color: #888;">Passo ${index + 1} | ${step.tempo} | Hab: ${step.habilidade}</div>
+                        <div style="font-size: 14px; color: #fff; margin: 4px 0;">Desafio: <span style="color:var(--choco-gold);">${step.questao}</span></div>
+                        <div style="font-size: 12px; color: #aaa;">
+                            Resposta: <b style="color: ${cor};">${step.respostaDada}</b> | Tempo: <b style="color: ${corTempo};">${latenciaSegundos}s</b>
+                            ${!step.correto ? `<br><span style="color:var(--neon-red);">Causa RAIZ: ${step.etiologia}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            mVar.innerHTML = `
+            <div class="mc" style="max-width: 600px; border: 2px solid #00ff66; background: #0a0a0a; position: relative; padding: 25px 20px;">
+                <button class="mx" style="position: absolute; top: 15px; right: 20px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer; z-index: 1000;" onclick="document.getElementById('modal-var-pedagogico').classList.remove('active')">✕</button>
+                <h2 style="color: #00ff66; text-align: center; font-family: 'Orbitron', sans-serif; margin-top: 0;">🎥 REPLAY DA SESSÃO</h2>
+                <hr style="border: 1px solid #333; margin: 15px 0;">
+                <div style="max-height: 65vh; overflow-y: auto; padding-right: 15px; text-align: left; font-family: 'Nunito', sans-serif;">
+                    ${htmlTimeline}
+                </div>
+            </div>`;
+            mVar.classList.add('active');
+        }
     });
 });
