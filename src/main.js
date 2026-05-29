@@ -1,5 +1,5 @@
 /**
- * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.4 - BLINDADO)
+ * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v1.5.3 - BLINDADO)
  * CIRURGIA: Resiliência de arrays, TTS Assíncrono, Correção de Áudio, Restauração de Atalhos XAI e integração correta da MetacognitionEngine.
  */
 
