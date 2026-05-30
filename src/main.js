@@ -50,7 +50,9 @@ function mostrarSeletorBlocos() {
         G.historico = {};
     }
 
-    G.perfilCognitivo = new ProfileEngine().inicializarEstudante(`${G.nome}_${G.turma}`);
+   // Agora guardamos o motor no estado global para usá-lo depois
+G.motorPerfil = new ProfileEngine(); 
+G.perfilCognitivo = G.motorPerfil.inicializarEstudante(`${G.nome}_${G.turma}`);
 
     if (!renderizadorGrafico) renderizadorGrafico = new CanvasRenderer('canvas-game'); 
 
