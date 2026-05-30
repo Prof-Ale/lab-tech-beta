@@ -250,7 +250,7 @@ function renderQ(q) {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("🚀 [SISTEMA v15.3.6] Motor LabTech Gold Master Operante.");
+    console.log("🚀 [SISTEMA v1.5.6] Motor LabTech Gold Master Operante.");
     
     try { await AdaptiveSelector.carregarBancoDeQuestoes(); } catch (e) { alert("Erro de carga."); }
     initDebugMode();
