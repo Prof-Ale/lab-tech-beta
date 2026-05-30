@@ -126,7 +126,32 @@ if (typeof ProfileEngine.atualizarPerfil === 'function') {
     G.perfilCognitivo = ProfileEngine.atualizarPerfil(G.perfilCognitivo, q, alt, isAcerto);
 
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
-
+    // -----------------------------------------------------
+    // ATUALIZAÇÃO DO PERFIL COGNITIVO EM TEMPO REAL
+    // -----------------------------------------------------
+    try {
+        if (G.motorPerfil) {
+            const dadosTelemetria = {
+                latenciaMs: latenciaSessaoMs,
+                totalAjustesPreConfirmacao: 0, 
+                alternativaSelecionadaId: alt.id || alt.valor || alt.texto,
+                foiCorreto: isAcerto
+            };
+            
+            // Injeta a telemetria no motor e recebe a radiografia atualizada
+            const atualizacao = G.motorPerfil.processarEventoTelemetria(
+                `${G.nome}_${G.turma}`, 
+                dadosTelemetria, 
+                q
+            );
+            
+            // Sincroniza o estado global para o ALT+P e a Metacognição lerem os dados novos
+            G.perfilCognitivo = atualizacao.perfilCompleto;
+        }
+    } catch (e) {
+        console.warn("⚠️ Falha ao atualizar ProfileEngine em tempo real:", e);
+    }
+    
     // Preenchendo G.logSessao para garantir que ALT+R funcione
     if (!G.logSessao) G.logSessao = [];
     G.logSessao.push({
