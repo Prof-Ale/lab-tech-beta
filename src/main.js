@@ -120,14 +120,14 @@ async function processarResposta(alt, q) {
         try { AdaptiveAudioEngine.sonarAnomalia(); } catch (e) {}
     }
 
-    G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : etiologiaErro, latenciaSessaoMs);
-    // Atualiza a radiografia cognitiva em tempo real
-if (typeof ProfileEngine.atualizarPerfil === 'function') {
-    G.perfilCognitivo = ProfileEngine.atualizarPerfil(G.perfilCognitivo, q, alt, isAcerto);
 
+    G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : etiologiaErro, latenciaSessaoMs);
+    
+    // 1. SALVAMENTO DO HISTÓRICO
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
+    
     // -----------------------------------------------------
-    // ATUALIZAÇÃO DO PERFIL COGNITIVO EM TEMPO REAL
+    // 2. ATUALIZAÇÃO DO PERFIL COGNITIVO EM TEMPO REAL
     // -----------------------------------------------------
     try {
         if (G.motorPerfil) {
@@ -152,7 +152,7 @@ if (typeof ProfileEngine.atualizarPerfil === 'function') {
         console.warn("⚠️ Falha ao atualizar ProfileEngine em tempo real:", e);
     }
     
-    // Preenchendo G.logSessao para garantir que ALT+R funcione
+    // 3. LOG DE SESSÃO (Para o ALT+R)
     if (!G.logSessao) G.logSessao = [];
     G.logSessao.push({
         tempo: new Date().toLocaleTimeString(),
@@ -166,6 +166,7 @@ if (typeof ProfileEngine.atualizarPerfil === 'function') {
 
     // 4. Animação de Mediação (Canvas) c/ Parser Matemático Seguro
     try {
+    
         const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]) || {};
         const modoRepresentacao = pAdaptivo.interfaceModifiers?.modoRepresentacao || 'PADRAO';
 
