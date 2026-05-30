@@ -1,6 +1,6 @@
 /**
- * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.5 - RELEASE CANDIDATE)
- * CIRURGIA: Feedback formativo, parser matemático para Canvas, injeção de logs e blindagens de UI.
+ * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.6 - GOLD MASTER)
+ * CIRURGIA: Ordem cronológica ajustada (ProfileEngine -> Metacognição) e blindagem de objeto.
  */
 
 import { G } from './engine/gameState.js';
@@ -50,9 +50,9 @@ function mostrarSeletorBlocos() {
         G.historico = {};
     }
 
-   // Agora guardamos o motor no estado global para usá-lo depois
-G.motorPerfil = new ProfileEngine(); 
-G.perfilCognitivo = G.motorPerfil.inicializarEstudante(`${G.nome}_${G.turma}`);
+    // Instanciação Global do Motor
+    G.motorPerfil = new ProfileEngine(); 
+    G.perfilCognitivo = G.motorPerfil.inicializarEstudante(`${G.nome}_${G.turma}`);
 
     if (!renderizadorGrafico) renderizadorGrafico = new CanvasRenderer('canvas-game'); 
 
@@ -66,7 +66,7 @@ G.perfilCognitivo = G.motorPerfil.inicializarEstudante(`${G.nome}_${G.turma}`);
     }
 }
 
-// --- CORE: PROCESSAR RESPOSTA (BLINDADO & FORMATIVO) ---
+// --- CORE: PROCESSAR RESPOSTA (OTIMIZADO) ---
 async function processarResposta(alt, q) {
     if (G.respondeu) return;
     G.respondeu = true;
@@ -75,7 +75,9 @@ async function processarResposta(alt, q) {
     const isAcerto = (alt.tipo === "acerto" || alt.correta === true || String(alt.valor) === String(q.res));
     const etiologiaErro = alt.tipoErro || alt.tipo_erro || 'CONCEITO'; 
 
-    // 1. Feedback Imediato (UI + ADA) Focado no Aluno
+    // ==========================================
+    // 1. FEEDBACK IMEDIATO (UI/VOZ) & PONTUAÇÃO
+    // ==========================================
     uiManager.updHUD();
     const fb = $('fb');
     if (fb) {
@@ -94,7 +96,48 @@ async function processarResposta(alt, q) {
         uiManager.narrarContexto(feedbackADA, isAcerto).catch(e => console.warn("Narração ADA bypass:", e));
     }
 
-    // 2. Integração MetacognitionEngine (Segura)
+    if (isAcerto) {
+        G.acertos++; G.combo++;
+        try { AdaptiveAudioEngine.sonarSucesso(); } catch (e) {}
+    } else {
+        G.combo = 0; G.erros++; 
+        G.vida = Math.max(0, G.vida - 15);
+        try { AdaptiveAudioEngine.sonarAnomalia(); } catch (e) {}
+    }
+
+    // ==========================================
+    // 2. REGISTRO E ATUALIZAÇÃO DO MOTOR
+    // ==========================================
+    G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : etiologiaErro, latenciaSessaoMs);
+    localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
+
+    try {
+        if (G.motorPerfil) {
+            const dadosTelemetria = {
+                latenciaMs: latenciaSessaoMs,
+                totalAjustesPreConfirmacao: 0, 
+                alternativaSelecionadaId: alt.id || alt.valor || alt.texto,
+                foiCorreto: isAcerto
+            };
+            
+            const atualizacao = G.motorPerfil.processarEventoTelemetria(
+                `${G.nome}_${G.turma}`, 
+                dadosTelemetria, 
+                q
+            );
+            
+            // Blindagem anti-regressão sugerida
+            if (atualizacao?.perfilCompleto) {
+                G.perfilCognitivo = atualizacao.perfilCompleto;
+            }
+        }
+    } catch (e) {
+        console.warn("⚠️ Falha ao atualizar ProfileEngine em tempo real:", e);
+    }
+
+    // ==========================================
+    // 3. METACOGNIÇÃO (Lendo o Perfil Fresco)
+    // ==========================================
     try {
         if (typeof MetacognitionEngine.gerarFeedback === 'function') {
             const reflexao = MetacognitionEngine.gerarFeedback(G.perfilCognitivo);
@@ -110,49 +153,9 @@ async function processarResposta(alt, q) {
         console.warn("MetacognitionEngine bypass:", e);
     }
 
-    // 3. Telemetria, Áudio e Log de Sessão (Replay)
-    if (isAcerto) {
-        G.acertos++; G.combo++;
-        try { AdaptiveAudioEngine.sonarSucesso(); } catch (e) {}
-    } else {
-        G.combo = 0; G.erros++; 
-        G.vida = Math.max(0, G.vida - 15); // PROTEÇÃO DE VIDA NEGATIVA
-        try { AdaptiveAudioEngine.sonarAnomalia(); } catch (e) {}
-    }
-
-
-    G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : etiologiaErro, latenciaSessaoMs);
-    
-    // 1. SALVAMENTO DO HISTÓRICO
-    localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
-    
-    // -----------------------------------------------------
-    // 2. ATUALIZAÇÃO DO PERFIL COGNITIVO EM TEMPO REAL
-    // -----------------------------------------------------
-    try {
-        if (G.motorPerfil) {
-            const dadosTelemetria = {
-                latenciaMs: latenciaSessaoMs,
-                totalAjustesPreConfirmacao: 0, 
-                alternativaSelecionadaId: alt.id || alt.valor || alt.texto,
-                foiCorreto: isAcerto
-            };
-            
-            // Injeta a telemetria no motor e recebe a radiografia atualizada
-            const atualizacao = G.motorPerfil.processarEventoTelemetria(
-                `${G.nome}_${G.turma}`, 
-                dadosTelemetria, 
-                q
-            );
-            
-            // Sincroniza o estado global para o ALT+P e a Metacognição lerem os dados novos
-            G.perfilCognitivo = atualizacao.perfilCompleto;
-        }
-    } catch (e) {
-        console.warn("⚠️ Falha ao atualizar ProfileEngine em tempo real:", e);
-    }
-    
-    // 3. LOG DE SESSÃO (Para o ALT+R)
+    // ==========================================
+    // 4. LOG DE SESSÃO & ANIMAÇÃO
+    // ==========================================
     if (!G.logSessao) G.logSessao = [];
     G.logSessao.push({
         tempo: new Date().toLocaleTimeString(),
@@ -164,13 +167,10 @@ async function processarResposta(alt, q) {
         etiologia: isAcerto ? 'NULO' : etiologiaErro
     });
 
-    // 4. Animação de Mediação (Canvas) c/ Parser Matemático Seguro
     try {
-    
         const pAdaptivo = AdaptiveSelector.selecionarProximaTarefa(G, [q]) || {};
         const modoRepresentacao = pAdaptivo.interfaceModifiers?.modoRepresentacao || 'PADRAO';
 
-        // Parser universal (Lida com frações, decimais com vírgula e negativos)
         const extrairNumero = (val) => {
             if (val === undefined || val === null) return 0;
             if (typeof val === 'number') return val;
@@ -182,13 +182,12 @@ async function processarResposta(alt, q) {
             return parseFloat(str.match(/-?\d+(\.\d+)?/)?.[0]) || 0; 
         };
 
-        // Lógica de fallback gracioso
         let pontoA;
         if (q.a !== undefined && q.a !== null) {
             pontoA = extrairNumero(q.a); 
         } else {
             pontoA = extrairNumero(q.display);
-            console.warn(`⚠️ BANCO SUJO: A questão "${q.display}" não tem 'q.a' definido. Fallback ativado para pontoA = ${pontoA}.`);
+            console.warn(`⚠️ BANCO SUJO: A questão "${q.display}" não tem 'q.a' definido. Fallback ativado.`);
         }
 
         const pontoB = extrairNumero(alt.valor);
@@ -200,7 +199,9 @@ async function processarResposta(alt, q) {
         console.warn("⚠️ Animação falhou:", err);
     }
 
-    // 5. Finalização
+    // ==========================================
+    // 5. FINALIZAÇÃO DA RODADA
+    // ==========================================
     $('btn-prox')?.classList.remove('hidden');
     $('ada-command-post')?.classList.add('active'); 
 
@@ -249,7 +250,7 @@ function renderQ(q) {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("🚀 [SISTEMA v1.5.5] Motor LabTech Release Candidate Operante.");
+    console.log("🚀 [SISTEMA v15.3.6] Motor LabTech Gold Master Operante.");
     
     try { await AdaptiveSelector.carregarBancoDeQuestoes(); } catch (e) { alert("Erro de carga."); }
     initDebugMode();
@@ -262,7 +263,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const yearSpan = $('labtech-year');
     if (yearSpan) yearSpan.textContent = new Date().getFullYear();
     
-    // FORÇANDO ESTILO CYBERPUNK NO MODAL SOBRE
     on('btn-cred', () => {
         const m = $('mcred');
         if (m) {
@@ -317,13 +317,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('[data-action="seletor"]').forEach(btn => btn.onclick = () => { fecharM('go'); mostrarSeletorBlocos(); });
     [1,2,3,4,5,6,7].forEach(i => on(`btn-bloco-${i}`, () => iniciarBloco(i)));
 
-    // ==========================================
-    // RESTAURAÇÃO DOS ATALHOS XAI E DOCENTE
-    // ==========================================
     document.addEventListener('keydown', (e) => {
         if (!e.altKey) return;
         
-        // 📊 ALT + P (Painel Docente)
         if (e.key.toLowerCase() === 'p') {
             if (!G.perfilCognitivo) { alert("⚠️ Calibração pendente."); return; }
             G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
@@ -340,7 +336,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const renderizarPainel = () => {
-                // FALLBACK SEGURO PARA A FUNÇÃO DO LEARNING ANALYTICS
                 const html = typeof LearningAnalytics.gerarPainelDocenteHTML === 'function' 
                     ? LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo) 
                     : (typeof LearningAnalytics.gerarPainelDocente === 'function' ? LearningAnalytics.gerarPainelDocente(G.perfilCognitivo) : "<p style='color:red;'>Painel indisponível.</p>");
@@ -358,7 +353,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             mDoc.classList.add('active');
         }
 
-        // 📖 ALT + J (Glossário XAI)
         if (e.key.toLowerCase() === 'j') {
             let modalGlossario = $('modal-glossario-xai');
             if (!modalGlossario) {
@@ -386,7 +380,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             modalGlossario.classList.add('active');
         }
 
-        // 🎥 ALT + R (Replay Pedagógico)
         if (e.key.toLowerCase() === 'r') {
             if (!G.logSessao || G.logSessao.length === 0) {
                 alert("⚠️ Nenhuma ação gravada nesta sessão ainda.");
