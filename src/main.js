@@ -151,10 +151,18 @@ if (typeof ProfileEngine.atualizarPerfil === 'function') {
                 const [num, den] = str.split('/');
                 return parseFloat(num) / (parseFloat(den) || 1);
             }
-            return parseFloat(str.replace(/[^\d.-]/g, '')) || 0;
+            return parseFloat(str.match(/-?\d+(\.\d+)?/)?.[0]) || 0; 
         };
 
-        const pontoA = extrairNumero(q.a !== undefined ? q.a : 0);
+        // Lógica de fallback gracioso
+        let pontoA;
+        if (q.a !== undefined && q.a !== null) {
+            pontoA = extrairNumero(q.a); 
+        } else {
+            pontoA = extrairNumero(q.display);
+            console.warn(`⚠️ BANCO SUJO: A questão "${q.display}" não tem 'q.a' definido. Fallback ativado para pontoA = ${pontoA}.`);
+        }
+
         const pontoB = extrairNumero(alt.valor);
         
         if (renderizadorGrafico) {
