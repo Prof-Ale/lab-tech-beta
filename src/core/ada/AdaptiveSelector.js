@@ -1,9 +1,8 @@
 /**
  * @fileoverview AdaptiveSelector.js
- * @description Cérebro orquestrador da ADA. Seleciona a próxima tarefa, 
- * define a representação visual (DUA) e injeta scaffolds na ZDP do estudante.
- * AGORA COM: Choque Semiótico, Mecanismo Anti-Overfitting e Limpeza de Estado Transiente.
- * @version 5.4.0
+ * @description O Tutor Cirúrgico da ADA. Seleciona tarefas baseadas na ZDP específica 
+ * de cada habilidade BNCC e injeta scaffolds dinâmicos em tempo real.
+ * EVOLUÇÃO 10.0.0: Seleção por ZDP Local, Expansão Proximal e Scaffold de Emergência.
  * @package LabTech / Core ADA
  */
 
@@ -20,37 +19,45 @@ export class AdaptiveSelector {
     }
 
     /**
-     * Determina qual interface semiótica (visual, abstrata, reta) o Canvas deve renderizar.
-     * 🧠 INJEÇÃO XAI: Choque Semiótico ativo.
+     * Determina qual interface semiótica o Canvas deve renderizar para a próxima tarefa.
+     * 🧠 INJEÇÃO VIGOTSKIANA: Redução de Carga e Choque Semiótico.
      */
-    static determinarRepresentacaoInterface(perfilCognitivo, comboAcertos, representacaoPadrao) {
-        if (!perfilCognitivo) return representacaoPadrao || 'visual';
+    static determinarRepresentacaoInterface(perfilCognitivo, questaoAtual) {
+        const repPadrao = questaoAtual.representacao || questaoAtual.suporteVisual || 'visual';
+        if (!perfilCognitivo) return repPadrao;
 
-        // 🚨 SE A EMBOSCADA ESTIVER ARMADA: Força a transferência semiótica!
+        // 🚨 1. Choque Semiótico (Emboscada armada pelo perfil global)
         if (perfilCognitivo.estadoADA && perfilCognitivo.estadoADA.emboscadaArmada) {
-            const repBase = representacaoPadrao || 'visual';
-            // Inverte o modelo: Se era abstrato, força gráfico (reta). Se era gráfico, força abstrato.
-            const modoForcado = (repBase === 'abstrato') ? 'reta' : 'abstrato';
-            console.warn(`[ADA] 🔄 CHOQUE SEMIÓTICO APLICADO: Forçando modo '${modoForcado}' para testar transferência do aluno.`);
+            const modoForcado = (repPadrao.includes('abstrato') || repPadrao.includes('SIMBOLICO')) ? 'reta' : 'abstrato';
+            console.warn(`[ADA] 🔄 CHOQUE SEMIÓTICO APLICADO: Forçando modo '${modoForcado}' para testar abstração.`);
             return modoForcado;
         }
 
-        const perfil = perfilCognitivo.perfilDominante || 'INDEFINIDO';
+        // 🚨 2. Scaffold de Emergência (Redução de Carga Cognitiva por Fricção Local)
+        const bncc = questaoAtual.bncc || "GERAL";
+        const hab = perfilCognitivo.habilidades?.[bncc];
+        
+        if (hab && hab.errosSequenciais >= 2) {
+            console.warn(`[ADA] 🛟 SCAFFOLD DE EMERGÊNCIA: 2 erros na habilidade ${bncc}. Forçando representação visual.`);
+            return 'visual'; // Força o materializado/icônico para ancoragem
+        }
 
-        if (perfil === 'DEPENDENTE_CONCRETO') {
+        // 📊 3. Adaptação baseada na Trajetória Dominante da Habilidade
+        const perfilLocal = hab?.perfilDominante || perfilCognitivo.perfilDominante || 'INDEFINIDO';
+
+        if (perfilLocal === 'DEPENDENTE_CONCRETO') {
             return 'visual';
         }
         
-        if (perfil === 'PROCEDURAL_MECANICO' && comboAcertos > 3) {
-            return 'abstrato';
+        if (perfilLocal === 'PROCEDURAL_MECANICO' && (hab?.acertos || 0) > 3) {
+            return 'abstrato'; // Força o aluno a largar o desenho se ele já decorou o procedimento visual
         }
 
-        return representacaoPadrao || 'visual';
+        return repPadrao;
     }
 
     /**
-     * Busca a próxima questão ideal no banco baseada na ZDP do aluno.
-     * 🧠 INJEÇÃO: Mecanismo de Fallback Progressivo e Memória de Sessão.
+     * Busca a próxima questão ideal no banco baseada na ZDP Específica da Habilidade (BNCC).
      */
     static selecionarProximaQuestao(blockId, perfilCognitivo) {
         const bancoGlobal = window.catalogoGlobalDeQuestoes || [];
@@ -64,7 +71,7 @@ export class AdaptiveSelector {
         if (!perfilCognitivo) perfilCognitivo = {};
         if (!perfilCognitivo.historicoQuestoesRespondidas) perfilCognitivo.historicoQuestoesRespondidas = [];
 
-        // 🔥 EVOLUÇÃO CIRÚRGICA: Limpa o estado de erro da ADA para a nova rodada (Evita contaminação de UI)
+        // Limpa o estado de erro da ADA para a nova rodada
         if (perfilCognitivo.estadoADA) {
             perfilCognitivo.estadoADA.mensagem = null;
             perfilCognitivo.estadoADA.exibir = false;
@@ -77,31 +84,35 @@ export class AdaptiveSelector {
             questoesDoBloco = bancoGlobal;
         }
 
-        // 2. Remove questões já respondidas (Trava Anti-Repetição Longa)
+        // 2. Remove questões já respondidas
         let questoesIneditas = questoesDoBloco.filter(q => !perfilCognitivo.historicoQuestoesRespondidas.includes(q.id));
 
-        // Se esgotou todas as inéditas do bloco, limpa O HISTÓRICO DESTE BLOCO para reciclagem
+        // Reciclagem de banco caso esgotado
         if (questoesIneditas.length === 0) {
             console.warn("⚠️ [ADA] Banco do bloco esgotado. Reciclando questões com nova mediação.");
             const idsDoBloco = questoesDoBloco.map(q => q.id);
             perfilCognitivo.historicoQuestoesRespondidas = perfilCognitivo.historicoQuestoesRespondidas.filter(id => !idsDoBloco.includes(id));
-            questoesIneditas = questoesDoBloco; // Reinicia a pool
+            questoesIneditas = questoesDoBloco; 
         }
 
-        // Prepara os parâmetros da ZDP Atual
-        const repAlvo = perfilCognitivo.representacaoDominante || 'visual';
-        const difAlvo = perfilCognitivo.nivelDificuldadeZDP || 1; // Assumindo nível padrão 1 se indefinido
+        // 🎯 3. O PULO DO GATO: BUSCA POR ZDP LOCAL (POR HABILIDADE BNCC)
+        // Tentativa A: Match Perfeito com a ZDP exata da habilidade
+        let poolSorteio = questoesIneditas.filter(q => {
+            const bncc = q.bncc || "GERAL";
+            const zdpLocal = perfilCognitivo.habilidades?.[bncc]?.zdp?.atual || 1; // Lê a ZDP exata da mente do aluno
+            return q.dificuldade === zdpLocal;
+        });
 
-        // 3. MATRIZ DE BUSCA (Expansão Progressiva)
-        // Tentativa A: Match Perfeito (Mesma Representação + Mesma Dificuldade)
-        let poolSorteio = questoesIneditas.filter(q => q.representacao === repAlvo && q.dificuldade === difAlvo);
-
-        // Tentativa B (Fallback 1): Flexibilidade Semiótica (Ignora representação, foca na dificuldade)
+        // 🔄 Tentativa B (Fallback Proximal): Expande a ZDP em ± 1 nível
         if (poolSorteio.length === 0) {
-            poolSorteio = questoesIneditas.filter(q => q.dificuldade === difAlvo);
+            poolSorteio = questoesIneditas.filter(q => {
+                const bncc = q.bncc || "GERAL";
+                const zdpLocal = perfilCognitivo.habilidades?.[bncc]?.zdp?.atual || 1;
+                return Math.abs(q.dificuldade - zdpLocal) <= 1; // Aceita questões levemente acima ou abaixo
+            });
         }
 
-        // Tentativa C (Fallback 2): Expansão Completa (Libera qualquer questão inédita do bloco)
+        // 🌍 Tentativa C (Fallback Global): Libera qualquer inédita
         if (poolSorteio.length === 0) {
             poolSorteio = questoesIneditas;
         }
@@ -109,10 +120,9 @@ export class AdaptiveSelector {
         // Sorteia a próxima questão da pool resultante
         const proxima = poolSorteio[Math.floor(Math.random() * poolSorteio.length)];
         
-        // Grava no cérebro do aluno para não repetir
+        // Grava no cérebro do aluno
         perfilCognitivo.historicoQuestoesRespondidas.push(proxima.id);
 
-        // Atualiza o painel radiográfico (X-Ray)
         if (window.__LABTECH_DEBUG__) {
             window.__LABTECH_DEBUG__.qId = proxima.id;
             window.__LABTECH_DEBUG__.poolAtual = poolSorteio.length;
@@ -122,38 +132,19 @@ export class AdaptiveSelector {
     }
 
     /**
-     * Retorna o pacote completo da próxima tarefa.
+     * Retorna o pacote completo da próxima tarefa com o setup semiótico ajustado.
      */
     static selecionarProximaTarefa(gameState, poolDeTarefas) {
-        // Envia o objeto de perfil inteiro para a ADA ler a flag da emboscada
         const perfilCompleto = gameState?.perfilCognitivo || {};
         const questao = poolDeTarefas[0] || {};
-        const repPadrao = questao.representacao || 'visual';
         
         return {
-            ...questao, // 🔥 CIRURGIA CORRETIVA: Spread Operator que garante o envio do gabarito (res), display e alternativas!
+            ...questao, 
             taskId: questao.id || 'default',
             interfaceModifiers: {
-                modoRepresentacao: this.determinarRepresentacaoInterface(perfilCompleto, gameState?.combo || 0, repPadrao)
+                modoRepresentacao: this.determinarRepresentacaoInterface(perfilCompleto, questao)
             }
         };
-    }
-
-    /**
-     * Verifica se o aluno precisa de um aviso verbal da ADA.
-     */
-    static gerarMicroIntervencao(questaoAtual, perfilCognitivo) {
-        if (!perfilCognitivo) return null;
-
-        if (perfilCognitivo.perfilDominante === 'IMPULSIVO_ARITMETICO') {
-            return "Respire fundo. Analise a geometria antes de alterar os valores.";
-        }
-
-        if (perfilCognitivo.perfilDominante === 'PROCEDURAL_MECANICO' && questaoAtual.representacao === 'visual') {
-            return "Observe as mudanças físicas na tela, não foque apenas nos números agora.";
-        }
-
-        return null; 
     }
 
     /**
