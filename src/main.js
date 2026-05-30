@@ -119,6 +119,10 @@ async function processarResposta(alt, q) {
     }
 
     G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : etiologiaErro, latenciaSessaoMs);
+    // Atualiza a radiografia cognitiva em tempo real
+if (typeof ProfileEngine.atualizarPerfil === 'function') {
+    G.perfilCognitivo = ProfileEngine.atualizarPerfil(G.perfilCognitivo, q, alt, isAcerto);
+
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
 
     // Preenchendo G.logSessao para garantir que ALT+R funcione
