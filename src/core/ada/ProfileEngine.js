@@ -1,8 +1,7 @@
 /**
  * @fileoverview ProfileEngine.js
- * @description Motor de Inferência Cognitiva e Rastreamento de Deriva Semiótica.
- * AGORA COM: SISTEMA DE CONFIANÇA INFERENCIAL E SINCRONIZAÇÃO ABSOLUTA DE TELEMETRIA.
- * @version 9.1.0
+ * @description Motor de Inferência Cognitiva, ZDP Dinâmica e Trajetória Epistemológica.
+ * EVOLUÇÃO 10.0.0: Perfis por Habilidade (BNCC), Rastreamento de Trajetória e ZDP Local.
  * @package LabTech Core Environment
  */
 
@@ -16,7 +15,7 @@ export class ProfileEngine {
             LIMIAR_LATENCIA_IMPULSIVA_MS: 3500,
             LIMIAR_FRICCION_ERRATICA: 5,
             MIN_ITENS_PARA_DIAGNOSTICO: 3,
-            ITENS_IDEAIS_CONFIANCA: 25 // Ponto de saturação da curva de volume
+            ITENS_IDEAIS_CONFIANCA: 25
         });
     }
 
@@ -38,32 +37,24 @@ export class ProfileEngine {
             const jsonStr = decodeURIComponent(atob(b64));
             return JSON.parse(jsonStr);
         } catch (e) {
-            console.warn("[ProfileEngine] Storage corrompido ou adulterado. Iniciando perfil limpo.");
+            console.warn("[ProfileEngine] Storage corrompido. Iniciando perfil limpo.");
             return null;
         }
     }
 
-   inicializarEstudante(estudanteId) {
+    inicializarEstudante(estudanteId) {
         if (!estudanteId) throw new Error('ID inválido.');
 
         const perfilSalvo = this._carregarLocal(estudanteId);
         if (perfilSalvo) {
             console.log(`[ADA] Memória recuperada para: ${estudanteId}`);
             
-            // 🛠️ MIGRATION PATCH V4: Injeta a Confiança Inferencial
-            if (perfilSalvo.confiancaDiagnostica === undefined) {
+            // 🛠️ MIGRATION PATCH V10: Injeta a arquitetura de Habilidades e ZDP
+            if (!perfilSalvo.habilidades) {
+                perfilSalvo.habilidades = {};
+                perfilSalvo.confiancaDiagnostica = perfilSalvo.confiancaDiagnostica || 0.0;
                 perfilSalvo.estadoADA = perfilSalvo.estadoADA || { acertosRapidosCombo: 0, emboscadaArmada: false };
-                perfilSalvo.indicePseudoconceito = perfilSalvo.indicePseudoconceito || 0.0;
-                perfilSalvo.mapaEtiologiaErros = perfilSalvo.mapaEtiologiaErros || {};
-                perfilSalvo.matrizTransferencia = perfilSalvo.matrizTransferencia || { procedural: { acertos: 0, total: 0 }, transferencia: { acertos: 0, total: 0 }, generalizacao: { acertos: 0, total: 0 } };
-                perfilSalvo.estabilidadeConceitual = perfilSalvo.estabilidadeConceitual || 'INDEFINIDA';
-                perfilSalvo.dependenciaScaffold = perfilSalvo.dependenciaScaffold || false;
-                perfilSalvo.historicoLongitudinal = perfilSalvo.historicoLongitudinal || [];
-                
-                // NOVO: Grau de Certeza da IA
-                perfilSalvo.confiancaDiagnostica = 0.0;
-                
-                console.log(`[ADA] 🔄 Mente veterana atualizada com Sistema de Confiança Inferencial.`);
+                console.log(`[ADA] 🔄 Mente veterana atualizada para Múltiplas Habilidades (V10).`);
             }
 
             this._estadosEstudantes.set(estudanteId, perfilSalvo);
@@ -74,19 +65,20 @@ export class ProfileEngine {
             id: estudanteId,
             timestampCriacao: new Date().toISOString(),
             itensRespondidos: 0,
+            
+            // Atributos Globais (Mantidos para Dashboards e Compatibilidade)
             perfilDominante: 'INDEFINIDO',
             derivaPedagogicaGeral: 0.0,
-            
             indicePseudoconceito: 0.0, 
             estadoADA: { acertosRapidosCombo: 0, emboscadaArmada: false },
-
-            // 🔬 Laboratório Longitudinal & Confiança
             confiancaDiagnostica: 0.0,
-            matrizTransferencia: { procedural: { acertos: 0, total: 0 }, transferencia: { acertos: 0, total: 0 }, generalizacao: { acertos: 0, total: 0 } },
             estabilidadeConceitual: 'INDEFINIDA',
             dependenciaScaffold: false,
-            historicoLongitudinal: [],
+            
+            // 🎯 NOVO CORAÇÃO: Mapa de Habilidades BNCC
+            habilidades: {},
 
+            historicoLongitudinal: [],
             metricasAcumuladas: { totalLatenciaConceptual: 0, totalFriccaoAjustes: 0, errosSequenciais: 0, taxaAcertoGeral: 0.0 },
             scoreMatrizesPerfeitas: { PROCEDURAL_MECANICO: 0.0, DEPENDENTE_CONCRETO: 0.0, IMPULSIVO_ARITMETICO: 0.0, CONCEITUAL_TEORICO: 0.0 },
             historicoEstagiosGalperin: { MATERIALIZADA: { acertos: 0, total: 0 }, ICONICA: { acertos: 0, total: 0 }, VERBAL_EXTERNA: { acertos: 0, total: 0 }, INTERNA_PURA: { acertos: 0, total: 0 } },
@@ -97,22 +89,34 @@ export class ProfileEngine {
         this._salvarLocal(estudanteId, novoPerfil); 
         return JSON.parse(JSON.stringify(novoPerfil));
     }
+
+    // Inicializa o sub-perfil de uma habilidade específica se não existir
+    _inicializarHabilidade(perfil, bncc) {
+        if (!perfil.habilidades[bncc]) {
+            perfil.habilidades[bncc] = {
+                itensRespondidos: 0,
+                perfilDominante: 'INDEFINIDO',
+                acertos: 0,
+                erros: 0,
+                errosSequenciais: 0,
+                scoreMatrizesPerfeitas: { PROCEDURAL_MECANICO: 0.0, DEPENDENTE_CONCRETO: 0.0, IMPULSIVO_ARITMETICO: 0.0, CONCEITUAL_TEORICO: 0.0 },
+                zdp: { atual: 2, minimo: 1, maximo: 4 }, // ZDP Padrão Inicial
+                trajetoriaCognitiva: [] // Rastreia as mudanças de perfil ao longo do tempo!
+            };
+        }
+        return perfil.habilidades[bncc];
+    }
     
-    // 🕒 GRAVAÇÃO DO SNAPSHOT LONGITUDINAL
     _registrarSnapshotTemporal(perfil) {
         if (perfil.itensRespondidos % 10 === 0 && perfil.itensRespondidos > 0) {
             const snapshot = {
                 marcoTemporal: `Sessão ${Math.floor(perfil.itensRespondidos / 10)}`,
                 data: new Date().toISOString(),
-                perfilDominante: perfil.perfilDominante,
-                estabilidadeConceitual: perfil.estabilidadeConceitual,
-                dependenciaScaffold: perfil.dependenciaScaffold,
+                perfilGlobal: perfil.perfilDominante,
                 riscoPseudoconceito: perfil.indicePseudoconceito.toFixed(2),
-                confiancaIA: perfil.confiancaDiagnostica, 
-                taxaTransferencia: perfil.matrizTransferencia.transferencia.total > 0 ? (perfil.matrizTransferencia.transferencia.acertos / perfil.matrizTransferencia.transferencia.total).toFixed(2) : 0
+                confiancaIA: perfil.confiancaDiagnostica
             };
             perfil.historicoLongitudinal.push(snapshot);
-            console.log(`[ADA 🔬] Snapshot Gravado (Confiança: ${snapshot.confiancaIA}%)`);
         }
     }
 
@@ -128,21 +132,24 @@ export class ProfileEngine {
         const perfil = this._estadosEstudantes.get(estudanteId);
         perfil.itensRespondidos++;
 
-        // 🔥 CIRURGIA: Consome "foiCorreto" direto da fonte de verdade (main.js)
         const { latenciaMs, totalAjustesPreConfirmacao, alternativaSelecionadaId, foiCorreto } = dadosTelemetria;
-        
-        const ehCorreto = foiCorreto; // Sincronia absoluta garantida
+        const ehCorreto = foiCorreto; 
         
         const alternativaAlvo = metadadosSensor.alternativas?.find(alt => alt.id_alternativa === alternativaSelecionadaId || alt.id === alternativaSelecionadaId || alt.valor === alternativaSelecionadaId);
-        
         let etiologiaErro = alternativaAlvo ? (alternativaAlvo.misconception || alternativaAlvo.categoria || 'ERRO_GENERICO').toUpperCase() : 'ERRO_GENERICO';
+        
         const estagioAtual = (metadadosSensor.estagioGalperin || 'INTERNA_PURA').toUpperCase();
         const representacaoAtual = (metadadosSensor.representacao || 'visual').toLowerCase();
+        
+        // Extrai a habilidade (fallback para "GERAL" se a questão não tiver BNCC)
+        const bncc = metadadosSensor.bncc || "GERAL";
+        const hab = this._inicializarHabilidade(perfil, bncc);
 
-        // 🧠 EMBOSCADA PEDAGÓGICA (PSEUDOCONCEITO)
+        hab.itensRespondidos++;
+
+        // 🧠 EMBOSCADA PEDAGÓGICA GLOBAL (Mantida para controle de fadiga/spam)
         if (perfil.estadoADA.emboscadaArmada) {
             if (!ehCorreto || latenciaMs > 12000) {
-                console.warn(`🚨 [XAI] Pseudoconceito Detectado em ${perfil.id}!`);
                 perfil.indicePseudoconceito = Math.min(1.0, perfil.indicePseudoconceito + 0.3);
                 etiologiaErro = 'PSEUDOCONCEITO_EXPOSTO';
             } else {
@@ -153,44 +160,35 @@ export class ProfileEngine {
         } else {
             if (ehCorreto && latenciaMs < 7000) {
                 perfil.estadoADA.acertosRapidosCombo++;
-                if (perfil.estadoADA.acertosRapidosCombo >= 3) {
-                    perfil.estadoADA.emboscadaArmada = true;
-                }
+                if (perfil.estadoADA.acertosRapidosCombo >= 3) perfil.estadoADA.emboscadaArmada = true;
             } else if (!ehCorreto) {
                 perfil.estadoADA.acertosRapidosCombo = 0;
             }
         }
 
-        // 📊 MATRIZ DE TRANSFERÊNCIA
-        if (estagioAtual === 'MATERIALIZADA' || representacaoAtual === 'visual' || representacaoAtual === 'concreta') {
-            perfil.matrizTransferencia.procedural.total++;
-            if (ehCorreto) perfil.matrizTransferencia.procedural.acertos++;
-        } else if (estagioAtual === 'VERBAL_EXTERNA') {
-            perfil.matrizTransferencia.transferencia.total++;
-            if (ehCorreto) perfil.matrizTransferencia.transferencia.acertos++;
-        } else if (estagioAtual === 'INTERNA_PURA' || representacaoAtual === 'simbolica' || representacaoAtual === 'abstrato') {
-            perfil.matrizTransferencia.generalizacao.total++;
-            if (ehCorreto) perfil.matrizTransferencia.generalizacao.acertos++;
-        }
-
-        if (perfil.historicoEstagiosGalperin[estagioAtual]) {
-            perfil.historicoEstagiosGalperin[estagioAtual].total++;
-            if (ehCorreto) perfil.historicoEstagiosGalperin[estagioAtual].acertos++;
-        }
-
+        // 📊 MÉTRICAS GLOBAIS E LOCAIS
         perfil.metricasAcumuladas.totalLatenciaConceptual += latenciaMs || 0;
-        perfil.metricasAcumuladas.totalFriccaoAjustes += totalAjustesPreConfirmacao || 0;
         
         if (ehCorreto) {
             perfil.metricasAcumuladas.errosSequenciais = 0;
+            hab.acertos++;
+            hab.errosSequenciais = 0;
         } else {
             perfil.metricasAcumuladas.errosSequenciais++;
+            hab.erros++;
+            hab.errosSequenciais++;
             perfil.mapaEtiologiaErros[etiologiaErro] = (perfil.mapaEtiologiaErros[etiologiaErro] || 0) + 1;
         }
 
-        this._computarPesosPerfis(perfil, latenciaMs, totalAjustesPreConfirmacao, ehCorreto, etiologiaErro, estagioAtual);
-        this._estabilizarPerfilDominante(perfil);
-        this._avaliarEstabilidadeEScaffold(perfil); 
+        // Processa pesos tanto para o Perfil Global quanto para a Habilidade Específica
+        this._computarPesosPerfis(perfil, latenciaMs, ehCorreto, estagioAtual);
+        this._computarPesosPerfis(hab, latenciaMs, ehCorreto, estagioAtual);
+
+        this._estabilizarPerfilDominante(perfil); 
+        this._estabilizarPerfilDominanteDaHabilidade(hab, bncc); // Aqui nasce a trajetória cognitiva!
+
+        this._avaliarZDP(hab); // Ajusta a Zona de Desenvolvimento Proximal
+        
         this._calcularConfiancaInferencial(perfil); 
         this._registrarSnapshotTemporal(perfil); 
 
@@ -199,34 +197,32 @@ export class ProfileEngine {
 
         return {
             estudanteId: perfil.id,
-            perfilDominante: perfil.perfilDominante,
+            perfilDominante: perfil.perfilDominante, // Global
             derivaPedagogicaGeral: perfil.derivaPedagogicaGeral,
             confiancaIA: perfil.confiancaDiagnostica, 
-            sugestaoAcaoADA: this._gerarDiretrizIntervencaoADA(perfil, metadadosSensor),
+            sugestaoAcaoADA: this._gerarDiretrizIntervencaoADA(perfil, hab, etiologiaErro), // ADA agora olha pra Habilidade
             timestampProcessamento: new Date().toISOString(),
             perfilCompleto: perfil 
         };
     }
 
-    _computarPesosPerfis(perfil, latencia, ajustes, ehCorreto, etiologia, estagio) {
+    // Funciona de forma polimórfica (aceita tanto o Perfil Global quanto o objeto da Habilidade)
+    _computarPesosPerfis(alvo, latencia, ehCorreto, estagio) {
         const C = this._CONFIG;
-        if (latencia < C.LIMIAR_LATENCIA_IMPULSIVA_MS && !ehCorreto) perfil.scoreMatrizesPerfeitas.IMPULSIVO_ARITMETICO += 0.35;
-        if (estagio === 'INTERNA_PURA' && ehCorreto) perfil.scoreMatrizesPerfeitas.PROCEDURAL_MECANICO += 0.15;
-        if ((estagio === 'ICONICA' || estagio === 'VERBAL_EXTERNA') && !ehCorreto) perfil.scoreMatrizesPerfeitas.PROCEDURAL_MECANICO += 0.20;
-        if ((estagio === 'MATERIALIZADA' || estagio === 'ICONICA') && ehCorreto) perfil.scoreMatrizesPerfeitas.DEPENDENTE_CONCRETO += 0.10;
-        if (estagio === 'INTERNA_PURA' && !ehCorreto) perfil.scoreMatrizesPerfeitas.DEPENDENTE_CONCRETO += 0.25;
-        if (ehCorreto && latencia >= C.LIMIAR_LATENCIA_IMPULSIVA_MS) perfil.scoreMatrizesPerfeitas.CONCEITUAL_TEORICO += 0.20;
+        if (latencia < C.LIMIAR_LATENCIA_IMPULSIVA_MS && !ehCorreto) alvo.scoreMatrizesPerfeitas.IMPULSIVO_ARITMETICO += 0.35;
+        if (estagio === 'INTERNA_PURA' && ehCorreto) alvo.scoreMatrizesPerfeitas.PROCEDURAL_MECANICO += 0.15;
+        if ((estagio === 'ICONICA' || estagio === 'VERBAL_EXTERNA') && !ehCorreto) alvo.scoreMatrizesPerfeitas.PROCEDURAL_MECANICO += 0.20;
+        if ((estagio === 'MATERIALIZADA' || estagio === 'ICONICA') && ehCorreto) alvo.scoreMatrizesPerfeitas.DEPENDENTE_CONCRETO += 0.10;
+        if (estagio === 'INTERNA_PURA' && !ehCorreto) alvo.scoreMatrizesPerfeitas.DEPENDENTE_CONCRETO += 0.25;
+        if (ehCorreto && latencia >= C.LIMIAR_LATENCIA_IMPULSIVA_MS) alvo.scoreMatrizesPerfeitas.CONCEITUAL_TEORICO += 0.20;
 
-        Object.keys(perfil.scoreMatrizesPerfeitas).forEach(key => {
-            perfil.scoreMatrizesPerfeitas[key] = Math.min(Math.max(perfil.scoreMatrizesPerfeitas[key], 0), 10);
+        Object.keys(alvo.scoreMatrizesPerfeitas).forEach(key => {
+            alvo.scoreMatrizesPerfeitas[key] = Math.min(Math.max(alvo.scoreMatrizesPerfeitas[key], 0), 10);
         });
     }
 
     _estabilizarPerfilDominante(perfil) {
-        if (perfil.itensRespondidos < this._CONFIG.MIN_ITENS_PARA_DIAGNOSTICO) {
-            perfil.perfilDominante = 'INDEFINIDO_EM_COLETA';
-            return;
-        }
+        if (perfil.itensRespondidos < this._CONFIG.MIN_ITENS_PARA_DIAGNOSTICO) return;
         const scores = perfil.scoreMatrizesPerfeitas;
         let maior = -1, vencedor = 'CONCEITUAL_TEORICO';
         Object.keys(scores).forEach(k => { if (scores[k] > maior) { maior = scores[k]; vencedor = k; } });
@@ -234,20 +230,51 @@ export class ProfileEngine {
         perfil.derivaPedagogicaGeral = parseFloat((Math.sqrt((scores.PROCEDURAL_MECANICO ** 2) + (scores.DEPENDENTE_CONCRETO ** 2) + (scores.IMPULSIVO_ARITMETICO ** 2)) / 17.32).toFixed(2));
     }
 
-    // 🧮 NOVO MOTOR: CÁLCULO DE CERTEZA DA IA
+    // 🧬 GERAÇÃO DA TRAJETÓRIA COGNITIVA
+    _estabilizarPerfilDominanteDaHabilidade(hab, bncc) {
+        if (hab.itensRespondidos < this._CONFIG.MIN_ITENS_PARA_DIAGNOSTICO) return;
+        const scores = hab.scoreMatrizesPerfeitas;
+        let maior = -1, vencedor = 'CONCEITUAL_TEORICO';
+        Object.keys(scores).forEach(k => { if (scores[k] > maior) { maior = scores[k]; vencedor = k; } });
+        
+        // Se o perfil mudou, registra a transição epistemológica para a pesquisa!
+        if (hab.perfilDominante !== 'INDEFINIDO' && hab.perfilDominante !== vencedor) {
+            hab.trajetoriaCognitiva.push({
+                data: new Date().toISOString(),
+                de: hab.perfilDominante,
+                para: vencedor,
+                gatilho: hab.acertos > hab.erros ? "PROGRESSAO_CONCEITUAL" : "REGRESSAO_FRICCAO"
+            });
+        }
+        hab.perfilDominante = vencedor;
+    }
+
+    // 📈 CÁLCULO DA ZONA DE DESENVOLVIMENTO PROXIMAL (ZDP)
+    _avaliarZDP(hab) {
+        const total = hab.acertos + hab.erros;
+        if (total < 3) return;
+
+        const taxaAcerto = hab.acertos / total;
+
+        // Se o aluno está voando (Acima de 80%), o limite ZDP sobe
+        if (taxaAcerto >= 0.8 && hab.errosSequenciais === 0) {
+            hab.zdp.minimo = Math.min(hab.zdp.minimo + 1, 4);
+            hab.zdp.atual = Math.min(hab.zdp.atual + 1, 5);
+        } 
+        // Se o aluno travou (Erros sequenciais), o limite ZDP desce para ancoragem
+        else if (hab.errosSequenciais >= 2) {
+            hab.zdp.atual = Math.max(hab.zdp.atual - 1, hab.zdp.minimo);
+        }
+    }
+
     _calcularConfiancaInferencial(perfil) {
         if (perfil.itensRespondidos < this._CONFIG.MIN_ITENS_PARA_DIAGNOSTICO) {
             perfil.confiancaDiagnostica = 0.0;
             return;
         }
-
-        // 1. Fator Volume
         const pesoVolume = 1 - Math.exp(-perfil.itensRespondidos / 15);
-
-        // 2. Fator Consistência
         const scores = Object.values(perfil.scoreMatrizesPerfeitas).sort((a, b) => b - a);
-        const top1 = scores[0];
-        const top2 = scores[1] || 0;
+        const top1 = scores[0], top2 = scores[1] || 0;
         
         let pesoConsistencia = 0;
         if (top1 > 0) {
@@ -259,45 +286,26 @@ export class ProfileEngine {
         perfil.confiancaDiagnostica = parseFloat((confianca * 100).toFixed(1));
     }
 
-    _avaliarEstabilidadeEScaffold(perfil) {
-        const mat = perfil.matrizTransferencia;
-        const txProc = mat.procedural.total > 0 ? mat.procedural.acertos / mat.procedural.total : 0;
-        const txTransf = mat.transferencia.total > 0 ? mat.transferencia.acertos / mat.transferencia.total : 0;
-        const txGen = mat.generalizacao.total > 0 ? mat.generalizacao.acertos / mat.generalizacao.total : 0;
-
-        if (mat.procedural.total >= 3 && mat.transferencia.total >= 2) {
-            if (txProc >= 0.7 && txTransf < 0.4) perfil.estabilidadeConceitual = 'BAIXA_RISCO_PSEUDOCONCEITO';
-            else if (txProc >= 0.7 && txTransf >= 0.6) perfil.estabilidadeConceitual = 'ALTA_ESTABILIZADA';
-            else perfil.estabilidadeConceitual = 'EM_CONSTRUCAO';
-        }
-
-        if (mat.procedural.total >= 3 && mat.generalizacao.total >= 2) {
-            if (txProc > 0.75 && txGen < 0.4) perfil.dependenciaScaffold = true;
-            else if (txGen >= 0.5) perfil.dependenciaScaffold = false;
-        }
-    }
-
-    _gerarDiretrizIntervencaoADA(perfil, sensor) {
+    _gerarDiretrizIntervencaoADA(perfil, hab, etiologiaErro) {
         const d = { comandoMacro: 'PADRAO', scaffoldAlvo: 'NENHUM' };
-        
-        if (perfil.confiancaDiagnostica < 40.0) return d; 
+        if (perfil.confiancaDiagnostica < 30.0) return d; 
 
-        if (perfil.dependenciaScaffold) {
-            d.comandoMacro = 'TRIGGER_CONTROLLED_FADING';
-            d.scaffoldAlvo = 'REDUCAO_GRADUAL_DE_SUPORTE';
-            return d; 
+        // O AdaptiveSelector usará isso para intervir de acordo com o Erro Específico (Vigotski)
+        if (hab.errosSequenciais >= 2) {
+            d.comandoMacro = 'REDUZIR_CARGA_COGNITIVA';
+            d.scaffoldAlvo = 'ATIVAR_REPRESENTACAO_CONCRETA';
+            return d;
         }
 
-        if (perfil.perfilDominante === 'IMPULSIVO_ARITMETICO') { d.comandoMacro = 'INJECT_RHYTHMIC_LOCK'; d.scaffoldAlvo = 'VERBALIZATION_PROMPT'; }
-        else if (perfil.perfilDominante === 'PROCEDURAL_MECANICO') { d.comandoMacro = 'FORCE_SEMIOTIC_TRANSITION'; d.scaffoldAlvo = 'CONCRETE_SCHEMATIZATION'; }
-        else if (perfil.perfilDominante === 'DEPENDENTE_CONCRETO') { d.comandoMacro = 'TRIGGER_CONTROLLED_FADING'; d.scaffoldAlvo = 'ORIENTATION_CARD'; }
+        if (hab.perfilDominante === 'IMPULSIVO_ARITMETICO') { d.comandoMacro = 'INJECT_RHYTHMIC_LOCK'; d.scaffoldAlvo = 'VERBALIZATION_PROMPT'; }
+        else if (hab.perfilDominante === 'PROCEDURAL_MECANICO') { d.comandoMacro = 'FORCE_SEMIOTIC_TRANSITION'; d.scaffoldAlvo = 'CONCRETE_SCHEMATIZATION'; }
+        else if (hab.perfilDominante === 'DEPENDENTE_CONCRETO') { d.comandoMacro = 'TRIGGER_CONTROLLED_FADING'; d.scaffoldAlvo = 'ORIENTATION_CARD'; }
         
-        if (perfil.indicePseudoconceito >= 0.6 || perfil.estabilidadeConceitual === 'BAIXA_RISCO_PSEUDOCONCEITO') {
+        if (perfil.indicePseudoconceito >= 0.6) {
             d.comandoMacro = 'FORCE_SEMIOTIC_TRANSITION';
             d.scaffoldAlvo = 'CONCEPTUAL_RESET';
         }
         
-        if (perfil.metricasAcumuladas.errosSequenciais >= 2) d.comandoMacro = 'RETROCEDER_ESTAGIO';
         return d;
     }
 }
