@@ -1,5 +1,5 @@
 /**
- * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v15.3.6 - GOLD MASTER)
+ * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v1.5.6 - GOLD MASTER)
  * CIRURGIA: Ordem cronológica ajustada (ProfileEngine -> Metacognição) e blindagem de objeto.
  */
 
