@@ -1,7 +1,7 @@
 /**
  * @fileoverview ProfileEngine.js
  * @description Motor de Inferência Cognitiva e Computacional de Formação de Conceitos (Teoria Histórico-Cultural).
- * EVOLUÇÃO 10.4.0: Rigor científico, versionamento de modelo, validação de pesos e consolidação de arquitetura.
+ * EVOLUÇÃO 10.4.1: Rigor científico, versionamento de modelo, validação de pesos e controle de estagnação de estágio.
  * @package LabTech Core Environment
  */
 
@@ -122,6 +122,7 @@ export class ProfileEngine {
                     indiceDependenciaVisual: 0.0,
                     indiceEstabilidadeConceitual: 0.0,
                     estagioConceitual: "EVIDENCIA_INSUFICIENTE",
+                    itensNoEstagioAtual: 0, // Adicionado rastreio de estagnação para consumo do MetacognitionEngine
                     trajetoriaConceitual: []
                 }
             };
@@ -316,6 +317,7 @@ export class ProfileEngine {
     _atualizarEstagioConceitual(hab, novoEstagio) {
         const ev = hab.evidenciasConceituais;
         if (ev.estagioConceitual !== novoEstagio) {
+            // Mudança de estágio detectada
             ev.trajetoriaConceitual.push({
                 data: new Date().toISOString(),
                 de: ev.estagioConceitual,
@@ -324,6 +326,12 @@ export class ProfileEngine {
                 modelo: this._CONFIG.VERSAO_MODELO_CONCEITUAL // Rastreamento de versão
             });
             ev.estagioConceitual = novoEstagio;
+            
+            // Reseta contador de estagnação ao avançar/refluir estágio
+            ev.itensNoEstagioAtual = 0; 
+        } else {
+            // Incrementa contador de estagnação caso o estágio tenha se mantido
+            ev.itensNoEstagioAtual = (ev.itensNoEstagioAtual || 0) + 1;
         }
     }
 
