@@ -1,7 +1,7 @@
 /**
  * @fileoverview ProfileEngine.js
  * @description Motor de Inferência Cognitiva e Computacional de Formação de Conceitos (Teoria Histórico-Cultural).
- * EVOLUÇÃO 10.2.0: Motor de Transferência Conceitual, ITC e Trajetória Epistemológica.
+ * EVOLUÇÃO 10.4.0: Rigor científico, versionamento de modelo, validação de pesos e consolidação de arquitetura.
  * @package LabTech Core Environment
  */
 
@@ -11,13 +11,34 @@ export class ProfileEngine {
     constructor() {
         this._estadosEstudantes = new Map();
 
+        // ⚙️ CAMADA DE CONFIGURAÇÃO CIENTÍFICA
         this._CONFIG = Object.freeze({
+            VERSAO_MODELO_CONCEITUAL: "ITC_v1",
             LIMIAR_LATENCIA_IMPULSIVA_MS: 3500,
-            LIMIAR_FRICCION_ERRATICA: 5,
-            MIN_ITENS_PARA_DIAGNOSTICO: 3,
-            ITENS_IDEAIS_CONFIANCA: 25,
-            MASSA_CRITICA_CONCEITUAL: 8
+            MASSA_CRITICA_CONCEITUAL: 8,
+            
+            // Pesos do ITC (α + β + γ = 1.0)
+            PESO_ITC_ABSTRACAO: 0.50,
+            PESO_ITC_TRANSFERENCIA: 0.40,
+            PESO_ITC_INDEPENDENCIA: 0.10,
+
+            // Limiares de Classificação Conceitual
+            LIMIAR_PSEUDOCONCEITO: 0.35,
+            LIMIAR_GENERALIZACAO: 0.70,
+            LIMIAR_ESTABILIDADE_CONCEITUAL: 0.70
         });
+
+        this._validarConfiguracao();
+    }
+
+    _validarConfiguracao() {
+        const somaPesos = this._CONFIG.PESO_ITC_ABSTRACAO + 
+                          this._CONFIG.PESO_ITC_TRANSFERENCIA + 
+                          this._CONFIG.PESO_ITC_INDEPENDENCIA;
+
+        if (Math.abs(somaPesos - 1.0) > 0.001) {
+            throw new Error(`[ProfileEngine] Falha na calibração: Pesos do ITC somam ${somaPesos}, esperado 1.0.`);
+        }
     }
 
     _salvarLocal(estudanteId, perfil) {
@@ -229,24 +250,8 @@ export class ProfileEngine {
     // =========================================================
     // 🧠 CAMADA B: MOTOR COMPUTACIONAL DE FORMAÇÃO DE CONCEITOS
     // =========================================================
-    _avaliarEstagioConceitual(hab, perfilGlobal) {
-        const ev = hab.evidenciasConceituais;
-        const totalEvidencias = ev.visual.total + ev.abstrata.total;
-
-        // 1. Cálculo de Taxas Base
-        const txVisual = ev.visual.total > 0 ? (ev.visual.acertos / ev.visual.total) : 0;
-        const txAbstrata = ev.abstrata.total > 0 ? (ev.abstrata.acertos / ev.abstrata.total) : 0;
-        const totalTransferencias = ev.transferenciasBemSucedidas + ev.transferenciasFalhadas;
-        const txTransferencia = totalTransferencias > 0 ? (ev.transferenciasBemSucedidas / totalTransferencias) : 0;
-
-        // 2. Cálculo da Dependência Visual (Cirurgia 3)
-        ev.indiceDependenciaVisual = Math.max(0, txVisual - txAbstrata);
-
-        // 3. Cálculo do Índice de Transferência Conceitual - ITC (Cirurgia 1)
-        const itcBruto = (txAbstrata * 0.50) + (txTransferencia * 0.40) + ((1 - ev.indiceDependenciaVisual) * 0.10);
-        ev.indiceTransferenciaConceitual = Number(itcBruto.toFixed(2));
-
-        // 4. Cálculo da Estabilidade Conceitual (Cirurgia 4)
+    
+    _calcularEstabilidade(ev) {
         const ultimosChoques = ev.historicoTransferencia.slice(-5);
         if (ultimosChoques.length > 1) {
             let transicoes = 0;
@@ -258,26 +263,51 @@ export class ProfileEngine {
             ev.indiceEstabilidadeConceitual = Number(((acertosRecentes * 0.6) + (taxaConsistenciaOscilatoria * 0.4)).toFixed(2));
         } else if (ultimosChoques.length === 1) {
             ev.indiceEstabilidadeConceitual = ultimosChoques[0].correto ? 1.0 : 0.0;
+        } else {
+            ev.indiceEstabilidadeConceitual = 0.0;
         }
+    }
 
-        // 5. Aplicação da Massa Crítica (Cirurgia 2)
-        if (totalEvidencias < this._CONFIG.MASSA_CRITICA_CONCEITUAL) {
+    _avaliarEstagioConceitual(hab, perfilGlobal) {
+        const ev = hab.evidenciasConceituais;
+        const totalEvidencias = ev.visual.total + ev.abstrata.total;
+        const totalTransferencias = ev.transferenciasBemSucedidas + ev.transferenciasFalhadas;
+
+        // Trava científica
+        if (totalEvidencias < this._CONFIG.MASSA_CRITICA_CONCEITUAL || totalTransferencias < 2) {
             this._atualizarEstagioConceitual(hab, "EVIDENCIA_INSUFICIENTE");
             return;
         }
 
-        // 6. Inferência do Estágio (Cirurgia 5)
-        const zdpAtual = hab.zdp?.atual || 1;
+        const txVisual = ev.visual.total > 0 ? (ev.visual.acertos / ev.visual.total) : 0;
+        const txAbstrata = ev.abstrata.total > 0 ? (ev.abstrata.acertos / ev.abstrata.total) : 0;
+        const txTransferencia = totalTransferencias > 0 ? (ev.transferenciasBemSucedidas / totalTransferencias) : 0;
+        
+        ev.indiceDependenciaVisual = Math.max(0, txVisual - txAbstrata);
+        
+        // Cálculo do ITC com pesos configuráveis
+        const itcBruto = (
+            (txAbstrata * this._CONFIG.PESO_ITC_ABSTRACAO) + 
+            (txTransferencia * this._CONFIG.PESO_ITC_TRANSFERENCIA) + 
+            ((1 - ev.indiceDependenciaVisual) * this._CONFIG.PESO_ITC_INDEPENDENCIA)
+        );
+        ev.indiceTransferenciaConceitual = Number(itcBruto.toFixed(2));
+
+        this._calcularEstabilidade(ev);
+
+        // Inferência baseada em limiares configuráveis (versão final)
         let novoEstagio = ev.estagioConceitual;
 
-        if (txVisual >= 0.8 && txAbstrata >= 0.8 && ev.transferenciasBemSucedidas >= 3 && ev.indiceEstabilidadeConceitual >= 0.7 && zdpAtual >= 3) {
+        if (ev.indiceTransferenciaConceitual >= this._CONFIG.LIMIAR_GENERALIZACAO && 
+            ev.indiceEstabilidadeConceitual >= this._CONFIG.LIMIAR_ESTABILIDADE_CONCEITUAL) {
             novoEstagio = "GENERALIZACAO_CONSOLIDADA";
         } 
-        else if (txVisual >= 0.8 && ev.indiceDependenciaVisual >= 0.5 && (ev.transferenciasFalhadas > 0 || perfilGlobal.indicePseudoconceito > 0.6)) {
-            novoEstagio = "PSEUDOCONCEITO_ESTAVEL";
-        } 
-        else if (txVisual >= 0.75 && txAbstrata >= 0.5 && ev.transferenciasBemSucedidas > 0) {
+        else if (ev.indiceTransferenciaConceitual >= this._CONFIG.LIMIAR_PSEUDOCONCEITO && 
+                 ev.indiceTransferenciaConceitual < this._CONFIG.LIMIAR_GENERALIZACAO) {
             novoEstagio = "EM_TRANSICAO_CONCEITUAL";
+        } 
+        else if (ev.indiceTransferenciaConceitual < this._CONFIG.LIMIAR_PSEUDOCONCEITO) {
+            novoEstagio = "PSEUDOCONCEITO_ESTAVEL";
         }
 
         this._atualizarEstagioConceitual(hab, novoEstagio);
@@ -290,7 +320,8 @@ export class ProfileEngine {
                 data: new Date().toISOString(),
                 de: ev.estagioConceitual,
                 para: novoEstagio,
-                itc: ev.indiceTransferenciaConceitual
+                itc: ev.indiceTransferenciaConceitual,
+                modelo: this._CONFIG.VERSAO_MODELO_CONCEITUAL // Rastreamento de versão
             });
             ev.estagioConceitual = novoEstagio;
         }
