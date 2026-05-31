@@ -1,7 +1,7 @@
 /**
  * @fileoverview TeacherAnalyticsEngine.js
  * @description Motor de Explicabilidade (XAI) e Geração de Relatórios Docentes.
- * Traduz o estado da Base Orientadora Ativa (BOA) em insights acionáveis para o professor.
+ * EVOLUÇÃO 11.3.0: XAI Completo com Evidências Computacionais, Prioridade e Trajetória.
  * @package LabTech Core Environment
  */
 
@@ -13,9 +13,6 @@ import {
 
 export class TeacherAnalyticsEngine {
 
-    /**
-     * Gera o relatório global da turma ou de um aluno específico.
-     */
     static gerarRelatorioEstudante(perfilCognitivo) {
         if (!perfilCognitivo) return null;
 
@@ -26,7 +23,6 @@ export class TeacherAnalyticsEngine {
             habilidades: {}
         };
 
-        // Processa o mapa de cada habilidade BNCC trabalhada
         for (const [bncc, hab] of Object.entries(perfilCognitivo.habilidades)) {
             relatorio.habilidades[bncc] = this._traduzirHabilidade(bncc, hab);
         }
@@ -34,15 +30,10 @@ export class TeacherAnalyticsEngine {
         return relatorio;
     }
 
-    /**
-     * Traduz o estado computacional (ProfileEngine + BOA) para um idioma focado 
-     * na intervenção humana do professor no mundo real.
-     */
     static _traduzirHabilidade(bncc, hab) {
         const boa = hab.baseOrientadoraAtiva;
         const ev = hab.evidenciasConceituais;
 
-        // Se a BOA ainda não foi instanciada (habilidade recém iniciada)
         if (!boa) {
             return {
                 status: "COLETA_DE_DADOS",
@@ -61,26 +52,80 @@ export class TeacherAnalyticsEngine {
                 indiceTransferencia: `${Math.round(ev.indiceTransferenciaConceitual * 100)}%`
             },
 
-            // 2. O que o LabTech (IA) está fazendo a respeito
+            // 2. EXPLICABILIDADE (XAI): Como a IA chegou a essa conclusão?
+            evidenciasObservadas: this._extrairEvidenciasXAI(ev),
+
+            // 3. O que o LabTech (IA) está fazendo a respeito
             acaoDaIA: {
                 faseMediacao: this._traduzirFaseGalperin(boa.estadoAtual.faseMediacao),
                 objetivoAtual: this._traduzirObjetivo(boa.focoConceitual.objetivoAtual),
-                estrategia: this._formatarTextoAmigavel(boa.planoDeMediacao.estrategia)
+                estrategia: this._formatarTextoAmigavel(boa.planoDeMediacao.estrategia),
+                proximaIntervencaoPrevista: this._traduzirProximaAcao(boa.planoDeMediacao.proximaAcao)
             },
 
-            // 3. Recomendação para o Atendimento Humano (Transferência de Bastão)
-            acaoSugeridaProfessor: this._gerarRecomendacaoDocente(boa, ev)
+            // 4. Recomendação para o Atendimento Humano
+            acaoSugeridaProfessor: {
+                prioridade: this._calcularPrioridadeIntervencao(boa.focoConceitual.obstaculoPrincipal),
+                recomendacao: this._gerarRecomendacaoDocente(boa, ev)
+            },
+
+            // 5. Histórico: Trajetória Conceitual
+            evolucaoConceitual: this._mapearTrajetoria(ev.trajetoriaConceitual)
         };
     }
 
     // =========================================================
-    // 🧠 DICIONÁRIOS DE TRADUÇÃO (XAI -> Humano)
+    // 🧠 MOTORES DE TRADUÇÃO E EXPLICABILIDADE (XAI)
     // =========================================================
+
+    static _extrairEvidenciasXAI(ev) {
+        const txVisual = ev.visual.total > 0 ? Math.round((ev.visual.acertos / ev.visual.total) * 100) : 0;
+        const txAbstrata = ev.abstrata.total > 0 ? Math.round((ev.abstrata.acertos / ev.abstrata.total) * 100) : 0;
+        
+        return {
+            acertoEmQuestoesVisuais: `${txVisual}% (${ev.visual.acertos}/${ev.visual.total})`,
+            acertoEmQuestoesAbstratas: `${txAbstrata}% (${ev.abstrata.acertos}/${ev.abstrata.total})`,
+            transferenciasFalhadas: ev.transferenciasFalhadas,
+            transferenciasBemSucedidas: ev.transferenciasBemSucedidas
+        };
+    }
+
+    static _calcularPrioridadeIntervencao(obstaculo) {
+        switch(obstaculo) {
+            case OBSTACULOS_COGNITIVOS.PSEUDOCONCEITO:
+            case OBSTACULOS_COGNITIVOS.FRICCAO_COGNITIVA_ALTA:
+                return "ALTA";
+            case OBSTACULOS_COGNITIVOS.DEPENDENCIA_VISUAL:
+            case OBSTACULOS_COGNITIVOS.MECANIZACAO_IMPULSIVA:
+                return "MÉDIA";
+            default:
+                return "BAIXA";
+        }
+    }
+
+    static _mapearTrajetoria(trajetoriaArray) {
+        if (!trajetoriaArray || trajetoriaArray.length === 0) return [];
+        return trajetoriaArray.map(t => ({
+            data: new Date(t.data).toLocaleDateString('pt-BR'),
+            estagio: this._formatarTextoAmigavel(t.para)
+        }));
+    }
+
+    static _traduzirProximaAcao(acaoCode) {
+        const dicionario = {
+            "FORCE_SEMIOTIC_TRANSITION": "Forçar transferência semiótica para formato abstrato",
+            "TRIGGER_CONCEPTUAL_RESET": "Aplicar representação atípica para gerar conflito cognitivo",
+            "INJECT_RHYTHMIC_LOCK": "Inserir bloqueio rítmico para forçar leitura atenta",
+            "REDUCE_COGNITIVE_LOAD": "Reduzir carga cognitiva e oferecer apoio estrutural concreto",
+            "PADRAO": "Manter exposição variada (Fluxo padrão)"
+        };
+        return dicionario[acaoCode] || this._formatarTextoAmigavel(acaoCode);
+    }
 
     static _traduzirObstaculo(obstaculo) {
         const dicionario = {
             [OBSTACULOS_COGNITIVOS.PSEUDOCONCEITO]: "Mecanização de regra errada (Pseudoconceito)",
-            [OBSTACULOS_COGNITIVOS.DEPENDENCIA_VISUAL]: "Dependência de representações visuais",
+            [OBSTACULOS_COGNITIVOS.DEPENDENCIA_VISUAL]: "Dependência de representações visuais/concretas",
             [OBSTACULOS_COGNITIVOS.MECANIZACAO_IMPULSIVA]: "Impulsividade / Falta de leitura atenta",
             [OBSTACULOS_COGNITIVOS.FRICCAO_COGNITIVA_ALTA]: "Sobrecarga Cognitiva (Múltiplos erros)",
             [OBSTACULOS_COGNITIVOS.NENHUM]: "Nenhum obstáculo detectado"
@@ -111,28 +156,21 @@ export class TeacherAnalyticsEngine {
         return dicionario[objetivo] || this._formatarTextoAmigavel(objetivo);
     }
 
-    /**
-     * O ápice do sistema: O que a IA sugere que o Professor faça presencialmente.
-     */
     static _gerarRecomendacaoDocente(boa, ev) {
         const obstaculo = boa.focoConceitual.obstaculoPrincipal;
 
         if (obstaculo === OBSTACULOS_COGNITIVOS.PSEUDOCONCEITO) {
             return `O aluno parece ter decorado uma regra falha para o conceito de ${boa.focoConceitual.conceitoAlvo}. Na próxima aula, peça para ele explicar COMO resolveu a questão, e não apenas o resultado.`;
         }
-        
         if (obstaculo === OBSTACULOS_COGNITIVOS.DEPENDENCIA_VISUAL) {
             return `O aluno resolve os problemas quando há imagens, mas trava na versão textual. A IA está forçando a transferência. Acompanhe se ele consegue descrever o que seria desenhado.`;
         }
-
         if (obstaculo === OBSTACULOS_COGNITIVOS.FRICCAO_COGNITIVA_ALTA) {
             return `ALERTA: O aluno está errando repetidamente. A IA reduziu a dificuldade, mas pode ser necessária uma intervenção presencial para revisar a base de ${boa.focoConceitual.conceitoAlvo}.`;
         }
-
         if (ev.estagioConceitual === "GENERALIZACAO_CONSOLIDADA") {
             return `Excelente desempenho. O aluno já internalizou o conceito e consegue operá-lo de forma abstrata. Pronto para novos desafios.`;
         }
-
         return `O estudante está progredindo adequadamente na transição conceitual. A IA está alternando formatos para fortalecer o aprendizado. Nenhuma ação presencial imediata é necessária.`;
     }
 
