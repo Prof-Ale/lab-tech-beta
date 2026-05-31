@@ -1,6 +1,7 @@
 /**
  * @fileoverview ContratosPedagogicos.js
  * @description Enums globais para padronização da mediação histórico-cultural.
+ * A "Linguagem Onipresente" (Ubiquitous Language) do LabTech.
  */
 
 export const FASES_GALPERIN = Object.freeze({
@@ -14,9 +15,9 @@ export const FASES_GALPERIN = Object.freeze({
 export const REPRESENTACOES_SEMIOTICAS = Object.freeze({
     CONCRETA: "CONCRETA",
     VISUAL: "VISUAL",
-    VISUAL_ATIPICA: "VISUAL_ATIPICA", // Para quebra de pseudoconceitos
-    TEXTUAL: "TEXTUAL",               // Foco em letramento matemático
-    ABSTRATA: "ABSTRATA",             // Algoritmos puros
+    VISUAL_ATIPICA: "VISUAL_ATIPICA", 
+    TEXTUAL: "TEXTUAL",               
+    ABSTRATA: "ABSTRATA",             
     QUALQUER: "QUALQUER"
 });
 
@@ -26,4 +27,22 @@ export const OBSTACULOS_COGNITIVOS = Object.freeze({
     MECANIZACAO_IMPULSIVA: "MECANIZACAO_IMPULSIVA",
     FRICCAO_COGNITIVA_ALTA: "FRICCAO_COGNITIVA_ALTA",
     NENHUM: "NENHUM"
+});
+
+export const OBJETIVOS_PEDAGOGICOS = Object.freeze({
+    DIAGNOSTICO_INICIAL: "DIAGNOSTICO_INICIAL",
+    REDUZIR_DEPENDENCIA_VISUAL: "REDUZIR_DEPENDENCIA_VISUAL",
+    QUEBRA_DE_MECANIZACAO: "QUEBRA_DE_MECANIZACAO",
+    INIBICAO_ARITMETICA: "INIBICAO_ARITMETICA",
+    RECONSTRUCAO_ESTRUTURAL: "RECONSTRUCAO_ESTRUTURAL",
+    AUTOMATIZACAO_CONSCIENTE: "AUTOMATIZACAO_CONSCIENTE"
+});
+
+export const ESTRATEGIAS_MEDIACAO = Object.freeze({
+    EXPLORATORIA: "EXPLORATORIA",
+    TRANSFERENCIA_SEMIOTICA: "TRANSFERENCIA_SEMIOTICA",
+    CONFLITO_COGNITIVO: "CONFLITO_COGNITIVO",
+    DESACELERACAO_COGNITIVA: "DESACELERACAO_COGNITIVA",
+    REDUCAO_DE_CARGA_COGNITIVA: "REDUCAO_DE_CARGA_COGNITIVA",
+    EXPOSICAO_VARIADA: "EXPOSICAO_VARIADA"
 });
