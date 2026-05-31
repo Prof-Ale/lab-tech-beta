@@ -2,12 +2,15 @@
  * @fileoverview MetacognitionEngine.js
  * @description Motor de Base Orientadora da Ação (BOA) baseado em Galperin e Davýdov.
  * Atua mediando a atenção do aluno para invariantes conceituais e estruturais.
- * EVOLUÇÃO 10.7.0: Orientação Baseada em Eventos, Estágio Conceitual e Invariantes.
+ * EVOLUÇÃO 10.7.1: Orientação Baseada em Eventos Persistentes, delegação de estagnação 
+ * para o ProfileEngine e rastreamento robusto do Estágio Conceitual.
  */
 
 const BOA_CONFIG = {
     CONFIANCA_MINIMA_IA: 40.0, // Exige que o perfil tenha alguma estabilidade
-    JANELA_EVENTOS_RECENTES: 1 // Analisa apenas a última rodada para eventos síncronos
+    JANELA_EVENTOS_RECENTES: 1, // Analisa apenas a última rodada para eventos síncronos
+    LIMITE_ERROS_SEQUENCIAIS: 3, // Queda vertiginosa de performance operacional
+    LIMITE_ESTAGNACAO_ESTAGIO: 5 // Qtd. de itens preso no mesmo estágio conceitual
 };
 
 // 🧠 MATRIZ DE ORIENTAÇÃO DA AÇÃO (Galperin/Davýdov)
@@ -53,16 +56,19 @@ export class MetacognitionEngine {
 
         const ev = hab.evidenciasConceituais;
         
+        // Inicializa o controle de consumo de eventos, se não existir
+        if (!hab.metaEventosConsumidos) {
+            hab.metaEventosConsumidos = {};
+        }
+        
         // 1. AVALIAÇÃO DE EVENTOS COGNITIVOS (Disparo Imediato)
-        const eventoAtivo = this._detectarEventoCognitivo(hab);
+        const eventoAtivo = this._detectarEventoCognitivo(hab, ev);
         if (eventoAtivo) {
             return MATRIZ_ORIENTACAO.EVENTOS[eventoAtivo];
         }
 
-        // 2. AVALIAÇÃO DE ESTADO ESTAGNADO (Substitui o intervalo fixo)
-        // Só orientamos com base no estágio se ele estiver estagnado nele há algum tempo,
-        // para não poluir a tela a cada questão.
-        if (this._deveOrientarPorEstagnacao(hab)) {
+        // 2. AVALIAÇÃO DE ESTADO ESTAGNADO (Delegação para o ProfileEngine)
+        if (this._deveOrientarPorEstagnacao(hab, ev)) {
             
             // Prioridade da Camada B
             if (MATRIZ_ORIENTACAO.ESTAGIOS_CONCEITUAIS[ev.estagioConceitual]) {
@@ -79,33 +85,28 @@ export class MetacognitionEngine {
     }
 
     /**
-     * Lê o rastro do ProfileEngine para detectar se ocorreu uma mudança epistemológica agora.
+     * Lê o rastro do ProfileEngine de forma resiliente a recarregamentos,
+     * detectando se ocorreu uma mudança epistemológica não consumida.
      */
-    static _detectarEventoCognitivo(hab) {
-        const ev = hab.evidenciasConceituais;
-        const totalItens = hab.itensRespondidos;
-
-        // A. Primeira transferência bem-sucedida confirmada agora?
-        if (ev.transferenciasBemSucedidas === 1 && ev.historicoTransferencia.length > 0) {
+    static _detectarEventoCognitivo(hab, ev) {
+        // A. Primeira transferência bem-sucedida (Resiliente)
+        if (ev.transferenciasBemSucedidas > 0 && ev.historicoTransferencia.length > 0) {
             const ultimoChoque = ev.historicoTransferencia[ev.historicoTransferencia.length - 1];
-            // Se o último choque foi correto e ocorreu nesta exata rodada (aproximação via array)
-            if (ultimoChoque.correto && ev.historicoTransferencia.length === ev.transferenciasBemSucedidas + ev.transferenciasFalhadas) {
-                // Marca temporal simples para não repetir o evento
-                if (!hab._metaFlag_PrimeiraTransf) {
-                    hab._metaFlag_PrimeiraTransf = true;
-                    return 'PRIMEIRA_TRANSFERENCIA_OK';
-                }
+            
+            if (ultimoChoque.correto && !hab.metaEventosConsumidos.primeiraTransferencia) {
+                hab.metaEventosConsumidos.primeiraTransferencia = Date.now(); 
+                return 'PRIMEIRA_TRANSFERENCIA_OK';
             }
         }
 
-        // B. Mudança de estágio conceitual nesta rodada?
-        if (ev.trajetoriaConceitual.length > 0) {
+        // B. Mudanças na Trajetória Conceitual (Resiliente)
+        if (ev.trajetoriaConceitual && ev.trajetoriaConceitual.length > 0) {
             const ultimaTransicao = ev.trajetoriaConceitual[ev.trajetoriaConceitual.length - 1];
-            if (!hab._metaFlag_UltimaTransicao || hab._metaFlag_UltimaTransicao !== ultimaTransicao.data) {
-                hab._metaFlag_UltimaTransicao = ultimaTransicao.data;
+            
+            if (!hab.metaEventosConsumidos.ultimaTransicao || hab.metaEventosConsumidos.ultimaTransicao !== ultimaTransicao.data) {
+                hab.metaEventosConsumidos.ultimaTransicao = ultimaTransicao.data;
                 
                 if (ultimaTransicao.para === 'EM_TRANSICAO_CONCEITUAL') return 'MUDANCA_ESTAGIO_TRANSICAO';
-                // Queda de generalização para pseudoconceito/transição
                 if (ultimaTransicao.de === 'GENERALIZACAO_CONSOLIDADA' && ultimaTransicao.para !== 'GENERALIZACAO_CONSOLIDADA') return 'QUEDA_ESTABILIDADE';
             }
         }
@@ -114,15 +115,16 @@ export class MetacognitionEngine {
     }
 
     /**
-     * Em vez de intervalos matemáticos arbitrários (ex: % 5 === 0),
-     * verifica se o aluno precisa de um "empurrão" da BOA por estar preso em um perfil.
+     * Verifica se o aluno precisa de mediação da BOA por estagnação operacional
+     * ou por aprisionamento em um estágio conceitual, consumindo do ProfileEngine.
      */
-    static _deveOrientarPorEstagnacao(hab) {
-        // Dispara se acumulou muitos erros sequenciais
-        if (hab.errosSequenciais === 3) return true;
+    static _deveOrientarPorEstagnacao(hab, ev) {
+        // 1. Queda vertiginosa de performance no operacional
+        if (hab.errosSequenciais >= BOA_CONFIG.LIMITE_ERROS_SEQUENCIAIS) return true;
 
-        // Dispara de tempos em tempos, mas atrelado ao volume de exposição àquela habilidade,
-        // garantindo que não colida com os eventos ativos.
-        return hab.itensRespondidos > 0 && hab.itensRespondidos % 6 === 0;
+        // 2. Estagnação baseada no Estado Conceitual (Fonte: ProfileEngine)
+        const presoNoEstagio = (ev.itensNoEstagioAtual || 0) >= BOA_CONFIG.LIMITE_ESTAGNACAO_ESTAGIO;
+
+        return presoNoEstagio;
     }
 }
