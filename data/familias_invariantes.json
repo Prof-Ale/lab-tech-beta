@@ -1,0 +1,29 @@
+{
+  "EQUIV_BASE10_CENTENA": {
+    "bncc": "EF06MA03",
+    "bnccDescricao": "Resolver e elaborar problemas que envolvam cálculos com números naturais...",
+    "conceito": "REAGRUPAMENTO",
+    "invariante": "CONSERVACAO_DE_QUANTIDADE",
+    "transformacao": "EQUIVALENCIA_REPRESENTACIONAL",
+    "relacaoFundamental": "1_CENTENA_EQUIVALE_10_DEZENAS",
+    "misconceptionsDesejadas": [
+      "CONTAGEM_ADITIVA_ERRONEA",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_VISUAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  }
+}
