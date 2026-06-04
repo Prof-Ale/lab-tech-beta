@@ -1,7 +1,8 @@
 /**
  * @fileoverview ProfileEngine.js
- * @description Motor de Inferência Cognitiva e Computacional de Formação de Conceitos (Teoria Histórico-Cultural).
- * EVOLUÇÃO 10.4.1: Rigor científico, versionamento de modelo, validação de pesos e controle de estagnação de estágio.
+ * @description Motor de Inferência Cognitiva e Computacional de Formação de Conceitos.
+ * EVOLUÇÃO v3.0.0: Rastreamento conceitual baseado em Estabilidade, Persistência de 
+ * Pseudoconceitos por Etiologia Específica, Dependência Representacional Quadrimodal e ITC por Conceito.
  * @package LabTech Core Environment
  */
 
@@ -13,18 +14,20 @@ export class ProfileEngine {
 
         // ⚙️ CAMADA DE CONFIGURAÇÃO CIENTÍFICA
         this._CONFIG = Object.freeze({
-            VERSAO_MODELO_CONCEITUAL: "ITC_v1",
+            VERSAO_MODELO_CONCEITUAL: "ITC_v3_ONTOLOGICO",
             LIMIAR_LATENCIA_IMPULSIVA_MS: 3500,
-            MASSA_CRITICA_CONCEITUAL: 8,
+            MASSA_CRITICA_CONCEITUAL: 6,
+            MIN_ITENS_PARA_DIAGNOSTICO: 3,
             
-            // Pesos do ITC (α + β + γ = 1.0)
-            PESO_ITC_ABSTRACAO: 0.50,
-            PESO_ITC_TRANSFERENCIA: 0.40,
-            PESO_ITC_INDEPENDENCIA: 0.10,
+            // Pesos do ITC Ajustados para as 4 Fases Semióticas (α + β + γ + δ = 1.0)
+            PESO_ITC_CONCRETO: 0.10,
+            PESO_ITC_VISUAL: 0.20,
+            PESO_ITC_TEXTUAL: 0.30,
+            PESO_ITC_ABSTRATO: 0.40,
 
             // Limiares de Classificação Conceitual
-            LIMIAR_PSEUDOCONCEITO: 0.35,
-            LIMIAR_GENERALIZACAO: 0.70,
+            LIMIAR_PSEUDOCONCEITO: 0.40,
+            LIMIAR_GENERALIZACAO: 0.75,
             LIMIAR_ESTABILIDADE_CONCEITUAL: 0.70
         });
 
@@ -32,9 +35,10 @@ export class ProfileEngine {
     }
 
     _validarConfiguracao() {
-        const somaPesos = this._CONFIG.PESO_ITC_ABSTRACAO + 
-                          this._CONFIG.PESO_ITC_TRANSFERENCIA + 
-                          this._CONFIG.PESO_ITC_INDEPENDENCIA;
+        const somaPesos = this._CONFIG.PESO_ITC_CONCRETO + 
+                          this._CONFIG.PESO_ITC_VISUAL + 
+                          this._CONFIG.PESO_ITC_TEXTUAL + 
+                          this._CONFIG.PESO_ITC_ABSTRATO;
 
         if (Math.abs(somaPesos - 1.0) > 0.001) {
             throw new Error(`[ProfileEngine] Falha na calibração: Pesos do ITC somam ${somaPesos}, esperado 1.0.`);
@@ -68,6 +72,7 @@ export class ProfileEngine {
         if (perfilSalvo) {
             if (!perfilSalvo.habilidades) {
                 perfilSalvo.habilidades = {};
+                perfilSalvo.perfilConceitual = {};
                 perfilSalvo.confiancaDiagnostica = perfilSalvo.confiancaDiagnostica || 0.0;
                 perfilSalvo.estadoADA = perfilSalvo.estadoADA || { acertosRapidosCombo: 0, emboscadaArmada: false };
             }
@@ -87,6 +92,11 @@ export class ProfileEngine {
             estabilidadeConceitual: 'INDEFINIDA',
             dependenciaScaffold: false,
             habilidades: {},
+            
+            // 🧠 NOVO OBJETO CENTRAL: MODELAGEM DE CONCEITOS ESTRUTURAIS PUROS (V3)
+            perfilConceitual: {},
+            registroPseudoconceitos: {}, 
+
             historicoLongitudinal: [],
             metricasAcumuladas: { totalLatenciaConceptual: 0, totalFriccaoAjustes: 0, errosSequenciais: 0, taxaAcertoGeral: 0.0 },
             scoreMatrizesPerfeitas: { PROCEDURAL_MECANICO: 0.0, DEPENDENTE_CONCRETO: 0.0, IMPULSIVO_ARITMETICO: 0.0, CONCEITUAL_TEORICO: 0.0 },
@@ -99,7 +109,7 @@ export class ProfileEngine {
         return JSON.parse(JSON.stringify(novoPerfil));
     }
 
-    _inicializarHabilidade(perfil, bncc) {
+    _inicializarHabilidade(perfil, bncc, conceitoEstrutural = "GERAL") {
         if (!perfil.habilidades[bncc]) {
             perfil.habilidades[bncc] = {
                 itensRespondidos: 0,
@@ -111,22 +121,36 @@ export class ProfileEngine {
                 zdp: { atual: 2, minimo: 1, maximo: 4 },
                 trajetoriaCognitiva: [],
                 
-                // 🧠 CAMADA B: Motor Computacional de Formação de Conceitos
                 evidenciasConceituais: {
-                    visual: { acertos: 0, total: 0 },
-                    abstrata: { acertos: 0, total: 0 },
+                    // 🧩 EVOLUÇÃO 2: Dependência Representacional Dinâmica Quadrimodal
+                    dependenciaRepresentacional: {
+                        CONCRETO: { acertos: 0, total: 0, indice: 0.0 },
+                        VISUAL: { acertos: 0, total: 0, indice: 0.0 },
+                        TEXTUAL: { acertos: 0, total: 0, indice: 0.0 },
+                        ABSTRATO: { acertos: 0, total: 0, indice: 0.0 }
+                    },
                     transferenciasBemSucedidas: 0,
                     transferenciasFalhadas: 0,
                     historicoTransferencia: [],
                     indiceTransferenciaConceitual: 0.0,
-                    indiceDependenciaVisual: 0.0,
                     indiceEstabilidadeConceitual: 0.0,
                     estagioConceitual: "EVIDENCIA_INSUFICIENTE",
-                    itensNoEstagioAtual: 0, // Adicionado rastreio de estagnação para consumo do MetacognitionEngine
+                    itensNoEstagioAtual: 0, 
                     trajetoriaConceitual: []
                 }
             };
         }
+
+        // Garante a inicialização paralela no novo Perfil Conceitual por Objeto Cognitivo Puro
+        if (!perfil.perfilConceitual[conceitoEstrutural]) {
+            perfil.perfilConceitual[conceitoEstrutural] = {
+                estabilidade: 0.0,
+                transferencia: 0.0,
+                pseudoconceitoPersistente: false,
+                totalInteracoes: 0
+            };
+        }
+
         return perfil.habilidades[bncc];
     }
     
@@ -143,8 +167,8 @@ export class ProfileEngine {
     }
 
     processarEventoTelemetria(estudanteId, dadosTelemetria, metadadosSensor) {
-        const normalizador = new QuestionNormalizer();
-        try { normalizador.normalize(metadadosSensor); } 
+        const normalizer = new QuestionNormalizer();
+        try { normalizer.normalize(metadadosSensor); } 
         catch (erro) { console.warn(`[ProfileEngine] Aviso: ${erro.message}`); }
 
         if (!this._estadosEstudantes.has(estudanteId)) this.inicializarEstudante(estudanteId);
@@ -156,30 +180,57 @@ export class ProfileEngine {
         const ehCorreto = foiCorreto; 
         
         const alternativaAlvo = metadadosSensor.alternativas?.find(alt => alt.id_alternativa === alternativaSelecionadaId || alt.id === alternativaSelecionadaId || alt.valor === alternativaSelecionadaId);
-        let etiologiaErro = alternativaAlvo ? (alternativaAlvo.misconception || alternativaAlvo.categoria || 'ERRO_GENERICO').toUpperCase() : 'ERRO_GENERICO';
+        let etiologiaErro = alternativaAlvo ? (alternativaAlvo.misconception || alternativaAlvo.erro || alternativaAlvo.categoria || 'ERRO_GENERICO').toUpperCase() : 'ERRO_GENERICO';
         
         const estagioAtual = (metadadosSensor.estagioGalperin || 'INTERNA_PURA').toUpperCase();
         const bncc = metadadosSensor.bncc || "GERAL";
-        const hab = this._inicializarHabilidade(perfil, bncc);
+        const conceitoEstrutural = metadadosSensor.conceitoEstrutural || "VALOR_POSICIONAL";
+
+        const hab = this._inicializarHabilidade(perfil, bncc, conceitoEstrutural);
         hab.itensRespondidos++;
+        perfil.perfilConceitual[conceitoEstrutural].totalInteracoes++;
 
         // -------------------------------------------------------------
-        // 🧩 MOTOR DE TRANSFERÊNCIA CONCEITUAL
+        // 🧩 REGISTRO DE DEPENDÊNCIA REPRESENTAÇÃO QUADRIMODAL (FASES)
         // -------------------------------------------------------------
         const contextoADA = metadadosSensor.contextoADA;
-        const repAtiva = contextoADA ? contextoADA.representacaoForcada : (metadadosSensor.representacao || 'visual');
-        const isAbstrata = repAtiva.includes('abstrato') || repAtiva.includes('SIMBOLICO') || repAtiva === 'reta';
-        const categoriaRep = isAbstrata ? 'abstrata' : 'visual';
+        const repAtiva = contextoADA ? contextoADA.representacaoForcada : (metadadosSensor.representacao || 'VISUAL');
+        
+        // Mapeia dinamicamente as strings de interface para os 4 slots ontológicos de Galperin
+        let slotRepresentacao = "VISUAL";
+        const repNormalizada = repAtiva.toUpperCase();
+        if (repNormalizada.includes('CONCRETO') || repNormalizada.includes('MATERIAL')) slotRepresentacao = "CONCRETO";
+        else if (repNormalizada.includes('TEXTUAL') || repNormalizada.includes('LINGUISTICA')) slotRepresentacao = "TEXTUAL";
+        else if (repNormalizada.includes('ABSTRATO') || repNormalizada.includes('SIMBOLICO') || repNormalizada.includes('RETA')) slotRepresentacao = "ABSTRATO";
 
-        hab.evidenciasConceituais[categoriaRep].total++;
-        if (ehCorreto) hab.evidenciasConceituais[categoriaRep].acertos++;
+        const dr = hab.evidenciasConceituais.dependenciaRepresentacional[slotRepresentacao];
+        dr.total++;
+        if (ehCorreto) dr.acertos++;
+        dr.indice = Number((dr.acertos / dr.total).toFixed(2));
+
+        // -------------------------------------------------------------
+        // 🚨 REGISTRO DE PERSISTÊNCIA DE PSEUDOCONCEITOS ESPECÍFICOS
+        // -------------------------------------------------------------
+        if (!ehCorreto && (etiologiaErro !== 'ERRO_GENERICO')) {
+            if (!perfil.registroPseudoconceitos[etiologiaErro]) {
+                perfil.registroPseudoconceitos[etiologiaErro] = {
+                    frequencia: 0,
+                    persistencia: "BAIXA",
+                    ultimaOcorrencia: ""
+                };
+            }
+            const rp = perfil.registroPseudoconceitos[etiologiaErro];
+            rp.frequencia++;
+            rp.ultimaOcorrencia = new Date().toISOString().split('T')[0];
+            
+            if (rp.frequencia >= 5) rp.persistencia = "CRÍTICA";
+            else if (rp.frequencia >= 3) rp.persistencia = "ALTA";
+            else rp.persistencia = "MODERADA";
+        }
 
         if (contextoADA && contextoADA.foiChoqueSemiotico) {
-            if (ehCorreto) {
-                hab.evidenciasConceituais.transferenciasBemSucedidas++;
-            } else {
-                hab.evidenciasConceituais.transferenciasFalhadas++;
-            }
+            if (ehCorreto) hab.evidenciasConceituais.transferenciasBemSucedidas++;
+            else hab.evidenciasConceituais.transferenciasFalhadas++;
 
             hab.evidenciasConceituais.historicoTransferencia.push({
                 data: new Date().toISOString(),
@@ -190,11 +241,11 @@ export class ProfileEngine {
             });
         }
 
-        // MANUTENÇÃO DA EMBOSCADA GLOBAL
+        // MANUTENÇÃO DA EMBOSCADA GLOBAL (Rastreamento Clínico de Automação Empírica)
         if (perfil.estadoADA.emboscadaArmada) {
             if (!ehCorreto || latenciaMs > 12000) {
                 perfil.indicePseudoconceito = Math.min(1.0, perfil.indicePseudoconceito + 0.3);
-                etiologiaErro = 'PSEUDOCONCEITO_EXPOSTO';
+                if (etiologiaErro === 'ERRO_GENERICO') etiologiaErro = 'PSEUDOCONCEITO_EXPOSTO';
             } else {
                 perfil.indicePseudoconceito = Math.max(0.0, perfil.indicePseudoconceito - 0.2);
             }
@@ -226,7 +277,7 @@ export class ProfileEngine {
 
         this._estabilizarPerfilDominante(perfil); 
         this._estabilizarPerfilDominanteDaHabilidade(hab); 
-        this._avaliarEstagioConceitual(hab, perfil);       
+        this._avaliarEstagioConceitual(hab, perfil, conceitoEstrutural);       
 
         this._avaliarZDP(hab); 
         this._calcularConfiancaInferencial(perfil); 
@@ -248,10 +299,6 @@ export class ProfileEngine {
         };
     }
 
-    // =========================================================
-    // 🧠 CAMADA B: MOTOR COMPUTACIONAL DE FORMAÇÃO DE CONCEITOS
-    // =========================================================
-    
     _calcularEstabilidade(ev) {
         const ultimosChoques = ev.historicoTransferencia.slice(-5);
         if (ultimosChoques.length > 1) {
@@ -269,34 +316,29 @@ export class ProfileEngine {
         }
     }
 
-    _avaliarEstagioConceitual(hab, perfilGlobal) {
+    _avaliarEstagioConceitual(hab, perfilGlobal, conceitoEstrutural) {
         const ev = hab.evidenciasConceituais;
-        const totalEvidencias = ev.visual.total + ev.abstrata.total;
+        const dr = ev.dependenciaRepresentacional;
+        
+        const totalEvidencias = dr.CONCRETO.total + dr.VISUAL.total + dr.TEXTUAL.total + dr.ABSTRATO.total;
         const totalTransferencias = ev.transferenciasBemSucedidas + ev.transferenciasFalhadas;
 
-        // Trava científica
-        if (totalEvidencias < this._CONFIG.MASSA_CRITICA_CONCEITUAL || totalTransferencias < 2) {
+        if (totalEvidencias < this._CONFIG.MASSA_CRITICA_CONCEITUAL) {
             this._atualizarEstagioConceitual(hab, "EVIDENCIA_INSUFICIENTE");
             return;
         }
 
-        const txVisual = ev.visual.total > 0 ? (ev.visual.acertos / ev.visual.total) : 0;
-        const txAbstrata = ev.abstrata.total > 0 ? (ev.abstrata.acertos / ev.abstrata.total) : 0;
-        const txTransferencia = totalTransferencias > 0 ? (ev.transferenciasBemSucedidas / totalTransferencias) : 0;
-        
-        ev.indiceDependenciaVisual = Math.max(0, txVisual - txAbstrata);
-        
-        // Cálculo do ITC com pesos configuráveis
+        // 🧩 EVOLUÇÃO 4: Cálculo Refinado do ITC Ponderado Quadrimodal
         const itcBruto = (
-            (txAbstrata * this._CONFIG.PESO_ITC_ABSTRACAO) + 
-            (txTransferencia * this._CONFIG.PESO_ITC_TRANSFERENCIA) + 
-            ((1 - ev.indiceDependenciaVisual) * this._CONFIG.PESO_ITC_INDEPENDENCIA)
+            (dr.CONCRETO.indice * this._CONFIG.PESO_ITC_CONCRETO) +
+            (dr.VISUAL.indice * this._CONFIG.PESO_ITC_VISUAL) +
+            (dr.TEXTUAL.indice * this._CONFIG.PESO_ITC_TEXTUAL) +
+            (dr.ABSTRATO.indice * this._CONFIG.PESO_ITC_ABSTRATO)
         );
         ev.indiceTransferenciaConceitual = Number(itcBruto.toFixed(2));
 
         this._calcularEstabilidade(ev);
 
-        // Inferência baseada em limiares configuráveis (versão final)
         let novoEstagio = ev.estagioConceitual;
 
         if (ev.indiceTransferenciaConceitual >= this._CONFIG.LIMIAR_GENERALIZACAO && 
@@ -312,25 +354,27 @@ export class ProfileEngine {
         }
 
         this._atualizarEstagioConceitual(hab, novoEstagio);
+
+        // Sincroniza e espelha as métricas agregadas na raiz ontológica do Perfil Conceitual
+        const pc = perfilGlobal.perfilConceitual[conceitoEstrutural];
+        pc.estabilidade = ev.indiceEstabilidadeConceitual;
+        pc.transferencia = ev.indiceTransferenciaConceitual;
+        pc.pseudoconceitoPersistente = (novoEstagio === "PSEUDOCONCEITO_ESTAVEL");
     }
 
     _atualizarEstagioConceitual(hab, novoEstagio) {
         const ev = hab.evidenciasConceituais;
         if (ev.estagioConceitual !== novoEstagio) {
-            // Mudança de estágio detectada
             ev.trajetoriaConceitual.push({
                 data: new Date().toISOString(),
                 de: ev.estagioConceitual,
                 para: novoEstagio,
                 itc: ev.indiceTransferenciaConceitual,
-                modelo: this._CONFIG.VERSAO_MODELO_CONCEITUAL // Rastreamento de versão
+                modelo: this._CONFIG.VERSAO_MODELO_CONCEITUAL
             });
             ev.estagioConceitual = novoEstagio;
-            
-            // Reseta contador de estagnação ao avançar/refluir estágio
             ev.itensNoEstagioAtual = 0; 
         } else {
-            // Incrementa contador de estagnação caso o estágio tenha se mantido
             ev.itensNoEstagioAtual = (ev.itensNoEstagioAtual || 0) + 1;
         }
     }
@@ -378,7 +422,6 @@ export class ProfileEngine {
     _avaliarZDP(hab) {
         const total = hab.acertos + hab.erros;
         if (total < 3) return;
-
         const taxaAcerto = hab.acertos / total;
 
         if (taxaAcerto >= 0.8 && hab.errosSequenciais === 0) {
@@ -390,7 +433,6 @@ export class ProfileEngine {
         }
     }
 
-    // 🧠 CIRURGIA 7: Confiança Inferencial afetada por Estabilidade Conceitual
     _calcularConfiancaInferencial(perfil) {
         if (perfil.itensRespondidos < this._CONFIG.MIN_ITENS_PARA_DIAGNOSTICO) {
             perfil.confiancaDiagnostica = 0.0;
@@ -416,7 +458,6 @@ export class ProfileEngine {
         });
         const pesoEstabilidade = countHabilidades > 0 ? (somaEstabilidade / countHabilidades) : 0;
 
-        // Distribuição de pesos: 40% Volume, 30% Consistência do Perfil, 30% Estabilidade Conceitual
         const confianca = (pesoVolume * 0.4) + (pesoConsistencia * 0.3) + (pesoEstabilidade * 0.3);
         perfil.confiancaDiagnostica = parseFloat((confianca * 100).toFixed(1));
     }
