@@ -1,8 +1,8 @@
 /**
  * @fileoverview BaseOrientadoraAtiva.js
- * @description Mecanismo de Arbitragem Pedagógica e Otimização da ZDP (BOA v2.1.0).
- * AGORA COM: Justificativa clínica explicável, índice de resiliência pedagógica 
- * e ramificação por estágio conceitual (Evitando retrocesso cego de fase).
+ * @description Mecanismo de Arbitragem Pedagógica e Otimização Dinâmica da ZDP (BOA v2.2.0).
+ * VERSÃO 2.2.0 (Sprint Limpo): Incorpora tratamento estrito para REGRESSAO_CONCEITUAL,
+ * lê as tendências dinâmicas do perfil e consome as diretrizes do vetor expandido da ADA.
  * @package LabTech / Core ADA
  */
 
@@ -13,7 +13,7 @@ export class BaseOrientadoraAtiva {
      */
     static criarNova(conceitoAlvo = "INDEFINIDO", familiaAlvo = "INDEFINIDO") {
         return {
-            versao: "BOA_v2.1.0_ADA_PROD",
+            versao: "BOA_v2.2.0_ADA_PROD",
             timestamp: new Date().toISOString(),
             focoCurricular: {
                 conceitoAlvo: conceitoAlvo,
@@ -23,7 +23,8 @@ export class BaseOrientadoraAtiva {
                 faseGalperinEfetiva: "MENTAL_ABSTRATA",
                 representacaoAtiva: "SIMBOLICA",
                 choqueSemioticoAtivo: false,
-                saturacaoCognitivaTratada: 0
+                saturacaoCognitivaTratada: 0,
+                intensidadeAplicada: "BAIXA"
             },
             auditoriaZDP: {
                 chancelaStatus: "AGUARDANDO_INTERACAO",
@@ -34,9 +35,9 @@ export class BaseOrientadoraAtiva {
     }
 
     /**
-     * Arbitra o plano bruto cruzando a clínica do erro com as vulnerabilidades do sujeito.
+     * Arbitra o plano bruto cruzando a clínica do erro com as vulnerabilidades e tendências do sujeito.
      * @param {Object} laudoDiagnostico - Retorno integral vindo do DiagnosticEngine.js v5.1.0
-     * @param {Object} perfilEstudante - Estado longitudinal extraído do ProfileEngine.js
+     * @param {Object} perfilEstudante - Estado longitudinal extraído do ProfileEngine.js v3.1.0
      * @returns {Object} Plano de Mediação Chancelado, Calibrado e Explicável para a UI e Analytics
      */
     static otimizarPlano(laudoDiagnostico, perfilEstudante = {}) {
@@ -53,95 +54,113 @@ export class BaseOrientadoraAtiva {
         const planoBruto = laudoDiagnostico.planoDeMediacao;
         const hipotese = laudoDiagnostico.hipoteseCognitiva;
 
-        // --- RESGATE DE VARIÁVEIS CLINICO-SUJEITIVAS (ProfileEngine) ---
+        // --- RESGATE DE VARIÁVEIS CLINICO-SUJEITIVAS EXPANDIDAS (ProfileEngine v3.1) ---
         const confiancaDiagnostica = hipotese.nivelConfiancaDiagnostica || 0.50;
         const persistenciaConceitual = perfilEstudante.indicePersistenciaConceitual || 0;
         const cargaFrustracao = perfilEstudante.cargaFrustracaoAcumulada || 0;
-        
-        // CIRURGIA A: Substituição de valores absolutos por propriedades dinâmicas do sujeito
         const resilienciaPedagogica = perfilEstudante.indiceResilienciaPedagogica !== undefined ? 
-                                      perfilEstudante.indiceResilienciaPedagogica : 0.50; // default médio
+                                      perfilEstudante.indiceResilienciaPedagogica : 0.50;
         
         const estagioConceitual = perfilEstudante.estagioConceitual || "DISRUPÇÃO_INICIAL";
+        
+        // Captura os novos indicadores de tendência ontológica e diretriz macro calculados pelo perfil
+        const conceitoAfetado = hipotese.conceitoAfetado || "GERAL";
+        const dadosPerfilConceito = perfilEstudante.perfilConceitual?.[conceitoAfetado] || {};
+        const tendenciaConceitual = dadosPerfilConceito.tendencia || "ESTÁVEL";
+        const diretrizADA = perfilEstudante.sugestaoAcaoADA || {};
 
-        // Inicializa o objeto de contrato lapidado
+        // Inicializa o objeto de contrato lapidado transportando os metadados dinâmicos
         let planoCalibrado = {
             executarIntervencao: true,
-            conceitoAfetado: hipotese.conceitoAfetado,
+            conceitoAfetado: conceitoAfetado,
             clusterTaxonomico: laudoDiagnostico.clusterTaxonomico,
             faseGalperin: planoBruto.faseGalperinSugerida || "VERBAL_EXPLICATIVA",
             representacaoPreferencial: planoBruto.representacaoPreferencial || "TEXTUAL",
             choqueSemioticoRecomendado: planoBruto.choqueSemioticoRecomendado || false,
             nivelConfiancaDiagnostica: confiancaDiagnostica,
+            intensidadeMediacao: diretrizADA.intensidadeMediacao || "MODERADA",
             
             objetivoDaIntervencao: planoBruto.objetivo,
             scaffoldOperacional: planoBruto.scaffoldOperacional,
             perguntaInvariante: planoBruto.perguntaInvariante,
             acaoReflexiva: planoBruto.acaoReflexiva,
             gatilhoVisual: planoBruto.gatilhoVisual,
-            motivoDaDecisao: "Configuração padrão baseada no laudo do diagnóstico."
+            motivoDaDecisao: "Configuração balanceada com base na biópsia inicial do erro."
         };
 
-        // --- ALGORITMO DE ARBITRAGEM DA ZDP (O MOTOR DA BOA v2.1.0) ---
+        // --- ALGORITMO DE ARBITRAGEM DA ZDP EVOLUÍDO (BOA v2.2.0) ---
         
-        // REGRA A (CIRURGIA B): Ramificação Avançada baseada no Estágio Conceitual do Sujeito
-        // Evita empurrar o aluno em transição de volta para o concreto se ele já demonstra sinais de verbalização.
-        if (confiancaDiagnostica >= 0.75 && persistenciaConceitual >= 2) {
+        // REGRA A: Ramificação por Estágio Conceitual Cruzada com Tendência de Longo Prazo
+        if (confiancaDiagnostica >= 0.75 && (persistenciaConceitual >= 2 || diretrizADA.comandoMacro === "FORCE_SEMIOTIC_TRANSITION")) {
             
             if (estagioConceitual === "PSEUDOCONCEITO_ESTAVEL") {
-                // Erro enraizado e automatizado. Força regressão radical de fase.
+                // Caso Clássico: Automação cega cristalizada. Recuo forçado ao concreto.
                 planoCalibrado.faseGalperin = "MATERIALIZADA_CONCRETA";
                 planoCalibrado.representacaoPreferencial = "BLOCO_MANIPULAVEL_DIGITAL";
                 planoCalibrado.gatilhoVisual = "[GATILHO_UI_FORCE_MATERIALIZADA_CONCRETA]";
-                planoCalibrado.objetivoDaIntervencao = `Romper pseudoconceito estabilizado de ${hipotese.conceitoAfetado} via regressão à fase materializada.`;
-                planoCalibrado.motivoDaDecisao = "Alta confiança diagnóstica combinada com Pseudoconceito Estável exige quebra empírica na fase materializada.";
+                planoCalibrado.intensidadeMediacao = "ALTA";
+                planoCalibrado.objetivoDaIntervencao = `Romper pseudoconceito estabilizado de ${conceitoAfetado} via regressão à fase materializada.`;
+                planoCalibrado.motivoDaDecisao = "Pseudoconceito Estável com alta confiança exige desautomatização na base materializada.";
             } 
             else if (estagioConceitual === "EM_TRANSICAO_CONCEITUAL") {
-                // Aluno em evolução. Jogá-lo no concreto seria um retrocesso clínico destrutivo. 
-                // A BOA segura o aluno na fase verbal externa para que ele formule logicamente.
+                // Caso de Evolução: Segura o aluno na verbalização explicativa para que ele formule a contradição.
                 planoCalibrado.faseGalperin = "VERBAL_EXPLICATIVA";
                 planoCalibrado.representacaoPreferencial = "AUDIO_TEXTO_LOGICO";
-                planoCalibrado.choqueSemioticoRecomendado = true; // Mantém o choque semiótico para chacoalhar a transição
+                planoCalibrado.choqueSemioticoRecomendado = true; // Chacoalha os registros semióticos
                 planoCalibrado.gatilhoVisual = "[GATILHO_UI_FORMULACAO_VERBAL_PROMPT]";
-                planoCalibrado.objetivoDaIntervencao = `Estimular a autoverificação liguística de ${hipotese.conceitoAfetado} mantendo o aluno na fase verbal de transição.`;
-                planoCalibrado.motivoDaDecisao = "O estudante está Em Transição Conceitual. Evitou-se o recuo para a fase materializada; ativou-se mediação verbal expressiva.";
+                planoCalibrado.intensidadeMediacao = "MODERADA";
+                planoCalibrado.objetivoDaIntervencao = `Provocar conflito de registros em ${conceitoAfetado} retendo o estudante na fase verbal de transição.`;
+                planoCalibrado.motivoDaDecisao = "Estudante Em Transição Conceitual. Evitou-se o retrocesso ao concreto; ativou-se choque semiótico na fase verbal.";
+            }
+            // 🚨 INJEÇÃO INÉDITA: TRATAMENTO CIRÚRGICO PARA REGRESSÃO CONCEITUAL LONGITUDINAL
+            else if (estagioConceitual === "REGRESSAO_CONCEITUAL" || tendenciaConceitual === "REGREDINDO") {
+                // O estudante já dominava a abstração, mas refluiu (esquecimento ou hiato). 
+                // Jogá-lo de volta ao concreto seria ofensivo/desmotivador; mantê-lo no abstrato geraria fricção.
+                // A BOA reza o manual de Galperin: ativa a Fase Verbal Externa Escrita/Linguística (Textual).
+                planoCalibrado.faseGalperin = "VERBAL_EXPLICATIVA";
+                planoCalibrado.representacaoPreferencial = "TEXTUAL_SQUEMATICA";
+                planoCalibrado.choqueSemioticoRecomendado = false; // Desativa choque para restabelecer a segurança cognitiva
+                planoCalibrado.gatilhoVisual = "[GATILHO_UI_RECONSTRUÇÃO_LINGUISTICA_CARD]";
+                planoCalibrado.intensidadeMediacao = "ALTA"; 
+                planoCalibrado.objetivoDaIntervencao = `Recompor o rastro de generalização de ${conceitoAfetado} afetado por volatilidade ou hiato temporal através de suporte linguístico.`;
+                planoCalibrado.motivoDaDecisao = "Regressão Conceitual ou Tendência Decrescente detectada pelo ProfileEngine. Ativado resgate assistido via fase verbal esquemática para reestabilizar o rastro abstrato.";
             }
         }
         
-        // REGRA B (CIRURGIA A): Gestão de Atividade Cruzada com Resiliência Pedagógica Dinâmica
-        // Alunos com baixa resiliência toleram menos erros antes da quebra do motivo leontieviano.
-        // Alunos altamente resilientes toleram o conflito por mais tempo sem necessitar de amortecimento.
-        const limiteFrustracaoExcedido = (resilienciaPedagogica < 0.4 && cargaFrustracao >= 2) || (cargaFrustracao >= 4);
+        // REGRA B: Gestão de Atividade Cruzada com Resiliência Pedagógica Dinâmica
+        const limiteFrustracaoExcedido = (resilienciaPedagogica < 0.4 && cargaFrustracao >= 2) || (cargaFrustracao >= 4) || (tendenciaConceitual === "ESTAGNADO" && cargaFrustracao >= 2);
 
         if (limiteFrustracaoExcedido) {
             planoCalibrado.faseGalperin = "VERBAL_EXPLICATIVA";
             planoCalibrado.representacaoPreferencial = "TEXTUAL_REFLEXIVA";
-            planoCalibrado.choqueSemioticoRecomendado = false; // Aborta choque preventivamente
+            planoCalibrado.choqueSemioticoRecomendado = false; // Aborta choques preventivamente
             planoCalibrado.gatilhoVisual = "[GATILHO_UI_DICA_SUAVE_MODAL]";
-            planoCalibrado.objetivoDaIntervencao = "Atenuar a fricção cognitiva para mitigar saturação emocional e preservar o motivo da atividade.";
+            planoCalibrado.intensidadeMediacao = "MÍNIMA";
+            planoCalibrado.objetivoDaIntervencao = "Atenuar a fricção cognitiva para mitigar saturação emocional e preservar o motivo leontieviano.";
             planoCalibrado.scaffoldOperacional = `Respire fundo! Vamos olhar para o problema por outro ângulo. ${planoCalibrado.scaffoldOperacional}`;
-            planoCalibrado.motivoDaDecisao = `Limite de fricção cognitiva excedido para o perfil de resiliência do sujeito (Nível: ${resilienciaPedagogica.toFixed(2)} / Carga: ${cargaFrustracao}). Intervenção amortecida.`;
+            planoCalibrado.motivoDaDecisao = `Fricção crítica tolerada pelo perfil (Resiliência: ${resilienciaPedagogica.toFixed(2)} / Tendência: ${tendenciaConceitual}). Intervenção amortecida linguisticamente para evitar abandono da atividade.`;
         }
 
-        // REGRA C: Baixa Confiança Diagnóstica (Prevenção de Overdiagnosis)
-        // Se a certeza do diagnóstico for pífia, não aplica o plano severo do item. Força reflexão leve.
+        // REGRA C: Prevenção de Overdiagnosis baseada em Incerteza do Sensor
         if (confiancaDiagnostica < 0.55 && !limiteFrustracaoExcedido) {
             planoCalibrado.faseGalperin = "MENTAL_ABSTRATA";
             planoCalibrado.representacaoPreferencial = "SIMBOLICA_CONCEITUAL";
             planoCalibrado.choqueSemioticoRecomendado = false;
             planoCalibrado.gatilhoVisual = "[GATILHO_UI_REVISAO_RAPIDA]";
+            planoCalibrado.intensidadeMediacao = "BAIXA";
             planoCalibrado.perguntaInvariante = "Dê uma olhadinha rápida na sua escolha. O que motivou a sua seleção?";
-            planoCalibrado.objetivoDaIntervencao = "Mediação de baixa intensidade baseada em incerteza do sensor diagnóstico.";
-            planoCalibrado.motivoDaDecisao = `Confiança diagnóstica abaixo do limiar de segurança (${confiancaDiagnostica.toFixed(2)}). Aplicada verificação metacognitiva simples na fase mental.`;
+            planoCalibrado.objetivoDaIntervencao = "Mediação de baixa intensidade ativada por margem de incerteza diagnóstica.";
+            planoCalibrado.motivoDaDecisao = `Confiança do sensor abaixo do limiar de segurança (${confiancaDiagnostica.toFixed(2)}). Aplicada verificação metacognitiva leve diretamente na fase mental.`;
         }
 
-        // --- CIRURGIA C: INJEÇÃO DA CHANCELA EXPLICÁVEL PARA O TEACHER ANALYTICS ---
+        // --- CHANCELA EXPLICÁVEL CONSOLIDADA PARA O TEACHER ANALYTICS V2 ---
         planoCalibrado.chancelaBOA = {
             statusCalculo: limiteFrustracaoExcedido ? "ZDP_AMORTECIDA" : "ZDP_OTIMIZADA",
-            cargaFrustracaoTratada: cargaFrustracao,
             faseEfetivaAlocada: planoCalibrado.faseGalperin,
             grauConfiancaValidado: confiancaDiagnostica,
-            motivoDaDecisao: planoCalibrado.motivoDaDecisao // XAI pedagógico puro na ponta
+            intensidadeEfetiva: planoCalibrado.intensidadeMediacao,
+            tendenciaSujeitoTratada: tendenciaConceitual,
+            motivoDaDecisao: planoCalibrado.motivoDaDecisao 
         };
 
         return planoCalibrado;
