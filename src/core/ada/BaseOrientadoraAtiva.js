@@ -1,140 +1,149 @@
 /**
  * @fileoverview BaseOrientadoraAtiva.js
- * @description Estrutura de Mediação Baseada em Galperin (BOA v1.2).
- * Modela a fase da mediação (o que a ADA deve oferecer) e não o status passivo do aluno.
- * EVOLUÇÃO 11.2.0: Consumo total de Contratos Pedagógicos (Objetivos e Estratégias).
- * @package LabTech Core Environment
+ * @description Mecanismo de Arbitragem Pedagógica e Otimização da ZDP (BOA v2.1.0).
+ * AGORA COM: Justificativa clínica explicável, índice de resiliência pedagógica 
+ * e ramificação por estágio conceitual (Evitando retrocesso cego de fase).
+ * @package LabTech / Core ADA
  */
 
-import { 
-    FASES_GALPERIN, 
-    REPRESENTACOES_SEMIOTICAS, 
-    OBSTACULOS_COGNITIVOS,
-    OBJETIVOS_PEDAGOGICOS,
-    ESTRATEGIAS_MEDIACAO
-} from './ContratosPedagogicos.js';
-
 export class BaseOrientadoraAtiva {
-    
-    static criarNova(conceitoAlvo = "INDEFINIDO", invarianteAlvo = "INDEFINIDO") {
+    /**
+     * Fábrica de instanciação para novos fluxos de aprendizagem.
+     * Preserva o padrão estático e determinístico client-side.
+     */
+    static criarNova(conceitoAlvo = "INDEFINIDO", familiaAlvo = "INDEFINIDO") {
         return {
-            versao: "BOA_v1.2",
-            
-            estadoAtual: {
-                faseMediacao: FASES_GALPERIN.MATERIALIZADA, 
-                estagioConceitual: "EVIDENCIA_INSUFICIENTE",
-                perfilOperacional: "INDEFINIDO",
-                itc: 0.0,
-                estabilidade: 0.0
-            },
-            
-            focoConceitual: {
+            versao: "BOA_v2.1.0_ADA_PROD",
+            timestamp: new Date().toISOString(),
+            focoCurricular: {
                 conceitoAlvo: conceitoAlvo,
-                invarianteAlvo: invarianteAlvo,
-                obstaculoPrincipal: OBSTACULOS_COGNITIVOS.NENHUM,
-                objetivoAtual: OBJETIVOS_PEDAGOGICOS.DIAGNOSTICO_INICIAL
+                familiaAlvo: familiaAlvo
             },
-            
-            planoDeMediacao: {
-                estrategia: ESTRATEGIAS_MEDIACAO.EXPLORATORIA,
-                representacaoPreferencial: REPRESENTACOES_SEMIOTICAS.VISUAL,
-                tipoIntervencao: "DIAGNOSTICO",
-                proximaAcao: "PADRAO",
-                mensagemMetacognitiva: "Observe as características principais."
+            estadoMediacao: {
+                faseGalperinEfetiva: "MENTAL_ABSTRATA",
+                representacaoAtiva: "SIMBOLICA",
+                choqueSemioticoAtivo: false,
+                saturacaoCognitivaTratada: 0
             },
-            
-            // 🧠 Hipóteses para v2 (Inferência Bayesiana)
-            hipotesesPedagogicas: [
-                /* Exemplo futuro:
-                { hipotese: OBSTACULOS_COGNITIVOS.PSEUDOCONCEITO, confianca: 0.83 },
-                { hipotese: OBSTACULOS_COGNITIVOS.DEPENDENCIA_VISUAL, confianca: 0.62 }
-                */
-            ], 
-            
-            historico: {
-                criadoEm: new Date().toISOString(),
-                ultimaAtualizacao: new Date().toISOString(),
-                intervencoesAplicadas: 0,
-                transferenciasObservadas: 0
+            auditoriaZDP: {
+                chancelaStatus: "AGUARDANDO_INTERACAO",
+                confiancaAlocada: 1.0,
+                motivoDaDecisao: "Aguardando primeira interação do estudante."
             }
         };
     }
 
-    static atualizarBase(boa, perfil, hab) {
-        boa.historico.ultimaAtualizacao = new Date().toISOString();
+    /**
+     * Arbitra o plano bruto cruzando a clínica do erro com as vulnerabilidades do sujeito.
+     * @param {Object} laudoDiagnostico - Retorno integral vindo do DiagnosticEngine.js v5.1.0
+     * @param {Object} perfilEstudante - Estado longitudinal extraído do ProfileEngine.js
+     * @returns {Object} Plano de Mediação Chancelado, Calibrado e Explicável para a UI e Analytics
+     */
+    static otimizarPlano(laudoDiagnostico, perfilEstudante = {}) {
+        // Se for um acerto ou o laudo for espúrio, desativa o scaffold ativo
+        if (!laudoDiagnostico || laudoDiagnostico.correto) {
+            return {
+                executarIntervencao: false,
+                faseGalperin: "MENTAL_ABSTRATA",
+                representacaoPreferencial: "SIMBOLICA_CONCEITUAL",
+                outputAda: null
+            };
+        }
+
+        const planoBruto = laudoDiagnostico.planoDeMediacao;
+        const hipotese = laudoDiagnostico.hipoteseCognitiva;
+
+        // --- RESGATE DE VARIÁVEIS CLINICO-SUJEITIVAS (ProfileEngine) ---
+        const confiancaDiagnostica = hipotese.nivelConfiancaDiagnostica || 0.50;
+        const persistenciaConceitual = perfilEstudante.indicePersistenciaConceitual || 0;
+        const cargaFrustracao = perfilEstudante.cargaFrustracaoAcumulada || 0;
         
-        boa.estadoAtual.estagioConceitual = hab.evidenciasConceituais.estagioConceitual;
-        boa.estadoAtual.perfilOperacional = hab.perfilDominante;
-        boa.estadoAtual.itc = hab.evidenciasConceituais.indiceTransferenciaConceitual;
-        boa.estadoAtual.estabilidade = hab.evidenciasConceituais.indiceEstabilidadeConceitual;
+        // CIRURGIA A: Substituição de valores absolutos por propriedades dinâmicas do sujeito
+        const resilienciaPedagogica = perfilEstudante.indiceResilienciaPedagogica !== undefined ? 
+                                      perfilEstudante.indiceResilienciaPedagogica : 0.50; // default médio
+        
+        const estagioConceitual = perfilEstudante.estagioConceitual || "DISRUPÇÃO_INICIAL";
 
-        this._identificarObstaculo(boa, perfil, hab);
-        this._mapearEstrategiaMediacao(boa);
+        // Inicializa o objeto de contrato lapidado
+        let planoCalibrado = {
+            executarIntervencao: true,
+            conceitoAfetado: hipotese.conceitoAfetado,
+            clusterTaxonomico: laudoDiagnostico.clusterTaxonomico,
+            faseGalperin: planoBruto.faseGalperinSugerida || "VERBAL_EXPLICATIVA",
+            representacaoPreferencial: planoBruto.representacaoPreferencial || "TEXTUAL",
+            choqueSemioticoRecomendado: planoBruto.choqueSemioticoRecomendado || false,
+            nivelConfiancaDiagnostica: confiancaDiagnostica,
+            
+            objetivoDaIntervencao: planoBruto.objetivo,
+            scaffoldOperacional: planoBruto.scaffoldOperacional,
+            perguntaInvariante: planoBruto.perguntaInvariante,
+            acaoReflexiva: planoBruto.acaoReflexiva,
+            gatilhoVisual: planoBruto.gatilhoVisual,
+            motivoDaDecisao: "Configuração padrão baseada no laudo do diagnóstico."
+        };
 
-        return boa;
-    }
-
-    static _identificarObstaculo(boa, perfil, hab) {
-        if (perfil.indicePseudoconceito > 0.6 || boa.estadoAtual.estagioConceitual === "PSEUDOCONCEITO_ESTAVEL") {
-            boa.focoConceitual.obstaculoPrincipal = OBSTACULOS_COGNITIVOS.PSEUDOCONCEITO;
-        } else if (hab.evidenciasConceituais.indiceDependenciaVisual > 0.4) {
-            boa.focoConceitual.obstaculoPrincipal = OBSTACULOS_COGNITIVOS.DEPENDENCIA_VISUAL;
-        } else if (hab.perfilDominante === "IMPULSIVO_ARITMETICO") {
-            boa.focoConceitual.obstaculoPrincipal = OBSTACULOS_COGNITIVOS.MECANIZACAO_IMPULSIVA;
-        } else if (hab.errosSequenciais >= 2) {
-            boa.focoConceitual.obstaculoPrincipal = OBSTACULOS_COGNITIVOS.FRICCAO_COGNITIVA_ALTA;
-        } else {
-            boa.focoConceitual.obstaculoPrincipal = OBSTACULOS_COGNITIVOS.NENHUM;
+        // --- ALGORITMO DE ARBITRAGEM DA ZDP (O MOTOR DA BOA v2.1.0) ---
+        
+        // REGRA A (CIRURGIA B): Ramificação Avançada baseada no Estágio Conceitual do Sujeito
+        // Evita empurrar o aluno em transição de volta para o concreto se ele já demonstra sinais de verbalização.
+        if (confiancaDiagnostica >= 0.75 && persistenciaConceitual >= 2) {
+            
+            if (estagioConceitual === "PSEUDOCONCEITO_ESTAVEL") {
+                // Erro enraizado e automatizado. Força regressão radical de fase.
+                planoCalibrado.faseGalperin = "MATERIALIZADA_CONCRETA";
+                planoCalibrado.representacaoPreferencial = "BLOCO_MANIPULAVEL_DIGITAL";
+                planoCalibrado.gatilhoVisual = "[GATILHO_UI_FORCE_MATERIALIZADA_CONCRETA]";
+                planoCalibrado.objetivoDaIntervencao = `Romper pseudoconceito estabilizado de ${hipotese.conceitoAfetado} via regressão à fase materializada.`;
+                planoCalibrado.motivoDaDecisao = "Alta confiança diagnóstica combinada com Pseudoconceito Estável exige quebra empírica na fase materializada.";
+            } 
+            else if (estagioConceitual === "EM_TRANSICAO_CONCEITUAL") {
+                // Aluno em evolução. Jogá-lo no concreto seria um retrocesso clínico destrutivo. 
+                // A BOA segura o aluno na fase verbal externa para que ele formule logicamente.
+                planoCalibrado.faseGalperin = "VERBAL_EXPLICATIVA";
+                planoCalibrado.representacaoPreferencial = "AUDIO_TEXTO_LOGICO";
+                planoCalibrado.choqueSemioticoRecomendado = true; // Mantém o choque semiótico para chacoalhar a transição
+                planoCalibrado.gatilhoVisual = "[GATILHO_UI_FORMULACAO_VERBAL_PROMPT]";
+                planoCalibrado.objetivoDaIntervencao = `Estimular a autoverificação liguística de ${hipotese.conceitoAfetado} mantendo o aluno na fase verbal de transição.`;
+                planoCalibrado.motivoDaDecisao = "O estudante está Em Transição Conceitual. Evitou-se o recuo para a fase materializada; ativou-se mediação verbal expressiva.";
+            }
         }
-    }
+        
+        // REGRA B (CIRURGIA A): Gestão de Atividade Cruzada com Resiliência Pedagógica Dinâmica
+        // Alunos com baixa resiliência toleram menos erros antes da quebra do motivo leontieviano.
+        // Alunos altamente resilientes toleram o conflito por mais tempo sem necessitar de amortecimento.
+        const limiteFrustracaoExcedido = (resilienciaPedagogica < 0.4 && cargaFrustracao >= 2) || (cargaFrustracao >= 4);
 
-    static _mapearEstrategiaMediacao(boa) {
-        const obstaculo = boa.focoConceitual.obstaculoPrincipal;
-
-        switch (obstaculo) {
-            case OBSTACULOS_COGNITIVOS.DEPENDENCIA_VISUAL:
-                boa.estadoAtual.faseMediacao = FASES_GALPERIN.VERBAL_EXTERNA;
-                boa.focoConceitual.objetivoAtual = OBJETIVOS_PEDAGOGICOS.REDUZIR_DEPENDENCIA_VISUAL;
-                boa.planoDeMediacao.estrategia = ESTRATEGIAS_MEDIACAO.TRANSFERENCIA_SEMIOTICA;
-                boa.planoDeMediacao.proximaAcao = "FORCE_SEMIOTIC_TRANSITION";
-                boa.planoDeMediacao.representacaoPreferencial = REPRESENTACOES_SEMIOTICAS.ABSTRATA;
-                boa.planoDeMediacao.mensagemMetacognitiva = "O que permanece igual quando a imagem muda?";
-                break;
-                
-            case OBSTACULOS_COGNITIVOS.PSEUDOCONCEITO:
-                boa.estadoAtual.faseMediacao = FASES_GALPERIN.MATERIALIZADA_VISUAL;
-                boa.focoConceitual.objetivoAtual = OBJETIVOS_PEDAGOGICOS.QUEBRA_DE_MECANIZACAO;
-                boa.planoDeMediacao.estrategia = ESTRATEGIAS_MEDIACAO.CONFLITO_COGNITIVO;
-                boa.planoDeMediacao.proximaAcao = "TRIGGER_CONCEPTUAL_RESET";
-                boa.planoDeMediacao.representacaoPreferencial = REPRESENTACOES_SEMIOTICAS.VISUAL_ATIPICA;
-                boa.planoDeMediacao.mensagemMetacognitiva = "Será que essa regra funciona em todos os casos? Vamos testar.";
-                break;
-
-            case OBSTACULOS_COGNITIVOS.MECANIZACAO_IMPULSIVA:
-                boa.estadoAtual.faseMediacao = FASES_GALPERIN.VERBAL_INTERNA;
-                boa.focoConceitual.objetivoAtual = OBJETIVOS_PEDAGOGICOS.INIBICAO_ARITMETICA;
-                boa.planoDeMediacao.estrategia = ESTRATEGIAS_MEDIACAO.DESACELERACAO_COGNITIVA;
-                boa.planoDeMediacao.proximaAcao = "INJECT_RHYTHMIC_LOCK";
-                boa.planoDeMediacao.representacaoPreferencial = REPRESENTACOES_SEMIOTICAS.TEXTUAL;
-                boa.planoDeMediacao.mensagemMetacognitiva = "Leia o problema em voz alta antes de calcular.";
-                break;
-                
-            case OBSTACULOS_COGNITIVOS.FRICCAO_COGNITIVA_ALTA:
-                boa.estadoAtual.faseMediacao = FASES_GALPERIN.MATERIALIZADA;
-                boa.focoConceitual.objetivoAtual = OBJETIVOS_PEDAGOGICOS.RECONSTRUCAO_ESTRUTURAL;
-                boa.planoDeMediacao.estrategia = ESTRATEGIAS_MEDIACAO.REDUCAO_DE_CARGA_COGNITIVA;
-                boa.planoDeMediacao.proximaAcao = "REDUCE_COGNITIVE_LOAD";
-                boa.planoDeMediacao.representacaoPreferencial = REPRESENTACOES_SEMIOTICAS.CONCRETA;
-                boa.planoDeMediacao.mensagemMetacognitiva = "Vamos voltar um passo e observar as partes que formam este problema.";
-                break;
-                
-            default:
-                boa.estadoAtual.faseMediacao = FASES_GALPERIN.MENTAL;
-                boa.focoConceitual.objetivoAtual = OBJETIVOS_PEDAGOGICOS.AUTOMATIZACAO_CONSCIENTE;
-                boa.planoDeMediacao.estrategia = ESTRATEGIAS_MEDIACAO.EXPOSICAO_VARIADA;
-                boa.planoDeMediacao.proximaAcao = "PADRAO";
-                boa.planoDeMediacao.representacaoPreferencial = REPRESENTACOES_SEMIOTICAS.QUALQUER;
-                boa.planoDeMediacao.mensagemMetacognitiva = "Você dominou a essência! Tente resolver aplicando seu conhecimento em um novo contexto.";
+        if (limiteFrustracaoExcedido) {
+            planoCalibrado.faseGalperin = "VERBAL_EXPLICATIVA";
+            planoCalibrado.representacaoPreferencial = "TEXTUAL_REFLEXIVA";
+            planoCalibrado.choqueSemioticoRecomendado = false; // Aborta choque preventivamente
+            planoCalibrado.gatilhoVisual = "[GATILHO_UI_DICA_SUAVE_MODAL]";
+            planoCalibrado.objetivoDaIntervencao = "Atenuar a fricção cognitiva para mitigar saturação emocional e preservar o motivo da atividade.";
+            planoCalibrado.scaffoldOperacional = `Respire fundo! Vamos olhar para o problema por outro ângulo. ${planoCalibrado.scaffoldOperacional}`;
+            planoCalibrado.motivoDaDecisao = `Limite de fricção cognitiva excedido para o perfil de resiliência do sujeito (Nível: ${resilienciaPedagogica.toFixed(2)} / Carga: ${cargaFrustracao}). Intervenção amortecida.`;
         }
+
+        // REGRA C: Baixa Confiança Diagnóstica (Prevenção de Overdiagnosis)
+        // Se a certeza do diagnóstico for pífia, não aplica o plano severo do item. Força reflexão leve.
+        if (confiancaDiagnostica < 0.55 && !limiteFrustracaoExcedido) {
+            planoCalibrado.faseGalperin = "MENTAL_ABSTRATA";
+            planoCalibrado.representacaoPreferencial = "SIMBOLICA_CONCEITUAL";
+            planoCalibrado.choqueSemioticoRecomendado = false;
+            planoCalibrado.gatilhoVisual = "[GATILHO_UI_REVISAO_RAPIDA]";
+            planoCalibrado.perguntaInvariante = "Dê uma olhadinha rápida na sua escolha. O que motivou a sua seleção?";
+            planoCalibrado.objetivoDaIntervencao = "Mediação de baixa intensidade baseada em incerteza do sensor diagnóstico.";
+            planoCalibrado.motivoDaDecisao = `Confiança diagnóstica abaixo do limiar de segurança (${confiancaDiagnostica.toFixed(2)}). Aplicada verificação metacognitiva simples na fase mental.`;
+        }
+
+        // --- CIRURGIA C: INJEÇÃO DA CHANCELA EXPLICÁVEL PARA O TEACHER ANALYTICS ---
+        planoCalibrado.chancelaBOA = {
+            statusCalculo: limiteFrustracaoExcedido ? "ZDP_AMORTECIDA" : "ZDP_OTIMIZADA",
+            cargaFrustracaoTratada: cargaFrustracao,
+            faseEfetivaAlocada: planoCalibrado.faseGalperin,
+            grauConfiancaValidado: confiancaDiagnostica,
+            motivoDaDecisao: planoCalibrado.motivoDaDecisao // XAI pedagógico puro na ponta
+        };
+
+        return planoCalibrado;
     }
 }
