@@ -1,0 +1,61 @@
+{
+  "FAM_INV_002_SISTEMA_DE_NUME": {
+    "bncc": "EF06MA01",
+    "bnccDescricao": "Valor Posicional",
+    "conceito": "SISTEMA_DE_NUMERACAO_E_BASE",
+    "invariante": "VALOR_POSICIONAL_E_AGRUPAMENTO",
+    "transformacao": "COMPOSICAO_DECOMPOSICAO_DECIMAL",
+    "relacaoFundamental": "O número é resultado do processo de medição de uma grandeza por uma unidade de medida... A grandeza total depende da posição (ordem) que ocupa.",
+    "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL",
+    "representacoes": {
+      "CONCRETA": {
+        "id": "FAM_002_CONCRETA",
+        "display": "No tabuleiro do Material Dourado, se 1 placa vale 100 e 1 barra vale 10, quantas placas e barras são necessárias para representar o algarismo 8 no número 5.847?",
+        "res": "8 placas",
+        "alternativas": [
+          {"valor": "8 placas", "tipo": "acerto"},
+          {"valor": "8 barras soltas", "tipo": "erro", "misconception": "PSEUDOCONCEITO", "descricao": "Considerou apenas o valor absoluto do dígito 8 na visualização física."},
+          {"valor": "8 cubos de mil", "tipo": "erro", "misconception": "FRICCAO_COGNITIVA_ALTA", "descricao": "Confundiu a ordem da centena com a unidade de milhar."}
+        ],
+        "passo": "O algarismo 8 ocupa a casa das centenas, logo vale 800. São necessárias 8 placas de 100.",
+        "dica": "Lembre-se que cada placa representa um agrupamento de 100 unidades."
+      },
+      "VISUAL": {
+        "id": "FAM_002_VISUAL",
+        "display": "[IMAGEM_RETA_NUMERICA] Observe o gráfico com o ponto demarcado na terceira posição da classe das centenas entre 5.000 e 6.000. Qual o valor exato deste marcador?",
+        "res": "800",
+        "alternativas": [
+          {"valor": "800", "tipo": "acerto"},
+          {"valor": "8", "tipo": "erro", "misconception": "DEPENDENCIA_VISUAL", "descricao": "Leu o número puramente pelo indicador visual isolado."},
+          {"valor": "80", "tipo": "erro", "misconception": "MECANIZACAO_IMPULSIVA", "descricao": "Erro na leitura de escala decimal da reta gráfico."}
+        ],
+        "passo": "O marcador aponta para a casa das centenas na posição 8, indicando 800.",
+        "dica": "Conte os intervalos decimais entre os marcos principais do gráfico."
+      },
+      "TEXTUAL": {
+        "id": "FAM_002_TEXTUAL",
+        "display": "A família de um estudante recebeu uma conta de luz indicando um consumo mensal de 5.847 kWh. Escrito por extenso, quantas centenas completas existem cadastrados nesse consumo?",
+        "res": "8 centenas",
+        "alternativas": [
+          {"valor": "8 centenas", "tipo": "acerto"},
+          {"valor": "8 unidades", "tipo": "erro", "misconception": "PSEUDOCONCEITO", "descricao": "Confunde o conceito gramatical/textual de ordem com unidade simples."},
+          {"valor": "80 centenas", "tipo": "erro", "misconception": "FRICCAO_COGNITIVA_ALTA", "descricao": "Multiplicação indevida da ordem posicional expressa textualmente."}
+        ],
+        "passo": "No número cinco mil oitocentos e quarenta e sete, o termo oitocentos equivale a 8 centenas.",
+        "dica": "Isole o som da palavra que representa a terceira ordem posicional."
+      },
+      "ABSTRATA": {
+        "id": "FAM_002_ABSTRATA",
+        "display": "No número cardinal puro 5.847, qual é o valor posicional numérico do algarismo 8?",
+        "res": "800",
+        "alternativas": [
+          {"valor": "800", "tipo": "acerto"},
+          {"valor": "8", "tipo": "erro", "misconception": "PSEUDOCONCEITO", "descricao": "Considerou apenas o valor absoluto do dígito, ignorando a posição na base 10."},
+          {"valor": "80", "tipo": "erro", "misconception": "FRICCAO_COGNITIVA_ALTA", "descricao": "Atribuiu valor de dezena à ordem posicional da centena."}
+        ],
+        "passo": "O 8 está na terceira ordem (centenas). Multiplicamos: 8 × 100 = 800.",
+        "dica": "Multiplique o algarismo pelo valor base da sua respectiva coluna decimal."
+      }
+    }
+  }
+}
