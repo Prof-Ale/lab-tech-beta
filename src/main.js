@@ -1,7 +1,7 @@
 /**
- * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v1.7.0 - GOLD MASTER)
- * CIRURGIA COMPLEMENTAR: Correção de ReferenceError de importação, normalização 
- * ontológica via MAPEADOR_REPRESENTACAO_UI e sincronização estrita de choqueExecutado.
+ * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v1.8.0 - GOLD MASTER FINAL)
+ * CIRURGIA DE COUPLING: Conexão síncrona do DiagnosticEngine real, normalização 
+ * ontológica via MAPEADOR, fim de variáveis globais window e injeção de contexto.
  * @package LabTech Core Environment
  */
 
@@ -9,12 +9,12 @@ import { G } from './engine/gameState.js';
 import { initDebugMode } from './engine/debugMode.js';
 import { ProfileEngine } from './core/ada/ProfileEngine.js';
 import { DiagnosticEngine } from './core/ada/DiagnosticEngine.js'; 
-import { BaseOrientadoraAtiva } from './core/ada/BaseOrientadoraAtiva.js'; // 💉 CIRURGIA 1: INCORPORAÇÃO OBRIGATÓRIA CONTRA REFERENCE_ERROR
+import { BaseOrientadoraAtiva } from './core/ada/BaseOrientadoraAtiva.js'; 
 import { MetacognitionEngine } from './core/ada/MetacognitionEngine.js';
 import { AdaptiveSelector } from './core/ada/AdaptiveSelector.js';
 import { LearningAnalytics } from './core/ada/LearningAnalytics.js';
 import { AdaptiveAudioEngine } from './core/ada/AdaptiveAudioEngine.js';
-import { MAPEADOR_REPRESENTACAO_UI } from './core/ada/ContratosPedagogicos.js'; // 💉 INJEÇÃO DO TRADUTOR ONTOLÓGICO SANITÁRIO
+import { MAPEADOR_REPRESENTACAO_UI } from './core/ada/ContratosPedagogicos.js'; 
 import { CanvasRenderer } from './ui/canvasRenderer.js';
 import * as uiManager from './ui/uiManager.js';
 
@@ -28,7 +28,7 @@ let renderizadorGrafico = null;
 
 // ⚡ VETORES DE CONTROLE CLÍNICO DE SESSÃO REAL DE PRODUÇÃO ITS
 let ultimoLaudoRealADA = null;
-let planoChanceladoBOAAtivo = null; // Centraliza o plano calculado para a rodada corrente
+let planoChanceladoBOAAtivo = null; 
 let questaoAtivaNoCanvas = null;
 
 // --- FUNÇÕES DE DASHBOARD ---
@@ -87,9 +87,7 @@ async function processarResposta(alt, q) {
     const isAcerto = (alt.tipo === "acerto" || alt.correta === true || String(alt.valor) === String(q.res));
     const familiaIdActiva = q.familiaInvarianteId || q.familia_alvo || q.familiaAlvo || "GERAL";
 
-    // =========================================================================
-    // 🩸 PASSO 1: BIÓPSIA COGNITIVA REAL VIA DIAGNOSTICENGINE (FIM DA SIMULAÇÃO)
-    // =========================================================================
+    // 🩸 PASSO 1: BIÓPSIA COGNITIVA REAL VIA DIAGNOSTICENGINE
     if (G.motorDiagnostico) {
         ultimoLaudoRealADA = G.motorDiagnostico.analisarAlternativa(alt, familiaIdActiva, G.perfilCognitivo);
     } else {
@@ -97,8 +95,9 @@ async function processarResposta(alt, q) {
         ultimoLaudoRealADA = { correto: isAcerto, planoDeMediacao: { choqueSemioticoRecomendado: false } };
     }
 
-    // Retém imutavelmente a questão atual como rastro físico de origem para a próxima transição
-    window.__QUESTAO_ORIGEM_CHOQUE__ = JSON.parse(JSON.stringify(q));
+    // Retém no Contexto Adaptativo a questão imutável como origem (Fim das globais window)
+    if (!G.contextoAdaptativo) G.contextoAdaptativo = {};
+    G.contextoAdaptativo.questaoOrigem = JSON.parse(JSON.stringify(q));
 
     // ==========================================
     // UI FEEDBACK REACTION & ÁUDIO DINÂMICO
@@ -144,10 +143,10 @@ async function processarResposta(alt, q) {
                 foiCorreto: isAcerto
             };
             
-            // --- CIRURGIA 3: EXTRAI A EXECUÇÃO REAL DO SUCESSO DE INTERFACE DO SELETOR ---
-            const choqueEfetivamenteExecutado = !!window.__CHOQUE_CONFIRMADO_EXECUÇÃO__;
+            // EXTRAI A EXECUÇÃO REAL DE SUCESSO LENDO DO CONTEXTO INJETADO
+            const choqueEfetivamenteExecutado = !!G.contextoAdaptativo.choqueExecutado;
 
-            // --- CIRURGIA 2: SANITIZAÇÃO DE ENUMS VIA MAPEADOR_REPRESENTACAO_UI NO PAYLOAD DO ITC ---
+            // SANITIZAÇÃO DE ENUMS VIA MAPEADOR_REPRESENTACAO_UI NO PAYLOAD DO ITC
             const representacaoOriginalCrua = (q.representacaoPrincipal || 'VISUAL').toUpperCase();
             const representacaoOriginalHigienizada = MAPEADOR_REPRESENTACAO_UI[representacaoOriginalCrua] || representacaoOriginalCrua;
 
@@ -160,7 +159,7 @@ async function processarResposta(alt, q) {
                 contextoADA: {
                     representacaoOriginal: representacaoOriginalHigienizada,
                     representacaoForcada: representacaoForcadaHigienizada,
-                    foiChoqueSemiotico: choqueEfetivamenteExecutado // Medição limpa: Somente true se a questão irmã rodou fisicamente
+                    foiChoqueSemiotico: choqueEfetivamenteExecutado
                 }
             };
             
@@ -246,8 +245,11 @@ function iniciarBloco(id) {
     ultimoLaudoRealADA = null;
     planoChanceladoBOAAtivo = null;
     questaoAtivaNoCanvas = null;
-    window.__QUESTAO_ORIGEM_CHOQUE__ = null;
-    window.__CHOQUE_CONFIRMADO_EXECUÇÃO__ = false;
+    
+    // Inicia o contexto adaptativo limpo acoplado no GameState
+    if (!G.contextoAdaptativo) G.contextoAdaptativo = {};
+    G.contextoAdaptativo.questaoOrigem = null;
+    G.contextoAdaptativo.choqueExecutado = false;
 
     proximaQ();
 }
@@ -258,15 +260,15 @@ function proximaQ() {
     if (fb) fb.style.display = 'none';
     document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
     
-    // --- PASSO A: ARBITRAGEM PREDITIVA DA ZDP VIA BASEORIENTADORAATIVA (CHANCELADA SEM RE-ENTRY BUG) ---
+    // PASSO A: ARBITRAGEM PREDITIVA DA ZDP VIA BOA
     planoChanceladoBOAAtivo = BaseOrientadoraAtiva.otimizarPlano(ultimoLaudoRealADA, G.perfilCognitivo);
     
-    // --- PASSO B: SELEÇÃO TÁTICA ATÓMICA NO CATALOGO GLOBAL DE PRODUÇÃO ---
+    // PASSO B: SELEÇÃO TÁTICA ATÓMICA PASSANDO O CONTEXTO POR REFERÊNCIA
     const q = AdaptiveSelector.selecionarProximaQuestao(
         G.currentBlock, 
         G.perfilCognitivo, 
         planoChanceladoBOAAtivo, 
-        window.__QUESTAO_ORIGEM_CHOQUE__ 
+        G.contextoAdaptativo 
     );
     
     if (!q) {
@@ -284,11 +286,10 @@ function renderQ(q, planoBOA) {
     $('grid-botoes').innerHTML = '';
     $('btn-prox')?.classList.add('hidden');
     
-    // Ajusta o envelopamento estrito do item injetando modificadores visuais e scaffolds de apoio
-    const tarefaPronta = AdaptiveSelector.prepararTarefaParaInterface(q, planoBOA, window.__QUESTAO_ORIGEM_CHOQUE__);
+    // Ajusta o envelopamento do item consumindo o estado injetado
+    const tarefaPronta = AdaptiveSelector.prepararTarefaParaInterface(q, planoBOA, G.contextoAdaptativo);
     const modoRepresentacao = tarefaPronta.interfaceModifiers?.modoRepresentacao || 'visual';
     
-    // Injeção dinâmica e controle sobrio dos painéis textuais de suporte gerenciados pela BOA
     const painelScaffold = $('ada-scaffold-container');
     if (painelScaffold) {
         if (tarefaPronta.interfaceModifiers.exibirPainelScaffold && tarefaPronta.contextoADA?.scaffoldOperacional) {
@@ -315,7 +316,7 @@ function renderQ(q, planoBOA) {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("🚀 [SISTEMA v1.7.0] Motor LabTech Gold Master Operante. Sincronização e Conexão Totais.");
+    console.log("🚀 [SISTEMA v1.8.0] Motor LabTech Gold Master Operante. Sincronização e Conexão Totais.");
     
     try { await AdaptiveSelector.carregarBancoDeQuestoes(); } catch (e) { alert("Falha na leitura física do catálogo."); }
     initDebugMode();
@@ -388,7 +389,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.addEventListener('keydown', (e) => {
         if (!e.altKey) return;
         
-        // 👁️‍🗨️ ALT + P: Dispara o Painel Diagnóstico Docente Rico com a Matriz de Transição
+        // 👁️‍🗨️ ALT + P: Dispara o Painel Diagnóstico Docente Rico
         if (e.key.toLowerCase() === 'p') {
             if (!G.perfilCognitivo) { 
                 alert("⚠️ Calibração pendente. Inicialize o bloco e responda a pelo menos um item."); 
@@ -415,7 +416,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
-        // 📖 ALT + J: Dispara o Novo Glossário de Fundamentação Teórica da IA (XAI Docente)
+        // 📖 ALT + J: Dispara o Glossário de Fundamentação Teórica da IA
         if (e.key.toLowerCase() === 'j') {
             import('./ui/TeacherAnalyticsView.js').then(({ TeacherAnalyticsView }) => {
                 TeacherAnalyticsView.renderizarGlossarioDocente();
