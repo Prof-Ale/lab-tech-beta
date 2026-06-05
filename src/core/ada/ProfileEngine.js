@@ -1,8 +1,8 @@
 /**
  * @fileoverview ProfileEngine.js
  * @description Motor de Inferência Cognitiva e Repositório Clínico-Conceitual.
- * VERSÃO 3.1.0 (Sprint Limpo): Pesos dinâmicos por conceito, cálculo de tendência,
- * estado de regressão conceitual, fallback ontológico via Registry e diretriz expandida para a ADA.
+ * VERSÃO 3.2.0 (Sprint Conectada): Integração estatística do Índice de Transferência Conceitual (ITC),
+ * detecção de regressão imediata e governança do Choque Semiótico Controlado.
  * @package LabTech Core Environment
  */
 
@@ -18,7 +18,7 @@ export class ProfileEngine {
 
         // ⚙️ CONFIGURAÇÃO DE DIRETRIZES TÉCNICAS GERAIS
         this._CONFIG = Object.freeze({
-            VERSAO_MODELO_CONCEITUAL: "ITC_v3.1_PRODUCTION",
+            VERSAO_MODELO_CONCEITUAL: "ITC_v3.2_PRODUCTION",
             LIMIAR_LATENCIA_IMPULSIVA_MS: 3500,
             MASSA_CRITICA_CONCEITUAL: 6,
             MIN_ITENS_PARA_DIAGNOSTICO: 3,
@@ -78,7 +78,7 @@ export class ProfileEngine {
             dependenciaScaffold: false,
             habilidades: {},
             
-            // Reposórios Clínico-Ontológicos Centrais
+            // Repositórios Clínico-Ontológicos Centrais
             perfilConceitual: {},
             registroPseudoconceitos: {}, 
 
@@ -124,14 +124,13 @@ export class ProfileEngine {
             };
         }
 
-        // CIRURGIA 2: Expansão do objeto com tendência e carimbo temporal de modificação clínico-pedagógica
         if (!perfil.perfilConceitual[conceitoEstrutural]) {
             perfil.perfilConceitual[conceitoEstrutural] = {
                 estabilidade: 0.0,
                 transferencia: 0.0,
                 pseudoconceitoPersistente: false,
                 totalInteracoes: 0,
-                tendencia: "ESTÁVEL", // Opções: ESTÁVEL, MELHORANDO, REGREDINDO
+                tendencia: "ESTÁVEL", 
                 ultimaAtualizacao: new Date().toISOString().split('T')[0]
             };
         }
@@ -159,12 +158,11 @@ export class ProfileEngine {
         const bncc = metadadosSensor.bncc || "GERAL";
         const familiaAlvo = metadadosSensor.familia_alvo || metadadosSensor.familiaAlvo;
 
-        // --- CIRURGIA 4: DETECÇÃO DE FONTE DE VERDADE VIA FAMILY REGISTRY (GARANTIA ONTOLÓGICA) ---
         let conceitoEstrutural = "GERAL";
         if (familiaAlvo && this.familyRegistry[familiaAlvo]) {
             conceitoEstrutural = this.familyRegistry[familiaAlvo].conceitoEstrutural;
         } else {
-            conceitoEstrutural = metadadosSensor.conceitoEstrutural || "VALOR_POSICIONAL"; // Fallback defensivo
+            conceitoEstrutural = metadadosSensor.conceitoEstrutural || "VALOR_POSICIONAL"; 
         }
 
         const hab = this._inicializarHabilidade(perfil, bncc, conceitoEstrutural);
@@ -174,9 +172,6 @@ export class ProfileEngine {
         pc.totalInteracoes++;
         pc.ultimaAtualizacao = new Date().toISOString().split('T')[0];
 
-        // -------------------------------------------------------------
-        // 🧩 REGISTRO DE DEPENDÊNCIA REPRESENTAÇÃO QUADRIMODAL (FASES)
-        // -------------------------------------------------------------
         const contextoADA = metadadosSensor.contextoADA;
         const repAtiva = contextoADA ? contextoADA.representacaoForcada : (metadadosSensor.representacao || 'VISUAL');
         
@@ -191,9 +186,6 @@ export class ProfileEngine {
         if (ehCorreto) dr.acertos++;
         dr.indice = Number((dr.acertos / dr.total).toFixed(2));
 
-        // -------------------------------------------------------------
-        // 🚨 CIRURGIA 3 (PARTE 1): PERSISTÊNCIA DE PSEUDOCONCEITOS POR ETIOLOGIA
-        // -------------------------------------------------------------
         if (!ehCorreto && (etiologiaErro !== 'ERRO_GENERICO')) {
             if (!perfil.registroPseudoconceitos[etiologiaErro]) {
                 perfil.registroPseudoconceitos[etiologiaErro] = { frequencia: 0, persistencia: "BAIXA", ultimaOcorrencia: "" };
@@ -220,7 +212,6 @@ export class ProfileEngine {
             });
         }
 
-        // MANUTENÇÃO DA EMBOSCADA GLOBAL
         if (perfil.estadoADA.emboscadaArmada) {
             if (!ehCorreto || latenciaMs > 12000) {
                 perfil.indicePseudoconceito = Math.min(1.0, perfil.indicePseudoconceito + 0.3);
@@ -264,7 +255,6 @@ export class ProfileEngine {
 
         this._avaliarZDP(hab); 
         this._calcularConfiancaInferencial(perfil); 
-        this._registrarSnapshotTemporal(perfil); 
 
         this._estadosEstudantes.set(estudanteId, perfil);
         this._salvarLocal(estudanteId, perfil);
@@ -310,7 +300,6 @@ export class ProfileEngine {
             return;
         }
 
-        // --- CIRURGIA 1: DESACOPLAMENTO DE PESOS CARREGADOS DINAMICAMENTE DA ONTOLOGIA ---
         let pesosConceito = this._CONFIG.FALLBACK_PESOS_ITC;
         if (familiaId && this.familyRegistry[familiaId] && this.familyRegistry[familiaId].pesosAjustadosITC) {
             pesosConceito = this.familyRegistry[familiaId].pesosAjustadosITC;
@@ -327,7 +316,6 @@ export class ProfileEngine {
 
         this._calcularEstabilidade(ev);
 
-        // --- CIRURGIA 3 (PARTE 2): COMPUTAÇÃO DOS QUATRO ESTÁGIOS INCLUINDO REGRESSÃO ---
         let novoEstagio = ev.estagioConceitual;
         const estagioAnterior = ev.estagioConceitual;
 
@@ -338,7 +326,6 @@ export class ProfileEngine {
         else if (ev.indiceTransferenciaConceitual >= this._CONFIG.LIMIAR_PSEUDOCONCEITO && 
                  ev.indiceTransferenciaConceitual < this._CONFIG.LIMIAR_GENERALIZACAO) {
             
-            // Se o aluno já estava consolidado e os índices despencaram, carimba-se cientificamente a regressão
             if (estagioAnterior === "GENERALIZACAO_CONSOLIDADA") {
                 novoEstagio = "REGRESSAO_CONCEITUAL";
             } else {
@@ -351,7 +338,6 @@ export class ProfileEngine {
 
         this._atualizarEstagioConceitual(hab, novoEstagio);
 
-        // --- CIRURGIA 2 (PARTE 2): ANÁLISE COMPUTAÇÃO DA TENDÊNCIA CONCEITUAL ---
         const pc = perfilGlobal.perfilConceitual[conceitoEstrutural];
         
         let tendenciaCalculada = "ESTÁVEL";
@@ -465,7 +451,6 @@ export class ProfileEngine {
         perfil.confiancaDiagnostica = parseFloat((confianca * 100).toFixed(1));
     }
 
-    // --- CIRURGIA 5:VETOR DE DIRETRIZ EXPANDIDO PARA MÁXIMA PRECISÃO DA BOA E ADAPTIVE_SELECTOR ---
     _gerarDiretrizIntervencaoADA(perfil, hab, etiologiaErro, representacaoAtual) {
         const d = { 
             comandoMacro: 'PADRAO', 
