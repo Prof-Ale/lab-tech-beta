@@ -371,76 +371,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('[data-action="seletor"]').forEach(btn => btn.onclick = () => { fecharM('go'); mostrarSeletorBlocos(); });
     [1,2,3,4,5,6,7].forEach(i => on(`btn-bloco-${i}`, () => iniciarBloco(i)));
 
+// ============================================================================
+    // 🎛️ CAPTURA DE ATALHOS GLOBAIS DE ENGENHARIA E INTERFACE DOCENTE (XAI)
+    // ============================================================================
     document.addEventListener('keydown', (e) => {
         if (!e.altKey) return;
         
+        // 👁️‍🗨️ ALT + P: Dispara o Painel Diagnóstico Docente Rico com a Matriz de Transição
         if (e.key.toLowerCase() === 'p') {
-            if (!G.perfilCognitivo) { alert("⚠️ Calibração pendente."); return; }
+            if (!G.perfilCognitivo) { 
+                alert("⚠️ Calibração pendente. Inicialize o bloco e responda a pelo menos um item."); 
+                return; 
+            }
             G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
 
-            let mDoc = $('modal-docente-xai');
-            if (!mDoc) {
-                mDoc = document.createElement('div'); mDoc.id = 'modal-docente-xai'; mDoc.className = 'modal';
-                mDoc.innerHTML = `
-                <div class="mc" style="max-width: 650px; border: 2px solid var(--choco-gold, #d4af37); background: #0a0a0a; position: relative; padding: 25px 20px;">
-                    <button class="mx" style="position: absolute; top: 15px; right: 35px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer; z-index: 1000;" onclick="document.getElementById('modal-docente-xai').classList.remove('active')">✕</button>
-                    <div id="content-docente-xai" style="max-height: 70vh; overflow-y: auto; padding-right: 15px; margin-top: 10px;"></div>
-                </div>`;
-                document.body.appendChild(mDoc);
-            }
-
-            const renderizarPainel = () => {
-                const html = typeof LearningAnalytics.gerarPainelDocenteHTML === 'function' 
-                    ? LearningAnalytics.gerarPainelDocenteHTML(G.perfilCognitivo) 
-                    : (typeof LearningAnalytics.gerarPainelDocente === 'function' ? LearningAnalytics.gerarPainelDocente(G.perfilCognitivo) : "<p style='color:red;'>Painel indisponível.</p>");
+            // Importação assíncrona limpa para evitar sobrecarga de bundle no cliente
+            import('./ui/TeacherAnalyticsView.js').then(({ TeacherAnalyticsView }) => {
+                TeacherAnalyticsView.renderizarPainelDocente(G.perfilCognitivo);
                 
-                $('content-docente-xai').innerHTML = html;
-                const btnValidar = $('btn-ia-validar');
-                const btnRefutar = $('btn-ia-refutar');
-                if (btnValidar) btnValidar.onclick = () => { G.perfilCognitivo.validacaoHumana = 'VALIDADO'; G.perfilCognitivo.confiancaDiagnostica = 99.9; renderizarPainel(); };
-                if (btnRefutar) btnRefutar.onclick = () => { G.perfilCognitivo.validacaoHumana = 'REFUTADO'; G.perfilCognitivo.confiancaDiagnostica = 10.0; renderizarPainel(); };
-                const btnExportXai = $('btn-export-xai-csv');
-                if (btnExportXai) btnExportXai.onclick = () => LearningAnalytics.exportarCSV(G.nome, G.historico);
-            };
-
-            renderizarPainel();
-            mDoc.classList.add('active');
+                // Amarra síncronamente os botões de validação humana gerados dinamicamente na View
+                const btnValidar = document.getElementById('btn-ia-validar');
+                const btnRefutar = document.getElementById('btn-ia-refutar');
+                
+                if (btnValidar) btnValidar.onclick = () => { 
+                    G.perfilCognitivo.validacaoHumana = 'VALIDADO'; 
+                    G.perfilCognitivo.confiancaDiagnostica = 99.9; 
+                    TeacherAnalyticsView.renderizarPainelDocente(G.perfilCognitivo); 
+                };
+                if (btnRefutar) btnRefutar.onclick = () => { 
+                    G.perfilCognitivo.validacaoHumana = 'REFUTADO'; 
+                    G.perfilCognitivo.confiancaDiagnostica = 10.0; 
+                    TeacherAnalyticsView.renderizarPainelDocente(G.perfilCognitivo); 
+                };
+            });
         }
 
+        // 📖 ALT + J: Dispara o Novo Glossário de Fundamentação Teórica da IA (XAI Docente)
         if (e.key.toLowerCase() === 'j') {
-            let modalGlossario = $('modal-glossario-xai');
-            if (!modalGlossario) {
-                modalGlossario = document.createElement('div');
-                modalGlossario.id = 'modal-glossario-xai';
-                modalGlossario.className = 'modal';
-                modalGlossario.innerHTML = `
-                    <div class="mc" style="max-width: 650px; border: 2px solid var(--neon-cyan, #00eaff); background: #0a0a0a; text-align: left; padding: 25px; position: relative;">
-                        <button class="mx" style="position: absolute; top: 15px; right: 20px; font-size: 22px; color: #888; background: none; border: none; cursor: pointer;" onclick="document.getElementById('modal-glossario-xai').classList.remove('active')">✕</button>
-                        <h2 style="color: var(--neon-cyan, #00eaff); text-align: center; font-family: 'Orbitron', sans-serif; margin-top: 0;">📖 GLOSSÁRIO DA I.A. (XAI)</h2>
-                        <hr style="border: 1px solid #333; margin: 15px 0;">
-                        <div style="max-height: 60vh; overflow-y: auto; padding-right: 15px; font-family: 'Nunito', sans-serif; color: #ddd; font-size: 13px; line-height: 1.6;">
-                            <h3 style="color: var(--choco-gold, #d4af37); font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px;">1. OS QUATRO PERFIS COGNITIVOS</h3>
-                            <ul style="padding-left: 15px; margin-bottom: 20px;">
-                                <li style="margin-bottom: 10px;"><b style="color:white;">CONCEITUAL TEÓRICO:</b> Compreende a regra profunda e aplica com segurança.</li>
-                                <li style="margin-bottom: 10px;"><b style="color:white;">PROCEDURAL MECÂNICO:</b> Acerta porque decorou a regra prática, mas não entende o porquê.</li>
-                                <li style="margin-bottom: 10px;"><b style="color:white;">DEPENDENTE CONCRETO:</b> Necessita de materialização gráfica constante.</li>
-                                <li style="margin-bottom: 10px;"><b style="color:white;">IMPULSIVO ARITMÉTICO:</b> Erra por pressa e cliques velozes.</li>
-                            </ul>
-                        </div>
-                    </div>
-                `;
-                document.body.appendChild(modalGlossario);
-            }
-            modalGlossario.classList.add('active');
+            import('./ui/TeacherAnalyticsView.js').then(({ TeacherAnalyticsView }) => {
+                TeacherAnalyticsView.renderizarGlossarioDocente();
+            });
         }
 
+        // 🎥 ALT + R: Mantém o Replay/Timeline cru de passos da sessão atual
         if (e.key.toLowerCase() === 'r') {
             if (!G.logSessao || G.logSessao.length === 0) {
                 alert("⚠️ Nenhuma ação gravada nesta sessão ainda.");
                 return;
             }
 
-            let mVar = $('modal-var-pedagogico');
+            let mVar = document.getElementById('modal-var-pedagogico');
             if (!mVar) {
                 mVar = document.createElement('div'); 
                 mVar.id = 'modal-var-pedagogico'; 
@@ -482,5 +462,5 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>`;
             mVar.classList.add('active');
         }
-    });
-});
+    }); // <-- Fecha corretamente o keydown listener
+}); // <-- Fecha corretamente o DOMContentLoaded da inicialização do main.js
