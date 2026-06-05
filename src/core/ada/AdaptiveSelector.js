@@ -1,11 +1,12 @@
 /**
  * @fileoverview AdaptiveSelector.js
- * @description O Tutor Cirúrgico da ADA. Ponte Executora da Base Orientadora Ativa (BOA).
- * EVOLUÇÃO 11.0.0: Consumidor puro da BOA, abandono de deduções próprias e uso de Filtros Táticos.
+ * @description Executor da Interface ADA e Orquestrador Semiótico.
+ * VERSÃO 12.1.0 (Sprint Limpo): Acoplamento estrito à Ontologia 6.0.0 e BOA v2.2.
+ * Executa Choques Semióticos controlados via Famílias Invariantes e unifica telemetria.
  * @package LabTech / Core ADA
  */
 
-import { REPRESENTACOES_SEMIOTICAS, OBSTACULOS_COGNITIVOS } from './ContratosPedagogicos.js';
+import { REPRESENTACOES_SEMIOTICAS, MAPEADOR_REPRESENTACAO_UI, INTERFACE_RENDERERS } from './ContratosPedagogicos.js';
 
 export class AdaptiveSelector {
     
@@ -17,172 +18,211 @@ export class AdaptiveSelector {
     }
 
     /**
-     * 🧠 Filtro Tático (Camada Executora)
-     * Filtra o banco de questões procurando os metadados ideais para confrontar o obstáculo.
+     * 🧠 Filtro Tático (Camada Executora de Produção)
+     * @private
      */
-    static _aplicarFiltrosTaticos(candidatos, obstaculo) {
-        switch (obstaculo) {
-            case OBSTACULOS_COGNITIVOS.MECANIZACAO_IMPULSIVA:
-                // O aluno está "chutando" contas. Exigimos leitura atenta e letramento.
-                return candidatos.filter(item => item.exigeLeituraAtenta === true || item.cargaCognitiva === "ALTA");
+    static _aplicarFiltrosTaticos(candidatos, intensidade, faseGalperin) {
+        if (!candidatos || candidatos.length === 0) return [];
+
+        switch (intensidade) {
+            case "MÍNIMA":
+                return candidatos.filter(item => item.cargaCognitiva === "BAIXA" || item.dificuldade_interna === "FACIL");
                 
-            case OBSTACULOS_COGNITIVOS.FRICCAO_COGNITIVA_ALTA:
-                // O aluno está sobrecarregado (erros sequenciais). Reduzimos a complexidade estrutural.
-                return candidatos.filter(item => item.cargaCognitiva === "BAIXA" || item.cargaCognitiva === "MEDIA");
-                
-            case OBSTACULOS_COGNITIVOS.PSEUDOCONCEITO:
-                // Automatizou a regra errada. Provocamos um Choque Visual ou Abstração Pura.
+            case "ALTA":
+            case "CRÍTICA":
                 return candidatos.filter(item => 
-                    item.representacaoPrincipal === REPRESENTACOES_SEMIOTICAS.VISUAL_ATIPICA || 
-                    item.representacaoPrincipal === REPRESENTACOES_SEMIOTICAS.ABSTRATA
+                    item.fase_galperin === faseGalperin || 
+                    item.exigeLeituraAtenta === true || 
+                    item.cargaCognitiva === "ALTA"
                 );
                 
+            case "MODERADA":
+            case "BAIXA":
             default:
-                return candidatos;
+                return candidatos.filter(item => item.cargaCognitiva !== "ALTA");
         }
     }
 
     /**
-     * Busca a próxima questão ideal no banco baseada na ZDP e no Plano de Mediação da BOA.
+     * 👁️‍🗨️ Mecanismo de Busca por Irmandade Semiótica
+     * Localiza uma questão com a mesma invariante conceitual, porém com a representação destino exigida.
+     * @private
      */
-    static selecionarProximaQuestao(blockId, perfilCognitivo) {
+    static _selecionarIrmaSemiotica(banco, familiaId, representacaoDestino, respondidas) {
+        // Encontra candidatas da mesma família invariante com a representação alvo
+        let irmas = banco.filter(q => {
+            const fId = q.familiaInvarianteId || q.familia_alvo || q.familiaAlvo;
+            const repItem = (q.representacaoPrincipal || q.representacao || "VISUAL").toUpperCase();
+            return String(fId) === String(familiaId) && repItem === representacaoDestino;
+        });
+
+        if (irmas.length === 0) return null;
+
+        // Prioriza as inéditas para evitar loops
+        let irmasIneditas = irmas.filter(q => !respondidas.includes(q.id) && !respondidas.includes(q.id_questao));
+        if (irmasIneditas.length === 0) irmasIneditas = irmas; // Recicla se necessário
+
+        return irmasIneditas[Math.floor(Math.random() * irmasIneditas.length)];
+    }
+
+    /**
+     * Busca a próxima questão ideal no banco baseada na ZDP e no plano chancelado pela BOA.
+     * @param {string|number} blockId - ID do Bloco de Diagnóstico Ativo ou Código BNCC.
+     * @param {Object} perfilCognitivo - O Estado longitudinal vindo do ProfileEngine.
+     * @param {Object} planoChanceladoBOA - O plano de mediação gerado pela BOA v2.2.0.
+     * @param {Object} questaoAtual - A última questão respondida pelo aluno (origem do choque).
+     */
+    static selecionarProximaQuestao(blockId, perfilCognitivo, planoChanceladoBOA = null, questaoAtual = null) {
         const bancoGlobal = window.catalogoGlobalDeQuestoes || [];
         
-        if (bancoGlobal.length === 0) return { id: 'MOCK', display: 'Banco não carregado.', alternativas: [{valor: 'A'}], res: 'A' };
+        if (bancoGlobal.length === 0) {
+            return { id: 'MOCK_01', bloco: blockId, enunciado: 'Carregando...', alternativas: [{id_alternativa: 'alt_a', texto: 'A'}] };
+        }
+        
         if (!perfilCognitivo) perfilCognitivo = {};
         if (!perfilCognitivo.historicoQuestoesRespondidas) perfilCognitivo.historicoQuestoesRespondidas = [];
+        const respondidas = perfilCognitivo.historicoQuestoesRespondidas;
 
-        let questoesDoBloco = bancoGlobal.filter(q => String(q.bloco) === String(blockId));
+        // Traduz a representação solicitada pela BOA usando o contrato ontológico único
+        let repPreferencialBOA = "QUALQUER";
+        if (planoChanceladoBOA && planoChanceladoBOA.representacaoPreferencial) {
+            repPreferencialBOA = MAPEADOR_REPRESENTACAO_UI[planoChanceladoBOA.representacaoPreferencial] || planoChanceladoBOA.representacaoPreferencial;
+        }
+
+        // ⚡ CRITÉRIO DE ULTRA-PRIORIDADE: Execução do Choque Semiótico Controlado
+        if (planoChanceladoBOA && planoChanceladoBOA.choqueSemioticoRecomendado && questaoAtual) {
+            const familiaInvarianteId = questaoAtual.familiaInvarianteId || questaoAtual.familia_alvo || questaoAtual.familiaAlvo;
+            
+            if (familiaInvarianteId) {
+                const questaoIrma = this._selecionarIrmaSemiotica(bancoGlobal, familiaInvarianteId, repPreferencialBOA, respondidas);
+                if (questaoIrma) {
+                    const idRegistrar = questaoIrma.id || questaoIrma.id_questao || 'ERR_ID';
+                    respondidas.push(idRegistrar);
+                    return questaoIrma;
+                }
+            }
+        }
+
+        // Fluxo de Sorteio Padrão Orientado à ZDP (Se não for choque ou falhar a busca por irmã)
+        let questoesDoBloco = bancoGlobal.filter(q => 
+            String(q.bloco) === String(blockId) || 
+            String(q.modulo) === String(blockId) || 
+            String(q.codigoBNCC) === String(blockId) ||
+            String(q.conceitoEstrutural) === String(blockId)
+        );
         if (questoesDoBloco.length === 0) questoesDoBloco = bancoGlobal;
 
-        let questoesIneditas = questoesDoBloco.filter(q => !perfilCognitivo.historicoQuestoesRespondidas.includes(q.id));
-
+        let questoesIneditas = questoesDoBloco.filter(q => !respondidas.includes(q.id) && !respondidas.includes(q.id_questao));
         if (questoesIneditas.length === 0) {
-            const idsDoBloco = questoesDoBloco.map(q => q.id);
-            perfilCognitivo.historicoQuestoesRespondidas = perfilCognitivo.historicoQuestoesRespondidas.filter(id => !idsDoBloco.includes(id));
+            const idsDoBloco = questoesDoBloco.map(q => q.id || q.id_questao);
+            perfilCognitivo.historicoQuestoesRespondidas = respondidas.filter(id => !idsDoBloco.includes(id));
             questoesIneditas = questoesDoBloco; 
         }
 
-        // 1. FILTRO PRIMÁRIO: ZDP (Zona de Desenvolvimento Proximal)
+        // Alinhamento estrutural por Proficiência / Conceito Estrutural
         let poolZDP = questoesIneditas.filter(q => {
-            const bncc = q.bncc || "GERAL";
-            const zdpLocal = perfilCognitivo.habilidades?.[bncc]?.zdp?.atual || 1; 
-            return q.dificuldade === zdpLocal;
+            const conceito = q.conceitoEstrutural || "GERAL";
+            const zdpLocal = perfilCognitivo.habilidades?.[conceito]?.zdp?.atual || perfilCognitivo.habilidades?.[blockId]?.zdp?.atual || 1; 
+            const dificuldadeItem = q.dificuldade || q.nivel || 1;
+            return dificuldadeItem === zdpLocal;
         });
-
-        if (poolZDP.length === 0) {
-            poolZDP = questoesIneditas.filter(q => {
-                const bncc = q.bncc || "GERAL";
-                const zdpLocal = perfilCognitivo.habilidades?.[bncc]?.zdp?.atual || 1;
-                return Math.abs(q.dificuldade - zdpLocal) <= 1; 
-            });
-        }
 
         if (poolZDP.length === 0) poolZDP = questoesIneditas;
 
-        // 2. FILTRO SECUNDÁRIO: BASE ORIENTADORA ATIVA (Tática Pedagógica)
-        const bnccDominante = poolZDP[0]?.bncc || "GERAL";
-        const hab = perfilCognitivo.habilidades?.[bnccDominante];
-        const boa = hab?.baseOrientadoraAtiva;
-        
         let poolSorteio = poolZDP;
 
-        if (boa) {
-            const { representacaoPreferencial } = boa.planoDeMediacao;
-            const obstaculo = boa.focoConceitual.obstaculoPrincipal;
-
-            // 2.1 Adequação Semiótica (DUA)
+        // Filtro Semiótico e Tático Ordinário (Sem Choque)
+        if (planoChanceladoBOA && planoChanceladoBOA.executarIntervencao) {
             let candidatosSemiotic = poolZDP.filter(item => {
-                const repItem = (item.representacaoPrincipal || item.representacao || item.suporteVisual || "VISUAL").toUpperCase();
-                return representacaoPreferencial === REPRESENTACOES_SEMIOTICAS.QUALQUER || repItem === representacaoPreferencial;
+                const repItem = (item.representacaoPrincipal || item.representacao || "VISUAL").toUpperCase();
+                return repPreferencialBOA === "QUALQUER" || repItem === repPreferencialBOA;
             });
             
-            if (candidatosSemiotic.length === 0) candidatosSemiotic = poolZDP; // Fallback se restritivo demais
+            if (candidatosSemiotic.length === 0) candidatosSemiotic = poolZDP;
 
-            // 2.2 Táticas de Desbloqueio (Galperin/Davýdov)
-            poolSorteio = this._aplicarFiltrosTaticos(candidatosSemiotic, obstaculo);
-            
-            if (poolSorteio.length === 0) poolSorteio = candidatosSemiotic; // Fallback
+            poolSorteio = this._aplicarFiltrosTaticos(candidatosSemiotic, planoChanceladoBOA.intensidadeMediacao, planoChanceladoBOA.faseGalperin);
+            if (poolSorteio.length === 0) poolSorteio = candidatosSemiotic; 
         }
 
-        // 3. Sorteio Final
         const proxima = poolSorteio[Math.floor(Math.random() * poolSorteio.length)];
-        perfilCognitivo.historicoQuestoesRespondidas.push(proxima.id);
+        const idRegistrar = proxima.id || proxima.id_questao || 'ERR_ID';
+        respondidas.push(idRegistrar);
         
         return proxima;
     }
 
     /**
-     * Retorna o pacote completo da próxima tarefa.
-     * Agora atua como tradutor 1:1 do Plano de Mediação da BOA para Telemetria (XAI) e Interface (UX).
+     * Envelopa a tarefa convertendo metadados cognitivos em flags explícitas para os renderizadores da UI.
+     * Garantia de compatibilidade estrita com a telemetria do ProfileEngine.
      */
-    static selecionarProximaTarefa(gameState, poolDeTarefas) {
-        const perfilCompleto = gameState?.perfilCognitivo || {};
-        const questao = poolDeTarefas[0] || {};
-        
-        const repPadrao = questao.representacaoPrincipal || questao.representacao || questao.suporteVisual || 'visual';
-        
-        const bncc = questao.bncc || "GERAL";
-        const hab = perfilCompleto.habilidades?.[bncc];
-        const boa = hab?.baseOrientadoraAtiva;
+    static prepararTarefaParaInterface(questaoSelecionada, planoChanceladoBOA = null, questaoAnterior = null) {
+        if (!questaoSelecionada) return null;
 
-        let representacaoSelecionada = repPadrao;
-        let contextoADA = {};
+        const repOriginalItem = (questaoSelecionada.representacaoPrincipal || questaoSelecionada.representacao || 'VISUAL').toUpperCase();
+        let repForcadaUI = repOriginalItem;
+        let foiChoqueSemiotico = false;
+        let contextoADAOutput = {};
 
-        if (boa) {
-            // Consumidor Puro: A BOA decide estritamente a estratégia e a representação final.
-            const repPref = boa.planoDeMediacao.representacaoPreferencial;
-            representacaoSelecionada = (repPref && repPref !== REPRESENTACOES_SEMIOTICAS.QUALQUER) 
-                ? repPref.toLowerCase() 
-                : repPadrao.toLowerCase();
+        if (planoChanceladoBOA && planoChanceladoBOA.executarIntervencao) {
+            const repTraduzidaBOA = MAPEADOR_REPRESENTACAO_UI[planoChanceladoBOA.representacaoPreferencial] || planoChanceladoBOA.representacaoPreferencial;
+            repForcadaUI = repTraduzidaBOA !== "QUALQUER" ? repTraduzidaBOA : repOriginalItem;
+            foiChoqueSemiotico = !!planoChanceladoBOA.choqueSemioticoRecomendado;
 
-            // Mapeamento semântico de segurança para a Engine Canvas (ex: concreta vira visual manipulável)
-            if (representacaoSelecionada === 'concreta') representacaoSelecionada = 'visual';
-
-            // Geração Rica do Log XAI para consumo do Metacognition e TeacherAnalytics
-            contextoADA = {
-                representacaoOriginal: repPadrao,
-                representacaoSelecionada: representacaoSelecionada,
-                tipoIntervencao: boa.planoDeMediacao.tipoIntervencao,
-                motivo: boa.planoDeMediacao.proximaAcao,
-                obstaculoAlvo: boa.focoConceitual.obstaculoPrincipal,
-                estagioConceitualOrigem: boa.estadoAtual.estagioConceitual,
-                itcOrigem: boa.estadoAtual.itc,
-                modeloConceitual: boa.versao || "BOA_v1"
+            contextoADAOutput = {
+                representacaoOriginal: questaoAnterior ? (questaoAnterior.representacaoPrincipal || questaoAnterior.representacao || 'VISUAL').toUpperCase() : repOriginalItem,
+                representacaoForcada: repForcadaUI,
+                foiChoqueSemiotico: foiChoqueSemiotico,
+                faseGalperinEfetiva: planoChanceladoBOA.faseGalperin,
+                intensidadeAplicada: planoChanceladoBOA.intensidadeMediacao,
+                choqueSemioticoAtivado: foiChoqueSemiotico, // Retrocompatibilidade de exibição
+                
+                objetivoDaIntervencao: planoChanceladoBOA.objetivoDaIntervencao,
+                scaffoldOperacional: planoChanceladoBOA.scaffoldOperacional,
+                perguntaInvariante: planoChanceladoBOA.perguntaInvariante,
+                acaoReflexiva: planoChanceladoBOA.acaoReflexiva,
+                gatilhoVisual: planoChanceladoBOA.gatilhoVisual,
+                
+                statusBOA: planoChanceladoBOA.chancelaBOA?.statusCalculo || "SUCESSO",
+                motivoDecisaoXAI: planoChanceladoBOA.chancelaBOA?.motivoDaDecisao || "Mediação ativa chancelada."
             };
         } else {
-            // Fallback de retrocompatibilidade caso a BOA ainda não tenha sido instanciada
-            representacaoSelecionada = repPadrao;
-            contextoADA = {
-                representacaoOriginal: repPadrao,
-                representacaoSelecionada: repPadrao,
-                tipoIntervencao: "MANUTENCAO",
-                motivo: "BOA_NAO_INSTANCIADA",
-                estagioConceitualOrigem: "EVIDENCIA_INSUFICIENTE",
-                itcOrigem: 0.0,
-                modeloConceitual: "LEGACY"
+            contextoADAOutput = {
+                representacaoOriginal: repOriginalItem,
+                representacaoForcada: repOriginalItem,
+                foiChoqueSemiotico: false,
+                faseGalperinEfetiva: "MENTAL_ABSTRATA",
+                intensidadeAplicada: "NENHUMA",
+                choqueSemioticoAtivado: false,
+                scaffoldOperacional: null,
+                perguntaInvariante: null,
+                gatilhoVisual: null,
+                statusBOA: "PRODUÇÃO_AUTÔNOMA",
+                motivoDecisaoXAI: "Estudante opera em autonomia estável de conceito."
             };
         }
 
         return {
-            ...questao, 
-            taskId: questao.id || 'default',
-            contextoADA: contextoADA,
+            ...questaoSelecionada,
+            id_questao: questaoSelecionada.id_questao || questaoSelecionada.id,
+            contextoADA: contextoADAOutput,
             interfaceModifiers: {
-                modoRepresentacao: representacaoSelecionada
+                modoRepresentacao: repForcadaUI.toLowerCase(),
+                renderizadorUI: INTERFACE_RENDERERS[repForcadaUI] || "canvas_esquema_grafico",
+                forcarGatilhoUI: contextoADAOutput.gatilhoVisual,
+                exibirPainelScaffold: planoChanceladoBOA ? planoChanceladoBOA.executarIntervencao : false
             }
         };
     }
 
     static async carregarBancoDeQuestoes() {
         try {
-            const resposta = await fetch('./data/questoes.json');
-            if (!resposta.ok) throw new Error("Arquivo JSON não encontrado.");
+            const resposta = await fetch('./questoes.json');
+            if (!resposta.ok) throw new Error("Ficheiro json não localizado.");
             const dados = await resposta.json();
             window.catalogoGlobalDeQuestoes = dados;
             return dados;
         } catch (erro) {
-            console.warn("[ADA] Falha ao carregar questoes.json. Usando banco vazio.", erro);
+            console.warn("[ADA] Fallback carregado.", erro);
             window.catalogoGlobalDeQuestoes = [];
             return [];
         }
