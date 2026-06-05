@@ -1,8 +1,8 @@
 /**
  * @fileoverview AdaptiveSelector.js
  * @description O Tutor Cirúrgico da ADA. Ponte Executora e Orquestradora Semiótica.
- * VERSÃO 12.3.0 (Sprint Limpo - Homologado): Separação de representacaoDestinoChoque,
- * trava estrita de exclusão mútua (destino !== origem) e gravação de choqueExecutado pós-validação de ponteiro.
+ * VERSÃO 12.4.0 (Sprint Limpo - Homologado): Substituição de variáveis globais (window) 
+ * por injeção de dependência via contextoAdaptativo do GameState.
  * @package LabTech / Core ADA
  */
 
@@ -44,8 +44,7 @@ export class AdaptiveSelector {
     }
 
     /**
-     * 👁️‍🗨️ Busca por Irmandade Semiótica Estrita (CIRURGIA 3: Exclusão Mútua Garantida)
-     * Encontra uma questão com a mesma relação fundamental, exigindo destino idêntico e diferente da origem.
+     * 👁️‍🗨️ Busca por Irmandade Semiótica Estrita
      * @private
      */
     static _selecionarIrmaSemiotica(banco, familiaId, representacaoAlvo, representacaoOrigem, respondidas) {
@@ -56,7 +55,7 @@ export class AdaptiveSelector {
             return (
                 String(fId) === String(familiaId) && 
                 repItem === representacaoAlvo && 
-                repItem !== representacaoOrigem // Trava Antiloop: Evita colisão/repetição cosmética
+                repItem !== representacaoOrigem // Trava Antiloop: Evita colisão/repetição
             );
         });
 
@@ -69,9 +68,13 @@ export class AdaptiveSelector {
     }
 
     /**
-     * Seleciona a próxima tarefa baseando-se estritamente nas chaves de arbitragem da BOA.
+     * Seleciona a próxima tarefa injetando o resultado no contexto adaptativo da sessão.
+     * @param {string|number} blockId - ID do bloco ou BNCC.
+     * @param {Object} perfilCognitivo - Estado do estudante.
+     * @param {Object} planoChanceladoBOA - Plano da Base Orientadora.
+     * @param {Object} contextoAdaptativo - Objeto injetado pelo main.js para rastreio de estado puro.
      */
-    static selecionarProximaQuestao(blockId, perfilCognitivo, planoChanceladoBOA = null, questaoAnterior = null) {
+    static selecionarProximaQuestao(blockId, perfilCognitivo, planoChanceladoBOA = null, contextoAdaptativo = {}) {
         const bancoGlobal = window.catalogoGlobalDeQuestoes || [];
         
         if (bancoGlobal.length === 0) {
@@ -82,24 +85,27 @@ export class AdaptiveSelector {
         if (!perfilCognitivo.historicoQuestoesRespondidas) perfilCognitivo.historicoQuestoesRespondidas = [];
         const respondidas = perfilCognitivo.historicoQuestoesRespondidas;
 
-        // Armazena e normaliza de forma segura a representação de origem para o cruzamento de chaves
+        // Limpeza de estado: pressupõe que o choque não ocorreu até confirmação física
+        contextoAdaptativo.choqueExecutado = false;
+        
+        // Lê a origem de forma pura via referência injetada
+        const questaoAnterior = contextoAdaptativo.questaoOrigem;
         const repOrigem = questaoAnterior ? (questaoAnterior.representacaoPrincipal || questaoAnterior.representacao || 'VISUAL').toUpperCase() : null;
 
-        // --- CIRURGIA 1: MAPEAMENTO E ISOLAMENTO DA DIRETRIZ DE DESTINO EXCLUSIVA DE CHOQUE ---
         let repAlvoChoque = null;
         if (planoChanceladoBOA && planoChanceladoBOA.representacaoDestinoChoque) {
             repAlvoChoque = MAPEADOR_REPRESENTACAO_UI[planoChanceladoBOA.representacaoDestinoChoque] || planoChanceladoBOA.representacaoDestinoChoque;
         }
 
-        // ⚡ EXTRA-PRIORIDADE: Execução do Choque Semiótico com Validação Física de Item Irmão
+        // ⚡ EXTRA-PRIORIDADE: Execução do Choque Semiótico com Injeção de Confirmação Local
         if (planoChanceladoBOA && planoChanceladoBOA.choqueSemioticoRecomendado && questaoAnterior && repAlvoChoque) {
             const familiaInvarianteId = questaoAnterior.familiaInvarianteId || questaoAnterior.familia_alvo || questaoAnterior.familiaAlvo;
             
             if (familiaInvarianteId) {
                 const itemIrmao = this._selecionarIrmaSemiotica(bancoGlobal, familiaInvarianteId, repAlvoChoque, repOrigem, respondidas);
                 if (itemIrmao) {
-                    // Cache de confirmação mecânica síncrona para que a View saiba que o choque ocorreu fisicamente
-                    window.__CHOQUE_CONFIRMADO_EXECUÇÃO__ = true;
+                    // Cache de confirmação acoplado exclusivamente ao Contexto Local Injetado
+                    contextoAdaptativo.choqueExecutado = true;
                     
                     const idRegistrar = itemIrmao.id || itemIrmao.id_questao || 'ERR_ID';
                     respondidas.push(idRegistrar);
@@ -108,9 +114,7 @@ export class AdaptiveSelector {
             }
         }
 
-        // Fallback orquestrado se a busca falhar ou não for cenário de choque
-        window.__CHOQUE_CONFIRMADO_EXECUÇÃO__ = false;
-
+        // Fluxo ZDP normal (fallback)
         let poolDoBloco = bancoGlobal.filter(q => 
             String(q.bloco) === String(blockId) || 
             String(q.codigoBNCC) === String(blockId) ||
@@ -160,21 +164,21 @@ export class AdaptiveSelector {
     }
 
     /**
-     * Envelopa o item de exibição traduzindo enums brutos para propriedades nativas de controle gráfico.
+     * Envelopa o item consumindo estritamente as propriedades do contextoAdaptativo injetado.
      */
-    static prepararTarefaParaInterface(questaoSelecionada, planoChanceladoBOA = null, questaoAnterior = null) {
+    static prepararTarefaParaInterface(questaoSelecionada, planoChanceladoBOA = null, contextoAdaptativo = {}) {
         if (!questaoSelecionada) return null;
 
         const repOriginalItem = (questaoSelecionada.representacaoPrincipal || questaoSelecionada.representacao || 'VISUAL').toUpperCase();
         let repForcadaUI = repOriginalItem;
         
-        // --- CIRURGIA 2: ASSEGURA QUE A TELEMETRIA REGISTRE O STATUS DE EXECUÇÃO FÍSICA DO CHOQUE ---
-        const choqueEfetivamenteExecutado = !!window.__CHOQUE_CONFIRMADO_EXECUÇÃO__;
+        // Lê a flag de execução física direta do Contexto
+        const choqueEfetivamenteExecutado = !!contextoAdaptativo.choqueExecutado;
+        const questaoAnterior = contextoAdaptativo.questaoOrigem;
 
         let contextoADAOutput = {};
 
         if (planoChanceladoBOA && planoChanceladoBOA.executarIntervencao) {
-            // Caso o choque tenha rodado com sucesso, força a exibição do target de destino da BOA
             if (choqueEfetivamenteExecutado && planoChanceladoBOA.representacaoDestinoChoque) {
                 repForcadaUI = MAPEADOR_REPRESENTACAO_UI[planoChanceladoBOA.representacaoDestinoChoque] || repOriginalItem;
             } else {
@@ -187,7 +191,7 @@ export class AdaptiveSelector {
                 representacaoOriginal: questaoAnterior ? (questaoAnterior.representacaoPrincipal || questaoAnterior.representacao || 'VISUAL').toUpperCase() : repOriginalItem,
                 representacaoForcada: repForcadaUI,
                 
-                // Fornece o dado limpo e auditável, blindando o rastro clínico do ProfileEngine e do ITC
+                // Variável limpa baseada no sucesso mecânico da busca no banco
                 foiChoqueSemiotico: choqueEfetivamenteExecutado, 
                 choqueSemioticoAtivado: choqueEfetivamenteExecutado,
                 
