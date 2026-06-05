@@ -1,10 +1,12 @@
 /**
  * @fileoverview ContratosPedagogicos.js
- * @description Fonte única da verdade ontológica e semiótica do Ecossistema LabTech/ADA.
- * Unifica os contratos entre ProfileEngine, BOA e AdaptiveSelector.
+ * @description Fonte única da verdade ontológica, semiótica e clínica do Ecossistema LabTech/ADA.
+ * VERSÃO 2.0.0 (Sprint Limpo - Homologado): Centraliza representações, renderizadores,
+ * obstáculos cognitivos e mapeamentos clínicos para consumo unificado de todos os motores.
  * @package LabTech / Core ADA
  */
 
+// 📐 1. ONTOLOGIA SEMIÓTICA QUADRIMODAL (DUA / GALPERIN)
 export const REPRESENTACOES_SEMIOTICAS = {
     CONCRETA: "CONCRETA",
     VISUAL: "VISUAL",
@@ -12,20 +14,42 @@ export const REPRESENTACOES_SEMIOTICAS = {
     ABSTRATA: "ABSTRATA"
 };
 
-/**
- * Mapeia de forma bidirecional e segura as diretrizes da BOA para os renderizadores da UI.
- */
+// 🔄 2. TRADUTOR DE DIRETRIZES DA BOA PARA ENUMS DA ONTOLOGIA (BLINDAGEM ANTILOOP)
 export const MAPEADOR_REPRESENTACAO_UI = {
     "BLOCO_MANIPULAVEL_DIGITAL": REPRESENTACOES_SEMIOTICAS.CONCRETA,
     "SUPORTE_GRAFICO_REPRESENTATIVO": REPRESENTACOES_SEMIOTICAS.VISUAL,
     "TEXTUAL_REFLEXIVA": REPRESENTACOES_SEMIOTICAS.TEXTUAL,
     "SIMBOLICA_CONCEITUAL": REPRESENTACOES_SEMIOTICAS.ABSTRATA,
+    "CONCRETA": REPRESENTACOES_SEMIOTICAS.CONCRETA,
+    "VISUAL": REPRESENTACOES_SEMIOTICAS.VISUAL,
+    "TEXTUAL": REPRESENTACOES_SEMIOTICAS.TEXTUAL,
+    "ABSTRATA": REPRESENTACOES_SEMIOTICAS.ABSTRATA,
     "QUALQUER": "QUALQUER"
 };
 
+// 🎛️ 3. MAPEAMENTO POLIMÓRFICO DE COMPONENTES DE RENDERIZAÇÃO DA UI
 export const INTERFACE_RENDERERS = {
     [REPRESENTACOES_SEMIOTICAS.CONCRETA]: "canvas_material_dourado",
     [REPRESENTACOES_SEMIOTICAS.VISUAL]: "canvas_esquema_grafico",
     [REPRESENTACOES_SEMIOTICAS.TEXTUAL]: "dom_texto_scaffold",
     [REPRESENTACOES_SEMIOTICAS.ABSTRATA]: "dom_equacao_simbolica"
+};
+
+// 🚨 4. ETIOLOGIAS CLÍNICAS PADRONIZADAS (OBSTÁCULOS COGNITIVOS)
+export const OBSTACULOS_COGNITIVOS = {
+    PSEUDOCONCEITO: "PSEUDOCONCEITO",                     // Automatização de regra falha decorada
+    DEPENDENCIA_VISUAL: "DEPENDENCIA_VISUAL",             // Travamento na ausência de suporte icônico
+    MECANIZACAO_IMPULSIVA: "MECANIZACAO_IMPULSIVA",       // Cliques rápidos sem leitura atenta (Latência < Limiar)
+    FRICCAO_COGNITIVA_ALTA: "FRICCAO_COGNITIVA_ALTA",     // Estado de sobrecarga emocional por erros em série
+    REGRESSAO_DETECTADA: "REGRESSAO_DETECTADA",           // Colapso conceitual após hiato temporal
+    NENHUM: "NENHUM"                                      // Autonomia estável na ZDP
+};
+
+// 🧠 5. ESTÁGIOS LONGITUDINAIS DO DESENVOLVIMENTO COGNITIVO
+export const ESTAGIOS_CONCEITUAIS = {
+    EVIDENCIA_INSUFICIENTE: "EVIDENCIA_INSUFICIENTE",
+    PSEUDOCONCEITO_ESTAVEL: "PSEUDOCONCEITO_ESTAVEL",
+    EM_TRANSICAO_CONCEITUAL: "EM_TRANSICAO_CONCEITUAL",
+    REGRESSAO_CONCEITUAL: "REGRESSAO_CONCEITUAL",
+    GENERALIZACAO_CONSOLIDADA: "GENERALIZACAO_CONSOLIDADA"
 };
