@@ -1,0 +1,374 @@
+{
+  "FAM_INV_001_REAGRUPAMENTO": {
+    "bncc": "EF06MA03",
+    "bnccDescricao": "Conceito de Reagrupamento (Dinheiro)",
+    "conceito": "REAGRUPAMENTO",
+    "invariante": "CONSERVACAO_DE_QUANTIDADE",
+    "transformacao": "EQUIVALENCIA_REPRESENTACIONAL",
+    "relacaoFundamental": "A quantidade de uma grandeza permanece invariante independentemente da forma como é representada ou agrupada. A relação universal é: uma grandeza pode ser decomposta em unidades de ordens distintas (básica, intermediária, total), sendo que qualquer reagrupamento não altera o valor, apenas a forma de expressão — A = n × E (onde A é a grandeza total, E a unidade de medida eleita e n o número de vezes que E cabe em A). O dinheiro materializa essa relação: 10 moedas de R$0,10 e 1 moeda de R$1,00 são representações distintas de uma mesma grandeza.",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Gerir recursos limitados para alcançar um objetivo concreto e desejado: saber se o que tenho na mão é suficiente para o que preciso, mesmo que esteja em partes menores.",
+      "problemaReal": "O aluno juntou moedas de R$0,25 e R$0,50 ao longo da semana. Na cantina, o item custa R$3,00. Ele precisa saber se o que está no bolso é suficiente — e descobrir isso sem errar na hora do caixa."
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  },
+  "FAM_INV_002_SISTEMA_DE_NUME": {
+    "bncc": "EF06MA01",
+    "bnccDescricao": "Valor Posicional",
+    "conceito": "SISTEMA_DE_NUMERACAO_E_BASE",
+    "invariante": "VALOR_POSICIONAL_E_AGRUPAMENTO",
+    "transformacao": "COMPOSICAO_DECOMPOSICAO_DECIMAL",
+    "relacaoFundamental": "O número é resultado do processo de medição de uma grandeza por uma unidade de medida, e o sistema de numeração emerge da necessidade de agrupar essas medidas quando excedem a base escolhida. A relação universal é: Grandeza Total = n × Unidade_de_Medida, em que o valor de cada algarismo depende da posição (ordem) que ocupa — expressando quantas vezes a unidade daquela ordem cabe no total. O sistema decimal é uma particularidade do sistema de numeração posicional; a lógica dos agrupamentos é idêntica para qualquer base.",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Entender por que o mesmo símbolo vale coisas completamente diferentes dependendo de onde está — o que dá ao aluno poder de leitura sobre qualquer número que encontrar na vida, em nota fiscal, placar, ou medidor de luz.",
+      "problemaReal": "A família recebeu uma conta de luz com consumo de 1.024 kWh. O aluno precisa explicar para a mãe o que esse número significa de verdade — quantas centenas, dezenas e unidades existem ali — para entender se o valor cobrado faz sentido."
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  },
+  "FAM_INV_003_NUMEROS_RACIONA": {
+    "bncc": "EF06MA05",
+    "bnccDescricao": "MDC — Aplicação (Cortes)",
+    "conceito": "NUMEROS_RACIONAIS",
+    "invariante": "RELACAO_PARTE_TODO",
+    "transformacao": "EQUIVALENCIA_FRACIONARIA",
+    "relacaoFundamental": "A fração expressa a relação entre uma parte e o todo, sendo invariante quanto ao número de partes iguais em que o todo é dividido, desde que a razão parte-todo se mantenha. A relação universal é: Parte / Todo = a/b, onde a representa quantas partes foram tomadas e b o número total de partes iguais em que a grandeza foi dividida. Frações equivalentes são representações distintas de uma mesma relação parte-todo; o MDC revela a forma mais simples (irredutível) dessa relação, operando sobre a unidade de medida que gera a partição.",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Dividir algo de forma justa entre pessoas — e reconhecer quando uma divisão que parece diferente é, na prática, a mesma coisa. Isso aparece toda vez que se divide comida, dinheiro ou tempo entre irmãos e amigos.",
+      "problemaReal": "A avó fez um bolo e cortou em 8 fatias. O aluno comeu 2. O irmão diz que comeu a mesma quantidade, mas cortou o bolo em 4 e comeu 1 fatia. Quem está certo? Eles comeram partes iguais?"
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  },
+  "FAM_INV_004_ESTRUTURAS_ADIT": {
+    "bncc": "EF07MA02",
+    "bnccDescricao": "Conceito de Negativo (Termômetro)",
+    "conceito": "ESTRUTURAS_ADITIVAS_MULTIPLICATIVAS",
+    "invariante": "CONSERVACAO_DE_QUANTIDADE_E_PROPORCAO",
+    "transformacao": "ALGORITMOS_OPERATORIOS",
+    "relacaoFundamental": "A adição e a subtração expressam a relação de determinação ou eliminação de desigualdade entre grandezas. A relação universal é: Grandeza_Total = Parte_1 + Parte_2, ou equivalentemente, a desigualdade A > B é determinada pela diferença A - B = d. Números negativos emergem quando a referência (zero) é convencionada e a grandeza medida pode situar-se abaixo dela — como a temperatura abaixo de 0°C —, expressando que a desigualdade opera em sentido inverso ao da unidade de referência. Toda operação aditiva é, portanto, a busca por igualar ou desfazer a desigualdade entre duas grandezas.",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Compreender situações em que se está 'abaixo do zero' — dívida, saldo negativo, temperatura, andares abaixo do térreo — e ter uma ferramenta para raciocinar sobre isso sem se perder.",
+      "problemaReal": "O saldo do cartão de benefício da família era R$20,00. A mãe gastou R$35,00 no mercado. O caixa disse que ficou um saldo negativo. O aluno precisa entender o que isso significa e quanto falta pagar para zerar a dívida."
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  },
+  "FAM_INV_005_PROPORCIONALIDA": {
+    "bncc": "EF07MA04",
+    "bnccDescricao": "Proporção — Produto Cruzado",
+    "conceito": "PROPORCIONALIDADE",
+    "invariante": "RAZAO_CONSTANTE",
+    "transformacao": "DILATACAO_CONTRACAO_ESCALAR",
+    "relacaoFundamental": "A proporcionalidade expressa a relação de covariação constante entre duas grandezas: quando uma varia, a outra varia na mesma razão. A relação universal é: A/B = k (razão constante), ou A = k × B, em que k é o invariante que conecta as duas grandezas em todos os pares correspondentes. O produto cruzado (a × d = b × c) é a forma operatória que verifica a manutenção dessa razão entre representações distintas. A grandeza k não muda de valor quando A e B variam conjuntamente — esse é o núcleo do pensamento proporcional.",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Reconhecer quando uma oferta é justa ou enganosa — se levo o dobro, pago o dobro? Esse raciocínio protege o aluno de ser lesado em qualquer transação cotidiana, do mercado ao aplicativo de entrega.",
+      "problemaReal": "No mercado, 2 pacotes de macarrão custam R$7,00. O aluno precisa saber quanto custam 5 pacotes para não levar dinheiro de menos — e ainda verificar se a promoção 'leve 3 pague 2' vale mais a pena."
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  },
+  "FAM_INV_006_GRANDEZAS_E_MED": {
+    "bncc": "EF07MA20",
+    "bnccDescricao": "Conversão de Comprimento",
+    "conceito": "GRANDEZAS_E_MEDIDAS",
+    "invariante": "CONSERVACAO_DA_GRANDEZA",
+    "transformacao": "CONVERSAO_DE_UNIDADES",
+    "relacaoFundamental": "Medir é comparar uma grandeza com uma unidade de medida eleita; o valor numérico obtido depende da unidade escolhida, mas a grandeza em si permanece a mesma. A relação universal é: Grandeza = n × Unidade, em que n varia inversamente quando a unidade varia — se a unidade é maior, n é menor, e vice-versa. A conversão de unidades é, portanto, a reexpressão de uma mesma grandeza por meio de uma nova unidade de medida, mantendo a relação de equivalência: n₁ × U₁ = n₂ × U₂. A conservação da grandeza é o invariante que sustenta qualquer processo de conversão.",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Não ser enganado por números que parecem grandes ou pequenos só porque a unidade mudou — saber que 1,5 metro e 150 centímetros são a mesma coisa dá autonomia para ler qualquer planta, embalagem ou bula.",
+      "problemaReal": "O aluno quer comprar tecido para fazer uma fantasia. A vendedora fala em metros, mas a fita métrica que ele tem em casa está marcada em centímetros. Ele precisa 230 cm — quantos metros pede na loja para não errar e nem desperdiçar dinheiro?"
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  },
+  "FAM_INV_007_PENSAMENTO_ALGE": {
+    "bncc": "EF08MA06",
+    "bnccDescricao": "Linguagem Algébrica",
+    "conceito": "PENSAMENTO_ALGEBRICO",
+    "invariante": "VARIAVEL_COMO_INCOGNITA_OU_RELAÇÃO",
+    "transformacao": "MANIPULACAO_SIMBOLICA",
+    "relacaoFundamental": "A álgebra tem sua gênese na necessidade de expressar relações gerais entre grandezas por meio de símbolos, superando o caso particular. A relação universal é: a letra (variável) representa uma grandeza indeterminada que mantém com as demais uma relação invariante — seja como incógnita (valor fixo desconhecido) ou como variável (valor que covaria com outros). A equação expressa a igualdade entre duas formas de representar a mesma grandeza; manipulá-la algebricamente é preservar essa igualdade enquanto se transforma a forma de expressão. A análise das mudanças das grandezas e sua anotação simbólica é o ponto de entrada davydoviano para o pensamento algébrico.",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Descobrir o valor desconhecido que faz uma situação funcionar — quanto preciso ganhar, quantas horas faltam, qual o preço justo. A letra na equação é apenas um nome provisório para algo que ainda não sei, mas posso descobrir.",
+      "problemaReal": "O aluno faz bicos aos fins de semana e ganha R$15,00 por hora. Ele quer juntar R$180,00 para comprar um tênis. Já tem R$45,00 guardados. Quantas horas ainda precisa trabalhar? Ele precisa montar e resolver essa situação sem adivinhar."
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  },
+  "FAM_INV_008_TRATAMENTO_DA_I": {
+    "bncc": "EF08MA22",
+    "bnccDescricao": "Conceito de Média",
+    "conceito": "TRATAMENTO_DA_INFORMACAO",
+    "invariante": "REPRESENTATIVIDADE_E_TENDENCIA",
+    "transformacao": "TRANSCODIFICACAO_DE_DADOS_GRAFICOS",
+    "relacaoFundamental": "A média aritmética materializa-se a partir da determinação de igualdade entre grandezas: dado um conjunto de valores desiguais, a média é o valor que os iguala, distribuindo o total de forma equitativa entre todas as partes. A relação universal é: Média = Soma_Total / n, em que a média representa a grandeza única que, repetida n vezes, produz o mesmo total — isto é, é a grandeza que elimina todas as desigualdades internas do conjunto. Representar dados em gráficos é transcodificar essa relação entre grandezas para outro sistema semiótico, mantendo invariante a estrutura de tendência central.",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Entender se um número único que representa um grupo é justo ou mentiroso — a média pode esconder muita desigualdade, e reconhecer isso é uma forma de leitura crítica do mundo.",
+      "problemaReal": "A escola divulgou que a média de notas da turma foi 6,8. Mas o aluno sabe que metade da sala tirou abaixo de 5. Ele quer entender como um número alto pode aparecer mesmo assim — e se essa média 'representa' a turma de verdade."
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  },
+  "FAM_INV_009_REAGRUPAMENTO_S": {
+    "bncc": "EF08MA22",
+    "bnccDescricao": "Média Aritmética",
+    "conceito": "REAGRUPAMENTO_SISTEMA_DECIMAL",
+    "invariante": "CONSERVACAO_DE_QUANTIDADE",
+    "transformacao": "EQUIVALENCIA_REPRESENTACIONAL",
+    "relacaoFundamental": "No sistema decimal, qualquer grandeza numérica pode ser recomposta em diferentes ordens de agrupamento sem que seu valor se altere. A relação universal é: Grandeza = n₁ × Unidade_básica = n₂ × Unidade_intermediária = n₃ × Unidade_superior, em que as diferentes representações são equivalentes porque expressam a mesma quantidade medida. No contexto da média aritmética, o reagrupamento aparece na necessidade de redistribuir o total entre as partes de forma igualitária — a média é, ela mesma, o resultado de um reagrupamento equitativo da grandeza total entre n unidades.",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Redistribuir algo de forma igualitária entre pessoas — a média aritmética é, no fundo, a resposta para 'quanto cada um receberia se dividíssemos tudo igual?', uma pergunta com peso real em contextos de escassez.",
+      "problemaReal": "Três irmãos trabalham em dias diferentes e juntam o dinheiro para as despesas da semana: um trouxe R$40,00, outro R$75,00 e o terceiro R$20,00. A mãe quer saber qual seria a contribuição média — o valor que tornaria a participação de todos igual. Quanto seria?"
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  },
+  "FAM_INV_010_PENSAMENTO_GEOM": {
+    "bncc": "EF07MA21",
+    "bnccDescricao": "Conceito de Giro e Ângulo Raso",
+    "conceito": "PENSAMENTO_GEOMETRICO_ESPACIAL",
+    "invariante": "PROPRIEDADES_INVARIANTES_DAS_FORMAS",
+    "transformacao": "TRANSFORMACOES_ISOMETRICAS",
+    "relacaoFundamental": "As formas geométricas possuem propriedades que se conservam sob determinadas transformações (isometrias: translação, rotação, reflexão). A relação universal é: a grandeza angular expressa a quantidade de giro em torno de um ponto, sendo o giro completo (360°) a unidade de referência total da qual o ângulo raso (180°) é exatamente a metade. O ângulo é, nessa perspectiva davydoviana, uma grandeza medida pela comparação entre o giro realizado e uma unidade angular de referência — o mesmo princípio de medição por grandezas que sustenta todo o sistema conceitual matemático de Davýdov.",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Entender giro e direção no espaço é uma habilidade concreta de orientação — ajuda a montar móvel, seguir planta baixa, jogar, costurar um molde ou simplesmente não se perder num bairro novo.",
+      "problemaReal": "O aluno está ajudando a montar uma estante. A instrução diz para girar a peça 'meio giro' antes de encaixar. Ele precisa entender que isso é 180° — e identificar que a peça ficou de cabeça para baixo, não de lado."
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  },
+  "FAM_INV_011_NUMEROS_RACIONA": {
+    "bncc": "EF06MA09",
+    "bnccDescricao": "Fração de Quantidade",
+    "conceito": "NUMEROS_RACIONAIS",
+    "invariante": "RELACOES_PARTE_TODO_E_QUOCIENTE",
+    "transformacao": "EQUIVALENCIA_FRACIONARIA",
+    "relacaoFundamental": "A fração de uma quantidade expressa duas relações simultâneas e inseparáveis: a relação parte-todo (a/b do todo) e a relação de quociente (a grandeza total dividida em b partes iguais, tomando-se a delas). A relação universal é: Parte = (a/b) × Todo, em que a operação de tomar a fração de uma quantidade é, essencialmente, medir essa quantidade com uma nova unidade derivada — a b-ésima parte do todo. A equivalência fracionária emerge quando diferentes pares (a, b) expressam a mesma relação parte-todo, mantendo invariante a grandeza da parte em relação ao todo.",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Saber quanto é 'a minha parte' de algo concreto — dinheiro, comida, tempo — sem precisar dividir tudo fisicamente. Fração de quantidade é a matemática da partilha justa.",
+      "problemaReal": "A família ganhou uma cesta básica com 12 kg de alimento. A mãe quer separar 3/4 para o mês e guardar o restante. O aluno precisa calcular quantos quilos devem ser separados agora — sem balança de precisão, só com a cabeça."
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  },
+  "FAM_INV_012_MODELAGEM_E_LOG": {
+    "bncc": "EF06MA02",
+    "bnccDescricao": "Padrões Numéricos",
+    "conceito": "MODELAGEM_E_LOGICA",
+    "invariante": "PADROES_E_REGRAS_OCULTAS",
+    "transformacao": "GENERALIZACAO_HIPOTETICO_DEDUTIVA",
+    "relacaoFundamental": "Padrões numéricos expressam relações invariantes entre grandezas que se repetem de forma regular — sua essência não está nos casos particulares observados, mas na regra geral que os governa. A relação universal é: existe uma lei de formação f(n) tal que cada termo da sequência é determinado por sua posição n, expressando a dependência funcional entre a posição e o valor. Identificar essa lei é realizar a abstração substantiva davydoviana — partir dos casos concretos para revelar a conexão interna essencial que os unifica, passando da generalização empírica (observar repetição) à generalização teórica (enunciar a regra em forma simbólica geral).",
+    "motivacaoAtividade": {
+      "sentidoPessoal": "Perceber que o mundo tem regras escondidas que podem ser descobertas — e que quem enxerga o padrão tem vantagem sobre quem só reage caso a caso. Isso vale para economizar dinheiro, prever cobranças recorrentes ou entender qualquer tabela.",
+      "problemaReal": "O plano de internet da família cobra R$10,00 no primeiro mês, R$18,00 no segundo, R$26,00 no terceiro. O aluno suspeita que tem um padrão e quer saber quanto vai custar no 6º mês — antes que a família seja surpreendida na fatura."
+    },
+    "misconceptionsDesejadas": [
+      "PSEUDOCONCEITO",
+      "FRICCAO_COGNITIVA_ALTA"
+    ],
+    "objetivoPedagogico": {
+      "tipo": "TRANSFERENCIA_SEMIOTICA",
+      "obstaculoPrincipal": "DEPENDENCIA_REPRESENTACIONAL"
+    },
+    "contextoDiagnostico": {
+      "perfilAlvo": [
+        "DEPENDENTE_CONCRETO",
+        "PSEUDOCONCEITO_ESTAVEL"
+      ],
+      "estagioConceitualAlvo": "EM_TRANSICAO_CONCEITUAL",
+      "evidenciaEsperada": {
+        "tipo": "TRANSFERENCIA_SEMIOTICA",
+        "indicador": "MANTEM_INVARIANTE_EM_NOVA_REPRESENTACAO"
+      }
+    }
+  }
+}
