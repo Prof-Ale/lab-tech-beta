@@ -1,18 +1,20 @@
 /**
- * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v1.6.5 - CONEXÃO TOTAL)
- * CIRURGIA DE COUPLING: Conexão síncrona do DiagnosticEngine real, eliminação 
- * definitiva do laudo simulado e amarração estrita das assinaturas do seletor.
+ * @fileoverview main.js — MESTRE DE ORQUESTRAÇÃO (v1.7.0 - GOLD MASTER)
+ * CIRURGIA COMPLEMENTAR: Correção de ReferenceError de importação, normalização 
+ * ontológica via MAPEADOR_REPRESENTACAO_UI e sincronização estrita de choqueExecutado.
  * @package LabTech Core Environment
  */
 
 import { G } from './engine/gameState.js';
 import { initDebugMode } from './engine/debugMode.js';
 import { ProfileEngine } from './core/ada/ProfileEngine.js';
-import { DiagnosticEngine } from './core/ada/DiagnosticEngine.js'; // 💉 INJEÇÃO OBRIGATÓRIA
+import { DiagnosticEngine } from './core/ada/DiagnosticEngine.js'; 
+import { BaseOrientadoraAtiva } from './core/ada/BaseOrientadoraAtiva.js'; // 💉 CIRURGIA 1: INCORPORAÇÃO OBRIGATÓRIA CONTRA REFERENCE_ERROR
 import { MetacognitionEngine } from './core/ada/MetacognitionEngine.js';
 import { AdaptiveSelector } from './core/ada/AdaptiveSelector.js';
 import { LearningAnalytics } from './core/ada/LearningAnalytics.js';
 import { AdaptiveAudioEngine } from './core/ada/AdaptiveAudioEngine.js';
+import { MAPEADOR_REPRESENTACAO_UI } from './core/ada/ContratosPedagogicos.js'; // 💉 INJEÇÃO DO TRADUTOR ONTOLÓGICO SANITÁRIO
 import { CanvasRenderer } from './ui/canvasRenderer.js';
 import * as uiManager from './ui/uiManager.js';
 
@@ -24,8 +26,9 @@ const fecharM = (id) => $(id)?.classList.remove('active');
 
 let renderizadorGrafico = null;
 
-// ⚡ VETORES DE CONTROLE CLÍNICO DE SESSÃO (PRODUÇÃO STI)
+// ⚡ VETORES DE CONTROLE CLÍNICO DE SESSÃO REAL DE PRODUÇÃO ITS
 let ultimoLaudoRealADA = null;
+let planoChanceladoBOAAtivo = null; // Centraliza o plano calculado para a rodada corrente
 let questaoAtivaNoCanvas = null;
 
 // --- FUNÇÕES DE DASHBOARD ---
@@ -57,9 +60,9 @@ function mostrarSeletorBlocos() {
         G.historico = {};
     }
 
-    // Instanciação Global dos Motores Unificados (Consumindo a Ontologia do Objeto window)
+    // Instanciação síncrona real dos motores e repositórios clínicos ontológicos
     G.motorPerfil = new ProfileEngine(window.familyRegistry || {}); 
-    G.motorDiagnostico = new DiagnosticEngine(window.familyRegistry || {}); // 🧠 CONEXÃO FIXADA DO MOTOR REAL
+    G.motorDiagnostico = new DiagnosticEngine(window.familyRegistry || {}); 
     
     G.perfilCognitivo = G.motorPerfil.inicializarEstudante(`${G.nome}_${G.turma}`);
 
@@ -75,32 +78,30 @@ function mostrarSeletorBlocos() {
     }
 }
 
-// --- CORE: PROCESSAR RESPOSTA (PIPELINE REAL DE ARBITRAGEM SÍNCRONA) ---
+// --- CORE: PROCESSAR RESPOSTA (O LOOP DE TELEMETRIA PURO DO STI) ---
 async function processarResposta(alt, q) {
     if (G.respondeu) return;
     G.respondeu = true;
 
     const latenciaSessaoMs = Date.now() - G.tempoInicialQuestao;
     const isAcerto = (alt.tipo === "acerto" || alt.correta === true || String(alt.valor) === String(q.res));
-    
-    // Extrai a ID da família de forma segura, blindando fallbacks
     const familiaIdActiva = q.familiaInvarianteId || q.familia_alvo || q.familiaAlvo || "GERAL";
 
     // =========================================================================
-    // 🩸 PASSO 1: DIAGNÓSTICO COGNITIVO ATÓMICO REAL (ABANDONO DA SIMULAÇÃO)
+    // 🩸 PASSO 1: BIÓPSIA COGNITIVA REAL VIA DIAGNOSTICENGINE (FIM DA SIMULAÇÃO)
     // =========================================================================
     if (G.motorDiagnostico) {
         ultimoLaudoRealADA = G.motorDiagnostico.analisarAlternativa(alt, familiaIdActiva, G.perfilCognitivo);
     } else {
-        console.error("[ADA CRITICAL] Motor de diagnóstico indisponível. Ativando escape.");
+        console.error("[ADA CRITICAL] Motor de diagnóstico indisponível.");
         ultimoLaudoRealADA = { correto: isAcerto, planoDeMediacao: { choqueSemioticoRecomendado: false } };
     }
 
-    // Guardamos o rastro físico imutável para a computação semiótica da próxima rodada
+    // Retém imutavelmente a questão atual como rastro físico de origem para a próxima transição
     window.__QUESTAO_ORIGEM_CHOQUE__ = JSON.parse(JSON.stringify(q));
 
     // ==========================================
-    // 1. REAÇÃO DE INTERFACE E DISPARO DE ÁUDIO
+    // UI FEEDBACK REACTION & ÁUDIO DINÂMICO
     // ==========================================
     uiManager.updHUD();
     const fb = $('fb');
@@ -114,7 +115,7 @@ async function processarResposta(alt, q) {
     const dicaLimpa = String(q.dica || q.passo || q.exp || '').replace(/<[^>]*>?/gm, '');
     const feedbackADA = isAcerto
         ? `Muito bem, ${G.nome || 'cientista'}! ${q.passo || q.exp || 'Sua linha de raciocínio está correta.'}`
-        : `Calma, ${G.nome || 'cientista'}. ${alt.descricao || 'Essa estratégia não funcionou agora.'} ${dicaLimpa ? `Pense nisto: ${dicaLimpa}` : 'Respire fundo e observe os dados antes de continuar.'}`;
+        : `Calma, ${G.nome || 'cientista'}. ${alt.descricao || 'Essa estratégia não funcionou agora.'} ${dicaLimpa ? `Pense nisto: ${dicaLimpa}` : 'Observe os dados atentamente antes de continuar.'}`;
 
     if (typeof uiManager.narrarContexto === 'function') {
         uiManager.narrarContexto(feedbackADA, isAcerto).catch(e => console.warn("Narração ADA bypass:", e));
@@ -129,11 +130,11 @@ async function processarResposta(alt, q) {
         try { AdaptiveAudioEngine.sonarAnomalia(); } catch (e) {}
     }
 
-    // =========================================================
-    // 2. REGISTRO LONGITUDINAL E COMPUTAÇÃO DE VARIÁVEIS NO PERFIL
-    // =========================================================
+    // =========================================================================
+    // 🧠 PASSO 2: TELEMETRIA SÍNCRONA E HIGIENIZAÇÃO DA VERDADE NO PROFILEENGINE
+    // =========================================================================
     const etiologiaMapeada = (alt.misconception || alt.erro || 'ERRO_GENERICO').toUpperCase();
-    G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : etiologiaMapeada, latenciaSessaoMs);
+    G.registrarInteracao(q.bncc || "Geral", isAcerto, isAcerto ? 'NULO' : { misconception: etiologiaMapeada }, latenciaSessaoMs);
 
     try {
         if (G.motorPerfil) {
@@ -143,14 +144,23 @@ async function processarResposta(alt, q) {
                 foiCorreto: isAcerto
             };
             
-            // Envelopa metadados garantindo compatibilidade estrita com as propriedades que alimentam o ITC
+            // --- CIRURGIA 3: EXTRAI A EXECUÇÃO REAL DO SUCESSO DE INTERFACE DO SELETOR ---
+            const choqueEfetivamenteExecutado = !!window.__CHOQUE_CONFIRMADO_EXECUÇÃO__;
+
+            // --- CIRURGIA 2: SANITIZAÇÃO DE ENUMS VIA MAPEADOR_REPRESENTACAO_UI NO PAYLOAD DO ITC ---
+            const representacaoOriginalCrua = (q.representacaoPrincipal || 'VISUAL').toUpperCase();
+            const representacaoOriginalHigienizada = MAPEADOR_REPRESENTACAO_UI[representacaoOriginalCrua] || representacaoOriginalCrua;
+
+            const representacaoForcadaCrua = planoChanceladoBOAAtivo ? (planoChanceladoBOAAtivo.representacaoDestinoChoque || planoChanceladoBOAAtivo.representacaoPreferencial) : representacaoOriginalCrua;
+            const representacaoForcadaHigienizada = MAPEADOR_REPRESENTACAO_UI[representacaoForcadaCrua] || representacaoForcadaCrua;
+
             const metadadosSensorEnvelopados = {
                 ...q,
                 familiaAlvo: familiaIdActiva,
                 contextoADA: {
-                    representacaoOriginal: (q.representacaoPrincipal || 'VISUAL').toUpperCase(),
-                    representacaoForcada: ultimoLaudoRealADA.planoDeMediacao?.representacaoPreferencial || (q.representacaoPrincipal || 'VISUAL').toUpperCase(),
-                    foiChoqueSemiotico: !!ultimoLaudoRealADA.planoDeMediacao?.choqueSemioticoRecomendado
+                    representacaoOriginal: representacaoOriginalHigienizada,
+                    representacaoForcada: representacaoForcadaHigienizada,
+                    foiChoqueSemiotico: choqueEfetivamenteExecutado // Medição limpa: Somente true se a questão irmã rodou fisicamente
                 }
             };
             
@@ -165,13 +175,13 @@ async function processarResposta(alt, q) {
             }
         }
     } catch (e) {
-        console.warn("⚠️ Falha ao computar telemetria no ProfileEngine:", e);
+        console.warn("⚠️ Falha crítica ao processar telemetria estável no ProfileEngine:", e);
     }
 
     localStorage.setItem(`labtech_h_${G.nome}_${G.turma}`, btoa(encodeURIComponent(JSON.stringify(G.historico))));
 
     // ==========================================
-    // 3. METACOGNIÇÃO (ALINHADA COM O ESTADO FRESCO)
+    // 3. METACOGNIÇÃO (ESPELHAMENTO DO PERFIL FRESCO)
     // ==========================================
     try {
         if (typeof MetacognitionEngine.gerarFeedback === 'function') {
@@ -185,13 +195,13 @@ async function processarResposta(alt, q) {
     }
 
     // ==========================================
-    // 4. LOG DE FEEDBACK DE TELA & GRÁFICOS
+    // 4. LOG TIMELINE E PIPELINE GRÁFICO CANVAS
     // ==========================================
     if (!G.logSessao) G.logSessao = [];
     G.logSessao.push({
         tempo: new Date().toLocaleTimeString(),
         habilidade: q.bncc || "Geral",
-        questao: q.display || q.enunciado || "Desafio Ontológico",
+        questao: q.display || q.enunciado || "Item Ontológico",
         respostaDada: alt.valor || alt.texto || "N/A",
         correto: isAcerto,
         latencia: latenciaSessaoMs,
@@ -218,7 +228,7 @@ async function processarResposta(alt, q) {
             await renderizadorGrafico.animarArcos(q, pontoB - pontoA, modoRepresentacaoUI);
         }
     } catch (err) {
-        console.warn("⚠️ Pipeline visual Canvas bypass:", err);
+        console.warn("⚠️ Canvas render bypass:", err);
     }
 
     $('btn-prox')?.classList.remove('hidden');
@@ -232,10 +242,12 @@ function iniciarBloco(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
     $('game-screen')?.classList.remove('hidden');
     
-    // Reseta rastros de memória operacional de transição ao reiniciar blocos
+    // Purga a memória de trabalho do motor adaptativo ao migrar de competência macro
     ultimoLaudoRealADA = null;
+    planoChanceladoBOAAtivo = null;
     questaoAtivaNoCanvas = null;
     window.__QUESTAO_ORIGEM_CHOQUE__ = null;
+    window.__CHOQUE_CONFIRMADO_EXECUÇÃO__ = false;
 
     proximaQ();
 }
@@ -246,38 +258,37 @@ function proximaQ() {
     if (fb) fb.style.display = 'none';
     document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
     
-    // --- PASSO A: INTERCEPÇÃO E ARBITRAGEM PELA BOA v2.2 ---
-    // Passa o laudo real produzido pelo clique anterior síncrono
-    const planoChanceladoBOA = BaseOrientadoraAtiva.otimizarPlano(ultimoLaudoRealADA, G.perfilCognitivo);
+    // --- PASSO A: ARBITRAGEM PREDITIVA DA ZDP VIA BASEORIENTADORAATIVA (CHANCELADA SEM RE-ENTRY BUG) ---
+    planoChanceladoBOAAtivo = BaseOrientadoraAtiva.otimizarPlano(ultimoLaudoRealADA, G.perfilCognitivo);
     
-    // --- PASSO B: SELEÇÃO TÁTICA ONTOLÓGICA COMPLETANDO A ASSINATURA ---
+    // --- PASSO B: SELEÇÃO TÁTICA ATÓMICA NO CATALOGO GLOBAL DE PRODUÇÃO ---
     const q = AdaptiveSelector.selecionarProximaQuestao(
         G.currentBlock, 
         G.perfilCognitivo, 
-        planoChanceladoBOA, 
-        window.__QUESTAO_ORIGEM_CHOQUE__ // Envia a questão de origem exata para viabilizar busca de irmã semiótica
+        planoChanceladoBOAAtivo, 
+        window.__QUESTAO_ORIGEM_CHOQUE__ 
     );
     
     if (!q) {
-        console.warn("⚠️ Pool de itens esgotado para os critérios ontológicos.");
+        console.warn("⚠️ Pool de itens esgotado para os critérios ontológicos estabelecidos.");
         return;
     }
     
     questaoAtivaNoCanvas = q;
     G.tempoInicialQuestao = Date.now();
-    renderQ(q, planoChanceladoBOA);
+    renderQ(q, planoChanceladoBOAAtivo);
 }
 
 function renderQ(q, planoBOA) {
-    $('conta-display').textContent = q.display || q.enunciado || "Resolva:";
+    $('conta-display').textContent = q.display || q.enunciado || "Resolva o desafio:";
     $('grid-botoes').innerHTML = '';
     $('btn-prox')?.classList.add('hidden');
     
-    // Envelopa e traduz o item estrito aplicando as propriedades preferidas de renderização da BOA
+    // Ajusta o envelopamento estrito do item injetando modificadores visuais e scaffolds de apoio
     const tarefaPronta = AdaptiveSelector.prepararTarefaParaInterface(q, planoBOA, window.__QUESTAO_ORIGEM_CHOQUE__);
     const modoRepresentacao = tarefaPronta.interfaceModifiers?.modoRepresentacao || 'visual';
     
-    // Gerenciamento e injeção dos painéis estruturais de Scaffold Instrucional na View
+    // Injeção dinâmica e controle sobrio dos painéis textuais de suporte gerenciados pela BOA
     const painelScaffold = $('ada-scaffold-container');
     if (painelScaffold) {
         if (tarefaPronta.interfaceModifiers.exibirPainelScaffold && tarefaPronta.contextoADA?.scaffoldOperacional) {
@@ -304,7 +315,7 @@ function renderQ(q, planoBOA) {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("🚀 [SISTEMA v1.6.5] Motor LabTech Gold Master Operante. Conexão Total Estabilizada.");
+    console.log("🚀 [SISTEMA v1.7.0] Motor LabTech Gold Master Operante. Sincronização e Conexão Totais.");
     
     try { await AdaptiveSelector.carregarBancoDeQuestoes(); } catch (e) { alert("Falha na leitura física do catálogo."); }
     initDebugMode();
@@ -356,7 +367,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (painelMeta) {
                 const dom = G.perfilCognitivo.perfilDominante;
                 const textos = {
-                    'DEPENDENTE_CONCRETO': "Você resolve bem com visuais. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Fortalecer a abstraction.",
+                    'DEPENDENTE_CONCRETO': "Você resolve bem com visuais. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Fortalecer a abstração.",
                     'IMPULSIVO_ARITMETICO': "Sua agilidade é boa, mas acelera demais. <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Respirar fundo.",
                     'PROCEDURAL_MECÂNICO': "Ótima memória! <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Focar no porquê.",
                     'CONCEITUAL_TEÓRICO': "Excelente! <br><br><b style='color:#00eaff;'>🎯 Objetivo:</b> Avançar para desafios mais abstratos."
@@ -371,7 +382,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('[data-action="seletor"]').forEach(btn => btn.onclick = () => { fecharM('go'); mostrarSeletorBlocos(); });
     [1,2,3,4,5,6,7].forEach(i => on(`btn-bloco-${i}`, () => iniciarBloco(i)));
 
-// ============================================================================
+    // ============================================================================
     // 🎛️ CAPTURA DE ATALHOS GLOBAIS DE ENGENHARIA E INTERFACE DOCENTE (XAI)
     // ============================================================================
     document.addEventListener('keydown', (e) => {
@@ -385,11 +396,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             G.perfilCognitivo.blocoAtual = G.currentBlock || 1;
 
-            // Importação assíncrona limpa para evitar sobrecarga de bundle no cliente
             import('./ui/TeacherAnalyticsView.js').then(({ TeacherAnalyticsView }) => {
                 TeacherAnalyticsView.renderizarPainelDocente(G.perfilCognitivo);
                 
-                // Amarra síncronamente os botões de validação humana gerados dinamicamente na View
                 const btnValidar = document.getElementById('btn-ia-validar');
                 const btnRefutar = document.getElementById('btn-ia-refutar');
                 
@@ -462,5 +471,5 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>`;
             mVar.classList.add('active');
         }
-    }); // <-- Fecha corretamente o keydown listener
-}); // <-- Fecha corretamente o DOMContentLoaded da inicialização do main.js
+    }); 
+});
